@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pulse — Understand who really visits your site.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-top: #F5F5F4;
+    --bg-bot: #FFFFFF;
+    --ink: #0F0F10;
+    --ink-2: #1F1F22;
+    --muted: #56565E;
+    --muted-2: #8E8E96;
+    --line: rgba(15,15,16,0.08);
+    --line-2: rgba(15,15,16,0.05);
+    --blue: #1F5EE5;
+    --warm: #F0B27A;
+    --glow: #F5C58A;
+    --pill-bg: #0F0F10;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg-bot); color: var(--ink); font-family: "Geist", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+  body { overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  svg, img { display: block; max-width: 100%; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; }
+
+  h1, h2, h3, h4 { font-family: "Geist", sans-serif; font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; }
+
+  /* ===== NAV ===== */
+  nav.top {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(245,245,244,0.78);
+    /* border-bottom: 1px solid var(--line-2); */
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px 32px; max-width: 1400px; margin: 0 auto; gap: 32px;
+  }
+  .nav-logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 22px; letter-spacing: -0.04em;
+  }
+  .nav-logo svg { width: 22px; height: 22px; }
+  .nav-links { display: flex; gap: 4px; align-items: center; }
+  .nav-links > * {
+    padding: 8px 14px; font-size: 14px; font-weight: 500; color: var(--ink);
+    border-radius: 999px; transition: background .15s; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .nav-links > *:hover { background: rgba(15,15,16,0.06); }
+  .nav-links .chev { width: 8px; height: 8px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-1px,-1px); opacity: 0.6; }
+  .nav-cta {
+    background: var(--pill-bg); color: #FFFFFF;
+    padding: 11px 20px; border-radius: 999px;
+    font-size: 14px; font-weight: 500;
+    transition: background .15s;
+  }
+  .nav-cta:hover { background: #2A2A2D; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    padding: 120px 32px 80px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg-top) 0%, #FAFAF9 60%, #FFFFFF 100%);
+    overflow: hidden;
+  }
+  .hero-inner { position: relative; z-index: 3; max-width: 720px; margin: 0 auto; }
+  .hero-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(15,15,16,0.06), 0 8px 20px rgba(15,15,16,0.08);
+    border: 1px solid var(--line-2);
+    display: grid; place-items: center;
+    margin: 0 auto 28px;
+  }
+  .hero-icon svg { width: 22px; height: 22px; stroke: var(--ink); fill: none; stroke-width: 1.6; }
+  .hero h1 {
+    font-size: clamp(48px, 6.4vw, 78px);
+    line-height: 1.02; letter-spacing: -0.035em; font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .hero p.lead {
+    color: var(--muted); font-size: 18px;
+    line-height: 1.5; max-width: 520px; margin: 0 auto 40px;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--pill-bg); color: #FFFFFF;
+    padding: 14px 28px; border-radius: 999px;
+    font-size: 15px; font-weight: 500;
+    transition: transform .2s, background .15s;
+  }
+  .hero-cta:hover { background: #2A2A2D; transform: translateY(-1px); }
+
+  /* Neural background */
+  .neural { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+  .neural svg { width: 100%; height: 100%; }
+
+  .floating-orb {
+    position: absolute;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(15,15,16,0.06), 0 8px 20px rgba(15,15,16,0.08);
+    border: 1px solid var(--line-2);
+    display: grid; place-items: center;
+    z-index: 2;
+  }
+  .floating-orb svg { width: 22px; height: 22px; stroke: var(--ink); fill: none; stroke-width: 1.6; }
+  .orb-1 { top: 24%; left: 12%; }
+  .orb-2 { top: 50%; left: 6%; }
+  .orb-3 { top: 78%; left: 14%; }
+  .orb-4 { top: 24%; right: 12%; }
+  .orb-5 { top: 50%; right: 6%; }
+  .orb-6 { top: 78%; right: 14%; }
+
+  /* ===== LOGOS STRIP ===== */
+  .logos-strip {
+    padding: 56px 32px;
+    background: #FFFFFF;
+  }
+  .logos-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 48px; flex-wrap: wrap;
+    opacity: 0.7;
+  }
+  .logo-mark {
+    font-family: serif; font-size: 22px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.02em;
+    display: inline-flex; align-items: center; gap: 8px;
+    filter: grayscale(1);
+  }
+  .logo-mark svg { width: 28px; height: 28px; }
+  .logo-mark .name { font-family: "Geist", sans-serif; }
+
+  /* ===== EMPOWER SECTION ===== */
+  .section { padding: 110px 32px; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-head { text-align: center; margin-bottom: 72px; }
+  .eyebrow {
+    color: var(--blue); font-size: 14px; font-weight: 500;
+    margin-bottom: 18px; letter-spacing: -0.01em;
+  }
+  .section-title {
+    font-size: clamp(36px, 4.6vw, 56px);
+    line-height: 1.06; letter-spacing: -0.03em; font-weight: 700;
+    max-width: 760px; margin: 0 auto;
+  }
+  .section-sub {
+    color: var(--muted); font-size: 17px; line-height: 1.5;
+    max-width: 580px; margin: 22px auto 0;
+  }
+
+  /* Feature grid - 4 cols */
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+  }
+  .feature {
+    text-align: center;
+    padding: 0 16px;
+  }
+  .feature .ic-box {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(15,15,16,0.06), 0 4px 12px rgba(15,15,16,0.06);
+    border: 1px solid var(--line-2);
+    display: grid; place-items: center;
+    margin: 0 auto 24px;
+  }
+  .feature .ic-box svg { width: 20px; height: 20px; stroke: var(--ink); fill: none; stroke-width: 1.7; }
+  .feature h3 {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .feature p {
+    color: var(--muted); font-size: 14.5px; line-height: 1.55;
+  }
+
+  /* ===== LEADING SECTION ===== */
+  .leading {
+    padding: 110px 32px 140px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAFAF9 100%);
+  }
+  .leading-head { text-align: center; }
+  .leading-head .eyebrow { color: var(--blue); }
+  .leading h2 {
+    font-size: clamp(36px, 4.6vw, 56px);
+    line-height: 1.06; letter-spacing: -0.03em;
+    max-width: 720px; margin: 0 auto;
+  }
+  .leading-sub { color: var(--muted); font-size: 17px; max-width: 560px; margin: 22px auto 64px; }
+
+  /* Dashboard preview card */
+  .dash {
+    max-width: 1100px; margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(15,15,16,0.04), 0 30px 80px rgba(15,15,16,0.08);
+    overflow: hidden;
+  }
+  .dash-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line-2);
+    background: #FAFAF9;
+  }
+  .dash-dot { width: 11px; height: 11px; border-radius: 50%; background: #E5E5E5; }
+  .dash-bar .url {
+    margin-left: 16px; font-family: "Geist Mono", monospace; font-size: 12px;
+    color: var(--muted); flex: 1;
+    background: #FFFFFF; padding: 6px 12px; border-radius: 8px;
+    border: 1px solid var(--line-2);
+    max-width: 360px;
+  }
+  .dash-body {
+    display: grid; grid-template-columns: 240px 1fr; min-height: 460px;
+  }
+  .dash-side {
+    background: #FAFAF9;
+    border-right: 1px solid var(--line-2);
+    padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .dash-side .group-label {
+    font-family: "Geist Mono", monospace; font-size: 10px;
+    color: var(--muted-2); padding: 12px 10px 8px; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .dash-side .item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 8px;
+    font-size: 13.5px; color: var(--ink-2); font-weight: 500;
+    cursor: pointer;
+  }
+  .dash-side .item svg { width: 14px; height: 14px; stroke: var(--muted); fill: none; stroke-width: 1.6; }
+  .dash-side .item.active { background: var(--ink); color: #FFFFFF; }
+  .dash-side .item.active svg { stroke: #FFFFFF; }
+  .dash-side .item:hover:not(.active) { background: rgba(15,15,16,0.04); }
+  .dash-side .badge {
+    margin-left: auto;
+    font-family: "Geist Mono", monospace; font-size: 10px;
+    color: var(--muted);
+  }
+  .dash-side .item.active .badge { color: rgba(255,255,255,0.55); }
+
+  .dash-main { padding: 28px 32px; }
+  .dash-h {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 24px;
+  }
+  .dash-h h4 { font-size: 22px; font-weight: 700; letter-spacing: -0.025em; }
+  .dash-h .range {
+    display: inline-flex; gap: 2px; padding: 3px;
+    border: 1px solid var(--line-2); border-radius: 999px;
+    background: #FAFAF9;
+  }
+  .dash-h .range button {
+    padding: 5px 10px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 500; color: var(--muted);
+  }
+  .dash-h .range button.active { background: var(--ink); color: #FFFFFF; }
+
+  .dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-tile {
+    padding: 16px;
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    background: #FAFAF9;
+  }
+  .stat-tile .label { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
+  .stat-tile .val { font-size: 22px; font-weight: 700; letter-spacing: -0.025em; line-height: 1; }
+  .stat-tile .delta { font-size: 11px; color: #16A34A; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; font-family: "Geist Mono", monospace; }
+  .stat-tile .delta.down { color: #DC2626; }
+
+  .dash-chart {
+    background: #FAFAF9;
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .dash-chart .chart-h { display: flex; justify-content: space-between; margin-bottom: 16px; }
+  .dash-chart .chart-h .ti { font-size: 13px; font-weight: 600; }
+  .dash-chart .chart-h .leg { display: inline-flex; gap: 12px; font-family: "Geist Mono", monospace; font-size: 10.5px; color: var(--muted); }
+  .dash-chart .chart-h .leg span { display: inline-flex; align-items: center; gap: 5px; }
+  .dash-chart .chart-h .leg .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  .dash-chart svg { width: 100%; height: 160px; }
+
+  .dash-twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mini-card {
+    background: #FAFAF9; border: 1px solid var(--line-2);
+    border-radius: 14px; padding: 18px;
+  }
+  .mini-card .ti { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+  .mini-list { display: flex; flex-direction: column; gap: 8px; }
+  .mini-row {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; color: var(--ink-2); font-weight: 500;
+  }
+  .mini-row .l { flex: 1; display: flex; align-items: center; gap: 8px; }
+  .mini-row .bar {
+    flex: 1; height: 5px; background: #E5E5E5; border-radius: 3px;
+    overflow: hidden; margin: 0 8px;
+  }
+  .mini-row .bar > span {
+    display: block; height: 100%; background: var(--ink); border-radius: 3px;
+  }
+  .mini-row .num { font-family: "Geist Mono", monospace; font-size: 11px; color: var(--muted); }
+  .mini-row .flag { font-size: 14px; }
+
+  /* ===== USE CASES ===== */
+  .use-cases { padding: 110px 32px; }
+  .uc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
+  .uc-card {
+    background: #FAFAF9; border: 1px solid var(--line-2);
+    border-radius: 20px; padding: 32px;
+    transition: transform .25s, border-color .15s;
+  }
+  .uc-card:hover { transform: translateY(-3px); border-color: var(--line); }
+  .uc-card .ic-box {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: #FFFFFF; border: 1px solid var(--line-2);
+    display: grid; place-items: center; margin-bottom: 24px;
+  }
+  .uc-card .ic-box svg { width: 18px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 1.7; }
+  .uc-card h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .uc-card p { color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+
+  /* ===== CTA STRIP ===== */
+  .cta-strip {
+    padding: 120px 32px;
+    text-align: center;
+    background: linear-gradient(180deg, #FAFAF9 0%, #F5F5F4 100%);
+    position: relative; overflow: hidden;
+  }
+  .cta-strip h2 {
+    font-size: clamp(40px, 5.5vw, 68px);
+    line-height: 1.02; letter-spacing: -0.035em; font-weight: 700;
+    max-width: 720px; margin: 0 auto 22px;
+  }
+  .cta-strip p {
+    color: var(--muted); font-size: 17px; max-width: 480px;
+    margin: 0 auto 36px;
+  }
+  .cta-strip .ctas { display: inline-flex; gap: 8px; }
+  .btn-ghost {
+    background: #FFFFFF; color: var(--ink);
+    padding: 14px 24px; border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 15px; font-weight: 500;
+    transition: background .15s;
+  }
+  .btn-ghost:hover { background: var(--bg-top); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: #FFFFFF;
+    padding: 60px 32px 40px;
+    border-top: 1px solid var(--line-2);
+  }
+  .foot-inner { max-width: 1200px; margin: 0 auto; }
+  .foot-cols {
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 48px;
+  }
+  .foot-cols .about p {
+    color: var(--muted); font-size: 14px; line-height: 1.55;
+    margin: 16px 0 0; max-width: 280px;
+  }
+  .foot-cols h5 {
+    font-size: 11px; font-weight: 600; color: var(--muted-2);
+    margin-bottom: 18px; letter-spacing: 0.06em;
+    text-transform: uppercase; font-family: "Geist Mono", monospace;
+  }
+  .foot-cols ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .foot-cols a { color: var(--ink-2); font-size: 13.5px; font-weight: 500; transition: color .15s; }
+  .foot-cols a:hover { color: var(--muted); }
+  .foot-bottom {
+    padding-top: 28px; border-top: 1px solid var(--line-2);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: "Geist Mono", monospace; font-size: 11.5px; color: var(--muted);
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
+    .dash-body { grid-template-columns: 1fr; }
+    .dash-side { display: none; }
+    .dash-stats { grid-template-columns: repeat(2, 1fr); }
+    .dash-twocol { grid-template-columns: 1fr; }
+    .uc-grid { grid-template-columns: 1fr; }
+    .foot-cols { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .floating-orb { display: none; }
+  }
+  @media (max-width: 600px) {
+    .section, .leading, .use-cases, .cta-strip { padding: 70px 20px; }
+    .hero { padding: 80px 20px 56px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .dash-stats { grid-template-columns: 1fr 1fr; }
+    .foot-cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="top">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/66f591a559efd00bfe77dfcb/ed3252eb-d5a4-4cef-a114-15b0bc7d976b/logo_transparent_background_6.png?format=1500w" width="420" alt="Pulse Analytics">
+    </a>
+    <!-- <div class="nav-links">
+      <span>Product <span class="chev"></span></span>
+      <span>Company</span>
+      <span>Resources <span class="chev"></span></span>
+      <span>Docs</span>
+      <span>Pricing</span>
+      <span>Support</span>
+    </div> -->
+    <!-- <a href="#cta" class="nav-cta">Contact us</a> -->
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <!-- decorative neural lines background -->
+  <div class="neural">
+    <svg viewBox="0 0 1400 720" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="glowG" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#F5C58A" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#F5C58A" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glowF" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- center glow -->
+      <ellipse cx="700" cy="320" rx="380" ry="180" fill="url(#glowG)" opacity="0.4"/>
+
+      <!-- LEFT side neural connections -->
+      <g stroke="#F5C58A" stroke-width="1.4" fill="none" opacity="0.7" filter="url(#glowF)">
+        <path d="M225 195 Q360 240 520 320 Q580 340 700 320"/>
+        <path d="M115 390 Q280 380 480 340 Q580 330 700 320"/>
+        <path d="M235 615 Q360 540 500 400 Q580 360 700 340"/>
+        <path d="M225 195 Q260 290 235 615" stroke-dasharray="2 6" opacity="0.35"/>
+        <path d="M115 390 Q140 290 225 195" opacity="0.3"/>
+        <path d="M115 390 Q130 480 235 615" opacity="0.3"/>
+      </g>
+
+      <!-- RIGHT side neural connections -->
+      <g stroke="#F5C58A" stroke-width="1.4" fill="none" opacity="0.7" filter="url(#glowF)">
+        <path d="M1175 195 Q1040 240 880 320 Q820 340 700 320"/>
+        <path d="M1285 390 Q1120 380 920 340 Q820 330 700 320"/>
+        <path d="M1165 615 Q1040 540 900 400 Q820 360 700 340"/>
+        <path d="M1175 195 Q1140 290 1165 615" stroke-dasharray="2 6" opacity="0.35"/>
+        <path d="M1285 390 Q1260 290 1175 195" opacity="0.3"/>
+        <path d="M1285 390 Q1270 480 1165 615" opacity="0.3"/>
+      </g>
+
+      <!-- dots along the paths -->
+      <g fill="#F5C58A">
+        <circle cx="320" cy="240" r="2.2" opacity="0.6"/>
+        <circle cx="420" cy="290" r="2.2" opacity="0.5"/>
+        <circle cx="540" cy="320" r="2.2" opacity="0.6"/>
+        <circle cx="1080" cy="240" r="2.2" opacity="0.6"/>
+        <circle cx="980" cy="290" r="2.2" opacity="0.5"/>
+        <circle cx="860" cy="320" r="2.2" opacity="0.6"/>
+        <circle cx="380" cy="430" r="2" opacity="0.4"/>
+        <circle cx="1020" cy="430" r="2" opacity="0.4"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Floating orbs -->
+  <div class="floating-orb orb-1" title="Real-time">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+  </div>
+  <div class="floating-orb orb-2" title="Charts">
+    <svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 4 4 5-7"/></svg>
+  </div>
+  <div class="floating-orb orb-3" title="Audience">
+    <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M14 19c0-2 2-3.5 4-3.5s4 1.5 4 3.5"/></svg>
+  </div>
+  <div class="floating-orb orb-4" title="Search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+  </div>
+  <div class="floating-orb orb-5" title="Globe">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+  </div>
+  <div class="floating-orb orb-6" title="Privacy">
+    <svg viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="9" rx="1"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-icon">
+      <svg viewBox="0 0 24 24"><path d="M3 12c0-4 2-6 4-6s3 2 5 6 3 6 5 6 4-2 4-6"/></svg>
+    </div>
+    <h1>Understanding<br/>Your Audience.</h1>
+    <p class="lead">See exactly how many people visit your site, which pages they read, where they come from, and which searches bring them to you. Data to grow intelligently.</p>
+    <!-- <a href="#cta" class="hero-cta">Try Pulse</a> -->
+  </div>
+</section>
+
+<!-- ===== LANGUAGES STRIP ===== -->
+<section class="logos-strip">
+  <div class="logos-inner">
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/de.png" alt="German">
+      <span class="name">Deutsch</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/sa.png" alt="Arabic">
+      <span class="name">العربية</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/tr.png" alt="Turkish">
+      <span class="name">Türkçe</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/ru.png" alt="Russian">
+      <span class="name">Русский</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/fr.png" alt="French">
+      <span class="name">Français</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/es.png" alt="Spanish">
+      <span class="name">Español</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/it.png" alt="Italian">
+      <span class="name">Italiano</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/cn.png" alt="Chinese">
+      <span class="name">中文</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/pl.png" alt="Polish">
+      <span class="name">Polski</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/pt.png" alt="Portuguese">
+      <span class="name">Português</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/ua.png" alt="Ukrainian">
+      <span class="name">Українська</span>
+    </span>
+    <span class="logo-mark">
+      <img class="flag" src="https://flagcdn.com/w40/ir.png" alt="Persian">
+      <span class="name">فارسی</span>
+    </span>
+  </div>
+</section>
+
+
+
+<!-- ===== LEADING — DASHBOARD PREVIEW ===== -->
+<section class="leading">
+  <div class="leading-head">
+    <div class="eyebrow">Leading</div>
+    <h2>The dashboard your<br/>team will actually use.</h2>
+    <p class="leading-sub">Clean, fast, and built around the four numbers you check every morning. No noise, no dead clicks, no PhD required.</p>
+  </div>
+
+  <div class="dash">
+    <div class="dash-bar">
+      <span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot"></span>
+      <span class="url">NOON.analytics / dashboard</span>
+    </div>
+    <div class="dash-body">
+      <aside class="dash-side">
+        <div class="group-label">Workspace</div>
+        <div class="item active">
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg>
+          Overview <span class="badge">⌘ 1</span>
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5"/></svg>
+          Audience
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          Pages
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18"/></svg>
+          Sources
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+          Search
+        </div>
+        <div class="group-label">Reports</div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-7"/></svg>
+          Trends
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+          Weekly digest
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+          Settings
+        </div>
+      </aside>
+
+      <div class="dash-main">
+        <div class="dash-h">
+          <h4>Overview</h4>
+          <div class="range">
+            <button>24h</button><button>7d</button><button class="active">30d</button><button>YTD</button>
+          </div>
+        </div>
+
+        <div class="dash-stats">
+          <div class="stat-tile">
+            <div class="label">VISITORS</div>
+            <div class="val">128,447</div>
+            <div class="delta">↑ 12.4%</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">PAGEVIEWS</div>
+            <div class="val">412,901</div>
+            <div class="delta">↑ 8.7%</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">AVG. TIME</div>
+            <div class="val">2m 34s</div>
+            <div class="delta">↑ 6.2%</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">BOUNCE</div>
+            <div class="val">38.2%</div>
+            <div class="delta down">↓ 2.1%</div>
+          </div>
+        </div>
+
+        <div class="dash-chart">
+          <div class="chart-h">
+            <span class="ti">Visitors · last 30 days</span>
+            <span class="leg">
+              <span><span class="dot" style="background:#0F0F10"></span>Visitors</span>
+              <span><span class="dot" style="background:#F0B27A"></span>Pageviews</span>
+            </span>
+          </div>
+          <svg viewBox="0 0 540 160" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="areaA" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0F0F10" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#0F0F10" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="areaB" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#F0B27A" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#F0B27A" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- grid -->
+            <g stroke="#E5E5E5" stroke-width="0.5">
+              <line x1="0" y1="30" x2="540" y2="30"/>
+              <line x1="0" y1="70" x2="540" y2="70"/>
+              <line x1="0" y1="110" x2="540" y2="110"/>
+            </g>
+            <!-- pageviews area -->
+            <path d="M0,80 C40,75 80,55 120,50 C160,45 200,60 240,40 C280,20 320,35 360,30 C400,25 440,45 480,30 C500,22 520,28 540,22 L540,160 L0,160 Z" fill="url(#areaB)"/>
+            <path d="M0,80 C40,75 80,55 120,50 C160,45 200,60 240,40 C280,20 320,35 360,30 C400,25 440,45 480,30 C500,22 520,28 540,22" stroke="#F0B27A" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- visitors area -->
+            <path d="M0,110 C40,105 80,90 120,95 C160,98 200,85 240,80 C280,75 320,82 360,72 C400,62 440,80 480,68 C500,62 520,65 540,58 L540,160 L0,160 Z" fill="url(#areaA)"/>
+            <path d="M0,110 C40,105 80,90 120,95 C160,98 200,85 240,80 C280,75 320,82 360,72 C400,62 440,80 480,68 C500,62 520,65 540,58" stroke="#0F0F10" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- focus dot -->
+            <circle cx="360" cy="72" r="4" fill="#0F0F10"/>
+            <circle cx="360" cy="72" r="9" fill="none" stroke="#0F0F10" stroke-width="1" opacity="0.3"/>
+            <!-- tooltip -->
+            <g transform="translate(310 14)">
+              <rect width="120" height="44" rx="6" fill="#0F0F10"/>
+              <text x="10" y="16" font-family="Geist Mono" font-size="9" fill="#9A9A9A">DEC 18</text>
+              <text x="10" y="33" font-family="Geist" font-size="13" font-weight="600" fill="#FFFFFF">5,128 visitors</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="dash-twocol">
+          <div class="mini-card">
+            <div class="ti">Top sources</div>
+            <div class="mini-list">
+              <div class="mini-row">
+                <div class="l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F0F10" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg> Google</div>
+                <div class="bar"><span style="width:78%"></span></div>
+                <div class="num">52,341</div>
+              </div>
+              <div class="mini-row">
+                <div class="l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F0F10" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Direct</div>
+                <div class="bar"><span style="width:48%"></span></div>
+                <div class="num">31,205</div>
+              </div>
+              <div class="mini-row">
+                <div class="l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F0F10" stroke-width="2"><path d="M4 12c0-4 4-7 8-7s8 3 8 7-4 7-8 7c-2 0-3-1-4-1l-4 1 1-4c-1-1-1-2-1-3z"/></svg> Twitter / X</div>
+                <div class="bar"><span style="width:34%"></span></div>
+                <div class="num">18,902</div>
+              </div>
+              <div class="mini-row">
+                <div class="l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F0F10" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/></svg> LinkedIn</div>
+                <div class="bar"><span style="width:22%"></span></div>
+                <div class="num">12,107</div>
+              </div>
+              <div class="mini-row">
+                <div class="l"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0F0F10" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg> Newsletter</div>
+                <div class="bar"><span style="width:18%"></span></div>
+                <div class="num">9,447</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <div class="ti">Top countries</div>
+            <div class="mini-list">
+              <div class="mini-row"><div class="l"><span class="flag">🇺🇸</span> United States</div><div class="bar"><span style="width:82%"></span></div><div class="num">42,108</div></div>
+              <div class="mini-row"><div class="l"><span class="flag">🇩🇪</span> Germany</div><div class="bar"><span style="width:54%"></span></div><div class="num">28,332</div></div>
+              <div class="mini-row"><div class="l"><span class="flag">🇬🇧</span> United Kingdom</div><div class="bar"><span style="width:38%"></span></div><div class="num">19,580</div></div>
+              <div class="mini-row"><div class="l"><span class="flag">🇫🇷</span> France</div><div class="bar"><span style="width:24%"></span></div><div class="num">12,448</div></div>
+              <div class="mini-row"><div class="l"><span class="flag">🇨🇦</span> Canada</div><div class="bar"><span style="width:18%"></span></div><div class="num">9,210</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+</body>
+</html>
