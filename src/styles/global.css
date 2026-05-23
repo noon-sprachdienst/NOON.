@@ -1328,6 +1328,9 @@ footer { background: #FFFFFF; padding: 80px 0 32px; border-top: 1px solid var(--
 .adm-analytics-card:hover { border-color: #0A0A0A; background: #FFFFFF; }
 .adm-analytics-card strong { font-size: 14px; color: #0A0A0A; }
 .adm-analytics-card span  { font-size: 13px; color: #888; }
+.adm-analytics-card--ga { border-color: #4285F4; }
+.adm-analytics-card--ga:hover { border-color: #1a73e8; background: #F8FBFF; }
+.adm-ga-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 
 /* Login */
 .adm-login {

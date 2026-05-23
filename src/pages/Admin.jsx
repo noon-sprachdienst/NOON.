@@ -21,8 +21,8 @@ const T = {
     totalEntries: 'total entries', desktop: 'Desktop', mobile: 'Mobile', tablet: 'Tablet',
     changePw: 'Change Password', newPw: 'New Password', confirmPw: 'Confirm Password',
     savePw: 'Save Password', pwSaved: '✓ Password saved.', pwShort: 'Min. 6 characters.',
-    pwMismatch: 'Passwords do not match.', analyticsSetup: 'Connect an Analytics Service',
-    analyticsHint: 'Local analytics tracks only this browser. For full-site stats, connect a GDPR-compliant service:',
+    pwMismatch: 'Passwords do not match.', analyticsSetup: 'Google Analytics 4',
+    analyticsHint: 'Full-site analytics runs on Google Analytics 4 — included in the SEO & Visibility package. Open GA4 to view real-time data across all visitors:',
     dataSession: 'Data & Session', clearData: 'Clear Local Data', logout: 'Sign Out',
     dataCleared: '✓ Data cleared.', confirmClear: 'Delete all local analytics data?',
     unknown: 'Unknown', noCountry: 'No country data yet',
@@ -40,8 +40,8 @@ const T = {
     totalEntries: 'إجمالي السجلات', desktop: 'كمبيوتر', mobile: 'جوال', tablet: 'تابلت',
     changePw: 'تغيير كلمة المرور', newPw: 'كلمة مرور جديدة', confirmPw: 'تأكيد كلمة المرور',
     savePw: 'حفظ', pwSaved: '✓ تم الحفظ.', pwShort: '٦ أحرف على الأقل.',
-    pwMismatch: 'كلمتا المرور غير متطابقتين.', analyticsSetup: 'ربط خدمة تحليلات',
-    analyticsHint: 'التحليلات المحلية تتتبع هذا المتصفح فقط. للإحصاءات الكاملة:',
+    pwMismatch: 'كلمتا المرور غير متطابقتين.', analyticsSetup: 'Google Analytics 4',
+    analyticsHint: 'التحليلات الكاملة تعمل عبر Google Analytics 4 — مضمّن في حزمة SEO. افتح GA4 لعرض البيانات الفورية لجميع الزوار:',
     dataSession: 'البيانات والجلسة', clearData: 'حذف البيانات المحلية', logout: 'تسجيل الخروج',
     dataCleared: '✓ تم الحذف.', confirmClear: 'حذف جميع بيانات التحليلات؟',
     unknown: 'غير معروف', noCountry: 'لا توجد بيانات دول بعد',
@@ -59,8 +59,8 @@ const T = {
     totalEntries: 'Einträge gesamt', desktop: 'Desktop', mobile: 'Mobil', tablet: 'Tablet',
     changePw: 'Passwort ändern', newPw: 'Neues Passwort', confirmPw: 'Passwort bestätigen',
     savePw: 'Passwort speichern', pwSaved: '✓ Passwort gespeichert.', pwShort: 'Min. 6 Zeichen.',
-    pwMismatch: 'Passwörter stimmen nicht überein.', analyticsSetup: 'Analytics verbinden',
-    analyticsHint: 'Lokale Analyse zeigt nur Besuche aus diesem Browser. Für vollständige Statistiken:',
+    pwMismatch: 'Passwörter stimmen nicht überein.', analyticsSetup: 'Google Analytics 4',
+    analyticsHint: 'Die vollständige Website-Analyse läuft über Google Analytics 4 — im SEO-Paket enthalten. GA4 öffnen, um Echtzeit-Daten aller Besucher anzuzeigen:',
     dataSession: 'Daten & Sitzung', clearData: 'Lokale Daten löschen', logout: 'Abmelden',
     dataCleared: '✓ Daten gelöscht.', confirmClear: 'Alle lokalen Analysedaten löschen?',
     unknown: 'Unbekannt', noCountry: 'Noch keine Länderdaten',
@@ -279,15 +279,17 @@ function SettingsTab({ t, lang }) {
       <h3>{t.analyticsSetup}</h3>
       <p className="adm-hint">{t.analyticsHint}</p>
       <div className="adm-analytics-options">
-        {[
-          ['https://plausible.io','Plausible Analytics','Privacy-first · No cookie banner · from $9/mo'],
-          ['https://analytics.google.com','Google Analytics 4','Free · Full features · Cookie banner required'],
-          ['https://matomo.org','Matomo','Open source · Self-hosted · GDPR-compliant'],
-        ].map(([href,name,desc]) => (
-          <a key={name} href={href} target="_blank" rel="noopener noreferrer" className="adm-analytics-card">
-            <strong>{name}</strong><span>{desc}</span>
-          </a>
-        ))}
+        <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" className="adm-analytics-card adm-analytics-card--ga">
+          <div className="adm-ga-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2" y="12" width="4" height="10" rx="1" fill="#F9AB00"/>
+              <rect x="10" y="6" width="4" height="16" rx="1" fill="#E37400"/>
+              <rect x="18" y="2" width="4" height="20" rx="1" fill="#A8C7FA"/>
+            </svg>
+            <strong>Google Analytics 4</strong>
+          </div>
+          <span>Free · Full features · Cookie banner required (already included via DSGVO package)</span>
+        </a>
       </div>
       <hr className="adm-divider"/>
       <h3>{t.dataSession}</h3>
