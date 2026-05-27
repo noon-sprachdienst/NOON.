@@ -20,6 +20,11 @@ import LegalModal from './components/LegalModal.jsx';
 
 const ANALYTICS_KEY = 'noon_analytics';
 
+const normalizePath = (value) => {
+  const clean = value.replace(/\/+$/, '');
+  return clean || '/';
+};
+
 const META_BY_LANG = {
   de: {
     title: 'Noon Sprachdienst — Beglaubigte Übersetzungen & Dolmetschen in 75+ Sprachen',
@@ -103,7 +108,7 @@ function trackVisit() {
 
 export default function App() {
   const { lang, meta } = useI18n();
-  const [path, setPath] = useState(() => window.location.pathname);
+  const [path, setPath] = useState(() => normalizePath(window.location.pathname));
   const m = META_BY_LANG[lang] || META_BY_LANG.de;
   const isPricingPage = path === '/preise' || path === '/pricing';
 
@@ -116,18 +121,24 @@ export default function App() {
   useEffect(() => { trackVisit(); }, []);
 
   useEffect(() => {
-    const scrollToCurrentHash = () => {
+    const scrollToCurrentHash = (attempts = 12) => {
       const hash = window.location.hash;
       if (!hash) {
         window.scrollTo({ top: 0, behavior: 'instant' });
         return;
       }
       const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      if (attempts > 0) {
+        window.setTimeout(() => scrollToCurrentHash(attempts - 1), 50);
+      }
     };
 
     const onPopState = () => {
-      setPath(window.location.pathname);
+      setPath(normalizePath(window.location.pathname));
       setTimeout(scrollToCurrentHash, 0);
     };
 
@@ -147,13 +158,14 @@ export default function App() {
       const url = new URL(link.href, window.location.href);
       const current = new URL(window.location.href);
       if (url.origin !== current.origin) return;
-      if (!['/', '/preise', '/pricing'].includes(url.pathname)) return;
+      const nextPathname = normalizePath(url.pathname);
+      if (!['/', '/preise', '/pricing'].includes(nextPathname)) return;
 
       event.preventDefault();
-      const next = `${url.pathname}${url.search}${url.hash}`;
+      const next = `${nextPathname}${url.search}${url.hash}`;
       const currentPath = `${current.pathname}${current.search}${current.hash}`;
       if (next !== currentPath) window.history.pushState({}, '', next);
-      setPath(url.pathname);
+      setPath(nextPathname);
       setTimeout(scrollToCurrentHash, 0);
     };
 
