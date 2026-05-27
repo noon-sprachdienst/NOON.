@@ -12,6 +12,15 @@ const BRANCHES = [
 
 export default function Branches() {
   const { t } = useI18n();
+  const scrollerRef = useRef(null);
+
+  const scrollCards = (direction) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const card = scroller.querySelector('.map-card');
+    const amount = card ? card.getBoundingClientRect().width + 16 : scroller.clientWidth * 0.8;
+    scroller.scrollBy({ left: direction * amount, behavior: 'smooth' });
+  };
 
   return (
     <section className="branches" id="branches" aria-labelledby="branches-heading">
@@ -20,7 +29,19 @@ export default function Branches() {
           <h2 id="branches-heading" data-reveal="">{t('branches.title')}</h2>
           <p data-reveal="" style={{ '--ri': 1 }}>{t('branches.sub')}</p>
         </div>
-        <div className="grid">
+        <div className="carousel-actions" aria-label="Standorte scrollen">
+          <button type="button" className="scroll-btn" onClick={() => scrollCards(-1)} aria-label="Vorherige Standorte">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button type="button" className="scroll-btn" onClick={() => scrollCards(1)} aria-label="Nächste Standorte">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+        <div className="grid hide-scrollbar" ref={scrollerRef}>
           {BRANCHES.map((branch, i) => (
             <BranchCard key={branch.id} branch={branch} t={t} index={i} />
           ))}

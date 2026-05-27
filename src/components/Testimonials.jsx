@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useI18n } from '../hooks/useI18n';
 
 const TESTIMONIALS_BY_LANG = {
@@ -9,11 +10,11 @@ const TESTIMONIALS_BY_LANG = {
     { initials: 'LB', name: 'Leila B.',    role: 'Mainz',      stars: 5, google: true, text: 'Arabischer Führerschein, Zeugnisse und Heiratsurkunde auf einmal — alles kein Problem. Preis war absolut fair.' },
     { initials: 'TC', name: 'Tomasz C.',   role: 'Bielefeld',  stars: 5, google: true, text: 'Für mein polnisches Abitur-Zeugnis brauchte ich eine beglaubigte Übersetzung für die Uni. In 3 Tagen da. Top Service!' },
     { initials: 'SA', name: 'Sina A.',     role: 'Berlin',     stars: 5, google: true, text: 'Persische Dokumente für die Anerkennung meines Studiums. Der Übersetzer kannte alle Fachbegriffe. Wurde auf Anhieb akzeptiert.' },
-    { initials: 'MÖ', name: 'Mehmet Ö.',  role: 'Stuttgart',  stars: 5, google: true, text: 'Türkische Heiratsurkunde, abends per WhatsApp gesendet. Am nächsten Morgen fertig. Unfassbar schnell.' },
+    { initials: 'MÖ', name: 'Mehmet Ö.',   role: 'Stuttgart',  stars: 5, google: true, text: 'Türkische Heiratsurkunde, abends per WhatsApp gesendet. Am nächsten Morgen fertig. Unfassbar schnell.' },
     { initials: 'EV', name: 'Elena V.',    role: 'Osnabrück',  stars: 5, google: true, text: 'Sehr freundliches Team, mehrsprachig — das gibt einem ein sicheres Gefühl. Alle Unterlagen sofort korrekt, kein Nachfragen nötig.' },
     { initials: 'KB', name: 'Khalid B.',   role: 'Kiel',       stars: 5, google: true, text: 'Marokkanische Dokumente für die Familienzusammenführung. Alles wurde beim Amt sofort anerkannt. Ich empfehle Noon jedem!' },
     { initials: 'NP', name: 'Natalia P.',  role: 'Mainz',      stars: 5, google: true, text: 'Ukrainische Schuldokumente meiner Kinder — für die Schule benötigt. Sehr schnell und der Preis war fair. Super Team!' },
-    { initials: 'AÇ', name: 'Ayşe Ç.',    role: 'Bielefeld',  stars: 5, google: true, text: 'Ich brauchte einen Dolmetscher für einen Gerichtstermin. Innerhalb von 24 Stunden organisiert — sehr professionell und diskret.' },
+    { initials: 'AÇ', name: 'Ayşe Ç.',     role: 'Bielefeld',  stars: 5, google: true, text: 'Ich brauchte einen Dolmetscher für einen Gerichtstermin. Innerhalb von 24 Stunden organisiert — sehr professionell und diskret.' },
   ],
   en: [
     { initials: 'AK', name: 'Ahmad K.',    role: 'Osnabrück',  stars: 5, google: true, text: 'Syrian marriage certificate translated within 24 hours — everything perfect for the registry office. Highly recommended!' },
@@ -154,6 +155,15 @@ function GoogleLogo() {
 export default function Testimonials() {
   const { t, lang } = useI18n();
   const list = TESTIMONIALS_BY_LANG[lang] || TESTIMONIALS_BY_LANG.de;
+  const scrollerRef = useRef(null);
+
+  const scrollCards = (direction) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const card = scroller.querySelector('.testimonial');
+    const amount = card ? card.getBoundingClientRect().width + 12 : scroller.clientWidth * 0.8;
+    scroller.scrollBy({ left: direction * amount, behavior: 'smooth' });
+  };
 
   return (
     <section className="testimonials" aria-labelledby="test-heading">
@@ -161,7 +171,19 @@ export default function Testimonials() {
         <div className="section-head">
           <h2 id="test-heading" data-reveal="">{t('test.title')}</h2>
         </div>
-        <div className="columns" role="list">
+        <div className="carousel-actions" aria-label="Feedback scrollen">
+          <button type="button" className="scroll-btn" onClick={() => scrollCards(-1)} aria-label="Vorherige Feedbacks">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button type="button" className="scroll-btn" onClick={() => scrollCards(1)} aria-label="Nächste Feedbacks">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+        <div className="columns hide-scrollbar" role="list" ref={scrollerRef}>
           {list.map((item, i) => (
             <article
               key={i}
