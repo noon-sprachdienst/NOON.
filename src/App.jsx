@@ -208,7 +208,7 @@ export default function App() {
     addTargets();
     const id = setTimeout(addTargets, 200);
     return () => { clearTimeout(id); obs.disconnect(); };
-  }, [lang]);
+  }, [lang, path]);
 
   return (
     <>
