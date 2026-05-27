@@ -46,7 +46,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <h1 id="hero-heading" className="sr-only" style={{ position: 'absolute', left: '-9999px' }}>
+        <h1 id="hero-heading" className="sr-only">
           Noon Sprachdienst — {t('hero.title1')} {t('hero.title2')}
         </h1>
 
