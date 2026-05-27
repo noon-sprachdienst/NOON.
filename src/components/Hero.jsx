@@ -95,8 +95,6 @@ export default function Hero() {
           </button>
         </div>
 
-        <div className="since-badge">{t('hero.since')}</div>
-
         <div className="counter-strip" aria-label={t('hero.counter.label')}>
           <div className="counter-label">{t('hero.counter.label')}</div>
           <div className="counter-row">

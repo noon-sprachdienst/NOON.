@@ -119,7 +119,7 @@ export default function Footer() {
 
         {/* Big wordmark */}
         <div className="foot-wordmark" aria-hidden="true">
-          NOON<span className="dot">.</span>
+          <span style={{ color: 'black' }}>NOON</span><span className="dot">.</span>
         </div>
 
         <div className="foot-bottom">

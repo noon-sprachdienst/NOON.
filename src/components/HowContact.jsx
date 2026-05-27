@@ -12,6 +12,7 @@ const STEPS = [
 export default function HowContact() {
   const { t } = useI18n();
   const [submitted, setSubmitted] = useState(false);
+  const [serviceType, setServiceType] = useState('translation');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -153,6 +154,39 @@ export default function HowContact() {
                 </select>
               </div>
             </div>
+
+            <div className="service-toggle" role="group" aria-label="Leistung auswählen">
+              <button
+                type="button"
+                className={`service-choice${serviceType === 'translation' ? ' active' : ''}`}
+                onClick={() => setServiceType('translation')}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <rect x="5" y="2" width="14" height="20" rx="2"/>
+                  <path d="M9 7h6M9 11h6M9 15h4"/>
+                </svg>
+                Übersetzung
+              </button>
+              <button
+                type="button"
+                className={`service-choice${serviceType === 'interpreting' ? ' active' : ''}`}
+                onClick={() => setServiceType('interpreting')}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <path d="M12 19v4M8 23h8"/>
+                </svg>
+                Dolmetschen
+              </button>
+            </div>
+
+            {serviceType === 'translation' && (
+              <div className="form-field">
+                <label htmlFor="form-file">Datei hochladen</label>
+                <input id="form-file" type="file" />
+              </div>
+            )}
 
             <div className="form-field">
               <label htmlFor="form-doc">{t('form.doc')}</label>

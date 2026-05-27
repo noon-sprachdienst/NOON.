@@ -7,6 +7,8 @@ export default function Nav() {
   const [langOpen, setLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const switcherRef = useRef(null);
+  const isHome = window.location.pathname === '/';
+  const homeHref = (hash) => (isHome ? hash : `/${hash}`);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -44,10 +46,11 @@ export default function Nav() {
         </div>
 
         <div className="nav-links">
-          <a href="#services">{t('nav.services')}</a>
-          <a href="#pricing">{t('nav.prices')}</a>
-          <a href="#branches">{t('nav.locations')}</a>
-          <a href="#faq">{t('nav.faq')}</a>
+          <a href="/">Home</a>
+          <a href={homeHref('#services')}>{t('nav.services')}</a>
+          <a href="/preise">{t('nav.prices')}</a>
+          <a href={homeHref('#branches')}>{t('nav.locations')}</a>
+          <a href={homeHref('#faq')}>{t('nav.faq')}</a>
         </div>
 
         <div className="nav-cta">
@@ -85,7 +88,7 @@ export default function Nav() {
           </div>
 
           <a
-            href="#contact"
+            href={homeHref('#contact')}
             className="btn btn-primary btn-sm"
             style={{ fontWeight: 700, background: 'rgb(29, 226, 29)', color: 'white', padding: '12px 12px' }}
           >
@@ -106,15 +109,16 @@ export default function Nav() {
 
       <div className={`nav-mobile-overlay${mobileOpen ? ' open' : ''}`}>
         <div className="mobile-nav-links">
-          <a href="#services" onClick={closeMobile}>{t('nav.services')} <span className="ar">→</span></a>
-          <a href="#pricing" onClick={closeMobile}>{t('nav.prices')} <span className="ar">→</span></a>
-          <a href="#branches" onClick={closeMobile}>{t('nav.locations')} <span className="ar">→</span></a>
-          <a href="#faq" onClick={closeMobile}>{t('nav.faq')} <span className="ar">→</span></a>
+          <a href="/" onClick={closeMobile}>Home <span className="ar">→</span></a>
+          <a href={homeHref('#services')} onClick={closeMobile}>{t('nav.services')} <span className="ar">→</span></a>
+          <a href="/preise" onClick={closeMobile}>{t('nav.prices')} <span className="ar">→</span></a>
+          <a href={homeHref('#branches')} onClick={closeMobile}>{t('nav.locations')} <span className="ar">→</span></a>
+          <a href={homeHref('#faq')} onClick={closeMobile}>{t('nav.faq')} <span className="ar">→</span></a>
         </div>
         <div className="mobile-nav-sep"></div>
         <div className="mobile-nav-cta">
           <a
-            href="#contact"
+            href={homeHref('#contact')}
             className="btn btn-primary"
             style={{ fontWeight: 700, background: 'rgb(29, 226, 29)', color: 'white' }}
             onClick={closeMobile}

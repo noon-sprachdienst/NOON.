@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from './hooks/useI18n';
 
@@ -103,7 +103,9 @@ function trackVisit() {
 
 export default function App() {
   const { lang, meta } = useI18n();
+  const [path, setPath] = useState(() => window.location.pathname);
   const m = META_BY_LANG[lang] || META_BY_LANG.de;
+  const isPricingPage = path === '/preise' || path === '/pricing';
 
   useEffect(() => {
     document.documentElement.lang = meta.html;
@@ -112,6 +114,56 @@ export default function App() {
 
   // Analytics tracking (runs once on mount)
   useEffect(() => { trackVisit(); }, []);
+
+  useEffect(() => {
+    const scrollToCurrentHash = () => {
+      const hash = window.location.hash;
+      if (!hash) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        return;
+      }
+      const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const onPopState = () => {
+      setPath(window.location.pathname);
+      setTimeout(scrollToCurrentHash, 0);
+    };
+
+    const onClick = (event) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) return;
+
+      const link = event.target.closest?.('a[href]');
+      if (!link || link.target || link.hasAttribute('download')) return;
+
+      const url = new URL(link.href, window.location.href);
+      const current = new URL(window.location.href);
+      if (url.origin !== current.origin) return;
+      if (!['/', '/preise', '/pricing'].includes(url.pathname)) return;
+
+      event.preventDefault();
+      const next = `${url.pathname}${url.search}${url.hash}`;
+      const currentPath = `${current.pathname}${current.search}${current.hash}`;
+      if (next !== currentPath) window.history.pushState({}, '', next);
+      setPath(url.pathname);
+      setTimeout(scrollToCurrentHash, 0);
+    };
+
+    window.addEventListener('popstate', onPopState);
+    document.addEventListener('click', onClick);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+      document.removeEventListener('click', onClick);
+    };
+  }, []);
 
   // Disable all CSS transitions during window resize to prevent glitching
   useEffect(() => {
@@ -159,18 +211,23 @@ export default function App() {
 
       <Nav />
 
-      <main>
-        <Hero />
-        <Feature2 />
-        <Feature3 />
-        <StatsStrip />
-        <Services />
-        <Beratung />
-        <Pricing />
-        <Branches />
-        <Testimonials />
-        <FAQ />
-        <HowContact />
+      <main className={isPricingPage ? 'pricing-page' : undefined}>
+        {isPricingPage ? (
+          <Pricing />
+        ) : (
+          <>
+            <Hero />
+            <Feature2 />
+            <Feature3 />
+            <StatsStrip />
+            <Services />
+            <Beratung />
+            <Branches />
+            <Testimonials />
+            <FAQ />
+            <HowContact />
+          </>
+        )}
       </main>
 
       <Footer />
