@@ -46,7 +46,7 @@ export default function Nav() {
         </div>
 
         <div className="nav-links">
-          <a href="/">Home</a>
+          <a href="/">{t('nav.home')}</a>
           <a href={homeHref('#services')}>{t('nav.services')}</a>
           <a href="/preise">{t('nav.prices')}</a>
           <a href={homeHref('#branches')}>{t('nav.locations')}</a>
@@ -109,7 +109,7 @@ export default function Nav() {
 
       <div className={`nav-mobile-overlay${mobileOpen ? ' open' : ''}`}>
         <div className="mobile-nav-links">
-          <a href="/" onClick={closeMobile}>Home <span className="ar">→</span></a>
+          <a href="/" onClick={closeMobile}>{t('nav.home')} <span className="ar">→</span></a>
           <a href={homeHref('#services')} onClick={closeMobile}>{t('nav.services')} <span className="ar">→</span></a>
           <a href="/preise" onClick={closeMobile}>{t('nav.prices')} <span className="ar">→</span></a>
           <a href={homeHref('#branches')} onClick={closeMobile}>{t('nav.locations')} <span className="ar">→</span></a>

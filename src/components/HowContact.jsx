@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 
 const STEPS = [
-  { num: '01', label: 'Foto senden',  desc: 'WhatsApp, Mail oder Upload' },
-  { num: '02', label: 'Angebot',      desc: 'Festpreis in unter 5 Min.' },
-  { num: '03', label: 'Bestätigen',   desc: 'Per Klick oder WhatsApp' },
-  { num: '04', label: 'Übersetzen',   desc: 'Beeidigte Profis. ISO 17100.' },
-  { num: '05', label: 'Lieferung',    desc: 'Digital, Post oder Abholung' },
+  { num: '01', label: 'how.step1.label', desc: 'how.step1.desc' },
+  { num: '02', label: 'how.step2.label', desc: 'how.step2.desc' },
+  { num: '03', label: 'how.step3.label', desc: 'how.step3.desc' },
+  { num: '04', label: 'how.step4.label', desc: 'how.step4.desc' },
+  { num: '05', label: 'how.step5.label', desc: 'how.step5.desc' },
 ];
 
 export default function HowContact() {
@@ -22,17 +22,17 @@ export default function HowContact() {
   return (
     <section className="how-contact" id="contact" aria-labelledby="how-heading">
       <div className="wrap">
-        <div className="section-eyebrow">Ablauf &amp; Kontakt</div>
+        <div className="section-eyebrow">{t('how.eyebrow')}</div>
         <h2 id="how-heading" data-reveal="">{t('how.title')}</h2>
         <p className="section-sub" data-reveal="" style={{ '--ri': 1 }}>{t('how.sub')}</p>
 
         {/* Steps bar */}
-        <nav className="steps-bar" aria-label="Prozessschritte" data-reveal="" style={{ '--ri': 0 }}>
+        <nav className="steps-bar" aria-label={t('how.eyebrow')} data-reveal="" style={{ '--ri': 0 }}>
           {STEPS.map((step, i) => (
             <div key={step.num} className={`step${i === 0 ? ' active' : ''}`}>
               <div className="step-circle" aria-hidden="true">{step.num}</div>
-              <div className="step-label">{step.label}</div>
-              <div className="step-desc">{step.desc}</div>
+              <div className="step-label">{t(step.label)}</div>
+              <div className="step-desc">{t(step.desc)}</div>
             </div>
           ))}
         </nav>
@@ -89,7 +89,7 @@ export default function HowContact() {
               target="_blank"
               rel="noopener noreferrer"
               className="btn wa-btn"
-              aria-label="WhatsApp Chat starten"
+              aria-label={t('contact.wa')}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.824 11.824 0 013.48 8.413c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/>
@@ -155,7 +155,7 @@ export default function HowContact() {
               </div>
             </div>
 
-            <div className="service-toggle" role="group" aria-label="Leistung auswählen">
+            <div className="service-toggle" role="group" aria-label={t('form.service.label')}>
               <button
                 type="button"
                 className={`service-choice${serviceType === 'translation' ? ' active' : ''}`}
@@ -165,7 +165,7 @@ export default function HowContact() {
                   <rect x="5" y="2" width="14" height="20" rx="2"/>
                   <path d="M9 7h6M9 11h6M9 15h4"/>
                 </svg>
-                Übersetzung
+                {t('service.translation')}
               </button>
               <button
                 type="button"
@@ -177,13 +177,13 @@ export default function HowContact() {
                   <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
                   <path d="M12 19v4M8 23h8"/>
                 </svg>
-                Dolmetschen
+                {t('service.interpreting')}
               </button>
             </div>
 
             {serviceType === 'translation' && (
               <div className="form-field">
-                <label htmlFor="form-file">Datei hochladen</label>
+                <label htmlFor="form-file">{t('form.file')}</label>
                 <input id="form-file" type="file" />
               </div>
             )}
@@ -197,7 +197,7 @@ export default function HowContact() {
             </div>
 
             <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
-              {submitted ? '✓ Gesendet' : <><span>{t('form.submit')}</span> <span className="arrow">→</span></>}
+              {submitted ? t('form.sent') : <><span>{t('form.submit')}</span> <span className="arrow">→</span></>}
             </button>
           </form>
         </div>

@@ -76,7 +76,7 @@ export default function Hero() {
                 <path d="M9 7h6M9 11h6M9 15h4"/>
               </svg>
             </span>
-            Übersetzung
+            {t('service.translation')}
           </button>
           <button
             className="hero-svc-btn hero-svc-btn--secondary"
@@ -91,7 +91,7 @@ export default function Hero() {
                 <line x1="8" y1="23" x2="16" y2="23"/>
               </svg>
             </span>
-            Dolmetschen
+            {t('service.interpreting')}
           </button>
         </div>
 
