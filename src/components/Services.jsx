@@ -3,7 +3,7 @@ import { useI18n } from '../hooks/useI18n';
 import { getServiceNavigation, serviceUi } from '../data/serviceContent';
 
 const SIDE_LABELS = {
-  de: { interpreting: 'Dolmetschen', translation: 'Übersetzung', specialist: 'Fachübersetzung', faq: 'FAQ' },
+  de: { interpreting: 'Dolmetschen', translation: 'Beglaubigte Übersetzungen', specialist: 'Fachübersetzung', faq: 'FAQ' },
   en: { interpreting: 'Interpreting', translation: 'Translation', specialist: 'Specialist translation', faq: 'FAQ' },
   ar: { interpreting: 'ترجمة فورية', translation: 'ترجمة', specialist: 'ترجمة متخصصة', faq: 'الأسئلة الشائعة' },
   tr: { interpreting: 'Tercümanlık', translation: 'Çeviri', specialist: 'Uzman çeviri', faq: 'SSS' },
