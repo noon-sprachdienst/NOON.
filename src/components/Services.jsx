@@ -3,13 +3,13 @@ import { useI18n } from '../hooks/useI18n';
 import { getSpecialties, serviceUi } from '../data/serviceContent';
 
 const SIDE_LABELS = {
-  de: { quality: 'Qualität', docs: 'Übersetzung von Dokumenten', translators: 'Übersetzer', faq: 'FAQ' },
-  en: { quality: 'Quality', docs: 'Document translation', translators: 'Translators', faq: 'FAQ' },
-  ar: { quality: 'الجودة', docs: 'ترجمة المستندات', translators: 'المترجمون', faq: 'الأسئلة الشائعة' },
-  tr: { quality: 'Kalite', docs: 'Belge çevirisi', translators: 'Çevirmenler', faq: 'SSS' },
-  ru: { quality: 'Качество', docs: 'Перевод документов', translators: 'Переводчики', faq: 'FAQ' },
-  fr: { quality: 'Qualité', docs: 'Traduction de documents', translators: 'Traducteurs', faq: 'FAQ' },
-  uk: { quality: 'Якість', docs: 'Переклад документів', translators: 'Перекладачі', faq: 'FAQ' },
+  de: { interpreting: 'Dolmetschen', translation: 'Übersetzung', specialist: 'Fachübersetzung', faq: 'FAQ' },
+  en: { interpreting: 'Interpreting', translation: 'Translation', specialist: 'Specialist translation', faq: 'FAQ' },
+  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمة', specialist: 'ترجمة متخصصة', faq: 'الأسئلة الشائعة' },
+  tr: { interpreting: 'Tercümanlık', translation: 'Çeviri', specialist: 'Uzman çeviri', faq: 'SSS' },
+  ru: { interpreting: 'Устный перевод', translation: 'Перевод', specialist: 'Профильный перевод', faq: 'FAQ' },
+  fr: { interpreting: 'Interprétation', translation: 'Traduction', specialist: 'Traduction spécialisée', faq: 'FAQ' },
+  uk: { interpreting: 'Усний переклад', translation: 'Переклад', specialist: 'Фаховий переклад', faq: 'FAQ' },
 };
 
 export default function Services() {
@@ -93,11 +93,14 @@ export default function Services() {
 
           <div className="specialty-layout" data-reveal="" style={{ '--ri': 0 }}>
             <aside className="specialty-sidebar" aria-label="Fachübersetzungen Navigation">
-              <a href="#services" className="specialty-side-row specialty-side-row--strong">
-                {side.quality} <span aria-hidden="true">›</span>
+              <a href="#dolmetschen" className="specialty-side-row specialty-side-row--strong">
+                {side.interpreting} <span aria-hidden="true">›</span>
+              </a>
+              <a href="#uebersetzung" className="specialty-side-row specialty-side-row--strong">
+                {side.translation} <span aria-hidden="true">›</span>
               </a>
               <div className="specialty-side-row specialty-side-row--active specialty-side-row--strong">
-                {ui.title.replace('.', '')} <span aria-hidden="true">›</span>
+                {side.specialist} <span aria-hidden="true">›</span>
               </div>
               <div className="specialty-side-subnav">
                 {specialties.map((item) => (
@@ -112,12 +115,6 @@ export default function Services() {
                   </button>
                 ))}
               </div>
-              <a href="#services" className="specialty-side-row specialty-side-row--strong">
-                {side.docs} <span aria-hidden="true">›</span>
-              </a>
-              <a href="#beratung" className="specialty-side-row specialty-side-row--strong">
-                {side.translators} <span aria-hidden="true">›</span>
-              </a>
               <a href="#faq" className="specialty-side-row specialty-side-row--strong">
                 {side.faq} <span aria-hidden="true">›</span>
               </a>

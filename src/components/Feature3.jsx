@@ -4,7 +4,7 @@ export default function Feature3() {
   const { t } = useI18n();
 
   return (
-    <section className="feature-3" aria-labelledby="f3-heading">
+    <section className="feature-3" id="uebersetzung" aria-labelledby="f3-heading">
       <div className="container">
         <div className="section-head">
           <h2 id="f3-heading" data-reveal="">{t('f3.title')}</h2>

@@ -158,7 +158,7 @@ const baseSpecialties = [
   {
     id: 'medizin-dental',
     de: {
-      label: 'Medizin & Dentalmedizin',
+      label: 'Medizinische & Dentalmedizin',
       title: 'Übersetzungsbüro für Medizin und Dentalmedizin',
       text: 'Wir unterstützen Kliniken, Praxen, Labore, Hersteller und Fachverlage mit präzisen medizinischen und dentalmedizinischen Übersetzungen. Ein besonderer Schwerpunkt liegt auf Dentalsoftware, Zahntechnik, Medizintechnik, Befunden, Arztbriefen und Studienunterlagen.',
       examples: ['Befunde, Arztbriefe und OP-Berichte', 'Medizintechnik-Handbücher und Produktkataloge', 'Dentalsoftware, Implantate und Zahntechnik'],
@@ -263,11 +263,6 @@ const baseSpecialties = [
 
 const extraSpecialties = [
   {
-    id: 'chemie-biowissenschaften',
-    label: { de: 'Chemie & Biowissenschaften', en: 'Chemistry & Life Sciences', ar: 'الكيمياء وعلوم الحياة', tr: 'Kimya & Yaşam Bilimleri', ru: 'Химия и бионауки', fr: 'Chimie & sciences du vivant', uk: 'Хімія і біонауки' },
-    title: { de: 'Übersetzungsbüro für Chemie und Biowissenschaften', en: 'Translation office for chemistry and life sciences', ar: 'مكتب ترجمة للكيمياء وعلوم الحياة', tr: 'Kimya ve yaşam bilimleri çeviri bürosu', ru: 'Бюро переводов по химии и бионаукам', fr: 'Bureau de traduction chimie et sciences du vivant', uk: 'Бюро перекладів з хімії та біонаук' },
-  },
-  {
     id: 'literatur',
     label: { de: 'Literatur', en: 'Literature', ar: 'الأدب', tr: 'Edebiyat', ru: 'Литература', fr: 'Littérature', uk: 'Література' },
     title: { de: 'Übersetzungsbüro für Literatur und Kultur', en: 'Translation office for literature and culture', ar: 'مكتب ترجمة للأدب والثقافة', tr: 'Edebiyat ve kültür çeviri bürosu', ru: 'Бюро литературных и культурных переводов', fr: 'Bureau de traduction littérature et culture', uk: 'Бюро літературних і культурних перекладів' },
@@ -276,6 +271,11 @@ const extraSpecialties = [
     id: 'it-software',
     label: { de: 'IT & Software', en: 'IT & Software', ar: 'تقنية المعلومات والبرمجيات', tr: 'BT & Yazılım', ru: 'IT и ПО', fr: 'IT & logiciels', uk: 'IT і ПЗ' },
     title: { de: 'Übersetzungsbüro für IT und Software', en: 'Translation office for IT and software', ar: 'مكتب ترجمة لتقنية المعلومات والبرمجيات', tr: 'BT ve yazılım çeviri bürosu', ru: 'Бюро переводов для IT и ПО', fr: 'Bureau de traduction IT et logiciels', uk: 'Бюро перекладів для IT і ПЗ' },
+  },
+  {
+    id: 'chemie-biowissenschaften',
+    label: { de: 'Chemie & Biowissenschaften', en: 'Chemistry & Life Sciences', ar: 'الكيمياء وعلوم الحياة', tr: 'Kimya & Yaşam Bilimleri', ru: 'Химия и бионауки', fr: 'Chimie & sciences du vivant', uk: 'Хімія і біонауки' },
+    title: { de: 'Übersetzungsbüro für Chemie und Biowissenschaften', en: 'Translation office for chemistry and life sciences', ar: 'مكتب ترجمة للكيمياء وعلوم الحياة', tr: 'Kimya ve yaşam bilimleri çeviri bürosu', ru: 'Бюро переводов по химии и бионаукам', fr: 'Bureau de traduction chimie et sciences du vivant', uk: 'Бюро перекладів з хімії та біонаук' },
   },
   {
     id: 'industrie-produktion',

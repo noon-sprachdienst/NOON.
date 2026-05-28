@@ -442,6 +442,12 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
 .specialty-side-row:hover {
   color: #6A9800;
 }
+html[dir="rtl"] .specialty-side-row {
+  text-align: right;
+}
+html[dir="rtl"] .specialty-side-row--sub {
+  padding: 5px 22px 5px 0;
+}
 .specialty-detail {
   scroll-margin-top: 96px;
   padding-bottom: 24px;
