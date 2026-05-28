@@ -322,6 +322,49 @@ const generic = {
   },
 };
 
+const documentServiceCopyExtra = {
+  tr: {
+  'dolmetschen-overview': { label: 'Tercümanlık', title: 'Tercümanlık', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Şirketler, resmi kurumlar, mahkemeler, sağlık kuruluşları ve özel müşteriler için profesyonel tercümanlık hizmetleri sunuyoruz.', '190’dan fazla dilde yüz yüze randevular, çevrim içi toplantılar, video ve telefon tercümanlığı için nitelikli tercümanlar organize ediyoruz.'], examples: ['Yüz yüze randevular', 'Video ve telefon tercümanlığı', '190’dan fazla dil'], cta: 'Ücretsiz tercümanlık talebi' },
+  simultandolmetscher: { label: 'Simultane tercümanlar', title: 'Simultane tercümanlar', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Simultane tercümanlarımız uluslararası konferans ve toplantıların çok dilli şekilde sorunsuz ilerlemesini sağlar.', 'Etkinliğiniz için uygun ekipleri ve gerekli tercümanlık düzenini sağlarız.'], examples: ['Uluslararası konferanslar', 'Gerçek zamanlı tercüme', 'Etkinlik ekipleri'], cta: 'Simultane tercüman için ücretsiz talep' },
+  verhandlungsdolmetscher: { label: 'Müzakere tercümanları', title: 'Müzakere tercümanları', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Önemli iş görüşmeleri, sözleşme randevuları veya resmi kurum görüşmeleri için deneyimli müzakere tercümanları sağlıyoruz.', 'Tercümanlarımız içeriğin yanı sıra üslup, nezaket biçimleri ve kültürel nüansları da dikkate alır.'], examples: ['İş müzakereleri', 'Sözleşme randevuları', 'Resmi kurum görüşmeleri'], cta: 'Müzakere tercümanı için talep oluştur' },
+  'video-telefondolmetscher': { label: 'Video ve telefon tercümanları', title: 'Video ve telefon tercümanları', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Video ve telefon tercümanlığı hizmetimiz klinikler, danışma merkezleri, sosyal hizmetler, şirketler ve kurumlar için hızlı dil desteği sağlar.', 'Hizmet Almanya genelinde sunulur ve kısa süreli randevular için özellikle uygundur.'], examples: ['Klinikler ve danışma merkezleri', 'Şirketler ve kurumlar', 'Video veya telefonla hızlı destek'], cta: 'Video/telefon tercümanı için ücretsiz talep' },
+  'beeidigte-dolmetscher': { label: 'Yeminli tercümanlar', title: 'Yeminli tercümanlar', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Genel yeminli tercümanlarımız resmi kurum randevuları, nikah işlemleri, noter işlemleri, duruşmalar ve konsolosluk işleri için destek sağlar.', 'Yetkili mahkemelerde kayıtlıdırlar ve çeşitli dillerde resmi tercümanlık yapabilirler.'], examples: ['Resmi kurumlar ve duruşmalar', 'Nikah ve noter işlemleri', 'Konsolosluk işleri'], cta: 'Yeminli tercüman için talep oluştur' },
+  notardolmetscher: { label: 'Noter tercümanları', title: 'Noter tercümanları', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Satış sözleşmeleri, evlilik sözleşmeleri, şirket kuruluşları veya vekaletnameler gibi noter işlemlerinde hassas tercüme şarttır.', 'Tarih, yer ve işlem türünü bize iletin; uygun noter tercümanını organize edelim.'], examples: ['Satış ve evlilik sözleşmeleri', 'Şirket kuruluşları', 'Vekaletnameler'], cta: 'Noter tercümanı için talep oluştur' },
+  'standesamt-dolmetscher': { label: 'Nikah dairesi tercümanları', title: 'Nikah dairesi tercümanları', kicker: 'Tercümanlık hizmetleri', paragraphs: ['Resmi nikahınız için her iki tarafın da her sözü anlaması ve işlemin hukuken güvenli olması adına güvenilir bir tercümana ihtiyaç vardır.', 'Nikah dairesi veya belediye yeri ile tarihi gönderin; müsaitliği kontrol edip şeffaf teklif sunalım.'], examples: ['Resmi nikah', 'Belediye veya nikah dairesi', 'Yeminli destek'], cta: 'Nikah dairesi tercümanı için ücretsiz talep' },
+  'beglaubigte-uebersetzungen': { label: 'Yeminli çeviriler', title: 'Yeminli çeviriler', kicker: 'Çeviri', paragraphs: ['Resmi işlemler için mahkemeler, kurumlar, nüfus daireleri, üniversiteler ve noterler tarafından kabul edilen yeminli çeviriler hazırlıyoruz.', 'Belgenizin net bir fotoğrafını veya taramasını WhatsApp, e-posta ya da web formu üzerinden gönderin.'], examples: ['Belgeler, kimlikler ve ehliyetler', 'Okul ve üniversite belgeleri', 'Mahkeme kararları ve noter belgeleri'], cta: 'Ücretsiz yeminli çeviri talebi' },
+  },
+  ru: {
+  'dolmetschen-overview': { label: 'Устный перевод', title: 'Устный перевод', kicker: 'Услуги устного перевода', paragraphs: ['Мы предоставляем профессиональный устный перевод для компаний, ведомств, судов, медицинских учреждений и частных клиентов.', 'Организуем квалифицированных переводчиков более чем на 190 языках для очных встреч, онлайн-совещаний, видео- и телефонного перевода.'], examples: ['Очные встречи', 'Видео- и телефонный перевод', 'Более 190 языков'], cta: 'Бесплатный запрос устного переводчика' },
+  simultandolmetscher: { label: 'Синхронные переводчики', title: 'Синхронные переводчики', kicker: 'Услуги устного перевода', paragraphs: ['Наши синхронные переводчики помогают международным конференциям и мероприятиям проходить без языковых барьеров.', 'Мы подбираем подходящие команды и техническое решение для вашего мероприятия.'], examples: ['Международные конференции', 'Перевод в реальном времени', 'Команды для мероприятий'], cta: 'Бесплатно запросить синхронного переводчика' },
+  verhandlungsdolmetscher: { label: 'Переводчики для переговоров', title: 'Переводчики для переговоров', kicker: 'Услуги устного перевода', paragraphs: ['Для важных деловых переговоров, подписания договоров или встреч с ведомствами мы предоставляем опытных переводчиков.', 'Они учитывают не только содержание, но и тон, форму вежливости и культурные особенности.'], examples: ['Деловые переговоры', 'Договорные встречи', 'Встречи с ведомствами'], cta: 'Запросить переводчика для переговоров' },
+  'video-telefondolmetscher': { label: 'Видео- и телефонные переводчики', title: 'Видео- и телефонные переводчики', kicker: 'Услуги устного перевода', paragraphs: ['Видео- и телефонный перевод быстро помогает клиникам, консультационным центрам, социальным службам, компаниям и ведомствам.', 'Услуга доступна по всей Германии и подходит для срочных встреч.'], examples: ['Клиники и консультации', 'Компании и ведомства', 'Быстрая помощь по видео или телефону'], cta: 'Бесплатно запросить видео/телефонного переводчика' },
+  'beeidigte-dolmetscher': { label: 'Присяжные устные переводчики', title: 'Присяжные устные переводчики', kicker: 'Услуги устного перевода', paragraphs: ['Присяжные переводчики сопровождают встречи в ведомствах, заключение брака, нотариальные действия, слушания и консульские вопросы.', 'Они зарегистрированы при компетентных судах и могут официально переводить на разных языках.'], examples: ['Ведомства и слушания', 'Брак и нотариальные действия', 'Консульские вопросы'], cta: 'Запросить присяжного переводчика' },
+  notardolmetscher: { label: 'Нотариальные переводчики', title: 'Нотариальные переводчики', kicker: 'Услуги устного перевода', paragraphs: ['При нотариальном удостоверении договоров купли-продажи, брачных договоров, учреждении компаний или доверенностях точный перевод обязателен.', 'Сообщите дату, место и тип сделки, и мы подберем подходящего переводчика для нотариуса.'], examples: ['Договоры и доверенности', 'Учреждение компаний', 'Нотариальные документы'], cta: 'Запросить нотариального переводчика' },
+  'standesamt-dolmetscher': { label: 'Переводчики для ЗАГСа', title: 'Переводчики для ЗАГСа', kicker: 'Услуги устного перевода', paragraphs: ['Для гражданской церемонии нужен надежный переводчик, чтобы обе стороны понимали каждое слово и процедура была юридически корректной.', 'Сообщите город, ЗАГС или ратушу и дату; мы проверим доступность и отправим прозрачное предложение.'], examples: ['Гражданская церемония', 'ЗАГС или ратуша', 'Присяжное сопровождение'], cta: 'Бесплатно запросить переводчика для ЗАГСа' },
+  'beglaubigte-uebersetzungen': { label: 'Заверенные переводы', title: 'Заверенные переводы', kicker: 'Перевод', paragraphs: ['Для официальных целей мы готовим заверенные переводы, принимаемые судами, ведомствами, ЗАГСами, вузами и нотариусами.', 'Отправьте четкое фото или скан документа через WhatsApp, e-mail или форму на сайте.'], examples: ['Свидетельства, удостоверения и водительские права', 'Школьные и университетские документы', 'Судебные и нотариальные документы'], cta: 'Бесплатно запросить заверенный перевод' },
+  },
+  fr: {
+  'dolmetschen-overview': { label: 'Interprétation', title: 'Interprétation', kicker: 'Services d’interprétation', paragraphs: ['Nous proposons des services d’interprétation professionnels pour entreprises, administrations, tribunaux, établissements médicaux et particuliers.', 'Nous organisons des interprètes qualifiés dans plus de 190 langues pour les rendez-vous sur place, réunions en ligne, interprétation vidéo et téléphonique.'], examples: ['Rendez-vous sur place', 'Interprétation vidéo et téléphonique', 'Plus de 190 langues'], cta: 'Demander gratuitement un interprète' },
+  simultandolmetscher: { label: 'Interprètes simultanés', title: 'Interprètes simultanés', kicker: 'Services d’interprétation', paragraphs: ['Nos interprètes simultanés assurent le bon déroulement multilingue des conférences et réunions internationales.', 'Nous fournissons les équipes et la configuration adaptées à votre événement.'], examples: ['Conférences internationales', 'Interprétation en temps réel', 'Équipes pour événements'], cta: 'Demander gratuitement des interprètes simultanés' },
+  verhandlungsdolmetscher: { label: 'Interprètes de négociation', title: 'Interprètes de négociation', kicker: 'Services d’interprétation', paragraphs: ['Pour les négociations commerciales, signatures de contrats ou rendez-vous avec les administrations, nous mettons à disposition des interprètes expérimentés.', 'Ils tiennent compte du contenu, du ton, des formules de politesse et des nuances culturelles.'], examples: ['Négociations commerciales', 'Rendez-vous contractuels', 'Administrations'], cta: 'Demander un interprète de négociation' },
+  'video-telefondolmetscher': { label: 'Interprètes vidéo et téléphone', title: 'Interprètes vidéo et téléphone', kicker: 'Services d’interprétation', paragraphs: ['L’interprétation vidéo et téléphonique offre une aide rapide aux cliniques, centres de conseil, services sociaux, entreprises et administrations.', 'Le service est disponible dans toute l’Allemagne et convient aux rendez-vous urgents.'], examples: ['Cliniques et centres de conseil', 'Entreprises et administrations', 'Aide rapide par vidéo ou téléphone'], cta: 'Demander gratuitement un interprète vidéo/téléphone' },
+  'beeidigte-dolmetscher': { label: 'Interprètes assermentés', title: 'Interprètes assermentés', kicker: 'Services d’interprétation', paragraphs: ['Nos interprètes assermentés accompagnent les rendez-vous administratifs, mariages, actes notariés, auditions et affaires consulaires.', 'Ils sont enregistrés auprès des tribunaux compétents et peuvent interpréter officiellement dans plusieurs langues.'], examples: ['Administrations et auditions', 'Mariages et actes notariés', 'Affaires consulaires'], cta: 'Demander un interprète assermenté' },
+  notardolmetscher: { label: 'Interprètes pour notaire', title: 'Interprètes pour notaire', kicker: 'Services d’interprétation', paragraphs: ['Pour les actes notariés comme les contrats d’achat, contrats de mariage, créations de sociétés ou procurations, une interprétation précise est indispensable.', 'Envoyez-nous la date, le lieu et le type d’acte, et nous organisons l’interprète adapté.'], examples: ['Contrats et procurations', 'Créations de sociétés', 'Actes notariés'], cta: 'Demander un interprète pour notaire' },
+  'standesamt-dolmetscher': { label: 'Interprètes pour état civil', title: 'Interprètes pour état civil', kicker: 'Services d’interprétation', paragraphs: ['Pour votre mariage civil, un interprète fiable permet aux deux partenaires de comprendre chaque mot et sécurise la procédure.', 'Indiquez le lieu du service d’état civil ou de la mairie et la date souhaitée; nous vérifions la disponibilité.'], examples: ['Mariage civil', 'Mairie ou état civil', 'Accompagnement assermenté'], cta: 'Demander gratuitement un interprète d’état civil' },
+  'beglaubigte-uebersetzungen': { label: 'Traductions certifiées', title: 'Traductions certifiées', kicker: 'Traduction', paragraphs: ['Pour les démarches officielles, nous préparons des traductions certifiées acceptées par tribunaux, administrations, services d’état civil, universités et notaires.', 'Envoyez une photo nette ou un scan par WhatsApp, e-mail ou formulaire web.'], examples: ['Actes, pièces d’identité et permis', 'Diplômes scolaires et universitaires', 'Documents judiciaires et notariés'], cta: 'Demander gratuitement une traduction certifiée' },
+  },
+  uk: {
+  'dolmetschen-overview': { label: 'Усний переклад', title: 'Усний переклад', kicker: 'Послуги усного перекладу', paragraphs: ['Ми надаємо професійний усний переклад для компаній, органів влади, судів, медичних установ і приватних клієнтів.', 'Організовуємо кваліфікованих перекладачів понад 190 мовами для зустрічей на місці, онлайн-зустрічей, відео- та телефонного перекладу.'], examples: ['Зустрічі на місці', 'Відео- та телефонний переклад', 'Понад 190 мов'], cta: 'Безкоштовно запросити усного перекладача' },
+  simultandolmetscher: { label: 'Синхронні перекладачі', title: 'Синхронні перекладачі', kicker: 'Послуги усного перекладу', paragraphs: ['Наші синхронні перекладачі забезпечують багатомовний супровід міжнародних конференцій і заходів.', 'Ми підбираємо відповідні команди та організацію перекладу для вашого заходу.'], examples: ['Міжнародні конференції', 'Переклад у реальному часі', 'Команди для заходів'], cta: 'Безкоштовно запросити синхронних перекладачів' },
+  verhandlungsdolmetscher: { label: 'Перекладачі для переговорів', title: 'Перекладачі для переговорів', kicker: 'Послуги усного перекладу', paragraphs: ['Для важливих ділових переговорів, підписання договорів або зустрічей з органами влади ми надаємо досвідчених перекладачів.', 'Вони передають не лише зміст, а й тон, ввічливі форми та культурні нюанси.'], examples: ['Ділові переговори', 'Договірні зустрічі', 'Органи влади'], cta: 'Запросити перекладача для переговорів' },
+  'video-telefondolmetscher': { label: 'Відео- та телефонні перекладачі', title: 'Відео- та телефонні перекладачі', kicker: 'Послуги усного перекладу', paragraphs: ['Відео- та телефонний переклад швидко допомагає клінікам, консультаційним центрам, соціальним службам, компаніям і органам влади.', 'Послуга доступна по всій Німеччині та підходить для термінових зустрічей.'], examples: ['Клініки та консультації', 'Компанії та органи влади', 'Швидка допомога відео або телефоном'], cta: 'Безкоштовно запросити відео/телефонного перекладача' },
+  'beeidigte-dolmetscher': { label: 'Присяжні усні перекладачі', title: 'Присяжні усні перекладачі', kicker: 'Послуги усного перекладу', paragraphs: ['Присяжні перекладачі супроводжують зустрічі в органах влади, шлюби, нотаріальні дії, слухання та консульські справи.', 'Вони зареєстровані у компетентних судах і можуть офіційно перекладати різними мовами.'], examples: ['Органи влади та слухання', 'Шлюб і нотаріальні дії', 'Консульські справи'], cta: 'Запросити присяжного перекладача' },
+  notardolmetscher: { label: 'Нотаріальні перекладачі', title: 'Нотаріальні перекладачі', kicker: 'Послуги усного перекладу', paragraphs: ['Для нотаріальних дій, таких як договори купівлі, шлюбні договори, створення компаній або довіреності, точний переклад є необхідним.', 'Повідомте дату, місце та тип дії, і ми підберемо відповідного перекладача.'], examples: ['Договори та довіреності', 'Створення компаній', 'Нотаріальні документи'], cta: 'Запросити нотаріального перекладача' },
+  'standesamt-dolmetscher': { label: 'Перекладачі для РАЦСу', title: 'Перекладачі для РАЦСу', kicker: 'Послуги усного перекладу', paragraphs: ['Для цивільного шлюбу потрібен надійний перекладач, щоб обидва партнери розуміли кожне слово і процедура була юридично коректною.', 'Надішліть місце РАЦСу або ратуші та дату, і ми перевіримо доступність.'], examples: ['Цивільний шлюб', 'РАЦС або ратуша', 'Присяжний супровід'], cta: 'Безкоштовно запросити перекладача для РАЦСу' },
+  'beglaubigte-uebersetzungen': { label: 'Засвідчені переклади', title: 'Засвідчені переклади', kicker: 'Переклад', paragraphs: ['Для офіційних цілей ми готуємо засвідчені переклади, які приймають суди, органи влади, РАЦСи, університети та нотаріуси.', 'Надішліть чітке фото або скан через WhatsApp, e-mail чи вебформу.'], examples: ['Свідоцтва, посвідчення та водійські права', 'Шкільні й університетські документи', 'Судові та нотаріальні документи'], cta: 'Безкоштовно запросити засвідчений переклад' },
+  },
+};
+
 const detailParagraphsDe = {
   'wirtschaft-finanzen': [
     'Als Fachübersetzungsbüro für Wirtschaft und Finanzen unterstützen wir Unternehmen, Kanzleien, Steuerberater, Banken und Versicherungen bei allen fachsprachlichen Übersetzungen. Wir übertragen Ihre Dokumente präzise und verständlich in die gewünschte Sprache - von Geschäftskorrespondenz, Verträgen und AGB über Jahresabschlüsse, Bilanzen, Geschäftsberichte und Gutachten bis hin zu Marketingunterlagen, Präsentationen und Webseiten aus dem Bereich Wirtschaft und Finanzen.',
@@ -498,13 +541,200 @@ const documentServiceBlocksDe = [
 ];
 
 const documentNavLabels = {
-  en: { interpreting: 'Interpreting', translation: 'Translation', request: 'Request a free quote' },
-  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمة', request: 'اطلب عرضا مجانيا' },
-  tr: { interpreting: 'Tercümanlık', translation: 'Çeviri', request: 'Ücretsiz teklif iste' },
-  ru: { interpreting: 'Устный перевод', translation: 'Перевод', request: 'Запросить бесплатный расчет' },
-  fr: { interpreting: 'Interprétation', translation: 'Traduction', request: 'Demander un devis gratuit' },
-  uk: { interpreting: 'Усний переклад', translation: 'Переклад', request: 'Запросити безкоштовну пропозицію' },
+  en: { interpreting: 'Interpreting', translation: 'Certified translations', request: 'Request a free quote' },
+  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمات معتمدة', request: 'اطلب عرضا مجانيا' },
+  tr: { interpreting: 'Tercümanlık', translation: 'Yeminli çeviriler', request: 'Ücretsiz teklif iste' },
+  ru: { interpreting: 'Устный перевод', translation: 'Заверенные переводы', request: 'Запросить бесплатный расчет' },
+  fr: { interpreting: 'Interprétation', translation: 'Traductions certifiées', request: 'Demander un devis gratuit' },
+  uk: { interpreting: 'Усний переклад', translation: 'Засвідчені переклади', request: 'Запросити безкоштовну пропозицію' },
 };
+
+const documentServiceCopy = {
+  en: {
+    'dolmetschen-overview': {
+      label: 'Interpreting',
+      title: 'Interpreting',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'Professional interpreting services for companies, authorities, courts, medical institutions and private clients. Since 2019, our interpreting and translation office has supported clients in Stuttgart, Berlin, Mainz, Kiel, Osnabrück, Bielefeld and throughout Germany.',
+        'We arrange qualified interpreters in more than 190 languages for on-site appointments, online meetings, video interpreting and telephone interpreting.',
+        'Whether you need an interpreter at short notice or are planning an important international appointment, our team helps you find the right language support quickly and reliably.',
+      ],
+      examples: ['On-site appointments', 'Online, video and telephone interpreting', 'More than 190 languages'],
+      cta: 'Free interpreting request',
+    },
+    simultandolmetscher: {
+      label: 'Simultaneous interpreters',
+      title: 'Simultaneous interpreters',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'Our simultaneous interpreters make international conferences and meetings run smoothly in several languages. We provide real-time interpreting for German-English, German-French, German-Russian, German-Spanish, German-Italian, German-Arabic and many other language combinations.',
+        'For specialist audiences and international guests, we provide the right teams and interpreting setup for your event.',
+      ],
+      examples: ['International conferences and meetings', 'Real-time interpreting', 'Teams and equipment for events'],
+      cta: 'Request simultaneous interpreters for free',
+    },
+    verhandlungsdolmetscher: {
+      label: 'Negotiation interpreters',
+      title: 'Negotiation interpreters',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'For important business negotiations, contract signings or appointments with authorities, we provide experienced negotiation interpreters.',
+        'Our interpreters convey not only the content, but also tone, formalities and cultural nuances, which is essential for successful negotiations.',
+      ],
+      examples: ['Business negotiations', 'Contract appointments', 'Meetings with authorities'],
+      cta: 'Request a negotiation interpreter',
+    },
+    'video-telefondolmetscher': {
+      label: 'Video and telephone interpreters',
+      title: 'Video and telephone interpreters',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'Our video and telephone interpreting service gives you fast language support for clinics, counselling centres, social services, companies and authorities.',
+        'This service is available throughout Germany and is ideal when no interpreter is available locally or appointments have to take place at short notice.',
+      ],
+      examples: ['Clinics and counselling centres', 'Companies and authorities', 'Fast support by video or phone'],
+      cta: 'Request video/telephone interpreters for free',
+    },
+    'beeidigte-dolmetscher': {
+      label: 'Sworn interpreters',
+      title: 'Sworn interpreters',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'Our generally sworn interpreters support you at appointments with authorities, marriages, notarizations, hearings and consular matters.',
+        'They are registered with the responsible courts and may interpret officially for different languages.',
+      ],
+      examples: ['Authorities and hearings', 'Marriages and notarizations', 'Consular matters'],
+      cta: 'Request a sworn interpreter',
+    },
+    notardolmetscher: {
+      label: 'Notary interpreters',
+      title: 'Notary interpreters',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'For notarizations such as purchase contracts, marriage contracts, company formations or powers of attorney, precise interpreting is essential.',
+        'Send us the date, location and type of appointment, and we will arrange a suitable notary interpreter.',
+      ],
+      examples: ['Purchase and marriage contracts', 'Company formations', 'Powers of attorney'],
+      cta: 'Request a notary interpreter',
+    },
+    'standesamt-dolmetscher': {
+      label: 'Registry office interpreters',
+      title: 'Registry office interpreters',
+      kicker: 'Interpreting services',
+      paragraphs: [
+        'For your civil wedding, you need a reliable interpreter so both partners understand every word and the marriage is legally secure.',
+        'Send us the registry office or town hall location and the desired date. We check availability and send you a transparent offer.',
+      ],
+      examples: ['Civil weddings', 'Town hall or registry office', 'Sworn support'],
+      cta: 'Request a registry office interpreter for free',
+    },
+    'beglaubigte-uebersetzungen': {
+      label: 'Certified translations',
+      title: 'Certified translations',
+      kicker: 'Translation',
+      paragraphs: [
+        'For official purposes, we prepare certified translations accepted by courts, authorities, registry offices, universities and notaries.',
+        'Send us a clear phone photo or scan by WhatsApp, email or the web form. After completion, you receive the translation digitally, by post or for pickup in one of our six branches.',
+      ],
+      examples: ['Certificates, IDs and driving licences', 'School and university certificates', 'Court decisions and notarial documents'],
+      cta: 'Request a certified translation for free',
+    },
+  },
+  ar: {
+    'dolmetschen-overview': {
+      label: 'ترجمة فورية',
+      title: 'ترجمة فورية',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'خدمات ترجمة فورية احترافية للشركات والجهات الحكومية والمحاكم والمؤسسات الطبية والعملاء الأفراد. منذ 2019 ندعم العملاء في شتوتغارت وبرلين وماينتس وكيل وأوسنابروك وبيليفيلد وفي جميع أنحاء ألمانيا.',
+        'نوفر مترجمين فوريين مؤهلين بأكثر من 190 لغة للمواعيد الحضورية والاجتماعات عبر الإنترنت وترجمة الفيديو والهاتف.',
+        'سواء كنت تحتاج مترجما بسرعة أو تخطط لموعد دولي مهم، يساعدك فريقنا في اختيار الدعم اللغوي المناسب بسرعة وموثوقية.',
+      ],
+      examples: ['مواعيد حضورية', 'ترجمة عبر الإنترنت والفيديو والهاتف', 'أكثر من 190 لغة'],
+      cta: 'طلب مترجم فوري مجانا',
+    },
+    simultandolmetscher: {
+      label: 'مترجمون فوريون متزامنون',
+      title: 'مترجمون فوريون متزامنون',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'يساعد مترجمونا المتزامنون على سير المؤتمرات والفعاليات الدولية بسلاسة بعدة لغات. نوفر ترجمة فورية مباشرة للألمانية مع الإنجليزية والفرنسية والروسية والإسبانية والإيطالية والعربية ولغات أخرى كثيرة.',
+        'للجمهور المتخصص والضيوف الدوليين نوفر الفرق المناسبة وتجهيزات الترجمة المناسبة للفعالية.',
+      ],
+      examples: ['مؤتمرات وفعاليات دولية', 'ترجمة مباشرة في الوقت الفعلي', 'فرق وتجهيزات للفعاليات'],
+      cta: 'طلب مترجمين متزامنين مجانا',
+    },
+    verhandlungsdolmetscher: {
+      label: 'مترجمو مفاوضات',
+      title: 'مترجمو مفاوضات',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'للمفاوضات التجارية المهمة وتوقيع العقود والمواعيد مع الجهات الحكومية نوفر مترجمين ذوي خبرة في المفاوضات.',
+        'ينقل مترجمونا المحتوى والنبرة وصيغ الاحترام والفروق الثقافية، وهي عناصر مهمة لنجاح المفاوضات.',
+      ],
+      examples: ['مفاوضات تجارية', 'مواعيد العقود', 'مقابلات مع الجهات الحكومية'],
+      cta: 'طلب مترجم مفاوضات بدون التزام',
+    },
+    'video-telefondolmetscher': {
+      label: 'مترجمو فيديو وهاتف',
+      title: 'مترجمو فيديو وهاتف',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'توفر خدمة ترجمة الفيديو والهاتف دعما لغويا سريعا للعيادات ومراكز الاستشارة والخدمات الاجتماعية والشركات والجهات الحكومية.',
+        'الخدمة متاحة في جميع أنحاء ألمانيا ومناسبة عندما لا يتوفر مترجم في المدينة أو عندما تكون المواعيد عاجلة.',
+      ],
+      examples: ['عيادات ومراكز استشارة', 'شركات وجهات حكومية', 'دعم سريع بالفيديو أو الهاتف'],
+      cta: 'طلب مترجم فيديو/هاتف مجانا',
+    },
+    'beeidigte-dolmetscher': {
+      label: 'مترجمون محلفون',
+      title: 'مترجمون محلفون',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'يدعمك مترجمونا المحلفون في مواعيد الجهات الحكومية والزواج والتوثيق والجلسات وشؤون القنصليات.',
+        'هم مسجلون لدى المحاكم المختصة ويمكنهم الترجمة رسميا لعدة لغات.',
+      ],
+      examples: ['جهات حكومية وجلسات', 'زواج وتوثيق', 'شؤون قنصلية'],
+      cta: 'طلب مترجم محلف بدون التزام',
+    },
+    notardolmetscher: {
+      label: 'مترجمو كاتب العدل',
+      title: 'مترجمو كاتب العدل',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'في التوثيقات لدى كاتب العدل مثل عقود الشراء وعقود الزواج وتأسيس الشركات والتوكيلات، تكون الترجمة الدقيقة ضرورية.',
+        'أرسل لنا التاريخ والمكان ونوع الموعد، وسنتولى تنظيم مترجم مناسب لكاتب العدل.',
+      ],
+      examples: ['عقود شراء وزواج', 'تأسيس شركات', 'توكيلات ووثائق موثقة'],
+      cta: 'طلب مترجم كاتب عدل بدون التزام',
+    },
+    'standesamt-dolmetscher': {
+      label: 'مترجمو مكتب الزواج',
+      title: 'مترجمو مكتب الزواج',
+      kicker: 'خدمات الترجمة الفورية',
+      paragraphs: [
+        'لزواجك المدني تحتاج إلى مترجم موثوق حتى يفهم الطرفان كل كلمة وتتم إجراءات الزواج بشكل قانوني صحيح.',
+        'أرسل لنا مكان مكتب الزواج أو البلدية والموعد المطلوب، وسنراجع التوفر ونرسل لك عرضا واضحا.',
+      ],
+      examples: ['زواج مدني', 'بلدية أو مكتب زواج', 'مرافقة محلفة'],
+      cta: 'طلب مترجم مكتب الزواج مجانا',
+    },
+    'beglaubigte-uebersetzungen': {
+      label: 'ترجمات معتمدة',
+      title: 'ترجمات معتمدة',
+      kicker: 'ترجمة',
+      paragraphs: [
+        'للأغراض الرسمية نعد ترجمات معتمدة تقبلها المحاكم والجهات الحكومية ومكاتب السجل والجامعات والموثقون.',
+        'أرسل صورة واضحة أو مسحا ضوئيا عبر واتساب أو البريد أو النموذج. بعد الإنجاز تستلم الترجمة رقميا أو بالبريد أو من أحد فروعنا الستة.',
+      ],
+      examples: ['شهادات ووثائق هوية ورخص قيادة', 'شهادات مدرسية وجامعية', 'قرارات محاكم ووثائق موثقة'],
+      cta: 'طلب ترجمة معتمدة مجانا',
+    },
+  },
+};
+
+Object.assign(documentServiceCopy, documentServiceCopyExtra);
 
 export function getSpecialties(lang) {
   const code = generic[lang] ? lang : 'de';
@@ -525,34 +755,23 @@ export function getSpecialties(lang) {
 
 export function getServiceNavigation(lang) {
   const specialties = getSpecialties(lang);
-  const labels = documentNavLabels[lang] || documentNavLabels.en;
   if (lang === 'de') {
     return [
       ...documentServiceBlocksDe,
       ...specialties.map((item) => ({ ...item, group: 'specialist', kicker: 'Fachübersetzung' })),
     ];
   }
+  const documentBlocks = documentServiceBlocksDe.map((block) => {
+    const copy = documentServiceCopy[lang]?.[block.id] || documentServiceCopy.en[block.id];
+    return {
+      ...block,
+      ...copy,
+      group: block.group,
+      id: block.id,
+    };
+  });
   return [
-    {
-      id: 'dolmetschen-overview',
-      group: 'interpreting',
-      label: labels.interpreting,
-      title: labels.interpreting,
-      kicker: labels.interpreting,
-      text: generic[lang]?.text || generic.en.text,
-      examples: generic[lang]?.examples || generic.en.examples,
-      cta: labels.request,
-    },
-    {
-      id: 'beglaubigte-uebersetzungen',
-      group: 'translation',
-      label: labels.translation,
-      title: labels.translation,
-      kicker: labels.translation,
-      text: generic[lang]?.text || generic.en.text,
-      examples: generic[lang]?.examples || generic.en.examples,
-      cta: labels.request,
-    },
+    ...documentBlocks,
     ...specialties.map((item) => ({ ...item, group: 'specialist', kicker: serviceUi[lang]?.kicker || serviceUi.en.kicker })),
   ];
 }
