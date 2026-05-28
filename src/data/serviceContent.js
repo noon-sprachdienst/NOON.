@@ -380,6 +380,132 @@ const detailParagraphsDe = {
   ],
 };
 
+const documentServiceBlocksDe = [
+  {
+    id: 'dolmetschen-overview',
+    group: 'interpreting',
+    label: 'Dolmetschen',
+    title: 'Dolmetschen',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Professionelle Dolmetscherdienste für Unternehmen, Behörden, Gerichte, medizinische Einrichtungen und Privatkunden. Seit 2019 unterstützt unser Dolmetscher- und Übersetzungsbüro Mandanten in Stuttgart, Berlin, Mainz, Kiel, Osnabrück, Bielefeld und in ganz Deutschland - auf Wunsch auch international.',
+      'Wir vermitteln qualifizierte Dolmetscher in über 190 Sprachen für Präsenz-Termine vor Ort sowie für Online-Meetings, Video- und Telefondolmetschen.',
+      'Benötigen Sie kurzfristig einen erfahrenen Dolmetscher oder planen Sie einen wichtigen internationalen Termin? Unser Team unterstützt Sie schnell, professionell und zuverlässig bei der passenden Dolmetschervermittlung.',
+      'Qualitätsorientierte Abläufe, professionelle Kommunikation und ein hoher Serviceanspruch stehen bei uns an erster Stelle. Unsere Dienstleistungen orientieren sich an modernen Qualitätsstandards und strukturierten Arbeitsprozessen nach ISO-9001-Grundsätzen.',
+    ],
+    examples: ['Präsenz-Termine vor Ort', 'Online-Meetings, Video- und Telefondolmetschen', 'Über 190 Sprachen'],
+    cta: 'Kostenlose Dolmetscheranfrage',
+  },
+  {
+    id: 'simultandolmetscher',
+    group: 'interpreting',
+    label: 'Simultandolmetscher',
+    title: 'Simultandolmetscher',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Unsere Simultandolmetscher sorgen dafür, dass internationale Konferenzen und Tagungen reibungslos mehrsprachig ablaufen. Wir bieten Echtzeit-Dolmetschen unter anderem in den Sprachkombinationen Deutsch-Englisch, Deutsch-Französisch, Deutsch-Russisch, Deutsch-Spanisch, Deutsch-Italienisch, Deutsch-Arabisch sowie vielen weiteren europäischen und außereuropäischen Sprachen an.',
+      'Ob mehrsprachiges Fachpublikum oder internationale Gäste - wir stellen passende Teams und Technik für Ihr Event bereit.',
+      'Sie planen eine Konferenz oder ein mehrsprachiges Event und suchen erfahrene Simultandolmetscher? Teilen Sie uns die Eckdaten Ihrer Veranstaltung mit - wir erstellen Ihnen ein passendes Angebot.',
+    ],
+    examples: ['Internationale Konferenzen und Tagungen', 'Echtzeit-Dolmetschen', 'Passende Teams und Technik'],
+    cta: 'Simultandolmetscher kostenlos anfragen',
+  },
+  {
+    id: 'verhandlungsdolmetscher',
+    group: 'interpreting',
+    label: 'Verhandlungsdolmetscher',
+    title: 'Verhandlungsdolmetscher',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Für wichtige Geschäftsverhandlungen, Vertragsabschlüsse oder Gespräche mit Behörden stellen wir Ihnen erfahrene Verhandlungsdolmetscher zur Seite.',
+      'Typische Einsätze finden zum Beispiel in Stuttgart, Berlin und Mainz statt, etwa bei Terminen in den Sprachkombinationen Deutsch-Türkisch, Deutsch-Arabisch, Deutsch-Französisch oder Deutsch-Englisch.',
+      'Unsere Dolmetscher achten nicht nur auf die korrekte Wiedergabe der Inhalte, sondern auch auf Tonfall, Höflichkeitsformen und kulturelle Besonderheiten - eine wichtige Grundlage für erfolgreiche Verhandlungen.',
+    ],
+    examples: ['Geschäftsverhandlungen', 'Vertragsabschlüsse', 'Gespräche mit Behörden'],
+    cta: 'Verhandlungsdolmetscher unverbindlich anfragen',
+  },
+  {
+    id: 'video-telefondolmetscher',
+    group: 'interpreting',
+    label: 'Video- und Telefondolmetscher',
+    title: 'Video- und Telefondolmetscher',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Mit unserem Video- und Telefondolmetschdienst erhalten Sie kurzfristig Unterstützung - ideal für Kliniken, Beratungsstellen, Soziale Dienste, Unternehmen und Behörden.',
+      'Über sichere Leitungen verbinden wir Sie in Sekundenschnelle mit qualifizierten Dolmetschern, zum Beispiel für Deutsch-Arabisch, Deutsch-Kurdisch, Deutsch-Farsi, Deutsch-Tigrinya, Deutsch-Polnisch und viele weitere Sprachkombinationen.',
+      'Dieser Service ist deutschlandweit verfügbar und eignet sich besonders, wenn vor Ort kein Dolmetscher in Ihrer Stadt verfügbar ist oder Termine sehr spontan stattfinden müssen.',
+    ],
+    examples: ['Kliniken und Beratungsstellen', 'Soziale Dienste, Unternehmen und Behörden', 'Kurzfristig per Video oder Telefon'],
+    cta: 'Video-/Telefondolmetscher kostenlos anfragen',
+  },
+  {
+    id: 'beeidigte-dolmetscher',
+    group: 'interpreting',
+    label: 'Beeidigte Dolmetscher',
+    title: 'Beeidigte Dolmetscher',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Unsere allgemein beeidigten Dolmetscher unterstützen Sie bei Behördenterminen, Eheschließungen, Beurkundungen, Anhörungen und Konsulatsangelegenheiten.',
+      'Sie sind bei den zuständigen Gerichten registriert und dürfen amtlich für verschiedene Sprachen dolmetschen.',
+      'Ob beim Standesamt in Kiel, bei der Ausländerbehörde in Osnabrück oder in einer Kanzlei in Bielefeld - wir sorgen dafür, dass Ihre Aussagen rechtssicher und vollständig übertragen werden.',
+    ],
+    examples: ['Behördentermine und Anhörungen', 'Eheschließungen und Beurkundungen', 'Konsulatsangelegenheiten'],
+    cta: 'Beeidigten Dolmetscher unverbindlich anfragen',
+  },
+  {
+    id: 'notardolmetscher',
+    group: 'interpreting',
+    label: 'Notardolmetscher',
+    title: 'Notardolmetscher',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Bei notariellen Beurkundungen - etwa Kaufverträgen, Eheverträgen, Gesellschaftsgründungen oder Vollmachten - ist präzises Dolmetschen unverzichtbar.',
+      'Unsere Notardolmetscher arbeiten regelmäßig mit Notariaten in Stuttgart, Berlin, Mainz und anderen Städten zusammen und sind mit den Abläufen vor Ort vertraut.',
+      'Übermitteln Sie uns Datum, Ort und Art des Geschäfts - wir kümmern uns um einen passenden Notardolmetscher.',
+    ],
+    examples: ['Kaufverträge und Eheverträge', 'Gesellschaftsgründungen', 'Vollmachten und notarielle Urkunden'],
+    cta: 'Notardolmetscher unverbindlich anfragen',
+  },
+  {
+    id: 'standesamt-dolmetscher',
+    group: 'interpreting',
+    label: 'Standesamt-Dolmetscher',
+    title: 'Standesamt-Dolmetscher',
+    kicker: 'Dolmetscherdienste',
+    paragraphs: [
+      'Für Ihre standesamtliche Trauung benötigen Sie einen zuverlässigen Dolmetscher, damit beide Partner jedes Wort verstehen und die Eheschließung rechtssicher ist.',
+      'Unsere beeidigten Standesamt-Dolmetscher begleiten Sie bei Ihrer Hochzeit im Rathaus oder Standesamt, erläutern alle Erklärungen in der jeweiligen Sprache und achten darauf, dass alle Formalitäten korrekt erfüllt werden.',
+      'Senden Sie uns einfach eine kurze Anfrage mit Ihrem Standesamt- bzw. Rathausort und dem gewünschten Termin. Wir prüfen die Verfügbarkeit, informieren transparent über Kosten und Ablauf und schicken Ihnen ein unverbindliches Angebot.',
+    ],
+    examples: ['Standesamtliche Trauung', 'Rathaus oder Standesamt', 'Beeidigte Begleitung'],
+    cta: 'Standesamt-Dolmetscher kostenlos anfragen',
+  },
+  {
+    id: 'beglaubigte-uebersetzungen',
+    group: 'translation',
+    label: 'Übersetzung',
+    title: 'Beglaubigte Übersetzungen',
+    kicker: 'Übersetzung',
+    paragraphs: [
+      'Für offizielle Zwecke erstellen wir beglaubigte Übersetzungen, die von Gerichten, Behörden, Standesämtern, Hochschulen und Notariaten anerkannt werden.',
+      'In unserem Übersetzungsbüro arbeiten allgemein beeidigte Übersetzerinnen und Übersetzer, deren Beglaubigungsvermerke die Echtheit und Vollständigkeit der Übersetzung bestätigen.',
+      'Schicken Sie uns ein gut lesbares Handyfoto oder einen Scan Ihres Dokuments - ganz einfach per WhatsApp, E-Mail oder direkt im Web-Formular. Das Original benötigen wir für das Angebot nicht.',
+      'Nach Fertigstellung erhalten Sie Ihre beglaubigte Übersetzung digital als PDF oder auf Wunsch im Original per Post. Alternativ ist eine Abholung in einer unserer sechs Filialen deutschlandweit möglich.',
+    ],
+    examples: ['Urkunden, Ausweise und Führerscheine', 'Schul-, Ausbildungs- und Hochschulzeugnisse', 'Gerichtliche Beschlüsse und notarielle Urkunden'],
+    cta: 'Beglaubigte Übersetzung kostenlos anfragen',
+  },
+];
+
+const documentNavLabels = {
+  en: { interpreting: 'Interpreting', translation: 'Translation', request: 'Request a free quote' },
+  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمة', request: 'اطلب عرضا مجانيا' },
+  tr: { interpreting: 'Tercümanlık', translation: 'Çeviri', request: 'Ücretsiz teklif iste' },
+  ru: { interpreting: 'Устный перевод', translation: 'Перевод', request: 'Запросить бесплатный расчет' },
+  fr: { interpreting: 'Interprétation', translation: 'Traduction', request: 'Demander un devis gratuit' },
+  uk: { interpreting: 'Усний переклад', translation: 'Переклад', request: 'Запросити безкоштовну пропозицію' },
+};
+
 export function getSpecialties(lang) {
   const code = generic[lang] ? lang : 'de';
   const first = baseSpecialties.map((item) => ({
@@ -395,6 +521,40 @@ export function getSpecialties(lang) {
     ...(code === 'de' && detailParagraphsDe[item.id] ? { paragraphs: detailParagraphsDe[item.id] } : {}),
   }));
   return [...first, ...rest];
+}
+
+export function getServiceNavigation(lang) {
+  const specialties = getSpecialties(lang);
+  const labels = documentNavLabels[lang] || documentNavLabels.en;
+  if (lang === 'de') {
+    return [
+      ...documentServiceBlocksDe,
+      ...specialties.map((item) => ({ ...item, group: 'specialist', kicker: 'Fachübersetzung' })),
+    ];
+  }
+  return [
+    {
+      id: 'dolmetschen-overview',
+      group: 'interpreting',
+      label: labels.interpreting,
+      title: labels.interpreting,
+      kicker: labels.interpreting,
+      text: generic[lang]?.text || generic.en.text,
+      examples: generic[lang]?.examples || generic.en.examples,
+      cta: labels.request,
+    },
+    {
+      id: 'beglaubigte-uebersetzungen',
+      group: 'translation',
+      label: labels.translation,
+      title: labels.translation,
+      kicker: labels.translation,
+      text: generic[lang]?.text || generic.en.text,
+      examples: generic[lang]?.examples || generic.en.examples,
+      cta: labels.request,
+    },
+    ...specialties.map((item) => ({ ...item, group: 'specialist', kicker: serviceUi[lang]?.kicker || serviceUi.en.kicker })),
+  ];
 }
 
 export const serviceUi = {
