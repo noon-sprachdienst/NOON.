@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
-import { getSpecialties, serviceUi } from '../data/serviceContent';
+import { getServiceNavigation, serviceUi } from '../data/serviceContent';
 
 const SIDE_LABELS = {
   de: { interpreting: 'Dolmetschen', translation: 'Übersetzung', specialist: 'Fachübersetzung', faq: 'FAQ' },
@@ -14,18 +14,21 @@ const SIDE_LABELS = {
 
 export default function Services() {
   const { t, lang } = useI18n();
-  const specialties = getSpecialties(lang);
+  const navItems = getServiceNavigation(lang);
+  const interpretingItems = navItems.filter((item) => item.group === 'interpreting');
+  const translationItem = navItems.find((item) => item.group === 'translation');
+  const specialtyItems = navItems.filter((item) => item.group === 'specialist');
   const ui = serviceUi[lang] || serviceUi.de;
   const side = SIDE_LABELS[lang] || SIDE_LABELS.de;
-  const [activeId, setActiveId] = useState(specialties[0]?.id);
-  const active = specialties.find((item) => item.id === activeId) || specialties[0];
+  const [activeId, setActiveId] = useState(navItems[0]?.id);
+  const active = navItems.find((item) => item.id === activeId) || navItems[0];
   const activeParagraphs = active?.paragraphs || [active?.text].filter(Boolean);
 
   const listKeys = ['li1', 'li2', 'li3', 'li4', 'li5', 'li6'];
   const tagKeys  = ['tag1', 'tag2', 'tag3', 'tag4'];
 
   useEffect(() => {
-    setActiveId(specialties[0]?.id);
+    setActiveId(navItems[0]?.id);
   }, [lang]);
 
   return (
@@ -93,17 +96,42 @@ export default function Services() {
 
           <div className="specialty-layout" data-reveal="" style={{ '--ri': 0 }}>
             <aside className="specialty-sidebar" aria-label="Fachübersetzungen Navigation">
-              <a href="#dolmetschen" className="specialty-side-row specialty-side-row--strong">
+              <button
+                type="button"
+                className={`specialty-side-row specialty-side-row--strong${active?.id === interpretingItems[0]?.id ? ' active' : ''}`}
+                onClick={() => setActiveId(interpretingItems[0]?.id)}
+                aria-pressed={active?.id === interpretingItems[0]?.id}
+              >
                 {side.interpreting} <span aria-hidden="true">›</span>
-              </a>
-              <a href="#uebersetzung" className="specialty-side-row specialty-side-row--strong">
+              </button>
+              {interpretingItems.length > 1 && (
+                <div className="specialty-side-subnav">
+                  {interpretingItems.slice(1).map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={`specialty-side-row specialty-side-row--sub${active?.id === item.id ? ' active' : ''}`}
+                      onClick={() => setActiveId(item.id)}
+                      aria-pressed={active?.id === item.id}
+                    >
+                      {item.label} <span aria-hidden="true">›</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              <button
+                type="button"
+                className={`specialty-side-row specialty-side-row--strong${active?.id === translationItem?.id ? ' active' : ''}`}
+                onClick={() => setActiveId(translationItem?.id)}
+                aria-pressed={active?.id === translationItem?.id}
+              >
                 {side.translation} <span aria-hidden="true">›</span>
-              </a>
+              </button>
               <div className="specialty-side-row specialty-side-row--active specialty-side-row--strong">
                 {side.specialist} <span aria-hidden="true">›</span>
               </div>
               <div className="specialty-side-subnav">
-                {specialties.map((item) => (
+                {specialtyItems.map((item) => (
                   <button
                     key={item.id}
                     type="button"
@@ -121,7 +149,7 @@ export default function Services() {
             </aside>
 
             <article className="specialty-detail" id={active?.id}>
-              <div className="specialty-kicker">{ui.kicker}</div>
+              <div className="specialty-kicker">{active?.kicker || ui.kicker}</div>
               <h3>{active?.title}</h3>
               <p className="specialty-lead">{activeParagraphs[0]}</p>
               <div className="specialty-rule" aria-hidden="true" />

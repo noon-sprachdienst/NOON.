@@ -415,8 +415,12 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
 .specialty-side-row--active {
   color: #6A9800;
 }
+.specialty-side-row.active {
+  color: #6A9800;
+}
 .specialty-side-row--active span,
-.specialty-side-row--sub.active span {
+.specialty-side-row--sub.active span,
+.specialty-side-row.active span {
   color: #6A9800;
 }
 .specialty-side-subnav {
