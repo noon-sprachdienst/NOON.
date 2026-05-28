@@ -4,12 +4,12 @@ import { getServiceNavigation, serviceUi } from '../data/serviceContent';
 
 const SIDE_LABELS = {
   de: { interpreting: 'Dolmetschen', translation: 'Beglaubigte Übersetzungen', specialist: 'Fachübersetzung', faq: 'FAQ' },
-  en: { interpreting: 'Interpreting', translation: 'Translation', specialist: 'Specialist translation', faq: 'FAQ' },
-  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمة', specialist: 'ترجمة متخصصة', faq: 'الأسئلة الشائعة' },
-  tr: { interpreting: 'Tercümanlık', translation: 'Çeviri', specialist: 'Uzman çeviri', faq: 'SSS' },
-  ru: { interpreting: 'Устный перевод', translation: 'Перевод', specialist: 'Профильный перевод', faq: 'FAQ' },
-  fr: { interpreting: 'Interprétation', translation: 'Traduction', specialist: 'Traduction spécialisée', faq: 'FAQ' },
-  uk: { interpreting: 'Усний переклад', translation: 'Переклад', specialist: 'Фаховий переклад', faq: 'FAQ' },
+  en: { interpreting: 'Interpreting', translation: 'Certified translations', specialist: 'Specialist translation', faq: 'FAQ' },
+  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمات معتمدة', specialist: 'ترجمة متخصصة', faq: 'الأسئلة الشائعة' },
+  tr: { interpreting: 'Tercümanlık', translation: 'Yeminli çeviriler', specialist: 'Uzman çeviri', faq: 'SSS' },
+  ru: { interpreting: 'Устный перевод', translation: 'Заверенные переводы', specialist: 'Профильный перевод', faq: 'FAQ' },
+  fr: { interpreting: 'Interprétation', translation: 'Traductions certifiées', specialist: 'Traduction spécialisée', faq: 'FAQ' },
+  uk: { interpreting: 'Усний переклад', translation: 'Засвідчені переклади', specialist: 'Фаховий переклад', faq: 'FAQ' },
 };
 
 export default function Services() {
