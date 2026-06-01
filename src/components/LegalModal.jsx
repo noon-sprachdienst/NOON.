@@ -102,10 +102,11 @@ const DATENSCHUTZ = {
       </ul>
       <h3>3. Cookies</h3>
       <p><strong>Essentielle Cookies</strong> sind für den Betrieb der Website unbedingt erforderlich (Art. 6 Abs. 1 lit. f DSGVO). <strong>Analyse-Cookies</strong> werden nur mit Ihrer Einwilligung gesetzt (Art. 6 Abs. 1 lit. a DSGVO). Sie können Ihre Einwilligung jederzeit über unseren Cookie-Banner widerrufen.</p>
+      <p>Nach Ihrer Einwilligung erfassen wir ausschließlich pseudonyme Nutzungsdaten: besuchte Seiten, ungefähre Verweildauer, gekürzte Herkunfts-Domain, grobe Standortangaben (Land und gegebenenfalls Stadt), Sprache, Geräteklasse, Browser, Betriebssystem und Klicks auf Kontakt-Schaltflächen. Wir speichern keine IP-Adressen, Kontaktdaten, Nachrichten oder hochgeladenen Dokumente in der Website-Analyse. Analyseereignisse werden nach 90 Tagen gelöscht. Für die technische Bereitstellung nutzen wir Vercel und Google Firebase / Cloud Firestore.</p>
       <h3>4. Kontaktformular</h3>
       <p>Anfragen über das Kontaktformular werden inklusive Ihrer Kontaktdaten zur Bearbeitung gespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
       <h3>5. Datenübertragung in Drittstaaten</h3>
-      <p>Eine Übertragung Ihrer Daten in Länder außerhalb der EU/EWR findet nicht statt.</p>
+      <p>Wir wählen für Cloud Firestore einen Speicherort in der EU. Bei der Nutzung von Vercel und Google Firebase können Zugriffe oder Verarbeitungen durch Dienstleister außerhalb der EU/EWR nicht vollständig ausgeschlossen werden. Soweit erforderlich, erfolgen diese auf Grundlage geeigneter Datenschutzgarantien und Auftragsverarbeitungsvereinbarungen.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),
@@ -128,10 +129,11 @@ const DATENSCHUTZ = {
       </ul>
       <h3>3. Cookies</h3>
       <p><strong>Essential cookies</strong> are required for the website to function (Art. 6(1)(f) GDPR). <strong>Analytics cookies</strong> are only set with your consent (Art. 6(1)(a) GDPR). You can withdraw your consent at any time via our cookie banner.</p>
+      <p>After consent, we collect pseudonymous usage data only: visited pages, approximate time on page, shortened referrer domain, coarse location (country and optionally city), language, device category, browser, operating system and contact-button clicks. Website analytics do not store IP addresses, contact details, messages or uploaded documents. Analytics events are deleted after 90 days. Vercel and Google Firebase / Cloud Firestore provide the technical infrastructure.</p>
       <h3>4. Contact Form</h3>
       <p>Enquiries via the contact form are stored including your contact details for processing purposes. Legal basis: Art. 6(1)(b) GDPR.</p>
       <h3>5. International Transfers</h3>
-      <p>Your data is not transferred to countries outside the EU/EEA.</p>
+      <p>We select an EU storage location for Cloud Firestore. Access or processing by Vercel and Google Firebase service providers outside the EU/EEA cannot be fully excluded. Where required, appropriate data-protection safeguards and processing agreements apply.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),
@@ -157,7 +159,7 @@ const DATENSCHUTZ = {
       <h3>٤. نموذج التواصل</h3>
       <p>يتم تخزين استفساراتك عبر نموذج التواصل لأغراض المعالجة.</p>
       <h3>٥. النقل الدولي للبيانات</h3>
-      <p>لا يتم نقل بياناتك إلى دول خارج الاتحاد الأوروبي.</p>
+      <p>نختار موقع تخزين داخل الاتحاد الأوروبي لخدمة Cloud Firestore. لا يمكن استبعاد الوصول أو المعالجة بشكل كامل من قبل مزودي خدمات Vercel وGoogle Firebase خارج الاتحاد الأوروبي. عند الحاجة تُطبّق ضمانات مناسبة لحماية البيانات واتفاقيات لمعالجة البيانات.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),
@@ -183,7 +185,7 @@ const DATENSCHUTZ = {
       <h3>4. İletişim Formu</h3>
       <p>İletişim formu üzerinden gelen başvurular, işleme amaçlı olarak iletişim bilgilerinizle birlikte saklanır.</p>
       <h3>5. Uluslararası Veri Transferleri</h3>
-      <p>Verileriniz AB/AEA dışındaki ülkelere aktarılmamaktadır.</p>
+      <p>Cloud Firestore için AB içinde bir depolama konumu seçiyoruz. Vercel ve Google Firebase hizmet sağlayıcıları tarafından AB/AEA dışından erişim veya işleme tamamen hariç tutulamaz. Gerektiğinde uygun veri koruma güvenceleri ve veri işleme sözleşmeleri uygulanır.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),
@@ -209,7 +211,7 @@ const DATENSCHUTZ = {
       <h3>4. Контактная форма</h3>
       <p>Запросы через контактную форму сохраняются вместе с контактными данными для обработки обращения.</p>
       <h3>5. Международная передача данных</h3>
-      <p>Ваши данные не передаются в страны за пределами ЕС/ЕЭЗ.</p>
+      <p>Для Cloud Firestore выбирается место хранения в ЕС. Нельзя полностью исключить доступ или обработку со стороны поставщиков услуг Vercel и Google Firebase за пределами ЕС/ЕЭЗ. При необходимости применяются соответствующие гарантии защиты данных и соглашения об обработке.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),
@@ -235,7 +237,7 @@ const DATENSCHUTZ = {
       <h3>4. Formulaire de contact</h3>
       <p>Les demandes via le formulaire de contact sont stockées avec vos coordonnées à des fins de traitement.</p>
       <h3>5. Transferts internationaux</h3>
-      <p>Vos données ne sont pas transférées vers des pays hors UE/EEE.</p>
+      <p>Nous choisissons un lieu de stockage situé dans l’UE pour Cloud Firestore. Un accès ou un traitement par les prestataires Vercel et Google Firebase hors UE/EEE ne peut pas être totalement exclu. Lorsque cela est nécessaire, des garanties appropriées et des accords de traitement s’appliquent.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),
@@ -261,7 +263,7 @@ const DATENSCHUTZ = {
       <h3>4. Контактна форма</h3>
       <p>Запити через контактну форму зберігаються разом з контактними даними для обробки звернення.</p>
       <h3>5. Міжнародна передача даних</h3>
-      <p>Ваші дані не передаються до країн за межами ЄС/ЄЕП.</p>
+      <p>Для Cloud Firestore обирається місце зберігання в ЄС. Неможливо повністю виключити доступ або обробку постачальниками послуг Vercel і Google Firebase за межами ЄС/ЄЕП. За потреби застосовуються належні гарантії захисту даних та угоди про обробку.</p>
       <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
     </div>
   ),

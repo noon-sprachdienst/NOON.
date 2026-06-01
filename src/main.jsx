@@ -5,6 +5,7 @@ import { I18nProvider } from './hooks/useI18n';
 import App from './App.jsx';
 import Admin from './pages/Admin.jsx';
 import './styles/global.css';
+import 'leaflet/dist/leaflet.css';
 
 const isAdmin = window.location.pathname === '/admin';
 
