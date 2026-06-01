@@ -38,12 +38,13 @@ export default function Nav() {
   return (
     <>
       <nav className={`top${scrolled ? ' scrolled' : ''}`} aria-label="Hauptnavigation">
-        <div className="nav-mobile-brand" aria-hidden="true">
-          <img
-            src="https://images.squarespace-cdn.com/content/v1/66f591a559efd00bfe77dfcb/ed3252eb-d5a4-4cef-a114-15b0bc7d976b/logo_transparent_background_6.png?format=1500w"
-            alt="Noon Sprachdienst"
-          />
-        </div>
+        <a href="/" className="nav-mobile-brand" aria-label="Noon Sprachdienst">
+          <span>NOON</span><span className="dot">.</span>
+        </a>
+
+        <a href="/" className="nav-wordmark" aria-label="Noon Sprachdienst">
+          <span>NOON</span><span className="dot">.</span>
+        </a>
 
         <div className="nav-links">
           <a href="/">{t('nav.home')}</a>

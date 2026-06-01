@@ -30,7 +30,12 @@ export default function Beratung() {
           <div className="beratung-text" data-reveal="" style={{ '--ri': 1 }}>
             <div className="beratung-eyebrow">{t('beratung.pers.eyebrow')}</div>
             <h2 id="beratung-heading" className="beratung-h2">
-              {t('beratung.pers.h2')}
+              {t('beratung.pers.h2').split('\n').map((line, index, arr) => (
+                <span key={line}>
+                  {line}
+                  {index < arr.length - 1 ? <br /> : null}
+                </span>
+              ))}
             </h2>
             <p className="beratung-sub">
               {t('beratung.pers.sub')}
