@@ -213,8 +213,6 @@ export default function HeroGlobe() {
   }, []);
 
   return (
-    <div className={`hero-globe hero-globe--${status}`} ref={mountRef}>
-      <div className="hero-globe-fallback" aria-hidden="true" />
-    </div>
+    <div className={`hero-globe hero-globe--${status}`} ref={mountRef} />
   );
 }
