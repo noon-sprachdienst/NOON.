@@ -13,11 +13,20 @@ const BRANCHES = [
 
 export default function Branches() {
   const { t } = useI18n();
+  const [externalMapsAllowed, setExternalMapsAllowed] = useState(() => (
+    localStorage.getItem('noon_cookie') === 'all'
+  ));
   const { interactionProps, scrollerRef, scrollCards } = useAutoCarousel({
     cardSelector: '.map-card',
     gap: 16,
     speed: 21,
   });
+
+  useEffect(() => {
+    const updateConsent = (event) => setExternalMapsAllowed(event.detail === 'all');
+    window.addEventListener('noonConsentChanged', updateConsent);
+    return () => window.removeEventListener('noonConsentChanged', updateConsent);
+  }, []);
 
   return (
     <section className="branches" id="branches" aria-labelledby="branches-heading">
@@ -44,7 +53,7 @@ export default function Branches() {
           {...interactionProps}
         >
           {BRANCHES.map((branch, i) => (
-            <BranchCard key={branch.id} branch={branch} t={t} index={i} />
+            <BranchCard key={branch.id} branch={branch} t={t} index={i} externalMapsAllowed={externalMapsAllowed} />
           ))}
         </div>
       </div>
@@ -52,38 +61,49 @@ export default function Branches() {
   );
 }
 
-function BranchCard({ branch, t, index }) {
+function BranchCard({ branch, t, index, externalMapsAllowed }) {
+  const cardRef = useRef(null);
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
   const [mapEnabled, setMapEnabled] = useState(false);
 
   useEffect(() => {
-    if (!mapEnabled || !mapRef.current || leafletRef.current) return;
+    const card = cardRef.current;
+    if (!externalMapsAllowed || !card || mapEnabled) return undefined;
 
-    // Lazy-load leaflet to avoid SSR issues
-    import('leaflet').then((L) => {
-      if (!mapRef.current || leafletRef.current) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      setMapEnabled(true);
+      observer.disconnect();
+    }, { rootMargin: '160px' });
 
-      const map = L.default.map(mapRef.current, {
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [externalMapsAllowed, mapEnabled]);
+
+  useEffect(() => {
+    if (!mapEnabled || !mapRef.current || leafletRef.current) return undefined;
+
+    let cancelled = false;
+    import('leaflet').then((module) => {
+      if (cancelled || !mapRef.current || leafletRef.current) return;
+      const L = module.default;
+      const map = L.map(mapRef.current, {
         center: [branch.lat, branch.lng],
         zoom: 15,
         zoomControl: true,
         attributionControl: false,
         dragging: true,
-        scrollWheelZoom: false,   // keep false so page scroll isn't hijacked
+        scrollWheelZoom: false,
         doubleClickZoom: true,
         boxZoom: false,
         keyboard: false,
       });
       leafletRef.current = map;
-
-      // CartoDB Voyager — colorful, clean, real map
-      L.default.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-        { maxZoom: 20, attribution: '© OpenStreetMap contributors © CARTO' }
-      ).addTo(map);
-
-      const icon = L.default.divIcon({
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20,
+      }).addTo(map);
+      const icon = L.divIcon({
         className: '',
         html: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
           <path d="M16 0C7.163 0 0 7.163 0 16c0 10.5 16 26 16 26S32 26.5 32 16C32 7.163 24.837 0 16 0z" fill="#A4192C"/>
@@ -91,37 +111,30 @@ function BranchCard({ branch, t, index }) {
         </svg>`,
         iconSize: [32, 42],
         iconAnchor: [16, 42],
-        popupAnchor: [0, -44],
       });
-
-      L.default.marker([branch.lat, branch.lng], { icon })
-        .addTo(map)
-        .bindPopup(`<b>${branch.city}</b><br>${branch.addr}`);
-    });
+      L.marker([branch.lat, branch.lng], { icon }).addTo(map);
+    }).catch(() => {});
 
     return () => {
-      if (leafletRef.current) {
-        leafletRef.current.remove();
-        leafletRef.current = null;
-      }
+      cancelled = true;
+      leafletRef.current?.remove();
+      leafletRef.current = null;
     };
-  }, [mapEnabled, branch.lat, branch.lng, branch.city, branch.addr]);
+  }, [mapEnabled, branch.lat, branch.lng]);
 
   return (
-    <article className="map-card" data-reveal="" style={{ '--ri': index % 3 }} aria-label={`Büro ${branch.city}`}>
-      <div className="map-canvas" aria-hidden="true">
-        {mapEnabled ? (
-          <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
-        ) : (
-          <button
-            type="button"
-            className="map-consent"
-            onClick={() => setMapEnabled(true)}
-          >
-            <span>Map anzeigen</span>
-            <small>Externe Karteninhalte werden erst nach Ihrer Auswahl geladen.</small>
-          </button>
-        )}
+    <article className="map-card" data-reveal="" style={{ '--ri': index % 3 }} aria-label={`Büro ${branch.city}`} ref={cardRef}>
+      <div className="map-canvas">
+        <img
+          className="map-preview"
+          src={`/assets/maps/${branch.id}.jpg`}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
+        {mapEnabled && <div className="map-live" ref={mapRef} />}
+        <span className="map-attribution">© OpenStreetMap contributors</span>
       </div>
       <div className="map-card-body">
         <div className="city-row">
