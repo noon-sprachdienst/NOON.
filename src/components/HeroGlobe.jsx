@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -61,6 +61,7 @@ function buildRingPoints() {
 
 export default function HeroGlobe() {
   const mountRef = useRef(null);
+  const [status, setStatus] = useState('loading');
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -73,12 +74,15 @@ export default function HeroGlobe() {
     let controls;
     let resizeObserver;
     let scene;
+    let firstFrame = true;
 
     const setup = async () => {
+      const lowPower = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
       const [{ default: ThreeGlobe }, response] = await Promise.all([
         import('three-globe'),
         fetch('/data/globe.json'),
       ]);
+      if (!response.ok) throw new Error(`Unable to load globe data (${response.status})`);
       const countries = await response.json();
       if (cancelled) return;
 
@@ -88,8 +92,8 @@ export default function HeroGlobe() {
       const camera = new THREE.PerspectiveCamera(50, 1.2, 180, 1800);
       camera.position.set(0, 0, 300);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer = new THREE.WebGLRenderer({ antialias: !lowPower, alpha: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1 : 1.5));
       renderer.setClearColor(0x000000, 0);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.domElement.className = 'hero-globe-canvas';
@@ -108,16 +112,17 @@ export default function HeroGlobe() {
       pointLight.position.set(-200, 500, 200);
       scene.add(pointLight);
 
-      const ringPoints = buildRingPoints();
+      const ringPoints = lowPower ? [] : buildRingPoints();
+      const activeRoutes = lowPower ? routes.filter((_, index) => index % 2 === 0) : routes;
       const globe = new ThreeGlobe({ waitForGlobeReady: true, animateIn: true })
         .hexPolygonsData(countries.features)
-        .hexPolygonResolution(3)
+        .hexPolygonResolution(lowPower ? 2 : 3)
         .hexPolygonMargin(0.7)
         .hexPolygonColor(() => 'rgba(255,255,255,0.7)')
         .showAtmosphere(true)
         .atmosphereColor('#ffffff')
         .atmosphereAltitude(0.1)
-        .arcsData(routes)
+        .arcsData(activeRoutes)
         .arcStartLat('startLat')
         .arcStartLng('startLng')
         .arcEndLat('endLat')
@@ -142,10 +147,12 @@ export default function HeroGlobe() {
       globeMaterial.shininess = 0.9;
       scene.add(globe);
 
-      ringInterval = window.setInterval(() => {
-        const selected = ringPoints.filter((_, index) => (index + Math.floor(Date.now() / 2000)) % 3 !== 0);
-        globe.ringsData(selected);
-      }, 2000);
+      if (!lowPower) {
+        ringInterval = window.setInterval(() => {
+          const selected = ringPoints.filter((_, index) => (index + Math.floor(Date.now() / 2000)) % 3 !== 0);
+          globe.ringsData(selected);
+        }, 2000);
+      }
 
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enablePan = false;
@@ -172,6 +179,10 @@ export default function HeroGlobe() {
       const animate = () => {
         controls.update();
         renderer.render(scene, camera);
+        if (firstFrame && !cancelled) {
+          firstFrame = false;
+          setStatus('ready');
+        }
         frameId = requestAnimationFrame(animate);
       };
       animate();
@@ -179,6 +190,7 @@ export default function HeroGlobe() {
 
     setup().catch((error) => {
       console.error('Unable to initialize hero globe', error);
+      if (!cancelled) setStatus('error');
     });
 
     return () => {
@@ -200,5 +212,9 @@ export default function HeroGlobe() {
     };
   }, []);
 
-  return <div className="hero-globe" ref={mountRef} />;
+  return (
+    <div className={`hero-globe hero-globe--${status}`} ref={mountRef}>
+      <div className="hero-globe-fallback" aria-hidden="true" />
+    </div>
+  );
 }
