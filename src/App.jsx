@@ -16,10 +16,10 @@ import HowContact from './components/HowContact.jsx';
 import FAQ from './components/FAQ.jsx';
 import Footer from './components/Footer.jsx';
 import Specialties from './pages/Specialties.jsx';
-import CookieConsent, { COOKIE_KEY } from './components/CookieConsent.jsx';
+import CookieConsent from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
+import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
 
-const ANALYTICS_KEY = 'noon_analytics';
 
 const normalizePath = (value) => {
   const clean = value.replace(/\/+$/, '');
@@ -49,64 +49,6 @@ const META_BY_LANG = {
   },
 };
 
-function getCountryCode() {
-  try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const m = {
-      'Europe/Berlin':'DE','Europe/Vienna':'AT','Europe/Zurich':'CH',
-      'Europe/London':'GB','Europe/Paris':'FR','Europe/Madrid':'ES',
-      'Europe/Rome':'IT','Europe/Amsterdam':'NL','Europe/Brussels':'BE',
-      'Europe/Warsaw':'PL','Europe/Kyiv':'UA','Europe/Kiev':'UA',
-      'Europe/Moscow':'RU','Europe/Istanbul':'TR','Europe/Stockholm':'SE',
-      'Europe/Oslo':'NO','Europe/Copenhagen':'DK','Europe/Helsinki':'FI',
-      'Europe/Athens':'GR','Europe/Bucharest':'RO','Europe/Budapest':'HU',
-      'Europe/Prague':'CZ','Europe/Lisbon':'PT',
-      'Africa/Cairo':'EG','Africa/Tunis':'TN','Africa/Algiers':'DZ',
-      'Africa/Casablanca':'MA','Africa/Tripoli':'LY','Africa/Khartoum':'SD',
-      'Asia/Riyadh':'SA','Asia/Dubai':'AE','Asia/Kuwait':'KW',
-      'Asia/Baghdad':'IQ','Asia/Amman':'JO','Asia/Beirut':'LB',
-      'Asia/Damascus':'SY','Asia/Jerusalem':'IL','Asia/Tehran':'IR',
-      'Asia/Karachi':'PK','Asia/Kolkata':'IN','Asia/Dhaka':'BD',
-      'Asia/Bangkok':'TH','Asia/Ho_Chi_Minh':'VN','Asia/Jakarta':'ID',
-      'Asia/Singapore':'SG','Asia/Kuala_Lumpur':'MY','Asia/Manila':'PH',
-      'Asia/Shanghai':'CN','Asia/Hong_Kong':'HK','Asia/Tokyo':'JP',
-      'Asia/Seoul':'KR','Asia/Taipei':'TW',
-      'America/New_York':'US','America/Chicago':'US','America/Denver':'US',
-      'America/Los_Angeles':'US','America/Phoenix':'US',
-      'America/Toronto':'CA','America/Vancouver':'CA',
-      'America/Sao_Paulo':'BR','America/Mexico_City':'MX',
-      'America/Buenos_Aires':'AR','America/Lima':'PE',
-      'Australia/Sydney':'AU','Australia/Melbourne':'AU',
-      'Pacific/Auckland':'NZ',
-    };
-    return m[tz] || 'XX';
-  } catch { return 'XX'; }
-}
-
-function trackVisit() {
-  const consent = localStorage.getItem(COOKIE_KEY);
-  if (consent !== 'all') return;
-
-  const key = ANALYTICS_KEY;
-  let data;
-  try { data = JSON.parse(localStorage.getItem(key) || '{"visits":[]}'); }
-  catch { data = { visits: [] }; }
-
-  if (data.visits.length > 2000) data.visits = data.visits.slice(-1800);
-
-  data.visits.push({
-    ts:      Date.now(),
-    path:    window.location.pathname,
-    ref:     document.referrer || 'direct',
-    lang:    navigator.language || 'de',
-    device:  /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-    country: getCountryCode(),
-    screen:  window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop',
-  });
-
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
-}
-
 export default function App() {
   const { lang, meta } = useI18n();
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
@@ -119,8 +61,7 @@ export default function App() {
     document.documentElement.dir = meta.dir;
   }, [meta]);
 
-  // Analytics tracking (runs once on mount)
-  useEffect(() => { trackVisit(); }, []);
+  useEffect(() => initializeAnalytics(), []);
 
   useEffect(() => {
     const scrollToCurrentHash = (attempts = 12) => {
@@ -168,6 +109,7 @@ export default function App() {
       const currentPath = `${current.pathname}${current.search}${current.hash}`;
       if (next !== currentPath) window.history.pushState({}, '', next);
       setPath(nextPathname);
+      notifyRouteChange();
       setTimeout(scrollToCurrentHash, 0);
     };
 
@@ -254,7 +196,7 @@ export default function App() {
       <FloatingButtons />
 
       {/* Cookie consent banner */}
-      <CookieConsent onConsent={(type) => { if (type === 'all') trackVisit(); }} />
+      <CookieConsent />
 
       {/* Legal modals — Impressum / Datenschutz / AGB */}
       <LegalModal />

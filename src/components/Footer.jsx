@@ -90,6 +90,11 @@ export default function Footer() {
                   {t('foot.agb')}
                 </button>
               </li>
+              <li>
+                <button type="button" className="foot-legal-link" onClick={() => window.dispatchEvent(new Event('openCookieSettings'))}>
+                  {t('foot.cookies')}
+                </button>
+              </li>
               <li><a href="#contact">{t('foot.contact')}</a></li>
             </ul>
           </div>

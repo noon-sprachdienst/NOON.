@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const ADMIN_AUTH_KEY = 'noon_admin_auth';
-const ADMIN_PW_KEY   = 'noon_admin_pw';
-const ANALYTICS_KEY  = 'noon_analytics';
-const DEFAULT_PW     = 'noon2024';
 const LANG_KEY       = 'noon_admin_lang';
+const DEV_ADMIN_PASSWORD = 'NoonPreview2026!';
 
 /* ─── Translations ─────────────────────────────────────── */
 const T = {
@@ -217,11 +214,24 @@ function LoginScreen({ onLogin, lang, setLang }) {
   const [pw, setPw] = useState('');
   const [err, setErr] = useState('');
   const t = T[lang];
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    const stored = localStorage.getItem(ADMIN_PW_KEY) || DEFAULT_PW;
-    if (pw === stored) { localStorage.setItem(ADMIN_AUTH_KEY, '1'); onLogin(); }
-    else { setErr(t.wrongPw); setPw(''); }
+    if (import.meta.env.DEV && pw === DEV_ADMIN_PASSWORD) {
+      onLogin();
+      return;
+    }
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      });
+      if (!response.ok) throw new Error('login failed');
+      onLogin();
+    } catch {
+      setErr(t.wrongPw);
+      setPw('');
+    }
   };
   return (
     <div className="adm-login" dir={t.dir}>
@@ -249,52 +259,25 @@ function LoginScreen({ onLogin, lang, setLang }) {
 }
 
 /* ─── Settings ──────────────────────────────────────────── */
-function SettingsTab({ t, lang }) {
-  const [newPw, setNewPw] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [msg, setMsg] = useState('');
-  const savePw = (e) => {
-    e.preventDefault();
-    if (newPw.length < 6) { setMsg(t.pwShort); return; }
-    if (newPw !== confirm) { setMsg(t.pwMismatch); return; }
-    localStorage.setItem(ADMIN_PW_KEY, newPw);
-    setMsg(t.pwSaved); setNewPw(''); setConfirm('');
+function SettingsTab({ t }) {
+  const logout = async () => {
+    await fetch('/api/admin/logout', { method: 'POST' }).catch(() => {});
+    window.location.reload();
   };
-  const clearData = () => {
-    if (window.confirm(t.confirmClear)) { localStorage.removeItem(ANALYTICS_KEY); setMsg(t.dataCleared); }
-  };
-  const logout = () => { localStorage.removeItem(ADMIN_AUTH_KEY); window.location.href = '/'; };
   return (
     <div className="adm-settings">
-      <h3>{t.changePw}</h3>
-      <form onSubmit={savePw} className="adm-settings-form">
-        <label>{t.newPw}</label>
-        <input type="password" value={newPw} onChange={e => setNewPw(e.target.value)} placeholder={t.pwShort} />
-        <label>{t.confirmPw}</label>
-        <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder={t.pwShort} />
-        {msg && <p className={`adm-msg ${msg.startsWith('✓') ? 'ok' : 'err'}`}>{msg}</p>}
-        <button type="submit" className="adm-btn-primary">{t.savePw}</button>
-      </form>
-      <hr className="adm-divider"/>
-      <h3>{t.analyticsSetup}</h3>
-      <p className="adm-hint">{t.analyticsHint}</p>
-      <div className="adm-analytics-options">
-        <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" className="adm-analytics-card adm-analytics-card--ga">
-          <div className="adm-ga-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="2" y="12" width="4" height="10" rx="1" fill="#F9AB00"/>
-              <rect x="10" y="6" width="4" height="16" rx="1" fill="#E37400"/>
-              <rect x="18" y="2" width="4" height="20" rx="1" fill="#A8C7FA"/>
-            </svg>
-            <strong>Google Analytics 4</strong>
-          </div>
-          <span>Free · Full features · Cookie banner required (already included via DSGVO package)</span>
-        </a>
+      <h3>Anonymous analytics</h3>
+      <p className="adm-hint">
+        This dashboard reads consent-based anonymous events from the protected Firestore API.
+        Raw IP addresses, contact details and uploaded documents are not stored in analytics.
+      </p>
+      <div className="adm-analytics-card">
+        <strong>Retention</strong>
+        <span>Analytics events expire after 90 days through the Firestore TTL field <code>expireAt</code>.</span>
       </div>
       <hr className="adm-divider"/>
       <h3>{t.dataSession}</h3>
       <div className="adm-danger-zone">
-        <button type="button" className="adm-btn-danger" onClick={clearData}>{t.clearData}</button>
         <button type="button" className="adm-btn-secondary" onClick={logout}>{t.logout}</button>
       </div>
     </div>
@@ -305,9 +288,10 @@ function SettingsTab({ t, lang }) {
 function DashboardTab({ visits, t, lang }) {
   const [range, setRange] = useState(30);
   const cutoff   = Date.now() - range * 86400000;
-  const filtered = visits.filter(v => v.ts >= cutoff);
-  const today    = visits.filter(v => dayKey(v.ts) === todayKey());
-  const yest     = visits.filter(v => {
+  const events = visits.filter(v => v.ts >= cutoff);
+  const filtered = events.filter(v => !v.type || v.type === 'page_view');
+  const today    = filtered.filter(v => dayKey(v.ts) === todayKey());
+  const yest     = filtered.filter(v => {
     const d = new Date(); d.setDate(d.getDate()-1);
     return dayKey(v.ts) === dayKey(d.getTime());
   });
@@ -315,13 +299,31 @@ function DashboardTab({ visits, t, lang }) {
   const byDay     = groupBy(filtered, v => dayKey(v.ts));
   const chartData = days30.map(d => ({ label:d, shortLabel:d.slice(8), value: byDay[d]||0 }));
   const topPages  = topN(groupBy(filtered, v => v.path || '/'));
-  const topRefs   = topN(groupBy(filtered, v => getDomain(v.ref)));
-  const topLangs  = topN(groupBy(filtered, v => (v.lang||'de').slice(0,2).toUpperCase()), 5);
+  const topRefs   = topN(groupBy(filtered, v => getDomain(v.referrer || v.ref)));
+  const topLangs  = topN(groupBy(filtered, v => (v.siteLanguage || v.browserLanguage || v.lang || 'de').slice(0,2).toUpperCase()), 5);
   const topCountries = topN(groupBy(filtered, v => v.country || 'XX'), 8);
   const devices   = groupBy(filtered, v => v.screen || v.device || 'desktop');
   const uniqueCountries = new Set(filtered.map(v => v.country).filter(Boolean)).size;
   const hasData   = filtered.length > 0;
   const hasCountryData = filtered.some(v => v.country);
+  const durationEvents = events.filter(v => v.type === 'page_leave' && v.durationSeconds > 0);
+  const averageDuration = durationEvents.length
+    ? Math.round(durationEvents.reduce((sum, event) => sum + event.durationSeconds, 0) / durationEvents.length)
+    : 0;
+  const conversions = events.filter(v => v.type === 'cta_click');
+  const topActions = topN(groupBy(conversions, v => v.action || 'other'), 5);
+  const topBrowsers = topN(groupBy(filtered, v => v.browser || t.unknown), 5);
+  const topCities = topN(groupBy(filtered.filter(v => v.city), v => v.city), 6);
+  const fmtDuration = (seconds) => seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+  const sessions = Object.values(events.reduce((acc, event) => {
+    const key = event.sessionId || event.id;
+    if (!acc[key]) acc[key] = { id: key, events: [], duration: 0, country: event.country, city: event.city, device: event.device, browser: event.browser };
+    acc[key].events.push(event);
+    acc[key].duration += event.durationSeconds || 0;
+    return acc;
+  }, {}))
+    .sort((a, b) => (b.events[0]?.ts || 0) - (a.events[0]?.ts || 0))
+    .slice(0, 8);
 
   const deviceSegments = [
     { label: t.desktop, value: (devices.desktop||0), color: '#A4192C' },
@@ -344,7 +346,7 @@ function DashboardTab({ visits, t, lang }) {
       {/* Notice */}
       <div className="adm-notice">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        {t.localNotice} &nbsp;·&nbsp; {visits.length} {t.totalEntries}
+        Anonymous consent-based analytics &nbsp;·&nbsp; {visits.length} {t.totalEntries}
       </div>
 
       {/* Stat Cards */}
@@ -376,6 +378,20 @@ function DashboardTab({ visits, t, lang }) {
           value={topRefs[0]?.[0] || '—'}
           label={t.topSource}
           sub={topRefs[0] ? `${topRefs[0][1]} ${t.visits.toLowerCase()}` : ''}
+        />
+        <StatCard
+          accent="#6B4EFF"
+          icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>}
+          value={fmtDuration(averageDuration)}
+          label="Average page time"
+          sub={`${durationEvents.length} measured exits`}
+        />
+        <StatCard
+          accent="#C2410C"
+          icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>}
+          value={conversions.length}
+          label="CTA conversions"
+          sub={topActions[0]?.[0] || 'No CTA clicks yet'}
         />
       </div>
 
@@ -441,6 +457,37 @@ function DashboardTab({ visits, t, lang }) {
                 <HorizBar key={l} label={l} value={cnt} max={topLangs[0]?.[1]||1} color="#2D8A5A" />
               ))}
             </div>
+            <div className="adm-bottom-card">
+              <div className="adm-section-title">Conversions</div>
+              {topActions.map(([action, cnt]) => (
+                <HorizBar key={action} label={action} value={cnt} max={topActions[0]?.[1]||1} color="#C2410C" />
+              ))}
+            </div>
+            <div className="adm-bottom-card">
+              <div className="adm-section-title">Browsers</div>
+              {topBrowsers.map(([browser, cnt]) => (
+                <HorizBar key={browser} label={browser} value={cnt} max={topBrowsers[0]?.[1]||1} color="#6B4EFF" />
+              ))}
+            </div>
+            <div className="adm-bottom-card">
+              <div className="adm-section-title">Cities</div>
+              {topCities.map(([city, cnt]) => (
+                <HorizBar key={city} label={city} value={cnt} max={topCities[0]?.[1]||1} color="#2D8A5A" />
+              ))}
+            </div>
+          </div>
+          <div className="adm-chart-card adm-session-card">
+            <div className="adm-section-title">Recent anonymous sessions</div>
+            <div className="adm-session-list">
+              {sessions.map((session) => (
+                <div className="adm-session-row" key={session.id}>
+                  <strong>{countryFlag(session.country)} {countryName(session.country || 'XX', lang)}{session.city ? ` · ${session.city}` : ''}</strong>
+                  <span>{session.device || 'desktop'} · {session.browser || t.unknown}</span>
+                  <span>{session.events.map(event => event.path).filter(Boolean).slice(0, 4).join(' → ')}</span>
+                  <span>{fmtDuration(session.duration)}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -450,7 +497,8 @@ function DashboardTab({ visits, t, lang }) {
 
 /* ─── Main Admin ─────────────────────────────────────────── */
 export default function Admin() {
-  const [authed, setAuthed] = useState(!!localStorage.getItem(ADMIN_AUTH_KEY));
+  const [authed, setAuthed] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [tab,    setTab]    = useState('dashboard');
   const [visits, setVisits] = useState([]);
   const [lang,   setLang]   = useState(() => localStorage.getItem(LANG_KEY) || 'en');
@@ -459,13 +507,25 @@ export default function Admin() {
   const t = T[lang];
 
   useEffect(() => {
+    fetch('/api/admin/status')
+      .then((response) => response.json())
+      .then((data) => setAuthed(Boolean(data.authenticated)))
+      .catch(() => setAuthed(false))
+      .finally(() => setCheckingAuth(false));
+  }, []);
+
+  useEffect(() => {
     if (!authed) return;
-    try {
-      const raw = localStorage.getItem(ANALYTICS_KEY);
-      if (raw) setVisits(JSON.parse(raw).visits || []);
-    } catch {}
+    fetch('/api/admin/analytics?days=90')
+      .then((response) => {
+        if (!response.ok) throw new Error('analytics unavailable');
+        return response.json();
+      })
+      .then((data) => setVisits(data.events || []))
+      .catch(() => setVisits([]));
   }, [authed]);
 
+  if (checkingAuth) return <div className="adm-login"><div className="adm-login-box"><p>Checking secure session...</p></div></div>;
   if (!authed) return <LoginScreen onLogin={() => setAuthed(true)} lang={lang} setLang={changeLang} />;
 
   return (

@@ -16,7 +16,7 @@ export default function Feature3() {
             <div className="ui-stage">
               <img
                 className="illu"
-                src="https://stories.freepiklabs.com/storage/2489/Upload_Mesa-de-trabajo-1.svg"
+                src="/assets/Upload.svg"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"
@@ -33,7 +33,7 @@ export default function Feature3() {
             <div className="ui-stage">
               <img
                 className="illu"
-                src="https://stories.freepiklabs.com/storage/14389/Invoice_Mesa-de-trabajo-1.svg"
+                src="/assets/Invoice.svg"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"
@@ -50,7 +50,7 @@ export default function Feature3() {
             <div className="ui-stage">
               <img
                 className="illu"
-                src="https://stories.freepiklabs.com/storage/2300/Mail-sent-(1)-01.svg"
+                src="/assets/Mail-sent.svg"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"

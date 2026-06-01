@@ -7,6 +7,7 @@ export function useAutoCarousel({ cardSelector, gap, speed = 22, resetKey = '' }
   const pauseUntilRef = useRef(0);
   const directionRef = useRef(1);
   const dragRef = useRef(null);
+  const touchRef = useRef(null);
 
   const pauseForInteraction = useCallback((delay = RESUME_DELAY) => {
     pauseUntilRef.current = Math.max(pauseUntilRef.current, performance.now() + delay);
@@ -47,7 +48,7 @@ export function useAutoCarousel({ cardSelector, gap, speed = 22, resetKey = '' }
   }, [resetKey, speed]);
 
   const handlePointerDown = useCallback((event) => {
-    if (event.button !== 0 || event.target.closest('a, button, .leaflet-container')) return;
+    if (event.pointerType !== 'mouse' || event.button !== 0 || event.target.closest('a, button, .leaflet-container')) return;
     pauseUntilRef.current = Number.POSITIVE_INFINITY;
     dragRef.current = {
       pointerId: event.pointerId,
@@ -77,23 +78,54 @@ export function useAutoCarousel({ cardSelector, gap, speed = 22, resetKey = '' }
     }, 0);
   }, []);
 
+  const handleTouchStart = useCallback((event) => {
+    const touch = event.touches[0];
+    if (!touch) return;
+    pauseUntilRef.current = Number.POSITIVE_INFINITY;
+    touchRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      startScrollLeft: event.currentTarget.scrollLeft,
+      horizontal: false,
+    };
+  }, []);
+
+  const handleTouchMove = useCallback((event) => {
+    const touch = event.touches[0];
+    const state = touchRef.current;
+    if (!touch || !state) return;
+
+    const distanceX = touch.clientX - state.startX;
+    const distanceY = touch.clientY - state.startY;
+    if (!state.horizontal && Math.abs(distanceX) > 5 && Math.abs(distanceX) > Math.abs(distanceY)) {
+      state.horizontal = true;
+    }
+    if (!state.horizontal) return;
+
+    event.preventDefault();
+    event.currentTarget.scrollLeft = state.startScrollLeft - distanceX;
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    touchRef.current = null;
+    pauseUntilRef.current = performance.now() + RESUME_DELAY;
+  }, []);
+
   const interactionProps = {
     onPointerDown: handlePointerDown,
     onPointerMove: handlePointerMove,
     onPointerUp: finishDrag,
     onPointerCancel: finishDrag,
-    onTouchStart: () => {
-      pauseUntilRef.current = Number.POSITIVE_INFINITY;
-    },
-    onTouchEnd: () => {
-      pauseUntilRef.current = performance.now() + RESUME_DELAY;
-    },
+    onTouchStart: handleTouchStart,
+    onTouchMove: handleTouchMove,
+    onTouchEnd: handleTouchEnd,
+    onTouchCancel: handleTouchEnd,
     onWheel: () => pauseForInteraction(),
-    onMouseEnter: () => {
-      pauseUntilRef.current = Number.POSITIVE_INFINITY;
+    onPointerEnter: (event) => {
+      if (event.pointerType === 'mouse') pauseUntilRef.current = Number.POSITIVE_INFINITY;
     },
-    onMouseLeave: () => {
-      if (!dragRef.current) pauseUntilRef.current = performance.now() + 650;
+    onPointerLeave: (event) => {
+      if (event.pointerType === 'mouse' && !dragRef.current) pauseUntilRef.current = performance.now() + 650;
     },
     onFocusCapture: () => {
       pauseUntilRef.current = Number.POSITIVE_INFINITY;

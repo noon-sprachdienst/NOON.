@@ -73,6 +73,7 @@ export default function Hero() {
           <div className="hero-ctas">
             <button
               className="hero-svc-btn hero-svc-btn--primary"
+              data-analytics-action="hero_translation"
               type="button"
               onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             >
@@ -92,6 +93,7 @@ export default function Hero() {
             </button>
             <button
               className="hero-svc-btn hero-svc-btn--secondary"
+              data-analytics-action="hero_interpreting"
               type="button"
               onClick={() => document.getElementById('dolmetschen')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             >
@@ -186,6 +188,7 @@ function HeroActions({ t, className }) {
     <div className={className}>
       <button
         className="hero-svc-btn hero-svc-btn--primary"
+        data-analytics-action="hero_translation"
         type="button"
         onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       >
@@ -205,6 +208,7 @@ function HeroActions({ t, className }) {
       </button>
       <button
         className="hero-svc-btn hero-svc-btn--secondary"
+        data-analytics-action="hero_interpreting"
         type="button"
         onClick={() => document.getElementById('dolmetschen')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       >

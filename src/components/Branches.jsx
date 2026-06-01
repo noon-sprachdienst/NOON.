@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { useAutoCarousel } from '../hooks/useAutoCarousel';
 
@@ -55,9 +55,10 @@ export default function Branches() {
 function BranchCard({ branch, t, index }) {
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
+  const [mapEnabled, setMapEnabled] = useState(false);
 
   useEffect(() => {
-    if (!mapRef.current || leafletRef.current) return;
+    if (!mapEnabled || !mapRef.current || leafletRef.current) return;
 
     // Lazy-load leaflet to avoid SSR issues
     import('leaflet').then((L) => {
@@ -104,12 +105,23 @@ function BranchCard({ branch, t, index }) {
         leafletRef.current = null;
       }
     };
-  }, [branch.lat, branch.lng, branch.city, branch.addr]);
+  }, [mapEnabled, branch.lat, branch.lng, branch.city, branch.addr]);
 
   return (
     <article className="map-card" data-reveal="" style={{ '--ri': index % 3 }} aria-label={`Büro ${branch.city}`}>
       <div className="map-canvas" aria-hidden="true">
-        <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+        {mapEnabled ? (
+          <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+        ) : (
+          <button
+            type="button"
+            className="map-consent"
+            onClick={() => setMapEnabled(true)}
+          >
+            <span>Map anzeigen</span>
+            <small>Externe Karteninhalte werden erst nach Ihrer Auswahl geladen.</small>
+          </button>
+        )}
       </div>
       <div className="map-card-body">
         <div className="city-row">

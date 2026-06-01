@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
+import { trackEvent } from '../lib/analytics';
 
 const STEPS = [
   { num: '01', label: 'how.step1.label', desc: 'how.step1.desc' },
@@ -16,6 +17,7 @@ export default function HowContact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    trackEvent('cta_click', { action: 'quote_form_submit' });
     setSubmitted(true);
   };
 
