@@ -15,6 +15,7 @@ import Testimonials from './components/Testimonials.jsx';
 import HowContact from './components/HowContact.jsx';
 import FAQ from './components/FAQ.jsx';
 import Footer from './components/Footer.jsx';
+import Specialties from './pages/Specialties.jsx';
 import CookieConsent, { COOKIE_KEY } from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
 
@@ -111,6 +112,7 @@ export default function App() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
   const m = META_BY_LANG[lang] || META_BY_LANG.de;
   const isPricingPage = path === '/preise' || path === '/pricing';
+  const isSpecialtiesPage = path === '/fachuebersetzungen' || path === '/specialties';
 
   useEffect(() => {
     document.documentElement.lang = meta.html;
@@ -159,7 +161,7 @@ export default function App() {
       const current = new URL(window.location.href);
       if (url.origin !== current.origin) return;
       const nextPathname = normalizePath(url.pathname);
-      if (!['/', '/preise', '/pricing'].includes(nextPathname)) return;
+      if (!['/', '/preise', '/pricing', '/fachuebersetzungen', '/specialties'].includes(nextPathname)) return;
 
       event.preventDefault();
       const next = `${nextPathname}${url.search}${url.hash}`;
@@ -171,6 +173,7 @@ export default function App() {
 
     window.addEventListener('popstate', onPopState);
     document.addEventListener('click', onClick);
+    setTimeout(scrollToCurrentHash, 0);
     return () => {
       window.removeEventListener('popstate', onPopState);
       document.removeEventListener('click', onClick);
@@ -223,9 +226,11 @@ export default function App() {
 
       <Nav />
 
-      <main className={isPricingPage ? 'pricing-page' : undefined}>
+      <main className={isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
         {isPricingPage ? (
           <Pricing />
+        ) : isSpecialtiesPage ? (
+          <Specialties />
         ) : (
           <>
             <Hero />
@@ -234,6 +239,7 @@ export default function App() {
             <StatsStrip />
             <Services />
             <Beratung />
+            <Specialties />
             <Branches />
             <Testimonials />
             <FAQ />

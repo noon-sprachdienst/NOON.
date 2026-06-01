@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useI18n } from '../hooks/useI18n';
+import { useAutoCarousel } from '../hooks/useAutoCarousel';
 
 const BRANCHES = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Möserstr. 14, 49074 Osnabrück',     lat: 52.2770, lng: 8.0432, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Möserstraße+14,+49074+Osnabrück' },
@@ -12,15 +13,11 @@ const BRANCHES = [
 
 export default function Branches() {
   const { t } = useI18n();
-  const scrollerRef = useRef(null);
-
-  const scrollCards = (direction) => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    const card = scroller.querySelector('.map-card');
-    const amount = card ? card.getBoundingClientRect().width + 16 : scroller.clientWidth * 0.8;
-    scroller.scrollBy({ left: direction * amount, behavior: 'smooth' });
-  };
+  const { interactionProps, scrollerRef, scrollCards } = useAutoCarousel({
+    cardSelector: '.map-card',
+    gap: 16,
+    speed: 21,
+  });
 
   return (
     <section className="branches" id="branches" aria-labelledby="branches-heading">
@@ -41,7 +38,11 @@ export default function Branches() {
             </svg>
           </button>
         </div>
-        <div className="grid hide-scrollbar" ref={scrollerRef}>
+        <div
+          className="grid hide-scrollbar"
+          ref={scrollerRef}
+          {...interactionProps}
+        >
           {BRANCHES.map((branch, i) => (
             <BranchCard key={branch.id} branch={branch} t={t} index={i} />
           ))}

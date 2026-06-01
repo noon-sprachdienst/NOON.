@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import { useI18n } from '../hooks/useI18n';
+import { useAutoCarousel } from '../hooks/useAutoCarousel';
 
 const TESTIMONIALS_BY_LANG = {
   de: [
@@ -155,15 +155,12 @@ function GoogleLogo() {
 export default function Testimonials() {
   const { t, lang } = useI18n();
   const list = TESTIMONIALS_BY_LANG[lang] || TESTIMONIALS_BY_LANG.de;
-  const scrollerRef = useRef(null);
-
-  const scrollCards = (direction) => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    const card = scroller.querySelector('.testimonial');
-    const amount = card ? card.getBoundingClientRect().width + 12 : scroller.clientWidth * 0.8;
-    scroller.scrollBy({ left: direction * amount, behavior: 'smooth' });
-  };
+  const { interactionProps, scrollerRef, scrollCards } = useAutoCarousel({
+    cardSelector: '.testimonial',
+    gap: 12,
+    speed: 24,
+    resetKey: lang,
+  });
 
   return (
     <section className="testimonials" aria-labelledby="test-heading">
@@ -183,7 +180,12 @@ export default function Testimonials() {
             </svg>
           </button>
         </div>
-        <div className="columns hide-scrollbar" role="list" ref={scrollerRef}>
+        <div
+          className="columns hide-scrollbar"
+          role="list"
+          ref={scrollerRef}
+          {...interactionProps}
+        >
           {list.map((item, i) => (
             <article
               key={i}

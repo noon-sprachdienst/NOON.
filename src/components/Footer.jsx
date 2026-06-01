@@ -48,7 +48,7 @@ export default function Footer() {
             <h5>{t('foot.services')}</h5>
             <ul>
               <li><a href="#services">{t('pricing.card1.name')}</a></li>
-              <li><a href="#services">{t('foot.fach')}</a></li>
+              <li><a href="/#fachuebersetzungen">{t('foot.fach')}</a></li>
               <li><a href="#dolmetschen">{t('foot.dolm')}</a></li>
               <li><a href="#services">{t('foot.job')}</a></li>
               <li><a href="#services">{t('foot.lang')}</a></li>

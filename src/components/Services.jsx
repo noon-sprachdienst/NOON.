@@ -23,6 +23,8 @@ export default function Services() {
   const [activeId, setActiveId] = useState(navItems[0]?.id);
   const active = navItems.find((item) => item.id === activeId) || navItems[0];
   const activeParagraphs = active?.paragraphs || [active?.text].filter(Boolean);
+  const summaryParagraphs = activeParagraphs.slice(0, 2);
+  const summaryExamples = (active?.examples || []).slice(0, 3);
 
   const listKeys = ['li1', 'li2', 'li3', 'li4', 'li5', 'li6'];
   const tagKeys  = ['tag1', 'tag2', 'tag3', 'tag4'];
@@ -151,13 +153,13 @@ export default function Services() {
             <article className="specialty-detail" id={active?.id}>
               <div className="specialty-kicker">{active?.kicker || ui.kicker}</div>
               <h3>{active?.title}</h3>
-              <p className="specialty-lead">{activeParagraphs[0]}</p>
+              <p className="specialty-lead">{summaryParagraphs[0]}</p>
               <div className="specialty-rule" aria-hidden="true" />
-              {activeParagraphs.slice(1).map((paragraph) => (
+              {summaryParagraphs.slice(1).map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
               <ul>
-                {active?.examples.map((example) => (
+                {summaryExamples.map((example) => (
                   <li key={example}>{example}</li>
                 ))}
               </ul>

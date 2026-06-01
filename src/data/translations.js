@@ -125,7 +125,7 @@ export const translations = {
     'foot.career': 'Karriere', 'foot.press': 'Presse', 'foot.privacy': 'Datenschutz', 'foot.imprint': 'Impressum', 'foot.agb': 'AGB',
     'foot.hours': 'Mo – Sa · 10:00 – 19:00 Uhr',
     'beratung.pers.eyebrow': 'Sofort Erreichbarkeit',
-    'beratung.pers.h2': 'Fragen oder Probleme? Wir antworten sofort.',
+    'beratung.pers.h2': 'Fragen oder Probleme?\nWir antworten sofort.',
     'beratung.pers.sub': 'Sie haben Fragen zu Übersetzungen, Dolmetschen oder behördlichen Unterlagen? Kontaktieren Sie uns einfach per WhatsApp, E-Mail oder telefonisch. Unser Team unterstützt Sie schnell, persönlich und zuverlässig. Sie sprechen kein Deutsch? Kein Problem – Sie können uns in jeder Sprache schreiben.',
     'beratung.pers.info1': '6 Standorte: Osnabrück, Stuttgart, Berlin, Bielefeld, Mainz, Kiel',
     'beratung.appt': 'Termin anfragen',
