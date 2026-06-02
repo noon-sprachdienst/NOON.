@@ -26,12 +26,19 @@ const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
 const LOGO_CID = 'noon-email-logo';
 const LOGO_CONTENT = readFileSync(new URL('../../public/assets/logo2.png', import.meta.url));
 const SIGNATURE_LINES = [
-  'Noon Dolmetscher und Übersetzungsbüro - Alle Sprachen',
-  'Paul-Oeser-Straße 1',
+  'NOON. Dolmetscher und Übersetzungsbüro',
+  'Alle Sprachen',
+  '',
+  'Zentrale:',
+  'Möserstr. 14',
   '49074 Osnabrück',
   '',
-  'Mobil: 016095627666',
-  '       01783796533',
+  'Standorte:',
+  'Osnabrück · Stuttgart · Berlin · Bielefeld · Mainz · Kiel',
+  'Alle Standorte und Adressen: https://www.noon-sprachdienst.de/#branches',
+  '',
+  'Mobil: +49 160 956 27 666',
+  '       +49 155 607 10 320',
   '',
   'info@noon-sprachdienst.de',
   'www.noon-sprachdienst.de',
@@ -163,11 +170,16 @@ export default async function handler(req, res) {
           <p><strong>Nachricht:</strong><br>${escapeHtml(fields.message).replace(/\n/g, '<br>')}</p>
           <div style="border-top:1px solid #dddddd;margin-top:24px;padding-top:18px;color:#333333;font-size:13px">
             <img src="cid:${LOGO_CID}" alt="NOON." width="120" style="display:block;width:120px;height:auto;margin:0 0 14px">
-            <strong>Noon Dolmetscher und Übersetzungsbüro - Alle Sprachen</strong><br>
-            Paul-Oeser-Straße 1<br>
+            <strong>NOON. Dolmetscher und Übersetzungsbüro</strong><br>
+            Alle Sprachen<br><br>
+            <strong>Zentrale:</strong><br>
+            Möserstr. 14<br>
             49074 Osnabrück<br><br>
-            <strong>Mobil:</strong> 016095627666<br>
-            <span style="padding-left:40px">01783796533</span><br><br>
+            <strong>Standorte:</strong><br>
+            Osnabrück · Stuttgart · Berlin · Bielefeld · Mainz · Kiel<br>
+            <a href="https://www.noon-sprachdienst.de/#branches" style="color:#333333">Alle Standorte und Adressen ansehen</a><br><br>
+            <strong>Mobil:</strong> +49 160 956 27 666<br>
+            <span style="padding-left:40px">+49 155 607 10 320</span><br><br>
             <a href="mailto:info@noon-sprachdienst.de" style="color:#333333">info@noon-sprachdienst.de</a><br>
             <a href="https://www.noon-sprachdienst.de" style="color:#333333">www.noon-sprachdienst.de</a><br><br>
             Landgericht Hannover 316E2-45/24<br>
