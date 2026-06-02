@@ -1454,6 +1454,7 @@ html[dir="rtl"] .testimonial {
 .form-field input::placeholder, .form-field textarea::placeholder { color: #9A9A9A; font-weight: 400; }
 .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: #0A0A0A; }
 .form-field textarea { min-height: 88px; resize: vertical; }
+.form-hint { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .form-card { padding: 28px; }
 .form-card .btn { width: 100%; margin-top: 8px; }
 .service-toggle {
