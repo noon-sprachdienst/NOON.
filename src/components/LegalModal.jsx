@@ -29,8 +29,8 @@ const ImpressumBody = ({ lang }) => {
       </p>
       <h3>Kontakt</h3>
       <p>
-        Telefon: +49 541 80 14 84 00<br/>
         Mobil: +49 160 956 27 666<br/>
+        Mobil: +49 155 607 10 320<br/>
         E-Mail: info@noon-sprachdienst.de
       </p>
       <h3>Weitere Standorte</h3>

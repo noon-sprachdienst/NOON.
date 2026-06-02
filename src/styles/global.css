@@ -1637,6 +1637,18 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
   text-decoration: none;
 }
 .fab-phone:hover { transform: scale(1.1); }
+.fab-phone-menu {
+  position: fixed; right: 82px; bottom: 88px; z-index: 2147483647;
+  display: grid; min-width: 190px; overflow: hidden;
+  background: #FFFFFF; border: 1px solid rgba(10,10,10,0.1); border-radius: 8px;
+  box-shadow: 0 12px 34px rgba(10,10,10,0.14);
+}
+.fab-phone-menu a {
+  padding: 12px 14px; color: #0A0A0A; text-decoration: none;
+  font-size: 13px; font-weight: 650; white-space: nowrap;
+}
+.fab-phone-menu a + a { border-top: 1px solid rgba(10,10,10,0.08); }
+.fab-phone-menu a:hover { background: #F3F3F3; }
 
 /* Email FAB */
 .fab-email {
@@ -1648,6 +1660,16 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
   text-decoration: none;
 }
 .fab-email:hover { transform: scale(1.1); }
+
+.info-val a { color: inherit; text-decoration: none; }
+.info-val a:hover { text-decoration: underline; }
+.info-val-stack { display: grid; gap: 3px; }
+.contact-hours { margin: 16px 0 0; color: var(--muted); font-size: 13px; }
+.form-honeypot { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; }
+.form-feedback { margin: 4px 0 0; font-size: 12px; line-height: 1.4; }
+.form-feedback--success { color: #087A38; }
+.form-feedback--error { color: #A4192C; }
+.form-card .btn:disabled { opacity: .62; cursor: wait; }
 
 .fab-top {
   position: fixed; bottom: 198px; right: 28px; z-index: 2147483647;

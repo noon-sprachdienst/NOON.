@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { trackEvent } from '../lib/analytics';
+import { CONTACT } from '../config/contact.js';
 
 const STEPS = [
   { num: '01', label: 'how.step1.label', desc: 'how.step1.desc' },
@@ -10,15 +11,67 @@ const STEPS = [
   { num: '05', label: 'how.step5.label', desc: 'how.step5.desc' },
 ];
 
-export default function HowContact() {
-  const { t } = useI18n();
-  const [submitted, setSubmitted] = useState(false);
-  const [serviceType, setServiceType] = useState('translation');
+const FORM_STATUS = {
+  de: { sending: 'Wird gesendet ...', sent: 'Anfrage gesendet', error: 'Senden fehlgeschlagen. Bitte versuchen Sie es erneut.' },
+  en: { sending: 'Sending ...', sent: 'Request sent', error: 'Could not send. Please try again.' },
+  ar: { sending: 'جارٍ الإرسال ...', sent: 'تم إرسال الطلب', error: 'تعذر الإرسال. يرجى المحاولة مرة أخرى.' },
+  tr: { sending: 'Gönderiliyor ...', sent: 'Talep gönderildi', error: 'Gönderilemedi. Lütfen tekrar deneyin.' },
+  ru: { sending: 'Отправка ...', sent: 'Запрос отправлен', error: 'Не удалось отправить. Попробуйте еще раз.' },
+  fr: { sending: 'Envoi ...', sent: 'Demande envoyée', error: 'Envoi impossible. Veuillez réessayer.' },
+  uk: { sending: 'Надсилання ...', sent: 'Запит надіслано', error: 'Не вдалося надіслати. Спробуйте ще раз.' },
+};
 
-  const handleSubmit = (e) => {
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(',')[1] || '');
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+export default function HowContact() {
+  const { t, lang } = useI18n();
+  const [status, setStatus] = useState('idle');
+  const [serviceType, setServiceType] = useState('translation');
+  const [startedAt] = useState(() => Date.now());
+  const statusCopy = FORM_STATUS[lang] || FORM_STATUS.de;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
     trackEvent('cta_click', { action: 'quote_form_submit' });
-    setSubmitted(true);
+    const data = new FormData(e.currentTarget);
+    const file = data.get('file');
+
+    try {
+      if (file?.size > 2.5 * 1024 * 1024) throw new Error('File too large.');
+      const payload = {
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        email: data.get('email'),
+        phone: data.get('phone'),
+        sourceLanguage: data.get('sourceLanguage'),
+        targetLanguage: data.get('targetLanguage'),
+        message: data.get('message'),
+        website: data.get('website'),
+        service: serviceType,
+        language: lang,
+        startedAt,
+        file: file?.size ? { name: file.name, type: file.type, content: await readFileAsBase64(file) } : undefined,
+      };
+      const response = await fetch('/api/contact/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error('Delivery failed.');
+      e.currentTarget.reset();
+      setStatus('sent');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -55,7 +108,9 @@ export default function HowContact() {
                 </div>
                 <div>
                   <div className="info-lbl">{t('contact.phone')}</div>
-                  <div className="info-val">+49 541 80 14 84 00</div>
+                  <div className="info-val info-val-stack">
+                    {CONTACT.phones.map((phone) => <a key={phone.href} href={phone.href}>{phone.label}</a>)}
+                  </div>
                 </div>
               </div>
 
@@ -68,7 +123,7 @@ export default function HowContact() {
                 </div>
                 <div>
                   <div className="info-lbl">{t('contact.email')}</div>
-                  <div className="info-val">info@noon-sprachdienst.de</div>
+                  <div className="info-val"><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></div>
                 </div>
               </div>
 
@@ -86,8 +141,10 @@ export default function HowContact() {
               </div>
             </div>
 
+            <div className="contact-hours">{t('foot.hours')}</div>
+
             <a
-              href="https://wa.me/4916095627666"
+              href={CONTACT.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn wa-btn"
@@ -114,29 +171,29 @@ export default function HowContact() {
             <div className="form-row">
               <div className="form-field">
                 <label htmlFor="form-first">{t('form.firstName')}</label>
-                <input id="form-first" type="text" placeholder="Maria" required autoComplete="given-name" />
+                <input id="form-first" name="firstName" type="text" placeholder="Maria" required autoComplete="given-name" />
               </div>
               <div className="form-field">
                 <label htmlFor="form-last">{t('form.lastName')}</label>
-                <input id="form-last" type="text" placeholder="Schmidt" required autoComplete="family-name" />
+                <input id="form-last" name="lastName" type="text" placeholder="Schmidt" required autoComplete="family-name" />
               </div>
             </div>
 
             <div className="form-row">
               <div className="form-field">
                 <label htmlFor="form-email">{t('form.email')}</label>
-                <input id="form-email" type="email" placeholder="m.schmidt@email.de" required autoComplete="email" />
+                <input id="form-email" name="email" type="email" placeholder="m.schmidt@email.de" required autoComplete="email" />
               </div>
               <div className="form-field">
                 <label htmlFor="form-phone">{t('form.phone')}</label>
-                <input id="form-phone" type="tel" placeholder="+49 …" autoComplete="tel" />
+                <input id="form-phone" name="phone" type="tel" placeholder="+49 ..." autoComplete="tel" />
               </div>
             </div>
 
             <div className="form-row">
               <div className="form-field">
                 <label htmlFor="form-from">{t('form.from')}</label>
-                <select id="form-from">
+                <select id="form-from" name="sourceLanguage">
                   <option>Arabisch</option>
                   <option>Türkisch</option>
                   <option>Russisch</option>
@@ -149,7 +206,7 @@ export default function HowContact() {
               </div>
               <div className="form-field">
                 <label htmlFor="form-to">{t('form.to')}</label>
-                <select id="form-to">
+                <select id="form-to" name="targetLanguage">
                   <option>Deutsch</option>
                   <option>Englisch</option>
                   <option>Andere…</option>
@@ -186,7 +243,7 @@ export default function HowContact() {
             {serviceType === 'translation' && (
               <div className="form-field">
                 <label htmlFor="form-file">{t('form.file')}</label>
-                <input id="form-file" type="file" />
+                <input id="form-file" name="file" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" />
               </div>
             )}
 
@@ -194,12 +251,18 @@ export default function HowContact() {
               <label htmlFor="form-doc">{t('form.doc')}</label>
               <textarea
                 id="form-doc"
+                name="message"
                 placeholder="z.B. Heiratsurkunde aus Damaskus, beglaubigt für das Standesamt …"
               />
             </div>
 
-            <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
-              {submitted ? t('form.sent') : <><span>{t('form.submit')}</span> <span className="arrow">→</span></>}
+            <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+
+            {status === 'error' && <p className="form-feedback form-feedback--error" role="alert">{statusCopy.error}</p>}
+            {status === 'sent' && <p className="form-feedback form-feedback--success" role="status">{statusCopy.sent}</p>}
+
+            <button type="submit" className="btn btn-primary" disabled={status === 'sending'} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
+              {status === 'sending' ? statusCopy.sending : <><span>{t('form.submit')}</span> <span className="arrow">→</span></>}
             </button>
           </form>
         </div>

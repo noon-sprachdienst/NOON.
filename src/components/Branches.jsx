@@ -142,7 +142,7 @@ function BranchCard({ branch, t, index, externalMapsAllowed }) {
           <span className="num-tag">{branch.tag}</span>
         </div>
         <div className="addr">{branch.addr}</div>
-        <div className="open">{t(branch.hoursKey)}</div>
+        <div className="open">{t('foot.hours')}</div>
         <div style={{ marginTop: 14 }}>
           <a
             href={branch.maps}

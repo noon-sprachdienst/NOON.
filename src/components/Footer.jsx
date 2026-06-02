@@ -1,4 +1,5 @@
 import { useI18n } from '../hooks/useI18n';
+import { CONTACT } from '../config/contact.js';
 
 const openLegal = (page) =>
   window.dispatchEvent(new CustomEvent('openLegal', { detail: page }));
@@ -20,24 +21,24 @@ export default function Footer() {
             </div>
             <p>{t('foot.about')}</p>
             <div className="foot-contact-col">
-              <a href="tel:+4916095627666" className="foot-contact-row">
+              <a href={CONTACT.phones[0].href} className="foot-contact-row">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 9.93a19.79 19.79 0 01-3.07-8.67A2 2 0 012.88 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                 </svg>
-                +49 160 956 27 666
+                {CONTACT.phones[0].label}
               </a>
-              <a href="tel:+4915560710320" className="foot-contact-row">
+              <a href={CONTACT.phones[1].href} className="foot-contact-row">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 9.93a19.79 19.79 0 01-3.07-8.67A2 2 0 012.88 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                 </svg>
-                +49 155 607 10 320
+                {CONTACT.phones[1].label}
               </a>
-              <a href="mailto:info@noon-sprachdienst.de" className="foot-contact-row">
+              <a href={`mailto:${CONTACT.email}`} className="foot-contact-row">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                   <polyline points="22,6 12,13 2,6"/>
                 </svg>
-                info@noon-sprachdienst.de
+                {CONTACT.email}
               </a>
               <span className="foot-hours">{t('foot.hours')}</span>
             </div>
