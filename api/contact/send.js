@@ -24,7 +24,7 @@ const FILE_TYPES_BY_EXTENSION = {
 const MAX_FILES = 6;
 const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
 const LOGO_CID = 'noon-email-logo';
-const LOGO_CONTENT = readFileSync(new URL('../../public/assets/logo2.png', import.meta.url));
+const LOGO_CONTENT = readFileSync(new URL('../../public/assets/noon-email-logo-transparent.png', import.meta.url));
 const SIGNATURE_LINES = [
   'NOON. Dolmetscher und Übersetzungsbüro',
   'Alle Sprachen',
