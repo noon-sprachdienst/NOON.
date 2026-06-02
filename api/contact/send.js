@@ -171,7 +171,7 @@ export default async function handler(req, res) {
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top:1px solid #dddddd;margin-top:28px">
             <tr>
               <td align="center" style="padding:24px 14px 0">
-                <img src="cid:${LOGO_CID}" alt="NOON." width="96" style="display:block;width:96px;height:auto;margin:0 auto 14px">
+                <img src="cid:${LOGO_CID}" alt="NOON." width="138" style="display:block;width:138px;height:auto;margin:0 auto 16px">
                 <div style="font-size:14px;font-weight:700;color:#171717">NOON. Dolmetscher und Übersetzungsbüro</div>
                 <div style="font-size:12px;color:#a4192c;margin-top:2px">Alle Sprachen</div>
               </td>
