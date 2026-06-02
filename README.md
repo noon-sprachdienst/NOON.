@@ -16,7 +16,7 @@ requests to `info@noon-sprachdienst.de`.
 - Translation, interpreting, pricing, specialty, FAQ, and location content
 - WhatsApp, email, and phone contact actions
 - Phone chooser for both mobile numbers
-- Quote form with optional PDF or image attachment
+- Quote form with optional PDF, Word, or image attachments
 - Consent-aware anonymous analytics with a protected admin dashboard
 
 ## Technology
@@ -105,13 +105,13 @@ are delivered as email attachments and are not stored in Firebase.
 Supported attachment types:
 
 ```text
-PDF, JPG, JPEG, PNG
+PDF, DOC, DOCX, JPG, JPEG, PNG, WEBP, HEIC
 ```
 
-Maximum attachment size:
+Maximum attachments:
 
 ```text
-2.5 MB
+6 files, 2.5 MB combined
 ```
 
 Add these variables in:

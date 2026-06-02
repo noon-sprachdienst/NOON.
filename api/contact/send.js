@@ -1,8 +1,27 @@
 import nodemailer from 'nodemailer';
 import { cleanText, readJson, sendJson } from '../_lib/http.js';
 
-const ALLOWED_FILE_TYPES = new Set(['application/pdf', 'image/jpeg', 'image/png']);
-const MAX_FILE_BYTES = 2.5 * 1024 * 1024;
+const ALLOWED_FILE_TYPES = new Set([
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+]);
+const FILE_TYPES_BY_EXTENSION = {
+  '.pdf': 'application/pdf',
+  '.doc': 'application/msword',
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.heic': 'image/heic',
+};
+const MAX_FILES = 6;
+const MAX_TOTAL_FILE_BYTES = 2.5 * 1024 * 1024;
 
 function validateOrigin(req) {
   if (!req.headers.origin) return true;
@@ -18,17 +37,24 @@ function cleanEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
 }
 
-function getAttachment(file) {
-  if (!file) return undefined;
-  const name = cleanText(file.name, 120);
-  const contentType = cleanText(file.type, 80);
-  const content = typeof file.content === 'string' ? file.content : '';
-  if (!name || !ALLOWED_FILE_TYPES.has(contentType) || !content) {
-    throw new Error('Unsupported attachment.');
-  }
-  const buffer = Buffer.from(content, 'base64');
-  if (!buffer.length || buffer.length > MAX_FILE_BYTES) throw new Error('Attachment is too large.');
-  return { filename: name, content: buffer, contentType };
+function getAttachments(files) {
+  if (!files?.length) return [];
+  if (files.length > MAX_FILES) throw new Error('Too many attachments.');
+
+  let totalBytes = 0;
+  return files.map((file) => {
+    const name = cleanText(file.name, 120);
+    const extension = name.slice(name.lastIndexOf('.')).toLowerCase();
+    const contentType = cleanText(file.type, 80) || FILE_TYPES_BY_EXTENSION[extension];
+    const content = typeof file.content === 'string' ? file.content : '';
+    if (!name || !FILE_TYPES_BY_EXTENSION[extension] || !ALLOWED_FILE_TYPES.has(contentType) || !content) {
+      throw new Error('Unsupported attachment.');
+    }
+    const buffer = Buffer.from(content, 'base64');
+    totalBytes += buffer.length;
+    if (!buffer.length || totalBytes > MAX_TOTAL_FILE_BYTES) throw new Error('Attachments are too large.');
+    return { filename: name, content: buffer, contentType };
+  });
 }
 
 export default async function handler(req, res) {
@@ -59,7 +85,7 @@ export default async function handler(req, res) {
       message: cleanText(body.message, 3000) || '-',
       language: cleanText(body.language, 8) || '-',
     };
-    const attachment = getAttachment(body.file);
+    const attachments = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
     const recipient = process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de';
     const smtpPort = Number(process.env.SMTP_PORT || 465);
 
@@ -91,7 +117,7 @@ export default async function handler(req, res) {
         'Nachricht:',
         fields.message,
       ].join('\n'),
-      attachments: attachment ? [attachment] : [],
+      attachments,
     });
 
     return sendJson(res, 202, { ok: true });

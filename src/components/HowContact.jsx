@@ -21,6 +21,16 @@ const FORM_STATUS = {
   uk: { sending: 'Надсилання ...', sent: 'Запит надіслано', error: 'Не вдалося надіслати. Спробуйте ще раз.' },
 };
 
+const FORM_UPLOAD_HINT = {
+  de: 'PDF, Word oder Bilder | bis zu 6 Dateien | insgesamt max. 2,5 MB',
+  en: 'PDF, Word or images | up to 6 files | 2.5 MB total',
+  ar: '\u0645\u0644\u0641\u0627\u062a PDF \u0623\u0648 Word \u0623\u0648 \u0635\u0648\u0631 | \u062d\u062a\u0649 6 \u0645\u0644\u0641\u0627\u062a | 2.5 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a \u0625\u062c\u0645\u0627\u0644\u0627',
+  tr: 'PDF, Word veya gorsel | en fazla 6 dosya | toplam 2,5 MB',
+  ru: 'PDF, Word \u0438\u043b\u0438 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u043e\u0432 | \u0432\u0441\u0435\u0433\u043e 2,5 \u041c\u0411',
+  fr: "PDF, Word ou images | jusqu'a 6 fichiers | 2,5 Mo au total",
+  uk: 'PDF, Word \u0430\u0431\u043e \u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u043d\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u0456\u0432 | \u0437\u0430\u0433\u0430\u043b\u043e\u043c 2,5 \u041c\u0411',
+};
+
 function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -44,10 +54,13 @@ export default function HowContact() {
     setStatus('sending');
     trackEvent('cta_click', { action: 'quote_form_submit' });
     const data = new FormData(form);
-    const file = data.get('file');
+    const files = data.getAll('files').filter((file) => file?.size);
 
     try {
-      if (file?.size > 2.5 * 1024 * 1024) throw new Error('File too large.');
+      if (files.length > 6) throw new Error('Too many files.');
+      if (files.reduce((total, file) => total + file.size, 0) > 2.5 * 1024 * 1024) {
+        throw new Error('Files are too large.');
+      }
       const payload = {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
@@ -60,7 +73,11 @@ export default function HowContact() {
         service: serviceType,
         language: lang,
         startedAt,
-        file: file?.size ? { name: file.name, type: file.type, content: await readFileAsBase64(file) } : undefined,
+        files: await Promise.all(files.map(async (file) => ({
+          name: file.name,
+          type: file.type,
+          content: await readFileAsBase64(file),
+        }))),
       };
       const response = await fetch('/api/contact/send', {
         method: 'POST',
@@ -244,7 +261,14 @@ export default function HowContact() {
             {serviceType === 'translation' && (
               <div className="form-field">
                 <label htmlFor="form-file">{t('form.file')}</label>
-                <input id="form-file" name="file" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" />
+                <input
+                  id="form-file"
+                  name="files"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.heic,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp,image/heic"
+                  multiple
+                />
+                <p className="form-hint">{FORM_UPLOAD_HINT[lang] || FORM_UPLOAD_HINT.de}</p>
               </div>
             )}
 
