@@ -1,4 +1,4 @@
-# NOON. Sprachdienst Website
+# NOON. Sprachdienst Website 
 
 Production website for NOON. Sprachdienst, a multilingual translation and
 interpreting service with locations across Germany.
