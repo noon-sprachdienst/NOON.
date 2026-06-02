@@ -168,24 +168,45 @@ export default async function handler(req, res) {
             <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}
           </p>
           <p><strong>Nachricht:</strong><br>${escapeHtml(fields.message).replace(/\n/g, '<br>')}</p>
-          <div style="border-top:1px solid #dddddd;margin-top:24px;padding-top:18px;color:#333333;font-size:13px">
-            <img src="cid:${LOGO_CID}" alt="NOON." width="120" style="display:block;width:120px;height:auto;margin:0 0 14px">
-            <strong>NOON. Dolmetscher und Übersetzungsbüro</strong><br>
-            Alle Sprachen<br><br>
-            <strong>Zentrale:</strong><br>
-            Möserstr. 14<br>
-            49074 Osnabrück<br><br>
-            <strong>Standorte:</strong><br>
-            Osnabrück · Stuttgart · Berlin · Bielefeld · Mainz · Kiel<br>
-            <a href="https://www.noon-sprachdienst.de/#branches" style="color:#333333">Alle Standorte und Adressen ansehen</a><br><br>
-            <strong>Mobil:</strong> +49 160 956 27 666<br>
-            <span style="padding-left:40px">+49 155 607 10 320</span><br><br>
-            <a href="mailto:info@noon-sprachdienst.de" style="color:#333333">info@noon-sprachdienst.de</a><br>
-            <a href="https://www.noon-sprachdienst.de" style="color:#333333">www.noon-sprachdienst.de</a><br><br>
-            Landgericht Hannover 316E2-45/24<br>
-            Geschäftsführer/in: M. Celik &nbsp;•&nbsp; M. Elsharkawei<br><br>
-            <span style="color:#666666;font-size:12px">Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB) sowie unsere Datenschutzerklärung, die Sie auf unserer Website jederzeit einsehen können. Mit der Beauftragung erkennen Sie diese ausdrücklich an.</span>
-          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top:1px solid #dddddd;margin-top:28px">
+            <tr>
+              <td align="center" style="padding:24px 14px 0">
+                <img src="cid:${LOGO_CID}" alt="NOON." width="96" style="display:block;width:96px;height:auto;margin:0 auto 14px">
+                <div style="font-size:14px;font-weight:700;color:#171717">NOON. Dolmetscher und Übersetzungsbüro</div>
+                <div style="font-size:12px;color:#a4192c;margin-top:2px">Alle Sprachen</div>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:16px 14px 0;color:#333333;font-size:12px;line-height:1.65">
+                <strong>Zentrale:</strong> Möserstr. 14 · 49074 Osnabrück<br>
+                <strong>Standorte:</strong> Osnabrück · Stuttgart · Berlin · Bielefeld · Mainz · Kiel<br>
+                <a href="https://www.noon-sprachdienst.de/#branches" style="color:#a4192c;text-decoration:none;font-weight:700">Alle Standorte und Adressen ansehen</a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:15px 14px 0;color:#333333;font-size:12px;line-height:1.65">
+                <strong>Mobil:</strong>
+                <a href="tel:+4916095627666" style="color:#333333;text-decoration:none">+49 160 956 27 666</a>
+                &nbsp;·&nbsp;
+                <a href="tel:+4915560710320" style="color:#333333;text-decoration:none">+49 155 607 10 320</a><br>
+                <a href="mailto:info@noon-sprachdienst.de" style="color:#a4192c;text-decoration:none">info@noon-sprachdienst.de</a>
+                &nbsp;·&nbsp;
+                <a href="https://www.noon-sprachdienst.de" style="color:#a4192c;text-decoration:none">www.noon-sprachdienst.de</a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:15px 14px 0;color:#555555;font-size:11px;line-height:1.65">
+                Landgericht Hannover 316E2-45/24<br>
+                Geschäftsführer/in: M. Celik &nbsp;•&nbsp; M. Elsharkawei
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:14px 14px 4px;color:#777777;font-size:10px;line-height:1.55">
+                Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB) sowie unsere Datenschutzerklärung, die Sie auf unserer Website jederzeit einsehen können.<br>
+                Mit der Beauftragung erkennen Sie diese ausdrücklich an.
+              </td>
+            </tr>
+          </table>
         </div>
       `,
       attachments: [
