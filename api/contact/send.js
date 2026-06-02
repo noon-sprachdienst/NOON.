@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { readFileSync } from 'node:fs';
 import { cleanText, readJson, sendJson } from '../_lib/http.js';
 
 const ALLOWED_FILE_TYPES = new Set([
@@ -22,6 +23,24 @@ const FILE_TYPES_BY_EXTENSION = {
 };
 const MAX_FILES = 6;
 const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
+const LOGO_CID = 'noon-email-logo';
+const LOGO_CONTENT = readFileSync(new URL('../../public/assets/logo2.png', import.meta.url));
+const SIGNATURE_LINES = [
+  'Noon Dolmetscher und Übersetzungsbüro - Alle Sprachen',
+  'Paul-Oeser-Straße 1',
+  '49074 Osnabrück',
+  '',
+  'Mobil: 016095627666',
+  '       01783796533',
+  '',
+  'info@noon-sprachdienst.de',
+  'www.noon-sprachdienst.de',
+  '',
+  'Landgericht Hannover 316E2-45/24',
+  'Geschäftsführer/in: M. Celik  •  M. Elsharkawei',
+  '',
+  'Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB) sowie unsere Datenschutzerklärung, die Sie auf unserer Website jederzeit einsehen können. Mit der Beauftragung erkennen Sie diese ausdrücklich an.',
+];
 
 function validateOrigin(req) {
   if (!req.headers.origin) return true;
@@ -35,6 +54,15 @@ function validateOrigin(req) {
 function cleanEmail(value) {
   const email = cleanText(value, 160);
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function getAttachments(files) {
@@ -116,8 +144,48 @@ export default async function handler(req, res) {
         '',
         'Nachricht:',
         fields.message,
+        '',
+        '---',
+        ...SIGNATURE_LINES,
       ].join('\n'),
-      attachments,
+      html: `
+        <div style="font-family:Arial,sans-serif;color:#1a1a1a;font-size:14px;line-height:1.55">
+          <p><strong>Neue Website-Anfrage</strong></p>
+          <p>
+            <strong>Name:</strong> ${escapeHtml(fields.name)}<br>
+            <strong>E-Mail:</strong> ${escapeHtml(fields.email)}<br>
+            <strong>Telefon / WhatsApp:</strong> ${escapeHtml(fields.phone)}<br>
+            <strong>Leistung:</strong> ${escapeHtml(fields.service)}<br>
+            <strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
+            <strong>Zielsprache:</strong> ${escapeHtml(fields.targetLanguage)}<br>
+            <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}
+          </p>
+          <p><strong>Nachricht:</strong><br>${escapeHtml(fields.message).replace(/\n/g, '<br>')}</p>
+          <div style="border-top:1px solid #dddddd;margin-top:24px;padding-top:18px;color:#333333;font-size:13px">
+            <img src="cid:${LOGO_CID}" alt="NOON." width="120" style="display:block;width:120px;height:auto;margin:0 0 14px">
+            <strong>Noon Dolmetscher und Übersetzungsbüro - Alle Sprachen</strong><br>
+            Paul-Oeser-Straße 1<br>
+            49074 Osnabrück<br><br>
+            <strong>Mobil:</strong> 016095627666<br>
+            <span style="padding-left:40px">01783796533</span><br><br>
+            <a href="mailto:info@noon-sprachdienst.de" style="color:#333333">info@noon-sprachdienst.de</a><br>
+            <a href="https://www.noon-sprachdienst.de" style="color:#333333">www.noon-sprachdienst.de</a><br><br>
+            Landgericht Hannover 316E2-45/24<br>
+            Geschäftsführer/in: M. Celik &nbsp;•&nbsp; M. Elsharkawei<br><br>
+            <span style="color:#666666;font-size:12px">Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB) sowie unsere Datenschutzerklärung, die Sie auf unserer Website jederzeit einsehen können. Mit der Beauftragung erkennen Sie diese ausdrücklich an.</span>
+          </div>
+        </div>
+      `,
+      attachments: [
+        ...attachments,
+        {
+          filename: 'noon-logo.png',
+          content: LOGO_CONTENT,
+          contentType: 'image/png',
+          cid: LOGO_CID,
+          disposition: 'inline',
+        },
+      ],
     });
 
     return sendJson(res, 202, { ok: true });
