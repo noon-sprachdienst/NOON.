@@ -40,9 +40,10 @@ export default function HowContact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (status === 'sending') return;
+    const form = e.currentTarget;
     setStatus('sending');
     trackEvent('cta_click', { action: 'quote_form_submit' });
-    const data = new FormData(e.currentTarget);
+    const data = new FormData(form);
     const file = data.get('file');
 
     try {
@@ -67,7 +68,7 @@ export default function HowContact() {
         body: JSON.stringify(payload),
       });
       if (!response.ok) throw new Error('Delivery failed.');
-      e.currentTarget.reset();
+      form.reset();
       setStatus('sent');
     } catch {
       setStatus('error');
