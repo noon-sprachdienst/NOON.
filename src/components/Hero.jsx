@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
-import HeroGlobe from './HeroGlobe';
 
 const REEL_WORDS = [
   { lang: 'de', text: 'Übersetzung' },
@@ -40,8 +39,8 @@ export default function Hero() {
 
   return (
     <section className={`hero${isRTL ? ' hero--rtl' : ''}`} id="hero" aria-labelledby="hero-heading">
-      <div className="hero-globe-wrap" aria-hidden="true">
-        <HeroGlobe />
+      <div className="hero-map-wrap" aria-hidden="true">
+        <div className="hero-map-layer" />
       </div>
 
       <div className="container">
@@ -132,9 +131,7 @@ function TabletHero({ t, isRTL, reelIndex }) {
     <section className={`tablet-hero${isRTL ? ' tablet-hero--rtl' : ''}`} id="hero" aria-labelledby="tablet-hero-heading">
       <div className="tablet-hero-grid">
         <div className="tablet-hero-visual" aria-hidden="true">
-          <div className="tablet-hero-globe">
-            <HeroGlobe />
-          </div>
+          <div className="tablet-hero-map" />
         </div>
 
         <div className="tablet-hero-copy">
