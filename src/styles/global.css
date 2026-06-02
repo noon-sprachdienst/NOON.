@@ -715,7 +715,7 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
   max-width: 820px;
 }
 .specialties-head h2 {
-  max-width: 12ch;
+  max-width: 18ch;
 }
 .specialties-head p {
   max-width: 720px;
