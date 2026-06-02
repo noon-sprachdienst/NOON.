@@ -31,6 +31,57 @@ const FORM_UPLOAD_HINT = {
   uk: 'PDF, Word \u0430\u0431\u043e \u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u043d\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u0456\u0432 | \u0437\u0430\u0433\u0430\u043b\u043e\u043c 3 \u041c\u0411',
 };
 
+const FORM_UPLOAD_ERROR = {
+  de: {
+    size: 'Die ausgewählten Dateien sind größer als 3 MB.',
+    count: 'Bitte wählen Sie höchstens 6 Dateien aus.',
+    mail: 'Für größere Anhänge senden Sie uns bitte direkt eine E-Mail.',
+    action: 'Per E-Mail senden',
+  },
+  en: {
+    size: 'The selected files exceed the 3 MB limit.',
+    count: 'Please select no more than 6 files.',
+    mail: 'For larger attachments, please send us an email directly.',
+    action: 'Send by email',
+  },
+  ar: {
+    size: '\u062d\u062c\u0645 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629 \u064a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0648\u0647\u0648 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a.',
+    count: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 6 \u0645\u0644\u0641\u0627\u062a \u0643\u062d\u062f \u0623\u0642\u0635\u0649.',
+    mail: '\u0644\u0625\u0631\u0633\u0627\u0644 \u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631\u060c \u064a\u0631\u062c\u0649 \u0645\u0631\u0627\u0633\u0644\u062a\u0646\u0627 \u0645\u0628\u0627\u0634\u0631\u0629 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a.',
+    action: '\u0625\u0631\u0633\u0627\u0644 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f',
+  },
+  tr: {
+    size: 'Secilen dosyalar 3 MB sinirini asiyor.',
+    count: 'Lutfen en fazla 6 dosya secin.',
+    mail: 'Daha buyuk ekler icin bize dogrudan e-posta gonderin.',
+    action: 'E-posta ile gonder',
+  },
+  ru: {
+    size: '\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0444\u0430\u0439\u043b\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u043b\u0438\u043c\u0438\u0442 3 \u041c\u0411.',
+    count: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 6 \u0444\u0430\u0439\u043b\u043e\u0432.',
+    mail: '\u0414\u043b\u044f \u0431\u043e\u043b\u0435\u0435 \u043a\u0440\u0443\u043f\u043d\u044b\u0445 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u0439 \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043d\u0430\u043c \u043d\u0430\u043f\u0440\u044f\u043c\u0443\u044e.',
+    action: '\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u043f\u043e e-mail',
+  },
+  fr: {
+    size: 'Les fichiers sélectionnés dépassent la limite de 3 Mo.',
+    count: 'Veuillez sélectionner au maximum 6 fichiers.',
+    mail: 'Pour les pièces jointes plus volumineuses, envoyez-nous directement un e-mail.',
+    action: 'Envoyer par e-mail',
+  },
+  uk: {
+    size: '\u0412\u0438\u0431\u0440\u0430\u043d\u0456 \u0444\u0430\u0439\u043b\u0438 \u043f\u0435\u0440\u0435\u0432\u0438\u0449\u0443\u044e\u0442\u044c \u043b\u0456\u043c\u0456\u0442 3 \u041c\u0411.',
+    count: '\u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u043d\u0435 \u0431\u0456\u043b\u044c\u0448\u0435 6 \u0444\u0430\u0439\u043b\u0456\u0432.',
+    mail: '\u0414\u043b\u044f \u0431\u0456\u043b\u044c\u0448\u0438\u0445 \u0432\u043a\u043b\u0430\u0434\u0435\u043d\u044c \u043d\u0430\u0434\u0456\u0448\u043b\u0456\u0442\u044c \u043d\u0430\u043c e-mail.',
+    action: '\u041d\u0430\u0434\u0456\u0441\u043b\u0430\u0442\u0438 e-mail',
+  },
+};
+
+function getUploadError(files) {
+  if (files.length > 6) return 'upload-count';
+  if (files.reduce((total, file) => total + file.size, 0) > 3 * 1024 * 1024) return 'upload-size';
+  return '';
+}
+
 function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -51,16 +102,17 @@ export default function HowContact() {
     e.preventDefault();
     if (status === 'sending') return;
     const form = e.currentTarget;
-    setStatus('sending');
-    trackEvent('cta_click', { action: 'quote_form_submit' });
     const data = new FormData(form);
     const files = data.getAll('files').filter((file) => file?.size);
+    const uploadError = getUploadError(files);
+    if (uploadError) {
+      setStatus(uploadError);
+      return;
+    }
+    setStatus('sending');
+    trackEvent('cta_click', { action: 'quote_form_submit' });
 
     try {
-      if (files.length > 6) throw new Error('Too many files.');
-      if (files.reduce((total, file) => total + file.size, 0) > 3 * 1024 * 1024) {
-        throw new Error('Files are too large.');
-      }
       const payload = {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
@@ -267,6 +319,7 @@ export default function HowContact() {
                   type="file"
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.heic,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp,image/heic"
                   multiple
+                  onChange={(e) => setStatus(getUploadError([...e.currentTarget.files]))}
                 />
                 <p className="form-hint">{FORM_UPLOAD_HINT[lang] || FORM_UPLOAD_HINT.de}</p>
               </div>
@@ -284,6 +337,15 @@ export default function HowContact() {
             <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
 
             {status === 'error' && <p className="form-feedback form-feedback--error" role="alert">{statusCopy.error}</p>}
+            {(status === 'upload-size' || status === 'upload-count') && (
+              <p className="form-feedback form-feedback--error" role="alert">
+                {FORM_UPLOAD_ERROR[lang]?.[status === 'upload-size' ? 'size' : 'count'] || FORM_UPLOAD_ERROR.de[status === 'upload-size' ? 'size' : 'count']}
+                {' '}
+                {FORM_UPLOAD_ERROR[lang]?.mail || FORM_UPLOAD_ERROR.de.mail}
+                {' '}
+                <a href={`mailto:${CONTACT.email}`}>{FORM_UPLOAD_ERROR[lang]?.action || FORM_UPLOAD_ERROR.de.action}</a>
+              </p>
+            )}
             {status === 'sent' && <p className="form-feedback form-feedback--success" role="status">{statusCopy.sent}</p>}
 
             <button type="submit" className="btn btn-primary" disabled={status === 'sending'} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
