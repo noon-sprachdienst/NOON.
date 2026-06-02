@@ -237,7 +237,7 @@ OAuth or SMTP relay when required by the organization policy.
 Check the Firebase environment variables, Firestore setup, cookie consent, and
 the `/api/admin/status` endpoint.
 
-## Security Checklist
+## Security Checklist ;)
 
 - Never commit `.env` files.
 - Never use the mailbox's normal Google password for SMTP.
