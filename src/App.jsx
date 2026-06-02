@@ -16,10 +16,12 @@ import HowContact from './components/HowContact.jsx';
 import FAQ from './components/FAQ.jsx';
 import Footer from './components/Footer.jsx';
 import Specialties from './pages/Specialties.jsx';
+import SeoLanding from './pages/SeoLanding.jsx';
 import CookieConsent from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
 import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
 import { CONTACT } from './config/contact.js';
+import { getCanonicalUrl, getSeoPage, PRICE_PAGE, SEO_PATHS } from './data/seoPages.js';
 
 
 const normalizePath = (value) => {
@@ -51,16 +53,22 @@ const META_BY_LANG = {
 };
 
 export default function App() {
-  const { lang, meta } = useI18n();
+  const { lang, meta, setLang } = useI18n();
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
-  const m = META_BY_LANG[lang] || META_BY_LANG.de;
+  const seoPage = getSeoPage(path);
   const isPricingPage = path === '/preise' || path === '/pricing';
   const isSpecialtiesPage = path === '/fachuebersetzungen' || path === '/specialties';
+  const m = seoPage || (isPricingPage ? PRICE_PAGE : META_BY_LANG[lang] || META_BY_LANG.de);
+  const canonicalUrl = getCanonicalUrl(seoPage?.path || (isPricingPage ? '/preise' : isSpecialtiesPage ? '/fachuebersetzungen' : '/'));
 
   useEffect(() => {
     document.documentElement.lang = meta.html;
     document.documentElement.dir = meta.dir;
   }, [meta]);
+
+  useEffect(() => {
+    if (seoPage && lang !== 'de') setLang('de');
+  }, [seoPage, lang, setLang]);
 
   useEffect(() => initializeAnalytics(), []);
 
@@ -103,7 +111,7 @@ export default function App() {
       const current = new URL(window.location.href);
       if (url.origin !== current.origin) return;
       const nextPathname = normalizePath(url.pathname);
-      if (!['/', '/preise', '/pricing', '/fachuebersetzungen', '/specialties'].includes(nextPathname)) return;
+      if (!['/', '/preise', '/pricing', '/fachuebersetzungen', '/specialties', ...SEO_PATHS].includes(nextPathname)) return;
 
       event.preventDefault();
       const next = `${nextPathname}${url.search}${url.hash}`;
@@ -163,14 +171,18 @@ export default function App() {
         <meta name="description" content={m.description} />
         <meta property="og:title" content={m.title} />
         <meta property="og:description" content={m.description} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta name="twitter:title" content={m.title} />
         <meta name="twitter:description" content={m.description} />
+        <link rel="canonical" href={canonicalUrl} />
       </Helmet>
 
       <Nav />
 
       <main className={isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
-        {isPricingPage ? (
+        {seoPage ? (
+          <SeoLanding page={seoPage} />
+        ) : isPricingPage ? (
           <Pricing />
         ) : isSpecialtiesPage ? (
           <Specialties />
@@ -227,6 +239,7 @@ function FloatingButtons() {
         className="fab-phone"
         aria-label="Telefonnummer auswählen"
         aria-expanded={phoneMenuOpen}
+        data-analytics-action="phone_menu"
         onClick={() => setPhoneMenuOpen((open) => !open)}
       >
         <img src="/assets/mobile.png" alt="" width="38" height="38" />

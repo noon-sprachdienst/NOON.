@@ -48,9 +48,9 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.services')}</h5>
             <ul>
-              <li><a href="#services">{t('pricing.card1.name')}</a></li>
-              <li><a href="/#fachuebersetzungen">{t('foot.fach')}</a></li>
-              <li><a href="#dolmetschen">{t('foot.dolm')}</a></li>
+              <li><a href="/de/beglaubigte-uebersetzungen">{t('pricing.card1.name')}</a></li>
+              <li><a href="/de/fachuebersetzungen">{t('foot.fach')}</a></li>
+              <li><a href="/de/dolmetschen">{t('foot.dolm')}</a></li>
               <li><a href="#services">{t('foot.job')}</a></li>
               <li><a href="#services">{t('foot.lang')}</a></li>
             </ul>
@@ -60,12 +60,12 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.locations')}</h5>
             <ul>
-              <li><a href="#branches">Osnabrück</a></li>
-              <li><a href="#branches">Stuttgart</a></li>
-              <li><a href="#branches">Berlin</a></li>
-              <li><a href="#branches">Bielefeld</a></li>
-              <li><a href="#branches">Mainz</a></li>
-              <li><a href="#branches">Kiel</a></li>
+              <li><a href="/de/standorte/osnabrueck">Osnabrück</a></li>
+              <li><a href="/de/standorte/stuttgart">Stuttgart</a></li>
+              <li><a href="/de/standorte/berlin">Berlin</a></li>
+              <li><a href="/de/standorte/bielefeld">Bielefeld</a></li>
+              <li><a href="/de/standorte/mainz">Mainz</a></li>
+              <li><a href="/de/standorte/kiel">Kiel</a></li>
             </ul>
           </div>
 
