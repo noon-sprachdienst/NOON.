@@ -111,7 +111,7 @@ PDF, DOC, DOCX, JPG, JPEG, PNG, WEBP, HEIC
 Maximum attachments:
 
 ```text
-6 files, 2.5 MB combined
+6 files, 3 MB combined
 ```
 
 Add these variables in:

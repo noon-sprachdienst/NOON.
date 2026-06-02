@@ -21,7 +21,7 @@ const FILE_TYPES_BY_EXTENSION = {
   '.heic': 'image/heic',
 };
 const MAX_FILES = 6;
-const MAX_TOTAL_FILE_BYTES = 2.5 * 1024 * 1024;
+const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
 
 function validateOrigin(req) {
   if (!req.headers.origin) return true;
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     });
 
     await transporter.sendMail({
-      from: `"NOON Website" <${process.env.SMTP_USER}>`,
+      from: `"NOON Website Anfrage" <${process.env.SMTP_USER}>`,
       to: recipient,
       replyTo: fields.email,
       subject: `Neue Website-Anfrage: ${fields.service}`,
