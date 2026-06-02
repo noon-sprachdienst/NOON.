@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const COLORS = ['#06b6d4', '#3b82f6', '#6366f1'];
 const RING_PROPAGATION_SPEED = 3;
@@ -75,10 +73,13 @@ export default function HeroGlobe() {
     let resizeObserver;
     let scene;
     let firstFrame = true;
+    let idleId;
 
     const setup = async () => {
       const lowPower = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
-      const [{ default: ThreeGlobe }, response] = await Promise.all([
+      const [THREE, { OrbitControls }, { default: ThreeGlobe }, response] = await Promise.all([
+        import('three'),
+        import('three/examples/jsm/controls/OrbitControls.js'),
         import('three-globe'),
         fetch('/data/globe.json'),
       ]);
@@ -188,13 +189,17 @@ export default function HeroGlobe() {
       animate();
     };
 
-    setup().catch((error) => {
-      console.error('Unable to initialize hero globe', error);
-      if (!cancelled) setStatus('error');
-    });
+    const start = () => setup().catch((error) => {
+        console.error('Unable to initialize hero globe', error);
+        if (!cancelled) setStatus('error');
+      });
+    if ('requestIdleCallback' in window) idleId = window.requestIdleCallback(start, { timeout: 450 });
+    else idleId = window.setTimeout(start, 120);
 
     return () => {
       cancelled = true;
+      if ('cancelIdleCallback' in window) window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
       cancelAnimationFrame(frameId);
       window.clearInterval(ringInterval);
       resizeObserver?.disconnect();
