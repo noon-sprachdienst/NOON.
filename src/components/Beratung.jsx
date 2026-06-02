@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
+import { CONTACT } from '../config/contact.js';
 
 const LOCATIONS = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Möserstr. 14\n49074 Osnabrück', maps: 'https://maps.google.com/?q=Möserstraße+14,+49074+Osnabrück' },
@@ -66,7 +67,7 @@ export default function Beratung() {
                       <path d="M22 16.92V21a2 2 0 01-2 2A19 19 0 011 4a2 2 0 012-2h4a2 2 0 012 2 12 12 0 00.7 4 2 2 0 01-.45 2L7 12a16 16 0 006 6l2-1.25a2 2 0 012-.45 12 12 0 004 .7 2 2 0 011 1.92z"/>
                     </svg>
                   ),
-                  text: '+49 541 80 14 84 00',
+                  text: CONTACT.phones[0].label,
                 },
               ].map(({ icon, text }, i) => (
                 <div key={i} className="beratung-info-row">
@@ -79,7 +80,7 @@ export default function Beratung() {
               <a href="#contact" className="btn btn-primary">
                 {t('beratung.appt')} <span className="arrow">→</span>
               </a>
-              <a href="tel:+4916095627666" className="btn btn-secondary">
+              <a href={CONTACT.phones[0].href} className="btn btn-secondary">
                 {t('beratung.cta2')}
               </a>
             </div>

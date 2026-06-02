@@ -1,4 +1,5 @@
 import { useI18n } from '../hooks/useI18n';
+import { CONTACT } from '../config/contact.js';
 
 const MARQUEE_ITEMS = [
   { text: 'Arabisch → Deutsch', icon: '🇩🇪' },
@@ -25,7 +26,7 @@ export default function Closing() {
         <p data-reveal="" style={{ '--ri': 1 }}>{t('closing.sub')}</p>
         <div className="ctas" data-reveal="" style={{ '--ri': 2 }}>
           <a
-            href="https://wa.me/4916095627666"
+            href={CONTACT.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary"

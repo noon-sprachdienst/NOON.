@@ -19,6 +19,7 @@ import Specialties from './pages/Specialties.jsx';
 import CookieConsent from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
 import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
+import { CONTACT } from './config/contact.js';
 
 
 const normalizePath = (value) => {
@@ -205,11 +206,13 @@ export default function App() {
 }
 
 function FloatingButtons() {
+  const [phoneMenuOpen, setPhoneMenuOpen] = useState(false);
+
   return (
     <>
       {/* WhatsApp */}
       <a
-        href="https://wa.me/4916095627666"
+        href={CONTACT.whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="fab-wa"
@@ -219,12 +222,27 @@ function FloatingButtons() {
       </a>
 
       {/* Phone */}
-      <a href="tel:+4916095627666" className="fab-phone" aria-label="Jetzt anrufen">
+      <button
+        type="button"
+        className="fab-phone"
+        aria-label="Telefonnummer auswählen"
+        aria-expanded={phoneMenuOpen}
+        onClick={() => setPhoneMenuOpen((open) => !open)}
+      >
         <img src="/assets/mobile.png" alt="" width="38" height="38" />
-      </a>
+      </button>
+      {phoneMenuOpen && (
+        <div className="fab-phone-menu" role="menu" aria-label="Telefonnummer auswählen">
+          {CONTACT.phones.map((phone) => (
+            <a key={phone.href} href={phone.href} role="menuitem" onClick={() => setPhoneMenuOpen(false)}>
+              {phone.label}
+            </a>
+          ))}
+        </div>
+      )}
 
       {/* Email */}
-      <a href="mailto:info@noon-sprachdienst.de" className="fab-email" aria-label="E-Mail senden">
+      <a href={`mailto:${CONTACT.email}`} className="fab-email" aria-label="E-Mail senden">
         <img src="/assets/email.png" alt="" width="38" height="38" />
       </a>
 
