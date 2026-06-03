@@ -189,8 +189,8 @@ export default function App() {
         ) : (
           <>
             <Hero />
-            <Feature2 />
-            <Feature3 />
+            {/* <Feature2 /> */}
+            {/* <Feature3 /> */}
             <StatsStrip />
             <Services />
             <Beratung />
