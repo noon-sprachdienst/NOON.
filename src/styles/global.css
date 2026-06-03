@@ -842,6 +842,7 @@ html[dir="rtl"] .specialty-side-row--sub {
   font-size: clamp(18px, 2vw, 22px);
   line-height: 1.45;
   max-width: 860px;
+  white-space: pre-line;
 }
 .specialty-detail .specialty-lead {
   color: #80878F;
@@ -974,6 +975,7 @@ html[dir="rtl"] .specialty-side-row--sub {
   color: #343434;
   font-size: 16px;
   line-height: 1.65;
+  white-space: pre-line;
 }
 .specialty-page-copy p + p { margin-top: 14px; }
 .specialty-page-examples {

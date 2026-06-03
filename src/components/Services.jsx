@@ -23,7 +23,7 @@ export default function Services() {
   const [activeId, setActiveId] = useState(navItems[0]?.id);
   const active = navItems.find((item) => item.id === activeId) || navItems[0];
   const activeParagraphs = active?.paragraphs || [active?.text].filter(Boolean);
-  const summaryParagraphs = activeParagraphs.slice(0, 2);
+  const summaryParagraphs = activeParagraphs;
   const summaryExamples = (active?.examples || []).slice(0, 3);
 
   const listKeys = ['li1', 'li2', 'li3', 'li4', 'li5', 'li6'];
