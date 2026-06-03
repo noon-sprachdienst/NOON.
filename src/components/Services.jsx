@@ -36,14 +36,14 @@ export default function Services() {
   return (
     <section className="services" id="services" aria-labelledby="services-heading">
       <div className="container">
-        <div className="section-head">
+        {/* <div className="section-head">
           <h2 id="services-heading" data-reveal="">{t('services.title')}</h2>
           <p data-reveal="" style={{ '--ri': 1 }}>
             {t('services.sub')}
           </p>
-        </div>
+        </div> */}
 
-        <div className="svc-featured" data-reveal="" style={{ '--ri': 0 }}>
+        {/* <div className="svc-featured" data-reveal="" style={{ '--ri': 0 }}>
           <div className="svc-feat-left">
             <div className="svc-feat-icon" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -86,7 +86,7 @@ export default function Services() {
               {t('services.feat.cta')}
             </a>
           </div>
-        </div>
+        </div> */}
 
         <div className="specialties" id="fachuebersetzungen">
           <div className="section-head specialties-head">
