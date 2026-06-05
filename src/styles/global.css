@@ -91,6 +91,32 @@ section { padding: 10px 0; position: relative; }
 .section-head h2 { font-size: clamp(34px, 4.2vw, 58px); line-height: 1.0; letter-spacing: -0.04em; font-weight: 800; max-width: 920px; margin: 0 auto; }
 .section-head p { color: var(--muted); font-size: 17px; max-width: 540px; margin: 20px auto 0; line-height: 1.5; }
 
+.hero p.lead,
+.tablet-hero-lead,
+.section-head p,
+.feature-card p,
+.specialty-detail p,
+.specialty-page-intro p,
+.specialty-page-copy p,
+.specialty-page-quality p,
+.beratung-sub,
+.pricing-note p,
+.map-card-body .addr,
+.testimonial p,
+.faq-a p,
+.how-contact .section-sub,
+.contact-card .sub,
+.closing p,
+.foot-about p,
+.seo-hero p,
+.seo-copy-block p,
+.seo-related > p {
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}
+
 /* PILL NAV */
 nav.top {
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
@@ -113,7 +139,7 @@ nav.top {
 .nav-links { display: flex; gap: 2px; align-items: center; }
 .nav-links a {
   padding: 9px 14px; font-size: 14px; font-weight: 500; color: var(--ink);
-  transition: background .15s, color .15s; border-radius: 999px; white-space: nowrap;
+  transition: background .15s, color .15s; border-radius: 11px; white-space: nowrap;
 }
 .nav-links a:hover { background: var(--bg-soft); }
 .nav-cta { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
@@ -286,7 +312,7 @@ html[dir="rtl"] .nav-links { direction: rtl; }
   color: #062056;
 }
 .hero p.lead { color: #303B43; font-size: clamp(14px, 2vw, 17px); line-height: 1.58; max-width: 760px; margin: 4px auto 0; }
-.hero-ctas { display: flex; gap: 10px; justify-content: center; margin-top: clamp(10px, 1.6vh, 16px); flex-wrap: wrap; }
+.hero-ctas { display: flex; gap: 28px; justify-content: center; margin-top: clamp(10px, 1.6vh, 16px); flex-wrap: wrap; }
 .hero-map-wrap {
   position: absolute;
   inset: 0;
@@ -566,7 +592,7 @@ html[dir="rtl"] .hero--rtl .counter-label {
   .tablet-hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 28px;
     justify-content: center;
     margin-top: 4px;
   }
@@ -640,6 +666,9 @@ html[dir="rtl"] .hero--rtl .counter-label {
 
 /* FEATURE 2 / 3 */
 .feature-2 { padding: 100px 0; }
+.quote-page .feature-2 {
+  padding-top: 116px;
+}
 .feature-2 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px; }
 .feature-3 { padding: 100px 0; }
 .feature-3 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
@@ -684,6 +713,10 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
 
 /* SERVICES: featured card */
 .services { padding: 100px 0; }
+.services-page .services {
+  min-height: 100svh;
+  padding-top: 116px;
+}
 .svc-featured {
   display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
   background: #F3F3F3;
@@ -876,7 +909,32 @@ html[dir="rtl"] .specialty-side-row--sub {
   flex-shrink: 0;
 }
 .specialty-detail .btn {
-  margin-top: 12px;
+  margin-top: 14px;
+  min-height: 48px;
+  padding: 14px 20px;
+  border-radius: 8px;
+  background: #0A0A0A;
+  border-color: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 750;
+  box-shadow: 0 14px 34px rgba(10,10,10,0.16);
+}
+.specialty-detail .btn:hover {
+  background: #2A2A2A;
+  border-color: #2A2A2A;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 18px 42px rgba(10,10,10,0.20);
+}
+.specialty-detail .btn .arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.14);
 }
 @media (max-width: 980px) {
   .specialty-layout {
@@ -1468,7 +1526,7 @@ html[dir="rtl"] .testimonial {
 .service-toggle {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 28px;
   margin: 12px 0 18px;
 }
 .service-choice {
@@ -1476,10 +1534,12 @@ html[dir="rtl"] .testimonial {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 150px;
-  padding: 12px 18px;
+  flex: 1 1 220px;
+  min-width: 220px;
+  max-width: 280px;
+  padding: 14px 30px;
   border: 1px solid rgba(10,10,10,0.10);
-  border-radius: 999px;
+  border-radius: 11px;
   background: #FFFFFF;
   color: #0A0A0A;
   font-size: 14px;
@@ -1545,7 +1605,7 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
 .foot-col a:hover { color: var(--muted); }
 .foot-about p { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 14px 0 18px; max-width: 320px; }
 .foot-brand { margin-bottom: 16px; }
-.foot-brand img { height: 88px; width: auto; max-width: 220px; object-fit: contain; filter: grayscale(1) brightness(0); }
+.foot-brand img {  object-fit: contain; filter: grayscale(1) brightness(0); }
 .foot-contact-col { display: flex; flex-direction: column; gap: 10px; }
 .foot-hours { font-size: 12px; color: var(--muted-2); font-family: "Geist Mono", monospace; padding-top: 2px; }
 .foot-social-row { display: flex; justify-content: flex-end; padding-bottom: 24px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
@@ -1820,7 +1880,7 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
     position: relative;
     z-index: 2;
     width: min(100%, 350px);
-    padding: clamp(132px, 26vh, 190px) 0 0;
+    padding: clamp(132px, 4vh, 190px) 0 0;
     align-items: center;
     text-align: center;
   }
@@ -1898,9 +1958,12 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
 .hero-svc-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  flex: 0 1 240px;
+  min-width: 240px;
   min-height: 44px;
-  padding: 10px 19px;
+  padding: 12px 30px;
   border-radius: 10px;
   font-size: 14.5px;
   font-weight: 600;
@@ -1927,8 +1990,8 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
 html[dir="rtl"] .hero-svc-arrow { transform: scaleX(-1); }
 html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX(-1) translateX(3px); }
 @media (max-width: 420px) {
-  .hero-ctas { flex-direction: column; align-items: center; gap: 10px; }
-  .hero-svc-btn { width: 100%; max-width: 260px; justify-content: center; padding: 11px 20px; font-size: 14px; }
+  .hero-ctas { flex-direction: column; align-items: center; gap: 12px; }
+  .hero-svc-btn { width: 100%; max-width: 300px; min-width: 0; justify-content: center; padding: 12px 20px; font-size: 14px; }
 }
 
 /* ═══════════════════════════════════════════════════════

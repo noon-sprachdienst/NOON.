@@ -6,6 +6,7 @@ const openLegal = (page) =>
 
 export default function Footer() {
   const { t } = useI18n();
+  const careerMail = `mailto:${CONTACT.email}?subject=Karriere%20bei%20NOON`;
 
   return (
     <footer>
@@ -17,7 +18,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="foot-col foot-about">
             <div className="foot-brand">
-              <img src="/assets/logo2.png" alt="Noon Sprachdienst" height="36" />
+              <img src="/assets/logo2.png" alt="Noon Sprachdienst" width="300" />
             </div>
             <p>{t('foot.about')}</p>
             <div className="foot-contact-col">
@@ -26,12 +27,6 @@ export default function Footer() {
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 9.93a19.79 19.79 0 01-3.07-8.67A2 2 0 012.88 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                 </svg>
                 {CONTACT.phones[0].label}
-              </a>
-              <a href={CONTACT.phones[1].href} className="foot-contact-row">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 9.93a19.79 19.79 0 01-3.07-8.67A2 2 0 012.88 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-                </svg>
-                {CONTACT.phones[1].label}
               </a>
               <a href={`mailto:${CONTACT.email}`} className="foot-contact-row">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -48,11 +43,11 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.services')}</h5>
             <ul>
-              <li><a href="/de/beglaubigte-uebersetzungen">{t('pricing.card1.name')}</a></li>
-              <li><a href="/de/fachuebersetzungen">{t('foot.fach')}</a></li>
-              <li><a href="/de/dolmetschen">{t('foot.dolm')}</a></li>
-              <li><a href="#services">{t('foot.job')}</a></li>
-              <li><a href="#services">{t('foot.lang')}</a></li>
+              <li><a href="/leistungen">{t('pricing.card1.name')}</a></li>
+              <li><a href="/leistungen">{t('foot.fach')}</a></li>
+              <li><a href="/leistungen">{t('foot.dolm')}</a></li>
+              <li><a href="/leistungen">{t('foot.job')}</a></li>
+              <li><a href="/leistungen">{t('foot.lang')}</a></li>
             </ul>
           </div>
 
@@ -60,12 +55,12 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.locations')}</h5>
             <ul>
-              <li><a href="/de/standorte/osnabrueck">Osnabrück</a></li>
-              <li><a href="/de/standorte/stuttgart">Stuttgart</a></li>
-              <li><a href="/de/standorte/berlin">Berlin</a></li>
-              <li><a href="/de/standorte/bielefeld">Bielefeld</a></li>
-              <li><a href="/de/standorte/mainz">Mainz</a></li>
-              <li><a href="/de/standorte/kiel">Kiel</a></li>
+              <li><a href="/#branches">Osnabrück</a></li>
+              <li><a href="/#branches">Stuttgart</a></li>
+              <li><a href="/#branches">Berlin</a></li>
+              <li><a href="/#branches">Bielefeld</a></li>
+              <li><a href="/#branches">Mainz</a></li>
+              <li><a href="/#branches">Kiel</a></li>
             </ul>
           </div>
 
@@ -73,9 +68,13 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.company')}</h5>
             <ul>
-              <li><a href="#">{t('foot.about_link')}</a></li>
-              <li><a href="#">{t('foot.career')}</a></li>
-              <li><a href="#">{t('foot.press')}</a></li>
+              <li><a href="/#hero">{t('foot.about_link')}</a></li>
+              <li><a href={careerMail}>{t('foot.career')}</a></li>
+              <li>
+                <button type="button" className="foot-legal-link" onClick={() => window.dispatchEvent(new Event('openCookieSettings'))}>
+                  {t('foot.press')}
+                </button>
+              </li>
               <li>
                 <button type="button" className="foot-legal-link" onClick={() => openLegal('datenschutz')}>
                   {t('foot.privacy')}
@@ -96,7 +95,7 @@ export default function Footer() {
                   {t('foot.cookies')}
                 </button>
               </li>
-              <li><a href="#contact">{t('foot.contact')}</a></li>
+              <li><a href="/angebot#contact">{t('foot.contact')}</a></li>
             </ul>
           </div>
 

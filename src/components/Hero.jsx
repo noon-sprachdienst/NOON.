@@ -74,7 +74,7 @@ export default function Hero() {
               className="hero-svc-btn hero-svc-btn--primary"
               data-analytics-action="hero_translation"
               type="button"
-              onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onClick={() => { window.location.href = '/angebot'; }}
             >
               <span className="hero-svc-icon" aria-hidden="true">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -94,7 +94,7 @@ export default function Hero() {
               className="hero-svc-btn hero-svc-btn--secondary"
               data-analytics-action="hero_interpreting"
               type="button"
-              onClick={() => document.getElementById('dolmetschen')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onClick={() => { window.location.href = '/angebot'; }}
             >
               <span className="hero-svc-icon" aria-hidden="true">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -187,7 +187,7 @@ function HeroActions({ t, className }) {
         className="hero-svc-btn hero-svc-btn--primary"
         data-analytics-action="hero_translation"
         type="button"
-        onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        onClick={() => { window.location.href = '/angebot'; }}
       >
         <span className="hero-svc-icon" aria-hidden="true">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -207,7 +207,7 @@ function HeroActions({ t, className }) {
         className="hero-svc-btn hero-svc-btn--secondary"
         data-analytics-action="hero_interpreting"
         type="button"
-        onClick={() => document.getElementById('dolmetschen')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        onClick={() => { window.location.href = '/angebot'; }}
       >
         <span className="hero-svc-icon" aria-hidden="true">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">

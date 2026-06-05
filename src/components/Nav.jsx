@@ -9,6 +9,8 @@ export default function Nav() {
   const switcherRef = useRef(null);
   const isHome = window.location.pathname === '/';
   const homeHref = (hash) => (isHome ? hash : `/${hash}`);
+  const servicesHref = '/leistungen';
+  const quoteHref = '/angebot';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -48,7 +50,7 @@ export default function Nav() {
 
         <div className="nav-links">
           <a href="/">{t('nav.home')}</a>
-          <a href={homeHref('#services')}>{t('nav.services')}</a>
+          <a href={servicesHref}>{t('nav.services')}</a>
           <a href="/preise">{t('nav.prices')}</a>
           <a href={homeHref('#branches')}>{t('nav.locations')}</a>
           <a href={homeHref('#faq')}>{t('nav.faq')}</a>
@@ -89,7 +91,7 @@ export default function Nav() {
           </div>
 
           <a
-            href={homeHref('#contact')}
+            href={quoteHref}
             className="btn btn-primary btn-sm"
             style={{ fontWeight: 700, background: 'rgb(29, 226, 29)', color: 'white', padding: '12px 12px' }}
           >
@@ -111,7 +113,7 @@ export default function Nav() {
       <div className={`nav-mobile-overlay${mobileOpen ? ' open' : ''}`}>
         <div className="mobile-nav-links">
           <a href="/" onClick={closeMobile}>{t('nav.home')} <span className="ar">→</span></a>
-          <a href={homeHref('#services')} onClick={closeMobile}>{t('nav.services')} <span className="ar">→</span></a>
+          <a href={servicesHref} onClick={closeMobile}>{t('nav.services')} <span className="ar">→</span></a>
           <a href="/preise" onClick={closeMobile}>{t('nav.prices')} <span className="ar">→</span></a>
           <a href={homeHref('#branches')} onClick={closeMobile}>{t('nav.locations')} <span className="ar">→</span></a>
           <a href={homeHref('#faq')} onClick={closeMobile}>{t('nav.faq')} <span className="ar">→</span></a>
@@ -119,7 +121,7 @@ export default function Nav() {
         <div className="mobile-nav-sep"></div>
         <div className="mobile-nav-cta">
           <a
-            href={homeHref('#contact')}
+            href={quoteHref}
             className="btn btn-primary"
             style={{ fontWeight: 700, background: 'rgb(29, 226, 29)', color: 'white' }}
             onClick={closeMobile}

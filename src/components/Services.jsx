@@ -82,7 +82,7 @@ export default function Services() {
               <span className="sfc-num">0,16€</span>
               <span className="sfc-unit">{t('services.feat.unit')}</span>
             </div>
-            <a href="#contact" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
+            <a href="/angebot" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
               {t('services.feat.cta')}
             </a>
           </div>
@@ -112,7 +112,7 @@ export default function Services() {
                     <button
                       key={item.id}
                       type="button"
-                      className={`specialty-side-row specialty-side-row--sub${active?.id === item.id ? ' active' : ''}`}
+                      className={`specialty-side-row specialty-side-row--sub${item.id === 'standesamt-dolmetscher' ? ' specialty-side-row--strong' : ''}${active?.id === item.id ? ' active' : ''}`}
                       onClick={() => setActiveId(item.id)}
                       aria-pressed={active?.id === item.id}
                     >
@@ -145,7 +145,7 @@ export default function Services() {
                   </button>
                 ))}
               </div>
-              <a href="#faq" className="specialty-side-row specialty-side-row--strong">
+              <a href="/#faq" className="specialty-side-row specialty-side-row--strong">
                 {side.faq} <span aria-hidden="true">›</span>
               </a>
             </aside>
@@ -163,7 +163,7 @@ export default function Services() {
                   <li key={example}>{example}</li>
                 ))}
               </ul>
-              <a href="#contact" className="btn btn-secondary btn-sm">
+              <a href="/angebot" className="btn btn-secondary btn-sm">
                 {active?.cta} <span className="arrow">→</span>
               </a>
             </article>

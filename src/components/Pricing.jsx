@@ -76,7 +76,7 @@ export default function Pricing() {
                   <li key={f}>{t(`pricing.${key}.${f}`)}</li>
                 ))}
               </ul>
-              <a href="/#contact" className="btn btn-primary">
+              <a href="/angebot" className="btn btn-primary">
                 {t(`pricing.${key}.btn`)}
               </a>
             </article>
@@ -85,7 +85,7 @@ export default function Pricing() {
 
         <div className="pricing-note" data-reveal="" style={{ '--ri': 0 }}>
           <p>{t('pricing.note')}</p>
-          <a href="/#contact" className="btn btn-secondary btn-sm">
+          <a href="/angebot" className="btn btn-secondary btn-sm">
             {t('pricing.note.cta')} <span className="arrow">→</span>
           </a>
         </div>

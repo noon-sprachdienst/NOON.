@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from './hooks/useI18n';
 
@@ -52,14 +52,21 @@ const META_BY_LANG = {
   },
 };
 
+const REQUEST_PAGE = {
+  title: 'Kostenloses Angebot anfordern | NOON. Sprachdienst',
+  description: 'Senden Sie Ihre Anfrage für Übersetzung oder Dolmetschen. NOON. Sprachdienst prüft Ihre Angaben und erstellt ein kostenloses Angebot.',
+};
+
 export default function App() {
   const { lang, meta, setLang } = useI18n();
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
   const seoPage = getSeoPage(path);
+  const isRequestPage = path === '/angebot' || path === '/quote';
+  const isServicesPage = path === '/leistungen' || path === '/services';
   const isPricingPage = path === '/preise' || path === '/pricing';
   const isSpecialtiesPage = path === '/fachuebersetzungen' || path === '/specialties';
-  const m = seoPage || (isPricingPage ? PRICE_PAGE : META_BY_LANG[lang] || META_BY_LANG.de);
-  const canonicalUrl = getCanonicalUrl(seoPage?.path || (isPricingPage ? '/preise' : isSpecialtiesPage ? '/fachuebersetzungen' : '/'));
+  const m = seoPage || (isRequestPage ? REQUEST_PAGE : isPricingPage ? PRICE_PAGE : META_BY_LANG[lang] || META_BY_LANG.de);
+  const canonicalUrl = getCanonicalUrl(seoPage?.path || (isRequestPage ? '/angebot' : isServicesPage ? '/leistungen' : isPricingPage ? '/preise' : isSpecialtiesPage ? '/fachuebersetzungen' : '/'));
 
   useEffect(() => {
     document.documentElement.lang = meta.html;
@@ -111,7 +118,7 @@ export default function App() {
       const current = new URL(window.location.href);
       if (url.origin !== current.origin) return;
       const nextPathname = normalizePath(url.pathname);
-      if (!['/', '/preise', '/pricing', '/fachuebersetzungen', '/specialties', ...SEO_PATHS].includes(nextPathname)) return;
+      if (!['/', '/angebot', '/quote', '/leistungen', '/services', '/preise', '/pricing', '/fachuebersetzungen', '/specialties', ...SEO_PATHS].includes(nextPathname)) return;
 
       event.preventDefault();
       const next = `${nextPathname}${url.search}${url.hash}`;
@@ -179,9 +186,17 @@ export default function App() {
 
       <Nav />
 
-      <main className={isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
+      <main className={isRequestPage ? 'quote-page' : isServicesPage ? 'services-page' : isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
         {seoPage ? (
           <SeoLanding page={seoPage} />
+        ) : isRequestPage ? (
+          <>
+            <Feature2 />
+            <Feature3 />
+            <HowContact />
+          </>
+        ) : isServicesPage ? (
+          <Services />
         ) : isPricingPage ? (
           <Pricing />
         ) : isSpecialtiesPage ? (
@@ -189,11 +204,8 @@ export default function App() {
         ) : (
           <>
             <Hero />
-            {/* <Feature2 /> */}
-            {/* <Feature3 /> */}
+             <Beratung />
             <StatsStrip />
-            <Services />
-            <Beratung />
             <Specialties />
             <Branches />
             <Testimonials />
@@ -219,6 +231,20 @@ export default function App() {
 
 function FloatingButtons() {
   const [phoneMenuOpen, setPhoneMenuOpen] = useState(false);
+  const phoneMenuRef = useRef(null);
+  const floatingPhoneNumbers = CONTACT.phones;
+
+  useEffect(() => {
+    if (!phoneMenuOpen) return undefined;
+
+    const closeOnOutsideClick = (event) => {
+      if (phoneMenuRef.current?.contains(event.target)) return;
+      setPhoneMenuOpen(false);
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    return () => document.removeEventListener('pointerdown', closeOnOutsideClick);
+  }, [phoneMenuOpen]);
 
   return (
     <>
@@ -234,6 +260,7 @@ function FloatingButtons() {
       </a>
 
       {/* Phone */}
+      <div ref={phoneMenuRef}>
       <button
         type="button"
         className="fab-phone"
@@ -246,13 +273,14 @@ function FloatingButtons() {
       </button>
       {phoneMenuOpen && (
         <div className="fab-phone-menu" role="menu" aria-label="Telefonnummer auswählen">
-          {CONTACT.phones.map((phone) => (
+          {floatingPhoneNumbers.map((phone) => (
             <a key={phone.href} href={phone.href} role="menuitem" onClick={() => setPhoneMenuOpen(false)}>
               {phone.label}
             </a>
           ))}
         </div>
       )}
+      </div>
 
       {/* Email */}
       <a href={`mailto:${CONTACT.email}`} className="fab-email" aria-label="E-Mail senden">

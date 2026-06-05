@@ -84,7 +84,6 @@ Current values:
 Email:     info@noon-sprachdienst.de
 WhatsApp:  +49 160 956 27 666
 Mobile 1:  +49 160 956 27 666
-Mobile 2:  +49 155 607 10 320
 Hours:     Monday-Saturday, 10:00-19:00
 ```
 
