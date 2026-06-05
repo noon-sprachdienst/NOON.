@@ -161,7 +161,7 @@ export function getPageSchema(page) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: page.kind === 'location' ? 'Standorte' : 'Leistungen', item: `${SITE_URL}/#${page.kind === 'location' ? 'branches' : 'services'}` },
+      { '@type': 'ListItem', position: 2, name: page.kind === 'location' ? 'Standorte' : 'Leistungen', item: page.kind === 'location' ? `${SITE_URL}/#branches` : `${SITE_URL}/leistungen` },
       { '@type': 'ListItem', position: 3, name: page.eyebrow, item: getCanonicalUrl(page.path) },
     ],
   };

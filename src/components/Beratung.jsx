@@ -77,7 +77,7 @@ export default function Beratung() {
               ))}
             </div>
             <div className="beratung-ctas">
-              <a href="#contact" className="btn btn-primary">
+              <a href="/angebot" className="btn btn-primary">
                 {t('beratung.appt')} <span className="arrow">→</span>
               </a>
               <a href={CONTACT.phones[0].href} className="btn btn-secondary">

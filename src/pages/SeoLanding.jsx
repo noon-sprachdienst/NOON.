@@ -14,7 +14,7 @@ export default function SeoLanding({ page }) {
             <nav className="seo-breadcrumbs" aria-label="Brotkrümelnavigation">
               <a href="/">Startseite</a>
               <span>/</span>
-              <a href={isLocation ? '/#branches' : '/#services'}>{isLocation ? 'Standorte' : 'Leistungen'}</a>
+              <a href={isLocation ? '/#branches' : '/leistungen'}>{isLocation ? 'Standorte' : 'Leistungen'}</a>
               <span>/</span>
               <strong>{page.eyebrow}</strong>
             </nav>

@@ -1,5 +1,4 @@
-import nodemailer from 'nodemailer';
-import { readFileSync } from 'node:fs';
+﻿import nodemailer from 'nodemailer';
 import { cleanText, readJson, sendJson } from '../_lib/http.js';
 
 const ALLOWED_FILE_TYPES = new Set([
@@ -23,32 +22,6 @@ const FILE_TYPES_BY_EXTENSION = {
 };
 const MAX_FILES = 6;
 const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
-const LOGO_CID = 'noon-email-logo';
-const LOGO_CONTENT = readFileSync(new URL('../../public/assets/noon-email-logo-transparent.png', import.meta.url));
-const SIGNATURE_LINES = [
-  'NOON. Dolmetscher und Übersetzungsbüro',
-  'Alle Sprachen',
-  '',
-  'Zentrale:',
-  'Möserstr. 14',
-  '49074 Osnabrück',
-  '',
-  'Standorte:',
-  'Osnabrück · Stuttgart · Berlin · Bielefeld · Mainz · Kiel',
-  'Alle Standorte und Adressen: https://www.noon-sprachdienst.de/#branches',
-  '',
-  'Mobil: +49 160 956 27 666',
-  '       +49 155 607 10 320',
-  '',
-  'info@noon-sprachdienst.de',
-  'www.noon-sprachdienst.de',
-  '',
-  'Landgericht Hannover 316E2-45/24',
-  'Geschäftsführer/in: M. Celik  •  M. Elsharkawei',
-  '',
-  'Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB) sowie unsere Datenschutzerklärung, die Sie auf unserer Website jederzeit einsehen können. Mit der Beauftragung erkennen Sie diese ausdrücklich an.',
-];
-
 function validateOrigin(req) {
   if (!req.headers.origin) return true;
   try {
@@ -151,9 +124,6 @@ export default async function handler(req, res) {
         '',
         'Nachricht:',
         fields.message,
-        '',
-        '---',
-        ...SIGNATURE_LINES,
       ].join('\n'),
       html: `
         <div style="font-family:Arial,sans-serif;color:#1a1a1a;font-size:14px;line-height:1.55">
@@ -168,57 +138,9 @@ export default async function handler(req, res) {
             <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}
           </p>
           <p><strong>Nachricht:</strong><br>${escapeHtml(fields.message).replace(/\n/g, '<br>')}</p>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top:1px solid #dddddd;margin-top:28px">
-            <tr>
-              <td align="center" style="padding:24px 14px 0">
-                <img src="cid:${LOGO_CID}" alt="NOON." width="138" style="display:block;width:138px;height:auto;margin:0 auto 16px">
-                <div style="font-size:14px;font-weight:700;color:#171717">NOON. Dolmetscher und Übersetzungsbüro</div>
-                <div style="font-size:12px;color:#a4192c;margin-top:2px">Alle Sprachen</div>
-              </td>
-            </tr>
-            <tr>
-              <td align="center" style="padding:16px 14px 0;color:#333333;font-size:12px;line-height:1.65">
-                <strong>Zentrale:</strong> Möserstr. 14 · 49074 Osnabrück<br>
-                <strong>Standorte:</strong> Osnabrück · Stuttgart · Berlin · Bielefeld · Mainz · Kiel<br>
-                <a href="https://www.noon-sprachdienst.de/#branches" style="color:#a4192c;text-decoration:none;font-weight:700">Alle Standorte und Adressen ansehen</a>
-              </td>
-            </tr>
-            <tr>
-              <td align="center" style="padding:15px 14px 0;color:#333333;font-size:12px;line-height:1.65">
-                <strong>Mobil:</strong>
-                <a href="tel:+4916095627666" style="color:#333333;text-decoration:none">+49 160 956 27 666</a>
-                &nbsp;·&nbsp;
-                <a href="tel:+4915560710320" style="color:#333333;text-decoration:none">+49 155 607 10 320</a><br>
-                <a href="mailto:info@noon-sprachdienst.de" style="color:#a4192c;text-decoration:none">info@noon-sprachdienst.de</a>
-                &nbsp;·&nbsp;
-                <a href="https://www.noon-sprachdienst.de" style="color:#a4192c;text-decoration:none">www.noon-sprachdienst.de</a>
-              </td>
-            </tr>
-            <tr>
-              <td align="center" style="padding:15px 14px 0;color:#555555;font-size:11px;line-height:1.65">
-                Landgericht Hannover 316E2-45/24<br>
-                Geschäftsführer/in: M. Celik &nbsp;•&nbsp; M. Elsharkawei
-              </td>
-            </tr>
-            <tr>
-              <td align="center" style="padding:14px 14px 4px;color:#777777;font-size:10px;line-height:1.55">
-                Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB) sowie unsere Datenschutzerklärung, die Sie auf unserer Website jederzeit einsehen können.<br>
-                Mit der Beauftragung erkennen Sie diese ausdrücklich an.
-              </td>
-            </tr>
-          </table>
         </div>
       `,
-      attachments: [
-        ...attachments,
-        {
-          filename: 'noon-logo.png',
-          content: LOGO_CONTENT,
-          contentType: 'image/png',
-          cid: LOGO_CID,
-          disposition: 'inline',
-        },
-      ],
+      attachments,
     });
 
     return sendJson(res, 202, { ok: true });
@@ -227,3 +149,4 @@ export default async function handler(req, res) {
     return sendJson(res, 503, { error: 'Message delivery unavailable.' });
   }
 }
+

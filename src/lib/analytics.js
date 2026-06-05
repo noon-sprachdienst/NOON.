@@ -99,7 +99,7 @@ function actionFromLink(link) {
   if (href.startsWith('https://wa.me/')) return 'whatsapp';
   if (href.startsWith('tel:')) return 'phone';
   if (href.startsWith('mailto:')) return 'email';
-  if (href.includes('#contact')) return 'quote_request';
+  if (href.includes('#contact') || href === '/angebot' || href === '/quote') return 'quote_request';
   return '';
 }
 
