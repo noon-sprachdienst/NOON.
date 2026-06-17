@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { I18nProvider } from './hooks/useI18n';
 import App from './App.jsx';
-import Admin from './pages/Admin.jsx';
 import './styles/global.css';
-import 'leaflet/dist/leaflet.css';
+
+const Admin = lazy(() => import('./pages/Admin.jsx'));
 
 const isAdmin = window.location.pathname === '/admin';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {isAdmin ? (
-      <Admin />
+      <Suspense fallback={null}>
+        <Admin />
+      </Suspense>
     ) : (
       <HelmetProvider>
         <I18nProvider>

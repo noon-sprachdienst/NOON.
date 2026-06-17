@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 const LANG_KEY       = 'noon_admin_lang';
-const DEV_ADMIN_PASSWORD = 'NoonPreview2026!';
 
 /* ─── Translations ─────────────────────────────────────── */
 const T = {
@@ -216,10 +215,6 @@ function LoginScreen({ onLogin, lang, setLang }) {
   const t = T[lang];
   const submit = async (e) => {
     e.preventDefault();
-    if (import.meta.env.DEV && pw === DEV_ADMIN_PASSWORD) {
-      onLogin();
-      return;
-    }
     try {
       const response = await fetch('/api/admin/login', {
         method: 'POST',

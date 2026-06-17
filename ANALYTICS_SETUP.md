@@ -32,9 +32,4 @@ Use `vercel dev` instead of `npm run dev` when testing the Vercel API endpoints 
 
 ## Local Admin Preview
 
-When using the Vite development server, `/admin` can be opened with the preview-only password:
-
-`NoonPreview2026!`
-
-This development fallback is not accepted by the deployed production API. The live site uses `ADMIN_PASSWORD`
-from the Vercel environment variables.
+Admin login uses the API password from `ADMIN_PASSWORD`. Use `vercel dev` for local admin testing so the Vercel API routes and environment variables are available.

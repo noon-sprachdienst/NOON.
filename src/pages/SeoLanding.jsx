@@ -1,20 +1,98 @@
 import HowContact from '../components/HowContact.jsx';
 import { CONTACT } from '../config/contact.js';
 import { LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
+import { getServiceNavigation } from '../data/serviceContent.js';
+
+const UI = {
+  de: {
+    home: 'Startseite',
+    services: 'Leistungen',
+    locations: 'Standorte',
+    quote: 'Kostenloses Angebot anfordern',
+    reachable: 'Persönlich erreichbar.',
+    hours: 'Mo – Sa · 10:00 – 19:00 Uhr',
+    faq: 'Häufige Fragen',
+  },
+  en: {
+    home: 'Home',
+    services: 'Services',
+    locations: 'Locations',
+    quote: 'Request a free quote',
+    reachable: 'Personally available.',
+    hours: 'Mon – Sat · 10:00 – 19:00',
+    faq: 'Frequently asked questions',
+  },
+  ar: {
+    home: 'الرئيسية',
+    services: 'الخدمات',
+    locations: 'الفروع',
+    quote: 'اطلب عرضا مجانيا',
+    reachable: 'تواصل شخصي وسريع.',
+    hours: 'الإثنين – السبت · 10:00 – 19:00',
+    faq: 'أسئلة شائعة',
+  },
+  tr: {
+    home: 'Ana sayfa',
+    services: 'Hizmetler',
+    locations: 'Şubeler',
+    quote: 'Ücretsiz teklif iste',
+    reachable: 'Kişisel destek.',
+    hours: 'Pzt – Cmt · 10:00 – 19:00',
+    faq: 'Sık sorulan sorular',
+  },
+  ru: {
+    home: 'Главная',
+    services: 'Услуги',
+    locations: 'Филиалы',
+    quote: 'Отправить запрос',
+    reachable: 'Личная поддержка.',
+    hours: 'Пн – Сб · 10:00 – 19:00',
+    faq: 'Частые вопросы',
+  },
+  fr: {
+    home: 'Accueil',
+    services: 'Services',
+    locations: 'Agences',
+    quote: 'Demander un devis gratuit',
+    reachable: 'Conseil personnalisé.',
+    hours: 'Lun – Sam · 10:00 – 19:00',
+    faq: 'Questions fréquentes',
+  },
+  uk: {
+    home: 'Головна',
+    services: 'Послуги',
+    locations: 'Філії',
+    quote: 'Надіслати запит',
+    reachable: 'Особиста підтримка.',
+    hours: 'Пн – Сб · 10:00 – 19:00',
+    faq: 'Поширені питання',
+  },
+};
 
 export default function SeoLanding({ page }) {
   const isLocation = page.kind === 'location';
-  const relatedServices = SEO_PAGES.filter((item) => item.kind === 'service');
+  const copy = UI[page.lang] || UI.de;
+  const relatedServices = getServiceNavigation(page.lang)
+    .map((service) => SEO_PAGES.find((item) => (
+      item.kind === 'service'
+      && item.lang === page.lang
+      && item.serviceNavId === service.id
+    )))
+    .filter(Boolean);
+  const getLocationHref = (slug) => (
+    SEO_PAGES.find((item) => item.kind === 'location' && item.lang === page.lang && item.location?.slug === slug)?.path
+    || `/de/standorte/${slug}`
+  );
 
   return (
     <div className="seo-page">
       <section className="seo-hero">
         <div className="container seo-hero-grid">
           <div>
-            <nav className="seo-breadcrumbs" aria-label="Brotkrümelnavigation">
-              <a href="/">Startseite</a>
+            <nav className="seo-breadcrumbs" aria-label="Breadcrumb">
+              <a href="/">{copy.home}</a>
               <span>/</span>
-              <a href={isLocation ? '/#branches' : '/leistungen'}>{isLocation ? 'Standorte' : 'Leistungen'}</a>
+              <a href={isLocation ? '/#branches' : '/leistungen'}>{isLocation ? copy.locations : copy.services}</a>
               <span>/</span>
               <strong>{page.eyebrow}</strong>
             </nav>
@@ -22,16 +100,16 @@ export default function SeoLanding({ page }) {
             <h1>{page.title}</h1>
             <p>{page.intro}</p>
             <div className="seo-actions">
-              <a href="#contact" className="btn btn-primary">Kostenloses Angebot anfordern <span className="arrow">→</span></a>
+              <a href="#contact" className="btn btn-primary">{page.cta || copy.quote} <span className="arrow">→</span></a>
               <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">WhatsApp</a>
             </div>
           </div>
           <aside className="seo-quick-card">
             <span>NOON. Sprachdienst</span>
-            <h2>Persönlich erreichbar.</h2>
+            <h2>{copy.reachable}</h2>
             <a href={CONTACT.phones[0].href}>{CONTACT.phones[0].label}</a>
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-            <small>Mo – Sa · 10:00 – 19:00 Uhr</small>
+            <small>{copy.hours}</small>
           </aside>
         </div>
       </section>
@@ -51,6 +129,19 @@ export default function SeoLanding({ page }) {
                 <p>{text}</p>
               </section>
             ))}
+            {!!page.faqs?.length && (
+              <section className="seo-copy-block">
+                <h2>{copy.faq}</h2>
+                <div className="seo-faq-list">
+                  {page.faqs.map(([question, answer]) => (
+                    <details key={question}>
+                      <summary>{question}</summary>
+                      <p>{answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
           </article>
           <aside className="seo-related">
             {isLocation && (
@@ -60,11 +151,11 @@ export default function SeoLanding({ page }) {
                 <p>{page.location.postalCode} {page.location.city}</p>
               </>
             )}
-            <h3>{isLocation ? 'Leistungen' : 'Unsere Standorte'}</h3>
+            <h3>{isLocation ? copy.services : copy.locations}</h3>
             <div className="seo-link-list">
               {(isLocation ? relatedServices : LOCATIONS).map((item) => {
-                const href = isLocation ? item.path : `/de/standorte/${item.slug}`;
-                const label = isLocation ? item.eyebrow : item.city;
+                const href = isLocation ? item.path : getLocationHref(item.slug);
+                const label = isLocation ? (item.serviceType || item.eyebrow) : item.city;
                 return <a key={href} href={href}>{label}<span>›</span></a>;
               })}
             </div>

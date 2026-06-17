@@ -2,13 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 
 const REEL_WORDS = [
-  { lang: 'de', text: 'Übersetzung' },
-  { lang: 'en', text: 'Translation' },
-  { lang: 'ar', text: 'ترجمة', rtl: true },
-  { lang: 'ru', text: 'Перевод' },
-  { lang: 'tr', text: 'Çeviri' },
-  { lang: 'fr', text: 'Traduction' },
-  { lang: 'uk', text: 'Переклад' },
+  { lang: 'ar', text: '\u062a\u0631\u062c\u0645\u0629 \u0645\u0639\u062a\u0645\u062f\u0629', rtl: true },
+  { lang: 'de', text: 'Beglaubigte \u00dcbersetzung' },
+  { lang: 'fr', text: 'Traduction certifi\u00e9e' },
+  { lang: 'uk', text: '\u0417\u0430\u0432\u0456\u0440\u0435\u043d\u0438\u0439 \u043f\u0435\u0440\u0435\u043a\u043b\u0430\u0434' },
+  { lang: 'ru', text: '\u0417\u0430\u0432\u0435\u0440\u0435\u043d\u043d\u044b\u0439 \u043f\u0435\u0440\u0435\u0432\u043e\u0434' },
+  { lang: 'pt', text: 'Tradu\u00e7\u00e3o juramentada' },
+  { lang: 'bg', text: '\u0417\u0430\u0432\u0435\u0440\u0435\u043d \u043f\u0440\u0435\u0432\u043e\u0434' },
+  { lang: 'ro', text: 'Traducere autorizat\u0103' },
+  { lang: 'es', text: 'Traducci\u00f3n jurada' },
+  { lang: 'fa', text: '\u062a\u0631\u062c\u0645\u0629 \u0631\u0633\u0645\u064a', rtl: true },
+  { lang: 'tr', text: 'Yeminli Terc\u00fcme' },
+  { lang: 'pl', text: 'T\u0142umaczenie po\u015bwiadczone' },
+  { lang: 'sq', text: 'P\u00ebrkthim i certifikuar' },
 ];
 
 const COUNTERS = [
@@ -59,7 +65,7 @@ export default function Hero() {
             {REEL_WORDS.map((w, i) => (
               <span
                 key={w.lang}
-                className={`lang-reel-word${i === reelIndex ? ' reel-in' : ''}`}
+                className={`lang-reel-word reel-word--${w.lang}${i === reelIndex ? ' reel-in' : ''}`}
                 style={w.rtl ? { direction: 'rtl', unicodeBidi: 'bidi-override' } : undefined}
               >
                 {w.text}
@@ -97,12 +103,7 @@ export default function Hero() {
               onClick={() => { window.location.href = '/angebot'; }}
             >
               <span className="hero-svc-icon" aria-hidden="true">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                  <line x1="12" y1="19" x2="12" y2="23" />
-                  <line x1="8" y1="23" x2="16" y2="23" />
-                </svg>
+                <img className="hero-svc-img-icon" src="/assets/person talking.png" alt="" width="30" height="30" />
               </span>
               {t('service.interpreting')}
             </button>
@@ -149,7 +150,7 @@ function TabletHero({ t, isRTL, reelIndex }) {
             {REEL_WORDS.map((word, index) => (
               <span
                 key={word.lang}
-                className={`tablet-lang-reel-word${index === reelIndex ? ' is-active' : ''}`}
+                className={`tablet-lang-reel-word reel-word--${word.lang}${index === reelIndex ? ' is-active' : ''}`}
                 style={word.rtl ? { direction: 'rtl', unicodeBidi: 'bidi-override' } : undefined}
               >
                 {word.text}
@@ -157,7 +158,7 @@ function TabletHero({ t, isRTL, reelIndex }) {
             ))}
           </div>
 
-          <p className="tablet-hero-lead">{t('hero.lead')}</p>
+          <p className="tablet-hero-lead ">{t('hero.lead')}</p>
 
           <HeroActions t={t} className="tablet-hero-actions" />
 
@@ -210,12 +211,7 @@ function HeroActions({ t, className }) {
         onClick={() => { window.location.href = '/angebot'; }}
       >
         <span className="hero-svc-icon" aria-hidden="true">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
-          </svg>
+          <img className="hero-svc-img-icon" src="/assets/person talking.png" alt="" width="22" height="18" />
         </span>
         {t('service.interpreting')}
       </button>

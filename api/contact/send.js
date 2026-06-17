@@ -47,7 +47,11 @@ function escapeHtml(value) {
 
 function getAttachments(files) {
   if (!files?.length) return [];
-  if (files.length > MAX_FILES) throw new Error('Too many attachments.');
+  if (files.length > MAX_FILES) {
+    const error = new Error('Too many attachments.');
+    error.statusCode = 400;
+    throw error;
+  }
 
   let totalBytes = 0;
   return files.map((file) => {
@@ -56,11 +60,17 @@ function getAttachments(files) {
     const contentType = cleanText(file.type, 80) || FILE_TYPES_BY_EXTENSION[extension];
     const content = typeof file.content === 'string' ? file.content : '';
     if (!name || !FILE_TYPES_BY_EXTENSION[extension] || !ALLOWED_FILE_TYPES.has(contentType) || !content) {
-      throw new Error('Unsupported attachment.');
+      const error = new Error('Unsupported attachment.');
+      error.statusCode = 400;
+      throw error;
     }
     const buffer = Buffer.from(content, 'base64');
     totalBytes += buffer.length;
-    if (!buffer.length || totalBytes > MAX_TOTAL_FILE_BYTES) throw new Error('Attachments are too large.');
+    if (!buffer.length || totalBytes > MAX_TOTAL_FILE_BYTES) {
+      const error = new Error('Attachments are too large.');
+      error.statusCode = 413;
+      throw error;
+    }
     return { filename: name, content: buffer, contentType };
   });
 }
@@ -76,22 +86,30 @@ export default async function handler(req, res) {
       return sendJson(res, 400, { error: 'Please try again.' });
     }
 
+    const service = cleanText(body.service, 40) || '-';
+    const isAppointment = service === 'appointment';
     const firstName = cleanText(body.firstName, 80);
     const lastName = cleanText(body.lastName, 80);
+    const fullName = cleanText(body.name, 160) || `${firstName} ${lastName}`.trim();
     const email = cleanEmail(body.email);
-    if (!firstName || !lastName || !email) {
+    const phone = cleanText(body.phone, 60);
+    if (isAppointment) {
+      if (!fullName || !phone) return sendJson(res, 400, { error: 'Missing required appointment details.' });
+    } else if (!firstName || !lastName || !email) {
       return sendJson(res, 400, { error: 'Missing required contact details.' });
     }
 
     const fields = {
-      name: `${firstName} ${lastName}`,
-      email,
-      phone: cleanText(body.phone, 60) || '-',
-      service: cleanText(body.service, 40) || '-',
+      name: fullName,
+      email: email || '-',
+      phone: phone || '-',
+      service,
       sourceLanguage: cleanText(body.sourceLanguage, 80) || '-',
       targetLanguage: cleanText(body.targetLanguage, 80) || '-',
       message: cleanText(body.message, 3000) || '-',
       language: cleanText(body.language, 8) || '-',
+      appointmentLocation: cleanText(body.appointmentLocation, 120) || '-',
+      appointmentTime: cleanText(body.appointmentTime, 80) || '-',
     };
     const attachments = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
     const recipient = process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de';
@@ -111,13 +129,17 @@ export default async function handler(req, res) {
     await transporter.sendMail({
       from: `"NOON Website Anfrage" <${process.env.SMTP_USER}>`,
       to: recipient,
-      replyTo: fields.email,
+      replyTo: email || undefined,
       subject: `Neue Website-Anfrage: ${fields.service}`,
       text: [
         `Name: ${fields.name}`,
         `E-Mail: ${fields.email}`,
         `Telefon / WhatsApp: ${fields.phone}`,
         `Leistung: ${fields.service}`,
+        ...(isAppointment ? [
+          `Standort: ${fields.appointmentLocation}`,
+          `Gewuenschte Uhrzeit: ${fields.appointmentTime}`,
+        ] : []),
         `Ausgangssprache: ${fields.sourceLanguage}`,
         `Zielsprache: ${fields.targetLanguage}`,
         `Website-Sprache: ${fields.language}`,
@@ -133,6 +155,8 @@ export default async function handler(req, res) {
             <strong>E-Mail:</strong> ${escapeHtml(fields.email)}<br>
             <strong>Telefon / WhatsApp:</strong> ${escapeHtml(fields.phone)}<br>
             <strong>Leistung:</strong> ${escapeHtml(fields.service)}<br>
+            ${isAppointment ? `<strong>Standort:</strong> ${escapeHtml(fields.appointmentLocation)}<br>
+            <strong>Gewünschte Uhrzeit:</strong> ${escapeHtml(fields.appointmentTime)}<br>` : ''}
             <strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
             <strong>Zielsprache:</strong> ${escapeHtml(fields.targetLanguage)}<br>
             <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}
@@ -146,6 +170,8 @@ export default async function handler(req, res) {
     return sendJson(res, 202, { ok: true });
   } catch (error) {
     console.error('contact form error', error.message);
+    if (error.statusCode === 400) return sendJson(res, 400, { error: error.message });
+    if (error.statusCode === 413) return sendJson(res, 413, { error: error.message });
     return sendJson(res, 503, { error: 'Message delivery unavailable.' });
   }
 }

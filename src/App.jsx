@@ -1,33 +1,59 @@
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelopeCircleCheck, faPhoneVolume } from '@fortawesome/free-solid-svg-icons';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { useI18n } from './hooks/useI18n';
 
 import Nav from './components/Nav.jsx';
 import Hero from './components/Hero.jsx';
-import Feature2 from './components/Feature2.jsx';
-import Feature3 from './components/Feature3.jsx';
+// const Feature2 = lazy(() => import('./components/Feature2.jsx'));
+// const Feature3 = lazy(() => import('./components/Feature3.jsx'));
 import StatsStrip from './components/StatsStrip.jsx';
-import Services from './components/Services.jsx';
+const Services = lazy(() => import('./components/Services.jsx'));
 import Beratung from './components/Beratung.jsx';
-import Pricing from './components/Pricing.jsx';
-import Branches from './components/Branches.jsx';
-import Testimonials from './components/Testimonials.jsx';
-import HowContact from './components/HowContact.jsx';
-import FAQ from './components/FAQ.jsx';
+const Pricing = lazy(() => import('./components/Pricing.jsx'));
+const Branches = lazy(() => import('./components/Branches.jsx'));
+const Testimonials = lazy(() => import('./components/Testimonials.jsx'));
+const HowContact = lazy(() => import('./components/HowContact.jsx'));
+const FAQ = lazy(() => import('./components/FAQ.jsx'));
 import Footer from './components/Footer.jsx';
-import Specialties from './pages/Specialties.jsx';
-import SeoLanding from './pages/SeoLanding.jsx';
+const Specialties = lazy(() => import('./pages/Specialties.jsx'));
+const SeoLanding = lazy(() => import('./pages/SeoLanding.jsx'));
+const Application = lazy(() => import('./pages/Application.jsx'));
+const Appointment = lazy(() => import('./pages/Appointment.jsx'));
 import CookieConsent from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
 import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
 import { CONTACT } from './config/contact.js';
-import { getCanonicalUrl, getSeoPage, PRICE_PAGE, SEO_PATHS } from './data/seoPages.js';
+import { getCanonicalUrl, getLanguageAlternates, getPricingPage, getSeoPage, PRICE_PAGES, SEO_LANGUAGES, SEO_PATHS } from './data/seoPages.js';
 
 
 const normalizePath = (value) => {
   const clean = value.replace(/\/+$/, '');
   return clean || '/';
 };
+
+const LANGUAGE_HOME_CODES = ['de', 'en', 'ar', 'tr', 'ru', 'fr', 'uk'];
+const LANGUAGE_HOME_PATHS = LANGUAGE_HOME_CODES.map((code) => `/${code}`);
+const SIMPLE_APP_PATHS = ['/angebot', '/quote', '/termin', '/termin-anfragen', '/appointment', '/bewerbung', '/leistungen', '/services', '/fachuebersetzungen', '/specialties'];
+const LOCALIZED_SIMPLE_APP_PATHS = LANGUAGE_HOME_CODES.flatMap((code) => SIMPLE_APP_PATHS.map((simplePath) => `/${code}${simplePath}`));
+
+const getSimpleRoute = (value) => {
+  const clean = normalizePath(value);
+  const [, code, rest = ''] = clean.match(/^\/(de|en|ar|tr|ru|fr|uk)(\/.*)?$/) || [];
+  const innerPath = normalizePath(rest || '/');
+  if (code && SIMPLE_APP_PATHS.includes(innerPath)) return { lang: code, path: innerPath };
+  if (SIMPLE_APP_PATHS.includes(clean)) return { lang: null, path: clean };
+  return { lang: null, path: clean };
+};
+
+const getLocalizedSimplePath = (simplePath, code) => (code === 'de' ? simplePath : `/${code}${simplePath}`);
+
+const getSimpleAlternates = (simplePath) => Object.keys(SEO_LANGUAGES).map((code) => ({
+  lang: SEO_LANGUAGES[code].html,
+  href: getCanonicalUrl(getLocalizedSimplePath(simplePath, code)),
+}));
 
 const META_BY_LANG = {
   de: {
@@ -57,16 +83,34 @@ const REQUEST_PAGE = {
   description: 'Senden Sie Ihre Anfrage für Übersetzung oder Dolmetschen. NOON. Sprachdienst prüft Ihre Angaben und erstellt ein kostenloses Angebot.',
 };
 
+const APPLICATION_PAGE = {
+  title: 'Bewerbung einreichen | NOON. Sprachdienst',
+  description: 'Bewerben Sie sich als Dolmetscher, Uebersetzer oder Sprachmittler im Netzwerk von NOON. Sprachdienst.',
+};
+
 export default function App() {
   const { lang, meta, setLang } = useI18n();
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
   const seoPage = getSeoPage(path);
-  const isRequestPage = path === '/angebot' || path === '/quote';
-  const isServicesPage = path === '/leistungen' || path === '/services';
-  const isPricingPage = path === '/preise' || path === '/pricing';
-  const isSpecialtiesPage = path === '/fachuebersetzungen' || path === '/specialties';
-  const m = seoPage || (isRequestPage ? REQUEST_PAGE : isPricingPage ? PRICE_PAGE : META_BY_LANG[lang] || META_BY_LANG.de);
-  const canonicalUrl = getCanonicalUrl(seoPage?.path || (isRequestPage ? '/angebot' : isServicesPage ? '/leistungen' : isPricingPage ? '/preise' : isSpecialtiesPage ? '/fachuebersetzungen' : '/'));
+  const pricingPage = getPricingPage(path);
+  const simpleRoute = getSimpleRoute(path);
+  const languageHomeLang = LANGUAGE_HOME_CODES.includes(path.slice(1)) ? path.slice(1) : null;
+  const isRequestPage = simpleRoute.path === '/angebot' || simpleRoute.path === '/quote';
+  const isAppointmentPage = simpleRoute.path === '/termin' || simpleRoute.path === '/termin-anfragen' || simpleRoute.path === '/appointment';
+  const isApplicationPage = simpleRoute.path === '/bewerbung';
+  const isServicesPage = simpleRoute.path === '/leistungen' || simpleRoute.path === '/services';
+  const isPricingPage = !!pricingPage;
+  const isSpecialtiesPage = simpleRoute.path === '/fachuebersetzungen' || simpleRoute.path === '/specialties';
+  const simpleCanonicalPath = isRequestPage ? '/angebot' : isAppointmentPage ? '/termin' : isApplicationPage ? '/bewerbung' : isServicesPage ? '/leistungen' : isSpecialtiesPage ? '/fachuebersetzungen' : null;
+  const m = seoPage || (isRequestPage ? REQUEST_PAGE : isAppointmentPage ? REQUEST_PAGE : isApplicationPage ? APPLICATION_PAGE : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
+  const canonicalUrl = getCanonicalUrl(seoPage?.path || pricingPage?.path || (simpleCanonicalPath ? getLocalizedSimplePath(simpleCanonicalPath, simpleRoute.lang || lang) : languageHomeLang ? (languageHomeLang === 'de' ? '/' : `/${languageHomeLang}`) : '/'));
+  const languageAlternates = seoPage ? getLanguageAlternates(seoPage) : (pricingPage ? PRICE_PAGES.map((page) => ({
+    lang: SEO_LANGUAGES[page.lang].html,
+    href: getCanonicalUrl(page.path),
+  })) : (simpleCanonicalPath ? getSimpleAlternates(simpleCanonicalPath) : ((languageHomeLang || path === '/') ? Object.keys(SEO_LANGUAGES).map((code) => ({
+    lang: SEO_LANGUAGES[code].html,
+    href: getCanonicalUrl(code === 'de' ? '/' : `/${code}`),
+  })) : [])));
 
   useEffect(() => {
     document.documentElement.lang = meta.html;
@@ -74,8 +118,11 @@ export default function App() {
   }, [meta]);
 
   useEffect(() => {
-    if (seoPage && lang !== 'de') setLang('de');
-  }, [seoPage, lang, setLang]);
+    if (seoPage?.lang && lang !== seoPage.lang) setLang(seoPage.lang);
+    else if (pricingPage?.lang && lang !== pricingPage.lang) setLang(pricingPage.lang);
+    else if (simpleRoute.lang && lang !== simpleRoute.lang) setLang(simpleRoute.lang);
+    else if (languageHomeLang && lang !== languageHomeLang) setLang(languageHomeLang);
+  }, [seoPage, pricingPage, simpleRoute.lang, languageHomeLang, lang, setLang]);
 
   useEffect(() => initializeAnalytics(), []);
 
@@ -118,7 +165,7 @@ export default function App() {
       const current = new URL(window.location.href);
       if (url.origin !== current.origin) return;
       const nextPathname = normalizePath(url.pathname);
-      if (!['/', '/angebot', '/quote', '/leistungen', '/services', '/preise', '/pricing', '/fachuebersetzungen', '/specialties', ...SEO_PATHS].includes(nextPathname)) return;
+      if (!['/', ...LANGUAGE_HOME_PATHS, ...SIMPLE_APP_PATHS, ...LOCALIZED_SIMPLE_APP_PATHS, '/pricing', ...PRICE_PAGES.map((page) => page.path), ...SEO_PATHS].includes(nextPathname)) return;
 
       event.preventDefault();
       const next = `${nextPathname}${url.search}${url.hash}`;
@@ -174,27 +221,33 @@ export default function App() {
   return (
     <>
       <Helmet htmlAttributes={{ lang: meta.html, dir: meta.dir }}>
-        <title>{m.title}</title>
+        <title>{m.metaTitle || m.title}</title>
         <meta name="description" content={m.description} />
-        <meta property="og:title" content={m.title} />
+        <meta property="og:title" content={m.metaTitle || m.title} />
         <meta property="og:description" content={m.description} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta name="twitter:title" content={m.title} />
+        <meta name="twitter:title" content={m.metaTitle || m.title} />
         <meta name="twitter:description" content={m.description} />
         <link rel="canonical" href={canonicalUrl} />
+        {languageAlternates.map((item) => (
+          <link key={item.lang} rel="alternate" hrefLang={item.lang} href={item.href} />
+        ))}
+        {seoPage && <link rel="alternate" hrefLang="x-default" href={getCanonicalUrl('/de/beglaubigte-uebersetzungen')} />}
+        {!seoPage && (languageHomeLang || path === '/') && <link rel="alternate" hrefLang="x-default" href={getCanonicalUrl('/')} />}
       </Helmet>
 
       <Nav />
 
-      <main className={isRequestPage ? 'quote-page' : isServicesPage ? 'services-page' : isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
+      <main className={isRequestPage ? 'quote-page' : isAppointmentPage ? 'appointment-page-main' : isApplicationPage ? 'application-page-main' : isServicesPage ? 'services-page' : isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
+        <Suspense fallback={null}>
         {seoPage ? (
           <SeoLanding page={seoPage} />
         ) : isRequestPage ? (
-          <>
-            <Feature2 />
-            <Feature3 />
-            <HowContact />
-          </>
+          <HowContact />
+        ) : isAppointmentPage ? (
+          <Appointment />
+        ) : isApplicationPage ? (
+          <Application />
         ) : isServicesPage ? (
           <Services />
         ) : isPricingPage ? (
@@ -213,6 +266,7 @@ export default function App() {
             <HowContact />
           </>
         )}
+        </Suspense>
       </main>
 
       <Footer />
@@ -256,7 +310,7 @@ function FloatingButtons() {
         className="fab-wa"
         aria-label="WhatsApp Chat starten"
       >
-        <img src="/assets/WhatsApp_icon.png.webp" alt="WhatsApp" width="50" height="50" />
+        <FontAwesomeIcon icon={faWhatsapp} className="fab-icon fab-icon-whatsapp" />
       </a>
 
       {/* Phone */}
@@ -269,7 +323,7 @@ function FloatingButtons() {
         data-analytics-action="phone_menu"
         onClick={() => setPhoneMenuOpen((open) => !open)}
       >
-        <img src="/assets/mobile.png" alt="" width="38" height="38" />
+        <FontAwesomeIcon icon={faPhoneVolume} className="fab-icon" />
       </button>
       {phoneMenuOpen && (
         <div className="fab-phone-menu" role="menu" aria-label="Telefonnummer auswählen">
@@ -284,7 +338,7 @@ function FloatingButtons() {
 
       {/* Email */}
       <a href={`mailto:${CONTACT.email}`} className="fab-email" aria-label="E-Mail senden">
-        <img src="/assets/email.png" alt="" width="38" height="38" />
+        <FontAwesomeIcon icon={faEnvelopeCircleCheck} className="fab-icon" />
       </a>
 
       <FabTop />
