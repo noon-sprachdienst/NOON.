@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { useAutoCarousel } from '../hooks/useAutoCarousel';
+import 'leaflet/dist/leaflet.css';
 
 const BRANCHES = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Möserstr. 14, 49074 Osnabrück',     lat: 52.2770, lng: 8.0432, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Möserstraße+14,+49074+Osnabrück' },

@@ -1,31 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEarthAmericas,
+  faEnvelopeCircleCheck,
+  faLanguage,
+  faMessage,
+  faPhoneVolume,
+} from '@fortawesome/free-solid-svg-icons';
+import { Clock3, MapPin, PhoneCall } from 'lucide-react';
 import { useI18n } from '../hooks/useI18n';
 import { CONTACT } from '../config/contact.js';
 
-const LOCATIONS = [
-  { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Möserstr. 14\n49074 Osnabrück', maps: 'https://maps.google.com/?q=Möserstraße+14,+49074+Osnabrück' },
-  { id: 'stuttgart',  tag: '02',       city: 'Stuttgart',  addr: 'Königstr. 82\n70173 Stuttgart',   maps: 'https://maps.google.com/?q=Königstraße+82,+70173+Stuttgart' },
-  { id: 'berlin',     tag: '03',       city: 'Berlin',     addr: 'Friedrichstr. 191\n10117 Berlin', maps: 'https://maps.google.com/?q=Friedrichstraße+191,+10117+Berlin' },
-  { id: 'bielefeld',  tag: '04',       city: 'Bielefeld',  addr: 'Niederwall 21\n33602 Bielefeld',  maps: 'https://maps.google.com/?q=Niederwall+21,+33602+Bielefeld' },
-  { id: 'mainz',      tag: '05',       city: 'Mainz',      addr: 'Schillerplatz 7\n55116 Mainz',    maps: 'https://maps.google.com/?q=Schillerplatz+7,+55116+Mainz' },
-  { id: 'kiel',       tag: '06',       city: 'Kiel',       addr: 'Holstenstr. 64\n24103 Kiel',      maps: 'https://maps.google.com/?q=Holstenstraße+64,+24103+Kiel' },
-];
-
 export default function Beratung() {
-  const { t } = useI18n();
-  const [active, setActive] = useState('osnabrueck');
+  const { t, lang } = useI18n();
+  const appointmentPath = lang && lang !== 'de' ? `/${lang}/termin` : '/termin';
 
   return (
     <section className="beratung" id="beratung" aria-labelledby="beratung-heading">
       <div className="container">
         <div className="beratung-top">
           <div className="beratung-visual" data-reveal="" style={{ '--ri': 0 }}>
-            <img
-              src="/assets/Voice-chat-pana.svg"
-              alt=""
-              aria-hidden="true"
-              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 20 }}
-            />
+            <ContactOrbitGraphic />
           </div>
 
           <div className="beratung-text" data-reveal="" style={{ '--ri': 1 }}>
@@ -44,29 +39,15 @@ export default function Beratung() {
             <div className="beratung-info">
               {[
                 {
-                  icon: (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 22s7-7 7-12a7 7 0 10-14 0c0 5 7 12 7 12z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                  ),
+                  icon: <MapPin size={15} strokeWidth={1.8} />,
                   text: t('beratung.pers.info1'),
                 },
                 {
-                  icon: (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                  ),
+                  icon: <Clock3 size={15} strokeWidth={1.8} />,
                   text: t('foot.hours'),
                 },
                 {
-                  icon: (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M22 16.92V21a2 2 0 01-2 2A19 19 0 011 4a2 2 0 012-2h4a2 2 0 012 2 12 12 0 00.7 4 2 2 0 01-.45 2L7 12a16 16 0 006 6l2-1.25a2 2 0 012-.45 12 12 0 004 .7 2 2 0 011 1.92z"/>
-                    </svg>
-                  ),
+                  icon: <PhoneCall size={15} strokeWidth={1.8} />,
                   text: CONTACT.phones[0].label,
                 },
               ].map(({ icon, text }, i) => (
@@ -77,53 +58,117 @@ export default function Beratung() {
               ))}
             </div>
             <div className="beratung-ctas">
-              <a href="/angebot" className="btn btn-primary">
+              <a href={appointmentPath} className="btn btn-primary">
                 {t('beratung.appt')} <span className="arrow">→</span>
               </a>
-              <a href={CONTACT.phones[0].href} className="btn btn-secondary">
-                {t('beratung.cta2')}
-              </a>
+              <PhoneMenuButton label={t('beratung.cta2')} />
             </div>
           </div>
-        </div>
-
-        {/* Location selector */}
-        <div className="location-selector" data-reveal="" style={{ '--ri': 2 }}>
-          <div className="loc-label">{t('beratung.loc.select')}</div>
-          <div className="loc-grid" role="group" aria-label="Standorte">
-            {LOCATIONS.map((loc) => (
-              <button
-                key={loc.id}
-                type="button"
-                className={`loc-btn${active === loc.id ? ' active' : ''}`}
-                onClick={() => setActive(loc.id)}
-                aria-pressed={active === loc.id}
-              >
-                <span className="loc-num">{loc.tag}</span>
-                <span className="loc-city">{loc.city}</span>
-                <span className="loc-addr">{loc.addr.split('\n')[1]}</span>
-              </button>
-            ))}
-          </div>
-          {/* Active location detail */}
-          {LOCATIONS.filter(l => l.id === active).map((loc) => (
-            <div key={loc.id} style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
-              <a
-                href={loc.maps}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-secondary btn-sm"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M12 22s7-7 7-12a7 7 0 10-14 0c0 5 7 12 7 12z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-                {t('map.open')} — {loc.city}, {loc.addr.split('\n')[0]}
-              </a>
-            </div>
-          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function PhoneMenuButton({ label }) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const closeOnOutsideClick = (event) => {
+      if (menuRef.current?.contains(event.target)) return;
+      setOpen(false);
+    };
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsideClick);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
+
+  return (
+    <div className="beratung-call-menu" ref={menuRef}>
+      <button
+        type="button"
+        className="btn btn-secondary"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {label}
+      </button>
+      {open && (
+        <div className="beratung-call-options" role="menu" aria-label="Telefonnummer auswaehlen">
+          {CONTACT.phones.map((phone) => (
+            <a key={phone.href} href={phone.href} role="menuitem" onClick={() => setOpen(false)}>
+              {phone.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ContactOrbitGraphic() {
+  const orbitItems = [
+    {
+      className: 'orbit-mail',
+      icon: faEnvelopeCircleCheck,
+    },
+    {
+      className: 'orbit-wa',
+      src: '/assets/orbit-whatsapp.png',
+      alt: 'WhatsApp',
+    },
+    {
+      className: 'orbit-phone',
+      icon: faPhoneVolume,
+    },
+    {
+      className: 'orbit-globe',
+      icon: faEarthAmericas,
+    },
+    {
+      className: 'orbit-chat',
+      icon: faMessage,
+    },
+    {
+      className: 'orbit-hours',
+      label: '24/7',
+    },
+    {
+      className: 'orbit-lang',
+      icon: faLanguage,
+    },
+  ];
+
+  return (
+    <div className="contact-orbit" aria-hidden="true">
+      <div className="contact-orbit-ring" />
+      <div className="contact-orbit-center">
+        <FontAwesomeIcon icon={faPhoneVolume} />
+      </div>
+      {orbitItems.map((item) => (
+        <div key={item.className} className={`contact-orbit-item ${item.className}`}>
+          {item.badge ? <span className="contact-orbit-badge">{item.badge}</span> : null}
+          {item.icon ? (
+            <FontAwesomeIcon icon={item.icon} />
+          ) : item.label ? (
+            <span>{item.label}</span>
+          ) : (
+            <img src={item.src} alt={item.alt || ''} loading="lazy" />
+          )}
+        </div>
+      ))}
+    </div>
   );
 }

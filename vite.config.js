@@ -4,14 +4,21 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    historyApiFallback: true,
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: true,
+    open: false,
   },
   build: {
     outDir: 'dist',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined
+          if (id.includes('three') || id.includes('three-globe')) return 'globe'
+          if (id.includes('leaflet')) return 'leaflet'
+          if (id.includes('react')) return 'vendor'
+          return 'vendor-misc'
         }
       }
     }
