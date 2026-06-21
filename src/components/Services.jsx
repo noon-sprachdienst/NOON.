@@ -687,6 +687,9 @@ function getRichServiceData(active, visualCopy, lang = 'de') {
 function RichServicePanel({ active, visualCopy, lang }) {
   const rich = getRichServiceData(active, visualCopy, lang);
   if (!rich) return null;
+  if (active?.id === 'it-software' && lang === 'de') {
+    return <ItSoftwareSheet active={active} visualCopy={visualCopy} />;
+  }
   if (active?.group === 'translation') {
     return <CertifiedTranslationSheet active={active} rich={rich} visualCopy={visualCopy} lang={lang} />;
   }
@@ -701,6 +704,241 @@ function IconBubble({ icon: Icon }) {
     <span className="pdf-icon-bubble" aria-hidden="true">
       <Icon />
     </span>
+  );
+}
+
+const IT_ASSET_BASE = '/assets/it-software/';
+
+const IT_SOFTWARE_SHEET = {
+  title: 'IT & Software',
+  sections: [
+    {
+      asset: 'technology.png',
+      title: 'IT- & Softwareübersetzungen',
+      text: 'Als Übersetzungsbüro für IT, Software und Lokalisierung unterstützen wir Softwarehersteller, Start-ups, Agenturen, Systemhäuser und IT-Abteilungen bei der fachgerechten Übersetzung und Lokalisierung digitaler Produkte.',
+    },
+    {
+      asset: 'mobile-development.png',
+      title: 'Apps, Software & Gaming',
+      items: [
+        'Mobile Apps',
+        'UI-Texte',
+        'Push-Benachrichtigungen',
+        'App-Store-Texte',
+        'Spieltexte',
+        'Storylines',
+        'Tutorials',
+        'Hilfetexte',
+      ],
+    },
+    {
+      asset: 'file.png',
+      title: 'Software & Technische Dokumentation',
+      lead: 'Wir übersetzen unter anderem:',
+      items: [
+        'API-Dokumentationen',
+        'Developer Guides',
+        'Technische Spezifikationen',
+        'Release Notes',
+        'Changelogs',
+        'Benutzerhandbücher',
+        'Administratorhandbücher',
+        'Installationsanleitungen',
+        'Konfigurationsanleitungen',
+      ],
+    },
+    {
+      asset: 'technical-support.png',
+      title: 'Technische Fachkompetenz',
+      lead: 'Unsere Fachübersetzer verfügen über Erfahrung in:',
+      items: [
+        'Softwareentwicklung',
+        'Cloud-Infrastrukturen',
+        'IT-Sicherheit',
+        'Datenbanken',
+        'DevOps',
+        'Systemarchitekturen',
+        'Softwarelokalisierung',
+        'Compliance',
+      ],
+    },
+  ],
+  languageCard: {
+    asset: 'earth-grid.png',
+    title: 'Häufige Sprachkombinationen',
+    items: [
+      'Englisch–Deutsch',
+      'Französisch–Deutsch',
+      'Spanisch–Deutsch',
+      'Italienisch–Deutsch',
+      'Arabisch–Deutsch',
+      'Türkisch–Deutsch',
+      'Polnisch–Deutsch',
+      'Russisch–Deutsch',
+      'Niederländisch–Deutsch',
+    ],
+  },
+  international: {
+    asset: 'connection.png',
+    title: 'Internationale Software- & IT-Projekte',
+    lead: 'Unsere Übersetzungen unterstützen:',
+    items: [
+      'API-Dokumentationen',
+      'IT-Sicherheitsrichtlinien',
+      'Cloud-Architekturen',
+      'DevOps-Runbooks',
+      'DSGVO-Dokumentationen',
+      'Softwarelokalisierung',
+      'E-Learning-Plattformen',
+      'Enterprise-Software',
+    ],
+  },
+  workflow: [
+    'Wir arbeiten mit XML-, YAML-, JSON-, PO-, XLIFF- und CSV-Dateien und integrieren uns auf Wunsch direkt in bestehende Lokalisierungs-Workflows, Git-Repositories und CI/CD-Pipelines.',
+    'Unsere IT-Fachübersetzer verfügen über fundiertes technisches Verständnis in den Bereichen Softwareentwicklung, Cloud-Infrastruktur, IT-Sicherheit, Datenbanken und DevOps. Dadurch stellen wir sicher, dass Benutzeroberflächen, Fehlermeldungen, Tooltips, technische Dokumentationen und Softwareinhalte nicht nur sprachlich präzise, sondern auch fachlich korrekt, konsistent und benutzerfreundlich übersetzt werden.',
+  ],
+  nationwide: {
+    asset: 'pin.png',
+    title: 'Deutschlandweit für Sie im Einsatz',
+    text: 'Als deutschlandweit tätiges IT-Übersetzungsbüro unterstützen wir Unternehmen, Start-ups, Softwarehersteller und IT-Dienstleister in Städten wie Berlin, Hamburg, München, Stuttgart, Hannover, Frankfurt, Köln und Osnabrück sowie Remote-Teams in ganz Europa.',
+  },
+  cta: {
+    asset: 'question.png',
+    question: 'Sie benötigen eine Fachübersetzung im Bereich IT oder Softwarelokalisierung?',
+    text: 'Teilen Sie uns einfach mit, welche Inhalte übersetzt werden sollen, in welche Sprache die Übersetzung erfolgen soll und ob besondere Anforderungen an Terminologie, Format oder Lokalisierung bestehen. Auf dieser Grundlage erhalten Sie von uns zeitnah ein kostenloses und unverbindliches Angebot mit transparenten Konditionen und einer realistischen Lieferzeit.',
+    button: 'Kostenlose Anfrage',
+  },
+  bottom: [
+    ['SOFTWARE & LOKALISIERUNG', 'Lokalisierung von Software, Webanwendungen und IT-Produkten in zahlreiche Sprachen.', 'technology.png'],
+    ['CLOUD & DEVOPS', 'Übersetzungen für Cloud-Architekturen, DevOps-Dokumentationen, Runbooks und IT-Infrastrukturen.', 'cloud-service.png'],
+    ['IT-SICHERHEIT & DSGVO', 'Fachgerechte Übersetzungen für Sicherheitsrichtlinien, Datenschutzdokumente und Compliance-Anforderungen.', 'shield.png'],
+    ['APPS & GAMING', 'Lokalisierung von Apps, Spielen und Benutzeroberflächen für optimale Nutzererlebnisse weltweit.', 'mobile-development.png'],
+    ['TECHNISCHE DOKUMENTATION', 'Übersetzung von API-Dokumentationen, Benutzerhandbüchern, Installationsanleitungen und technischen Spezifikationen.', 'file.png'],
+    ['DEUTSCHLANDWEIT TÄTIG', 'Ihr zuverlässiger Partner für IT-Übersetzungen und Softwarelokalisierung – bundesweit und international.', 'germany-map.png'],
+  ],
+};
+
+function DatabaseIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <ellipse cx="12" cy="5" rx="7" ry="3" />
+      <path d="M5 5v6c0 1.66 3.13 3 7 3s7-1.34 7-3V5" />
+      <path d="M5 11v6c0 1.66 3.13 3 7 3s7-1.34 7-3v-6" />
+    </svg>
+  );
+}
+
+function ItAssetBubble({ asset, alt = '' }) {
+  return (
+    <span className="it-asset-bubble" aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${IT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function ItSoftwareSheet({ active }) {
+  const data = IT_SOFTWARE_SHEET;
+  const [intro, apps, docs, competence] = data.sections;
+  const renderList = (items, className = 'it-doc-list') => (
+    <ul className={className}>
+      {items.map((item) => <li key={item}>{item}</li>)}
+    </ul>
+  );
+
+  return (
+    <div className="it-word-sheet" data-service-id={active.id}>
+      <h3 className="it-word-title">{data.title}</h3>
+
+      <section className="it-word-cell it-word-icon it-word-icon--intro">
+        <ItAssetBubble asset={intro.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--intro">
+        <h4>{intro.title}</h4>
+        <p>{intro.text}</p>
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--apps">
+        <ItAssetBubble asset={apps.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--apps">
+        <h4>{apps.title}</h4>
+        {renderList(apps.items)}
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--docs">
+        <ItAssetBubble asset={docs.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--docs">
+        <h4>{docs.title}</h4>
+        <p>{docs.lead}</p>
+        {renderList(docs.items)}
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--languages">
+        <ItAssetBubble asset={data.languageCard.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--languages">
+        <h4>{data.languageCard.title}</h4>
+        {renderList(data.languageCard.items)}
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--competence">
+        <ItAssetBubble asset={competence.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--competence">
+        <h4>{competence.title}</h4>
+        <p>{competence.lead}</p>
+        {renderList(competence.items, 'it-doc-list it-doc-list--two-columns')}
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--international">
+        <ItAssetBubble asset={data.international.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--international">
+        <h4>{data.international.title}</h4>
+        <p>{data.international.lead}</p>
+        <div className="it-word-checks">
+          {data.international.items.map((item) => (
+            <span key={item}>✓ {item}</span>
+          ))}
+        </div>
+      </section>
+
+      <section className="it-word-cell it-word-copy it-word-copy--workflow">
+        {data.workflow.map((text) => <p key={text}>{text}</p>)}
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--nationwide">
+        <ItAssetBubble asset={data.nationwide.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--nationwide">
+        <h4>{data.nationwide.title}</h4>
+        <p>{data.nationwide.text}</p>
+      </section>
+
+      <section className="it-word-cell it-word-icon it-word-icon--cta">
+        <ItAssetBubble asset={data.cta.asset} />
+      </section>
+      <section className="it-word-cell it-word-copy it-word-copy--cta">
+        <h4>{data.cta.question}</h4>
+        <p>{data.cta.text}</p>
+        <a href={getOfferHref('de')} className="it-doc-btn">
+          {data.cta.button} <ArrowRight aria-hidden="true" />
+        </a>
+      </section>
+
+      <section className="it-word-bottom-strip">
+        {data.bottom.map(([title, text, asset]) => (
+          <article className="it-doc-bottom-tile" key={title}>
+            <img src={`${IT_ASSET_BASE}${asset}`} alt="" loading="lazy" />
+            <div>
+              <strong>{title}</strong>
+              <span>{text}</span>
+            </div>
+          </article>
+        ))}
+      </section>
+    </div>
   );
 }
 
