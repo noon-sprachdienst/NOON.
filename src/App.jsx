@@ -199,6 +199,8 @@ export default function App() {
 
   // Global scroll-reveal
   useEffect(() => {
+    let mutationObserver;
+    const revealTimers = [];
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -214,8 +216,21 @@ export default function App() {
       document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach((el) => obs.observe(el));
     };
     addTargets();
-    const id = setTimeout(addTargets, 200);
-    return () => { clearTimeout(id); obs.disconnect(); };
+    [0, 80, 200, 500, 900].forEach((delay) => {
+      revealTimers.push(setTimeout(addTargets, delay));
+    });
+
+    const revealRoot = document.querySelector('main') || document.body;
+    if (revealRoot) {
+      mutationObserver = new MutationObserver(addTargets);
+      mutationObserver.observe(revealRoot, { childList: true, subtree: true });
+    }
+
+    return () => {
+      revealTimers.forEach(clearTimeout);
+      mutationObserver?.disconnect();
+      obs.disconnect();
+    };
   }, [lang, path]);
 
   return (
@@ -239,7 +254,7 @@ export default function App() {
       <Nav />
 
       <main className={isRequestPage ? 'quote-page' : isAppointmentPage ? 'appointment-page-main' : isApplicationPage ? 'application-page-main' : isServicesPage ? 'services-page' : isPricingPage ? 'pricing-page' : isSpecialtiesPage ? 'specialty-page-main' : undefined}>
-        <Suspense fallback={null}>
+        <Suspense fallback={<div className="route-loading" aria-live="polite" />}>
         {seoPage ? (
           <SeoLanding page={seoPage} />
         ) : isRequestPage ? (
