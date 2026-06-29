@@ -4187,6 +4187,24 @@ html[dir="rtl"] .specialty-side-row--sub {
   text-align: center;
 }
 
+.point-grid-sheet[data-service-id="fachuebersetzung-overview"] .point-grid-card-grid,
+.point-grid-sheet[data-service-id="simultandolmetscher"] .point-grid-card-grid,
+.point-grid-sheet[data-service-id="notardolmetscher"] .point-grid-card-grid,
+.point-grid-sheet[data-service-id="chemie-biowissenschaften"] .point-grid-card-grid,
+.point-grid-sheet[data-service-id="ingenieurwesen"] .point-grid-card-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.point-grid-sheet[data-service-id="fachuebersetzung-overview"] .point-grid-card,
+.point-grid-sheet[data-service-id="simultandolmetscher"] .point-grid-card,
+.point-grid-sheet[data-service-id="notardolmetscher"] .point-grid-card,
+.point-grid-sheet[data-service-id="chemie-biowissenschaften"] .point-grid-card,
+.point-grid-sheet[data-service-id="ingenieurwesen"] .point-grid-card {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+}
+
 /* Soft polish only; each point keeps the grid from its own Word file. */
 .dolm-doc-sheet { --dolm-doc-line: rgba(11,30,154,.14); }
 .beeidigt-doc-sheet { --beeidigt-line: rgba(11,30,154,.14); }
@@ -5812,7 +5830,7 @@ html[dir="rtl"] .specialty-page-rail button > svg:last-child { transform: scaleX
     left: 0;
     right: auto;
     top: 50dvh;
-    z-index: 980;
+    z-index: 10080;
     display: none;
     align-items: center;
     justify-content: center;
@@ -7575,7 +7593,9 @@ footer { background: #FAF9F6; padding: 42px 0 22px; border-top: 1px solid var(--
 }
 @media (max-width: 640px) {
   .container, .container-narrow { padding: 0 20px; }
-  section, .branches, .pricing, .feature-2, .feature-3, .services, .beratung, .testimonials, .faq { padding: 64px 0; }
+  section, .branches, .pricing, .feature-2, .feature-3, .services, .beratung, .testimonials, .faq { 
+    padding: 4px 0; 
+  }
   .pricing .grid { grid-template-columns: 1fr; }
   .map-card { flex-basis: 86%; min-width: 260px; }
   .form-row { grid-template-columns: 1fr; }
@@ -8570,7 +8590,7 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
   .service-visual-panel--rich .beglaubigte-doc-card-grid,
   .service-visual-panel--rich .point-grid-card-grid {
     grid-template-columns: minmax(0, 1fr) !important;
-    gap: 10px !important;
+    gap: 7px !important;
   }
 
   .service-visual-panel--rich .it-doc-bottom-tile,
@@ -8585,8 +8605,8 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
     grid-template-columns: 54px minmax(0, 1fr) !important;
     align-items: center;
     justify-items: start;
-    gap: 12px;
-    padding: 14px !important;
+    gap: 10px;
+    padding: 12px !important;
     text-align: start;
     border-right: 0 !important;
     border-bottom: 0 !important;
@@ -8858,6 +8878,34 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  .service-visual-panel--rich .it-word-title,
+  .service-visual-panel--rich .it-word-cell,
+  .service-visual-panel--rich .it-word-bottom-strip {
+    grid-area: auto !important;
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .service-visual-panel--rich .it-word-icon {
+    min-height: 92px !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 14px 34px rgba(11,30,154,.055) !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .service-visual-panel--rich .it-word-icon img,
+  .service-visual-panel--rich .it-word-icon .it-asset-bubble {
+    max-width: 62px !important;
+    max-height: 62px !important;
   }
 
   .service-visual-panel--rich .it-word-title {
