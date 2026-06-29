@@ -10,8 +10,9 @@ const UI = {
     locations: 'Standorte',
     quote: 'Kostenloses Angebot anfordern',
     reachable: 'Persönlich erreichbar.',
-    hours: 'Mo – Sa · 10:00 – 19:00 Uhr',
+    hours: 'Mo – Sa · 24/7 telefonisch erreichbar',
     faq: 'Häufige Fragen',
+    mapAlt: 'Karte des Standorts',
   },
   en: {
     home: 'Home',
@@ -19,8 +20,9 @@ const UI = {
     locations: 'Locations',
     quote: 'Request a free quote',
     reachable: 'Personally available.',
-    hours: 'Mon – Sat · 10:00 – 19:00',
+    hours: 'Mon – Sat · reachable by phone 24/7',
     faq: 'Frequently asked questions',
+    mapAlt: 'Map of the branch',
   },
   ar: {
     home: 'الرئيسية',
@@ -28,8 +30,9 @@ const UI = {
     locations: 'الفروع',
     quote: 'اطلب عرضا مجانيا',
     reachable: 'تواصل شخصي وسريع.',
-    hours: 'الإثنين – السبت · 10:00 – 19:00',
+    hours: 'الإثنين – السبت · متاحون هاتفيا 24/7',
     faq: 'أسئلة شائعة',
+    mapAlt: 'خريطة الفرع',
   },
   tr: {
     home: 'Ana sayfa',
@@ -37,8 +40,9 @@ const UI = {
     locations: 'Şubeler',
     quote: 'Ücretsiz teklif iste',
     reachable: 'Kişisel destek.',
-    hours: 'Pzt – Cmt · 10:00 – 19:00',
+    hours: 'Pzt – Cmt · telefonla 24/7 ulaşılabilir',
     faq: 'Sık sorulan sorular',
+    mapAlt: 'Şube haritası',
   },
   ru: {
     home: 'Главная',
@@ -46,8 +50,9 @@ const UI = {
     locations: 'Филиалы',
     quote: 'Отправить запрос',
     reachable: 'Личная поддержка.',
-    hours: 'Пн – Сб · 10:00 – 19:00',
+    hours: 'Пн – Сб · по телефону 24/7',
     faq: 'Частые вопросы',
+    mapAlt: 'Карта филиала',
   },
   fr: {
     home: 'Accueil',
@@ -55,8 +60,9 @@ const UI = {
     locations: 'Agences',
     quote: 'Demander un devis gratuit',
     reachable: 'Conseil personnalisé.',
-    hours: 'Lun – Sam · 10:00 – 19:00',
+    hours: 'Lun – Sam · joignables par téléphone 24/7',
     faq: 'Questions fréquentes',
+    mapAlt: 'Carte de l’agence',
   },
   uk: {
     home: 'Головна',
@@ -64,8 +70,9 @@ const UI = {
     locations: 'Філії',
     quote: 'Надіслати запит',
     reachable: 'Особиста підтримка.',
-    hours: 'Пн – Сб · 10:00 – 19:00',
+    hours: 'Пн – Сб · телефоном 24/7',
     faq: 'Поширені питання',
+    mapAlt: 'Карта філії',
   },
 };
 
@@ -146,7 +153,7 @@ export default function SeoLanding({ page }) {
           <aside className="seo-related">
             {isLocation && (
               <>
-                <img src={`/assets/maps/${page.location.image}`} alt={`Karte des Standorts ${page.location.city}`} loading="lazy" decoding="async" />
+                <img src={`/assets/maps/${page.location.image}`} alt={`${copy.mapAlt} ${page.location.city}`} loading="lazy" decoding="async" />
                 <h3>{page.location.street}</h3>
                 <p>{page.location.postalCode} {page.location.city}</p>
               </>

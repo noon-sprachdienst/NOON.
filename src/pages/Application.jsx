@@ -15,7 +15,7 @@ const COPY = {
       ['Internationale Aufträge', 'Projekte in über 190 Sprachen weltweit.'],
       ['Vertraulich & sicher', 'Ihre Daten werden vertraulich behandelt.'],
     ],
-    hours: 'Mo – Sa · 10:00 – 19:00 Uhr',
+    hours: 'Mo – Sa · 24/7 telefonisch erreichbar',
     formTitle: 'Bewerbung einreichen.',
     formSub: 'Füllen Sie das Formular aus und wir prüfen Ihre Bewerbung schnellstmöglich.',
     firstName: 'Vorname',
@@ -54,7 +54,7 @@ const COPY = {
       ['International assignments', 'Projects in more than 190 languages worldwide.'],
       ['Confidential & secure', 'Your data will be handled confidentially.'],
     ],
-    hours: 'Mon – Sat · 10:00 – 19:00',
+    hours: 'Mon – Sat · reachable by phone 24/7',
     formTitle: 'Submit your application.',
     formSub: 'Complete the form and we will review your application as quickly as possible.',
     firstName: 'First name',
@@ -93,7 +93,7 @@ const COPY = {
       ['مهام دولية', 'مشاريع بأكثر من 190 لغة حول العالم.'],
       ['سرية وأمان', 'يتم التعامل مع بياناتكم بسرية.'],
     ],
-    hours: 'الاثنين – السبت · 10:00 – 19:00',
+    hours: 'الاثنين – السبت · متاحون هاتفيا 24/7',
     formTitle: 'إرسال طلب العمل.',
     formSub: 'املأوا النموذج وسنراجع طلبكم في أسرع وقت ممكن.',
     firstName: 'الاسم الأول',
@@ -132,7 +132,7 @@ const COPY = {
       ['Uluslararası işler', 'Dünya çapında 190’dan fazla dilde projeler.'],
       ['Gizli ve güvenli', 'Verileriniz gizli şekilde işlenir.'],
     ],
-    hours: 'Pzt – Cmt · 10:00 – 19:00',
+    hours: 'Pzt – Cmt · telefonla 24/7 ulaşılabilir',
     formTitle: 'Başvurunuzu gönderin.',
     formSub: 'Formu doldurun, başvurunuzu en kısa sürede inceleyelim.',
     firstName: 'Ad',
@@ -171,7 +171,7 @@ const COPY = {
       ['Международные заказы', 'Проекты более чем на 190 языках по всему миру.'],
       ['Конфиденциально и безопасно', 'Ваши данные обрабатываются конфиденциально.'],
     ],
-    hours: 'Пн – Сб · 10:00 – 19:00',
+    hours: 'Пн – Сб · по телефону 24/7',
     formTitle: 'Отправить заявку.',
     formSub: 'Заполните форму, и мы рассмотрим вашу заявку как можно скорее.',
     firstName: 'Имя',
@@ -210,7 +210,7 @@ const COPY = {
       ['Missions internationales', 'Projets dans plus de 190 langues dans le monde.'],
       ['Confidentiel et sécurisé', 'Vos données sont traitées de manière confidentielle.'],
     ],
-    hours: 'Lun – Sam · 10:00 – 19:00',
+    hours: 'Lun – Sam · joignables par téléphone 24/7',
     formTitle: 'Envoyer une candidature.',
     formSub: 'Remplissez le formulaire et nous examinerons votre candidature rapidement.',
     firstName: 'Prénom',
@@ -249,7 +249,7 @@ const COPY = {
       ['Міжнародні замовлення', 'Проєкти більш ніж 190 мовами по всьому світу.'],
       ['Конфіденційно та безпечно', 'Ваші дані обробляються конфіденційно.'],
     ],
-    hours: 'Пн – Сб · 10:00 – 19:00',
+    hours: 'Пн – Сб · телефоном 24/7',
     formTitle: 'Надіслати заявку.',
     formSub: 'Заповніть форму, і ми розглянемо вашу заявку якомога швидше.',
     firstName: 'Ім’я',
@@ -475,7 +475,7 @@ export default function Application() {
             </a>
             <div>
               <MapPin size={18} strokeWidth={1.8} />
-              <span>Möserstr. 14 · Osnabrück</span>
+              <span>Paul-Oeser-Straße 1 · Osnabrück</span>
             </div>
             <div>
               <Clock3 size={18} strokeWidth={1.8} />

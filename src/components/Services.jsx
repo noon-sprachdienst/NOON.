@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
@@ -36,13 +36,13 @@ import { useI18n } from '../hooks/useI18n';
 import { getServiceNavigation, serviceUi } from '../data/serviceContent';
 
 const SIDE_LABELS = {
-  de: { interpreting: 'Dolmetschen', translation: 'Beglaubigte Übersetzungen', specialist: 'Fachübersetzung', faq: 'FAQ' },
-  en: { interpreting: 'Interpreting', translation: 'Certified translations', specialist: 'Specialist translation', faq: 'FAQ' },
-  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمات معتمدة', specialist: 'ترجمة متخصصة', faq: 'الأسئلة الشائعة' },
-  tr: { interpreting: 'Tercümanlık', translation: 'Yeminli çeviriler', specialist: 'Uzman çeviri', faq: 'SSS' },
-  ru: { interpreting: 'Устный перевод', translation: 'Заверенные переводы', specialist: 'Профильный перевод', faq: 'FAQ' },
-  fr: { interpreting: 'Interprétation', translation: 'Traductions certifiées', specialist: 'Traduction spécialisée', faq: 'FAQ' },
-  uk: { interpreting: 'Усний переклад', translation: 'Засвідчені переклади', specialist: 'Фаховий переклад', faq: 'FAQ' },
+  de: { interpreting: 'Dolmetschen', translation: 'Beglaubigte Übersetzungen', specialist: 'Fachübersetzung', faq: 'FAQ', close: 'Menü schließen' },
+  en: { interpreting: 'Interpreting', translation: 'Certified translations', specialist: 'Specialist translation', faq: 'FAQ', close: 'Close menu' },
+  ar: { interpreting: 'ترجمة فورية', translation: 'ترجمات معتمدة', specialist: 'ترجمة متخصصة', faq: 'الأسئلة الشائعة', close: 'إغلاق القائمة' },
+  tr: { interpreting: 'Tercümanlık', translation: 'Yeminli çeviriler', specialist: 'Uzman çeviri', faq: 'SSS', close: 'Menüyü kapat' },
+  ru: { interpreting: 'Устный перевод', translation: 'Заверенные переводы', specialist: 'Профильный перевод', faq: 'FAQ', close: 'Закрыть меню' },
+  fr: { interpreting: 'Interprétation', translation: 'Traductions certifiées', specialist: 'Traduction spécialisée', faq: 'FAQ', close: 'Fermer le menu' },
+  uk: { interpreting: 'Усний переклад', translation: 'Засвідчені переклади', specialist: 'Фаховий переклад', faq: 'FAQ', close: 'Закрити меню' },
 };
 
 const VISUAL_COPY = {
@@ -60,7 +60,7 @@ const VISUAL_COPY = {
     delivery: 'Umsetzung starten',
     deliveryText: 'Sie bestätigen das Angebot, wir organisieren Übersetzung oder Dolmetscher.',
     trustA: 'Fachlich geprüft',
-    trustB: '75+ Sprachen',
+    trustB: '190+ Sprachen',
     trustC: 'Deutschlandweit',
     interpretingLanguages: '190+ Sprachen',
     markLanguages: 'Sprachen',
@@ -80,7 +80,7 @@ const VISUAL_COPY = {
     delivery: 'Start service',
     deliveryText: 'You confirm the offer, we arrange the translation or interpreter.',
     trustA: 'Expert checked',
-    trustB: '75+ languages',
+    trustB: '190+ languages',
     trustC: 'Across Germany',
     interpretingLanguages: '190+ languages',
     markLanguages: 'Languages',
@@ -100,7 +100,7 @@ const VISUAL_COPY = {
     delivery: 'بدء التنفيذ',
     deliveryText: 'تؤكد العرض، ونحن ننظم الترجمة أو المترجم الفوري.',
     trustA: 'مراجعة تخصصية',
-    trustB: '75+ لغة',
+    trustB: '190+ لغة',
     trustC: 'في كل ألمانيا',
     interpretingLanguages: '190+ لغة',
     markLanguages: 'لغات',
@@ -120,7 +120,7 @@ const VISUAL_COPY = {
     delivery: 'Hizmeti başlat',
     deliveryText: 'Teklifi onaylarsınız, biz çeviri veya tercümanı organize ederiz.',
     trustA: 'Uzman kontrolü',
-    trustB: '75+ dil',
+    trustB: '190+ dil',
     trustC: 'Almanya genelinde',
     interpretingLanguages: '190+ dil',
     markLanguages: 'Dil',
@@ -140,7 +140,7 @@ const VISUAL_COPY = {
     delivery: 'Начать выполнение',
     deliveryText: 'Вы подтверждаете предложение, мы организуем перевод или устного переводчика.',
     trustA: 'Проверка экспертом',
-    trustB: '75+ языков',
+    trustB: '190+ языков',
     trustC: 'По всей Германии',
     interpretingLanguages: '190+ языков',
     markLanguages: 'Языки',
@@ -160,7 +160,7 @@ const VISUAL_COPY = {
     delivery: 'Lancer le service',
     deliveryText: 'Vous confirmez l’offre, nous organisons la traduction ou l’interprète.',
     trustA: 'Contrôle expert',
-    trustB: '75+ langues',
+    trustB: '190+ langues',
     trustC: 'Dans toute l’Allemagne',
     interpretingLanguages: '190+ langues',
     markLanguages: 'Langues',
@@ -180,7 +180,7 @@ const VISUAL_COPY = {
     delivery: 'Почати виконання',
     deliveryText: 'Ви підтверджуєте пропозицію, ми організовуємо переклад або усного перекладача.',
     trustA: 'Фахова перевірка',
-    trustB: '75+ мов',
+    trustB: '190+ мов',
     trustC: 'По всій Німеччині',
     interpretingLanguages: '190+ мов',
     markLanguages: 'Мови',
@@ -220,8 +220,6 @@ const RICH_SERVICE_IDS = new Set([
   'dolmetschen-overview',
   'fachuebersetzung-overview',
   'simultandolmetscher',
-  'verhandlungsdolmetscher',
-  'video-telefondolmetscher',
   'beeidigte-dolmetscher',
   'notardolmetscher',
   'standesamt-dolmetscher',
@@ -234,7 +232,6 @@ const RICH_SERVICE_IDS = new Set([
   'literatur',
   'it-software',
   'chemie-biowissenschaften',
-  'industrie-produktion',
 ]);
 const RICH_GROUP_ICONS = [Code2, Smartphone, Gamepad2, ClipboardList, Cloud, LockKeyhole, BookOpen, FileText];
 const RICH_LABELS = {
@@ -687,8 +684,20 @@ function getRichServiceData(active, visualCopy, lang = 'de') {
 function RichServicePanel({ active, visualCopy, lang }) {
   const rich = getRichServiceData(active, visualCopy, lang);
   if (!rich) return null;
-  if (active?.id === 'it-software' && lang === 'de') {
-    return <ItSoftwareSheet active={active} visualCopy={visualCopy} />;
+  if (active?.id === 'it-software') {
+    return <ItSoftwareSheet active={active} visualCopy={visualCopy} lang={lang} />;
+  }
+  if (active?.id === 'wirtschaft-finanzen') {
+    return <WirtschaftFinanzenSheet active={active} visualCopy={visualCopy} lang={lang} />;
+  }
+  if (active?.id === 'recht') {
+    return <RechtSheet active={active} visualCopy={visualCopy} lang={lang} />;
+  }
+  if (active?.id === 'beglaubigte-uebersetzungen') {
+    return <BeglaubigteUebersetzungSheet active={active} visualCopy={visualCopy} lang={lang} />;
+  }
+  if (POINT_GRID_SHEETS[active?.id]) {
+    return <PointGridSheet active={active} data={localizePointGridSheet(active, POINT_GRID_SHEETS[active.id], visualCopy, lang)} lang={lang} />;
   }
   if (active?.group === 'translation') {
     return <CertifiedTranslationSheet active={active} rich={rich} visualCopy={visualCopy} lang={lang} />;
@@ -708,6 +717,406 @@ function IconBubble({ icon: Icon }) {
 }
 
 const IT_ASSET_BASE = '/assets/it-software/';
+const DOLMETSCHER_ASSET_BASE = '/assets/dolmetscher/';
+const BEEIDIGTE_ASSET_BASE = '/assets/beeidigte-dolmetscher/';
+const RECHT_ASSET_BASE = '/assets/recht/';
+const STANDESAMT_ASSET_BASE = '/assets/standesamt-dolmetscher/';
+const WIRTSCHAFT_ASSET_BASE = '/assets/wirtschaft-finanzen/';
+const BEGLAUBIGTE_ASSET_BASE = '/assets/beglaubigte-uebersetzung/';
+const POINT_CONTENT_ASSET_BASE = '/assets/points-content/';
+
+const DOLMETSCHER_SHEET = {
+  title: 'Dolmetschen',
+  introRows: [
+    {
+      asset: 'mannschaft.png',
+      text: 'Professionelle Dolmetscherdienste für Unternehmen, Behörden, Gerichte, medizinische Einrichtungen und Privatpersonen.',
+    },
+    {
+      asset: 'platzhalter.png',
+      text: 'Seit 2019 unterstützt unser Dolmetscher- und Übersetzungsbüro Mandanten in Osnabrück, Bielefeld, Kiel, Mainz, Stuttgart, Berlin sowie bundesweit – auf Wunsch auch international.',
+    },
+    {
+      asset: 'save-the-world.png',
+      text: 'Wir vermitteln qualifizierte Dolmetscher in über 190 Sprachen für Präsenztermine, Online-Meetings, Videokonferenzen und Telefondolmetschen – schnell, zuverlässig und professionell.',
+    },
+  ],
+  benefits: [
+    ['ÜBER 190 SPRACHEN', 'Dolmetscher für nahezu alle Sprachen und Dialekte weltweit.', 'save-the-world.png'],
+    ['ERFAHRENE DOLMETSCHER', 'Qualifizierte und geprüfte Dolmetscher mit langjähriger Erfahrung und hoher Fachkompetenz.', 'benutzer.png'],
+    ['FLEXIBLE EINSATZFORMEN', 'Kurzfristige Einsätze, individuelle Terminplanung und bundesweite Verfügbarkeit.', 'flexibel.png'],
+  ],
+  processTitle: 'So geht’s eine Dolmetscher Bestellung',
+  process: [
+    ['1', 'Anfrage per E-Mail senden', 'Sprache, Auftragsort und Uhrzeit mitteilen.', 'email.png'],
+    ['2', 'Angebot erhalten & bestätigen', 'Preis prüfen und Angebot bestätigen.', 'bestatigung.png'],
+    ['3', 'Dolmetscher vor Ort', 'Der Dolmetscher ist zum vereinbarten Termin für Sie vor Ort.', 'ubersetzer.png'],
+  ],
+  cta: 'Kostenlose Dolmetscheranfrage',
+};
+
+const BEEIDIGTE_DOLMETSCHER_SHEET = {
+  kicker: 'Dolmetschen',
+  title: 'Beeidigte Dolmetscher',
+  introRows: [
+    {
+      asset: 'dolmetscher.png',
+      text: 'Unsere allgemein beeidigten Dolmetscher begleiten Sie zuverlässig bei Terminen bei Behörden, Gerichten, Notaren, Standesämtern, Anhörungen sowie in Konsulaten und Botschaften.',
+    },
+    {
+      asset: 'netzwerk.png',
+      paragraphs: [
+        'Dank unseres bundesweiten Netzwerks mit über 8.000 qualifizierten Dolmetschern und Übersetzern finden wir für nahezu jede Sprache den passenden Ansprechpartner. Unsere Muttersprachler sind fachlich qualifiziert und – soweit erforderlich – allgemein beeidigt bzw. ermächtigt.',
+        'Ob bei der Ausländerbehörde, vor Gericht, beim Notar oder im Standesamt – wir sorgen für eine präzise, neutrale und rechtssichere Sprachmittlung, damit Ihre Kommunikation reibungslos und offiziell anerkannt erfolgt.',
+      ],
+    },
+  ],
+  features: [
+    ['Amtlich beeidigt', 'Beeidigte Dolmetscher für Behörden, Gerichte, Notare und offizielle Termine.', 'gesetz.png'],
+    ['Rechtssicher', 'Präzise Dolmetschleistungen für Anhörungen, Verfahren und behördliche Gespräche.', 'gericht.png'],
+    ['Vielseitig einsetzbar', 'Dolmetscher für Standesamt, Ausländerbehörde, Konsulat und weitere Fachbereiche.', 'vielseitig-einsetzbar.png'],
+    ['Vertraulichkeit', 'Vertrauliche Behandlung Ihrer Daten, Dokumente und persönlichen Anliegen.', 'schild.png'],
+  ],
+};
+
+const STANDESAMT_DOLMETSCHER_SHEET = {
+  kicker: 'Dolmetschen',
+  title: 'Standesamt-Dolmetscher',
+  introTitle: 'Standesamt-Dolmetscher für Ihre Hochzeit',
+  intro: 'Für Ihre standesamtliche Trauung stellen wir zuverlässige Dolmetscher, damit beide Partner jedes Wort verstehen und die Eheschließung rechtswirksam erfolgen kann.',
+  details: [
+    'Unsere beeidigten Standesamt-Dolmetscher begleiten Sie zum Standesamt, erläutern alle Erklärungen in Ihrer Sprache und sorgen für eine reibungslose Verständigung.',
+    'So können Sie sich ganz auf Ihren besonderen Tag konzentrieren – wir übernehmen die sprachliche Begleitung.',
+  ],
+};
+
+const WIRTSCHAFT_FINANZEN_SHEET = {
+  kicker: 'Fachübersetzungen',
+  title: 'Wirtschaft & Finanzen',
+  introTitle: 'Übersetzungen für Wirtschaft & Finanzen',
+  intro: 'Wir unterstützen Unternehmen, Kanzleien, Banken und Versicherungen mit präzisen Fachübersetzungen im Bereich Wirtschaft und Finanzen.',
+  features: [
+    ['Internationaler Geschäftsverkehr', 'Wir übersetzen Wirtschafts- und Finanzdokumente für Unternehmen – professionell, präzise und termingerecht.', 'globales-geschaft.png'],
+    ['Banken & Versicherungen', 'Fachübersetzungen für Banken, Versicherungen und Finanzdienstleister.', 'bank.png'],
+    ['Bilanzierung & Controlling', 'Übersetzungen von Bilanzen, Reports und Controlling-Unterlagen.', 'bilanz.png'],
+    ['Verträge & Compliance', 'Rechtssichere Übersetzungen von Verträgen und Richtlinien.', 'compliance-dokument.png'],
+  ],
+};
+
+const BEGLAUBIGTE_UEBERSETZUNG_SHEET = {
+  kicker: 'Übersetzungen',
+  title: 'Beglaubigte Übersetzungen',
+  introTitle: 'Beglaubigte Übersetzungen',
+  intro: 'Wir fertigen beglaubigte Übersetzungen für Behörden, Gerichte, Standesämter, Hochschulen, Notare und weitere öffentliche Einrichtungen an. Unsere beglaubigten Übersetzungen werden deutschlandweit offiziell anerkannt.',
+  documentsTitle: 'Typische Dokumente',
+  documentsLead: 'Zu den Dokumenten, die wir täglich beglaubigt übersetzen, gehören insbesondere:',
+  documents: [
+    'Geburts-, Heirats- und Sterbeurkunden',
+    'Ausweise und Reisepässe',
+    'Zeugnisse und Diplome',
+    'Führerscheine',
+    'Scheidungsunterlagen',
+    'Verträge und Vollmachten',
+  ],
+  languagesTitle: 'Häufige Sprachkombinationen',
+  languagesLead: 'Zu unseren häufigsten Sprachkombinationen gehören:',
+  languages: [
+    'Arabisch – Deutsch',
+    'Englisch – Deutsch',
+    'Französisch – Deutsch',
+    'Türkisch – Deutsch',
+    'Russisch – Deutsch',
+    'Ukrainisch – Deutsch',
+    'Persisch – Deutsch',
+    'Rumänisch – Deutsch',
+    'Spanisch – Deutsch',
+    'Portugiesisch – Deutsch',
+    'Albanisch – Deutsch',
+    'Serbisch – Deutsch',
+    'und viele weitere Sprachen.',
+  ],
+  processTitle: 'So einfach läuft Ihre beglaubigte Übersetzung ab',
+  process: [
+    ['1.', 'Dokumente fotografieren oder einscannen', 'word-media/image5.png'],
+    ['2.', 'Dokumente senden & Preis erfahren', 'word-media/image6.png'],
+    ['3.', 'Adresse per E-Mail senden & Preis bestätigen', 'word-media/image7.png'],
+    ['4.', 'Übersetzung per Post erhalten & Rechnung bezahlen', 'word-media/image8.png'],
+  ],
+  benefits: [
+    ['Behördlich anerkannt', 'Beglaubigte Übersetzungen für Visa, Einbürgerung, Anerkennungsverfahren und offizielle Anträge.', 'word-media/image9.png'],
+    ['Vier-Augen-Prinzip', 'Jede Übersetzung wird von einem zweiten qualifizierten Linguisten geprüft.', 'word-media/image10.png'],
+    ['Terminologiemanagement', 'Einheitliche Fachterminologie für präzise und normgerechte Übersetzungen.', 'word-media/image11.png'],
+    ['Versand deutschlandweit', 'Schneller Versand per Post oder Kurier – deutschlandweit und zuverlässig.', 'word-media/image12.png'],
+  ],
+};
+
+const POINT_GRID_SHEETS = {
+  simultandolmetscher: {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}simultandolmetscher/`,
+    kicker: 'Dolmetschen',
+    title: 'Simultandolmetscher',
+    wordGrid: { columns: 5, iconSpan: 2, copySpan: 3, featureSpans: [1, 2, 1, 1] },
+    rows: [
+      {
+        icon: 'headset.png',
+        paragraphs: [
+          'Unsere Simultandolmetscher sorgen dafür, dass internationale Konferenzen, Tagungen und Veranstaltungen reibungslos mehrsprachig ablaufen.',
+          'Wir vermitteln qualifizierte Dolmetscher in über 190 Sprachen für Präsenztermine, Online-Meetings, Videokonferenzen und Telefondolmetschen – schnell, zuverlässig und professionell.',
+        ],
+        listTitle: 'Wir bieten professionelles Echtzeit-Dolmetschen unter anderem in den Sprachkombinationen:',
+        items: ['Deutsch–Englisch', 'Deutsch–Französisch', 'Deutsch–Russisch', 'Deutsch–Spanisch', 'Deutsch–Italienisch', 'Deutsch–Arabisch', 'sowie in vielen weiteren europäischen und außereuropäischen Sprachen'],
+      },
+    ],
+    features: [
+      ['Simultandolmetschen', 'Echtzeit-Dolmetschen für Konferenzen, Tagungen und internationale Veranstaltungen.', 'mikrofon.png'],
+      ['Viele Sprachkombinationen', 'Professionelle Simultandolmetscher für Deutsch und zahlreiche internationale Sprachen.', 'sprachen.png'],
+      ['Erfahrene Teams', 'Qualifizierte Simultandolmetscher mit umfangreicher Konferenz- und Fachkompetenz.', 'benutzer.png'],
+      ['Moderne Technik', 'Dolmetschkabinen, Empfängeranlagen und professionelle Konferenztechnik aus einer Hand.', 'software.png'],
+    ],
+    request: true,
+  },
+  notardolmetscher: {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}notardolmetscher/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Notardolmetscher',
+    wordGrid: { columns: 5, iconSpan: 2, copySpan: 3, featureSpans: [1, 2, 1, 1] },
+    rows: [
+      {
+        icon: 'regierung.png',
+        paragraphs: [
+          'Bei notariellen Beurkundungen – etwa Kaufverträgen, Eheverträgen, Gesellschaftsgründungen oder Vollmachten – ist präzises Dolmetschen unverzichtbar.',
+          'Unsere Notardolmetscher arbeiten regelmäßig mit Notariaten zusammen und sind mit den Abläufen vor Ort bestens vertraut.',
+          'Wir stellen sicher, dass alle Beteiligten jedes Detail verstehen – unabhängig davon, ob der Termin ein- oder mehrsprachig stattfindet.',
+        ],
+      },
+    ],
+    features: [
+      ['Präzision', 'Präzise Sprachmittlung für notarielle Beurkundungen und Verträge.', 'qualitat.png'],
+      ['Rechtssicherheit', 'Vollständige und rechtssichere Verständigung bei notariellen Terminen.', 'schild.png'],
+      ['Erfahrung', 'Regelmäßige Zusammenarbeit mit Notariaten und umfassende Praxiserfahrung.', 'erfahrung.png'],
+      ['Flexibel & zuverlässig', 'Kurzfristige Termine und bundesweite Einsätze auf Anfrage möglich.', 'fokus.png'],
+    ],
+    request: true,
+  },
+  'fachuebersetzung-overview': {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}fachuebersetzung-overview/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Fachübersetzung',
+    wordGrid: { columns: 5, iconSpan: 2, copySpan: 3, featureSpans: [1, 2, 1, 1, 1, 2, 1, 1] },
+    rows: [
+      {
+        icon: 'online-bildung.png',
+        title: 'Was sind Fachübersetzungen?',
+        paragraphs: [
+          'Fachübersetzungen erfordern weit mehr als Sprachkenntnisse. Sie setzen fundiertes Fachwissen und Erfahrung im jeweiligen Fachgebiet voraus. Deshalb arbeiten wir ausschließlich mit qualifizierten Fachübersetzern.',
+          'Unsere Fachübersetzer übertragen Inhalte sprachlich korrekt, fachlich präzise und zielgruppengerecht – für technische, juristische, medizinische, wissenschaftliche und wirtschaftliche Dokumente.',
+        ],
+      },
+    ],
+    sectionTitle: 'Unsere Fachübersetzungsbereiche:',
+    features: [
+      ['Recht', 'Verträge, Urteile, Gutachten und juristische Dokumente.', 'gericht.png'],
+      ['Ingenieurwesen', 'Technische Dokumentationen, Handbücher und Spezifikationen.', 'ingenieurwesen.png'],
+      ['Medizin & Zahnmedizin', 'Patientenunterlagen, Befunde, Studien und medizinische Fachtexte.', 'medizinisch.png'],
+      ['Pharmazie', 'Studien, Fachinformationen und Zulassungsunterlagen.', 'rotes-kreuz.png'],
+      ['Literatur', 'Bücher, Fachtexte, Artikel und kulturelle Inhalte.', 'online-bildung.png'],
+      ['IT & Software', 'Software, Apps, Handbücher und technische Dokumentationen.', 'it-service.png'],
+      ['Chemie & Biowissenschaften', 'Patente, Laborberichte und wissenschaftliche Texte.', 'chemie.png'],
+      ['Industrie & Produktion', 'Produktionsunterlagen, Prozesse und Qualitätsdokumente.', 'industrie.png'],
+    ],
+    request: true,
+  },
+  ingenieurwesen: {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}ingenieurwesen/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Ingenieurwesen',
+    wordGrid: { columns: 4, iconSpan: 1, copySpan: 3, featureSpans: [2, 1, 1] },
+    rows: [
+      {
+        icon: 'ingenieurwesen.png',
+        title: 'Übersetzungsbüro für Technik und Ingenieurwesen',
+        paragraphs: [
+          'Als Fachübersetzungsbüro für Technik und Ingenieurwesen unterstützen wir Hersteller, Ingenieurbüros, Planungsbüros, Maschinenbauer und Industrieunternehmen mit präzisen technischen Übersetzungen.',
+          'Unsere technischen Fachübersetzungen werden von qualifizierten Übersetzern mit ingenieurwissenschaftlichem Hintergrund angefertigt. Als Muttersprachler ihrer jeweiligen Zielsprache verbinden sie technisches Fachwissen mit sprachlicher Präzision und einer einheitlichen Fachterminologie. So erhalten Sie hochwertige, fachlich korrekte und verständliche Übersetzungen – alles aus einer Hand.',
+        ],
+      },
+      {
+        icon: 'unterlagen.png',
+        title: 'Wir übersetzen regelmäßig folgende technische Unterlagen:',
+        items: ['Bedienungsanleitungen', 'Sicherheitsdatenblätter', 'Wartungshandbücher', 'Patente', 'Konstruktionsunterlagen', 'CAD-Begleitdokumente', 'Ausschreibungen', 'Technische Spezifikationen'],
+        columns: 2,
+      },
+      {
+        icon: 'abgeschlossene-aufgabe (1).png',
+        title: 'Internationale Technik- und Industrieprojekte',
+        lead: 'Unsere technischen Übersetzungen unterstützen Sie bei:',
+        items: ['Internationalen Ausschreibungen', 'Maschinenexporten', 'CE-Dokumentationen', 'Technischen Schulungen', 'Anlagenbauprojekten', 'Produktlokalisierung', 'Sicherheitsdokumentationen', 'Weltweitem Vertrieb'],
+        columns: 2,
+      },
+    ],
+    features: [
+      ['Maschinenbau', 'Fachübersetzungen für Maschinen, Anlagen und technische Systeme.', 'maschinenbau.png'],
+      ['Elektrotechnik', 'Präzise Übersetzungen für Elektrotechnik und Steuerungstechnik.', 'leistung.png'],
+      ['Internationale Projekte', 'Übersetzungen für Export, Ausschreibungen und internationale Vorhaben.', 'fabrik.png'],
+    ],
+    request: true,
+  },
+  'medizin-dental': {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}medizin-dental/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Medizin & Dentalmedizin',
+    wordGrid: { columns: 3, iconSpan: 1, copySpan: 2, featureSpans: [2, 1] },
+    rows: [
+      {
+        icon: 'medizinisches-symbol.png',
+        title: 'Medizinische Fachübersetzungen',
+        paragraphs: [
+          'Als spezialisiertes Fachübersetzungsbüro für Medizin und Dentalmedizin unterstützen wir Kliniken, Praxen, medizinische Einrichtungen, Dentalfirmen, Hersteller und Fachverlage mit präzisen und fachlich geprüften Übersetzungen.',
+          'Unsere Übersetzer verfügen über langjährige Erfahrung und eine akademische Ausbildung in ihrem jeweiligen Fachgebiet. Viele unserer Fachübersetzer sind Muttersprachler ihrer Zielsprache und beherrschen zusätzlich Deutsch auf muttersprachlichem Niveau. So verbinden wir fachliche Kompetenz mit sprachlicher Präzision und gewährleisten hochwertige Fachübersetzungen.',
+        ],
+      },
+      {
+        icon: 'zahne.png',
+        title: 'Spezialisierte Dental- und Zahntechnik-Übersetzungen',
+        lead: 'Wir verfügen über Erfahrung in folgenden Bereichen:',
+        items: ['CAD/CAM-Systeme', 'Intraoralscanner', 'Dentalsoftware', '3D-Druck', 'Implantatsysteme', 'Keramiksysteme', 'Füllungsmaterialien', 'Dentallabortechnik'],
+        columns: 2,
+      },
+      {
+        icon: 'gesundheit.png',
+        title: 'Gesundheitswesen & Medizintechnik',
+        lead: 'Unsere Übersetzungen unterstützen:',
+        items: ['Kliniken und Krankenhäuser', 'Arzt- und Zahnarztpraxen', 'Medizintechnik-Hersteller', 'Dentallabore', 'Klinische Studien', 'Medizinische Software', 'Patientenkommunikation', 'Internationale Zulassungen'],
+        columns: 2,
+      },
+    ],
+    features: [
+      ['Dentalmedizin & Zahntechnik', 'Fachübersetzungen für Zahnmedizin, Zahntechnik, Dentalfirmen und CAD/CAM-Systeme.', 'dental.png'],
+      ['Internationale Gesundheitskommunikation', 'Übersetzungen für Studien, Zulassungen und internationale Fachkommunikation.', 'stethoskop.png'],
+    ],
+    request: true,
+  },
+  pharmazeutik: {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}pharmazeutik/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Pharmazeutik & Arzneimittel',
+    wordGrid: { columns: 4, iconSpan: 2, copySpan: 2, featureSpans: [1, 2, 1] },
+    rows: [
+      {
+        icon: 'pharmazeutik.png',
+        paragraphs: [
+          'Als spezialisiertes Fachübersetzungsbüro für Pharmazie unterstützen wir Pharmaunternehmen, Apotheken, Kliniken, CROs (Clinical Research Organizations), Hersteller von Medizinprodukten sowie Behörden mit fachlich präzisen Arzneimittelübersetzungen.',
+          'Unsere pharmazeutischen Fachübersetzungen werden von qualifizierten Pharmazeuten aus unserem Team angefertigt, die ihre jeweilige Fremdsprache sowie Deutsch sicher beherrschen. Dadurch verbinden wir fundiertes pharmazeutisches Fachwissen mit sprachlicher Präzision und gewährleisten fachgerechte, hochwertige Übersetzungen.',
+        ],
+      },
+      {
+        icon: 'rezept (1).png',
+        title: 'Pharmazeutische Dokumente',
+        lead: 'Wir übersetzen unter anderem:',
+        items: ['Fachinformationen (SmPC)', 'Packungsbeilagen (PIL)', 'Arzneimittelverpackungen', 'Etiketten & Faltschachteln', 'Zulassungsunterlagen', 'Einreichungsdossiers', 'Klinische Studien', 'Patienteninformationen', 'GMP-Dokumente', 'SOPs & Arbeitsanweisungen'],
+        columns: 2,
+      },
+      {
+        icon: 'durchfuhrbarkeit.png',
+        title: 'Internationale Pharma- und Zulassungsprojekte',
+        lead: 'Unsere Übersetzungen unterstützen:',
+        items: ['Internationale Arzneimittelzulassungen', 'Klinische Studien', 'GMP-Dokumentationen', 'Medizinprodukte', 'Pharmakovigilanz', 'Arzneimittelverpackungen', 'Patienteninformationen', 'Mehrsprachige Produktdokumentationen'],
+        columns: 2,
+      },
+    ],
+    features: [
+      ['Arzneimittelübersetzungen', 'Präzise Übersetzungen für Arzneimittel, Packungsbeilagen und Zulassungsunterlagen.', 'wissenschaft.png'],
+      ['Klinische Forschung', 'Übersetzungen für Studien, Protokolle, Einwilligungserklärungen und Patienteninformationen.', 'klinische-studie.png'],
+      ['Pharma & Biotechnologie', 'Einheitliche Fachbegriffe nach aktuellen regulatorischen Anforderungen.', 'biotechnologie (1).png'],
+    ],
+    request: true,
+  },
+  literatur: {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}literatur/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Literatur & Kultur',
+    wordGrid: { columns: 3, iconSpan: 1, copySpan: 2, featureSpans: [2, 1] },
+    rows: [
+      {
+        icon: 'literarisch.png',
+        title: 'Literarische Fachübersetzungen',
+        paragraphs: ['Als Fachübersetzungsbüro für Literatur und Kultur unterstützen wir Verlage, Autorinnen und Autoren, Theater, Filmproduktionen, Kulturinstitutionen, Museen und Agenturen mit hochwertigen literarischen Übersetzungen.'],
+      },
+      {
+        icon: 'dokumentieren.png',
+        title: 'Literarische und kulturelle Texte',
+        lead: 'Wir übersetzen unter anderem:',
+        items: ['Romane', 'Erzählungen', 'Kinder- und Jugendbücher', 'Lyrik', 'Essays', 'Biografien', 'Sachbücher', 'Theaterstücke', 'Drehbücher', 'Hörspieltexte', 'Katalogtexte', 'Ausstellungstexte'],
+        columns: 2,
+      },
+      {
+        icon: 'biografie.png',
+        title: 'Verlage, Autoren & Kulturinstitutionen',
+        lead: 'Unsere Übersetzungen unterstützen:',
+        items: ['Buchübersetzungen', 'Literaturprojekte', 'Verlagsprogramme', 'Theaterproduktionen', 'Filmproduktionen', 'Museumsausstellungen', 'Mehrsprachige Marketingkampagnen', 'Internationale Kulturprojekte'],
+        columns: 2,
+      },
+    ],
+    features: [
+      ['Kultur & Medien', 'Übersetzungen für Theater, Film, Hörspiele, Magazine und Kulturprojekte.', 'klappe.png'],
+      ['Lektorat & Korrektorat', 'Professionelles Lektorat und Korrektorat für sprachliche und stilistische Qualität.', 'kultur.png'],
+    ],
+    request: true,
+  },
+  'chemie-biowissenschaften': {
+    assetBase: `${POINT_CONTENT_ASSET_BASE}chemie-biowissenschaften/`,
+    kicker: 'Fachübersetzungen',
+    title: 'Chemie & Biowissenschaften',
+    wordGrid: { columns: 4, iconSpan: 1, copySpan: 3, featureSpans: [2, 1, 1] },
+    rows: [
+      {
+        icon: 'chemie.png',
+        title: 'Fachübersetzungen für Chemie & Biowissenschaften',
+        paragraphs: ['Als Fachübersetzungsbüro für Chemie und Biowissenschaften unterstützen wir Chemieunternehmen, Labore, Forschungsinstitute, Hochschulen, Biotech-Unternehmen sowie Hersteller von Labor- und Analysegeräten mit präzisen wissenschaftlichen Übersetzungen.'],
+      },
+      {
+        icon: 'labor-ausstattung.png',
+        title: 'Naturwissenschaftliche Fachkompetenz',
+        lead: 'Unsere Fachübersetzer verfügen über Erfahrung in:',
+        items: ['Organischer Chemie', 'Anorganischer Chemie', 'Polymerchemie', 'Materialwissenschaften', 'Analytischer Chemie', 'Umweltanalytik', 'Biochemie', 'Molekularbiologie', 'Genetik', 'Biotechnologie'],
+        columns: 2,
+      },
+    ],
+    features: [
+      ['Chemische Fachübersetzungen', 'Fachübersetzungen für Maschinen, Anlagen und technische Systeme.', 'flasche.png'],
+      ['Biowissenschaften & Life Sciences', 'Präzise Übersetzungen für Elektrotechnik und Steuerungstechnik.', 'data-science.png'],
+      ['Labor & Forschung', 'Übersetzungen für Export, Ausschreibungen und internationale Vorhaben.', 'buch.png'],
+    ],
+    request: true,
+  },
+};
+
+const RECHT_SHEET = {
+  kicker: 'Fachübersetzungen',
+  title: 'Recht',
+  introTitle: 'Juristische Fachübersetzungen',
+  intro: [
+    'Wir erstellen präzise Fachübersetzungen für Kanzleien, Notare, Gerichte, Unternehmen, Behörden und Privatpersonen.',
+    'Wir übersetzen Verträge, Urteile, Beschlüsse, Vollmachten, Satzungen, Klageschriften, Urkunden und viele weitere juristische Dokumente.',
+  ],
+  documentsTitle: 'Typische Rechtsdokumente, die wir regelmäßig übersetzen:',
+  documents: [
+    'Verträge',
+    'Gesellschaftsverträge',
+    'Vollmachten',
+    'Gerichtsurteile',
+    'Beschlüsse',
+    'Satzungen',
+    'Klageschriften',
+    'Notarielle Urkunden',
+  ],
+  features: [
+    ['Internationale Rechtskommunikation', 'Für Kanzleien, Unternehmen, Behörden und internationale Verfahren.', 'internationale-beziehungen.png'],
+    ['Rechtssichere Übersetzungen', 'Für Verträge, Gerichtsdokumente, Gutachten und Schriftsätze.', 'zertifikat.png'],
+    ['Juristische Fachterminologie', 'Einheitliche Fachbegriffe und höchste Übersetzungsqualität.', 'gericht.png'],
+    ['Verträge & Urkunden', 'Immobilienverträge, Vollmachten, Maklerverträge und notarielle Urkunden.', 'dokument.png'],
+  ],
+};
 
 const IT_SOFTWARE_SHEET = {
   title: 'IT & Software',
@@ -836,8 +1245,268 @@ function ItAssetBubble({ asset, alt = '' }) {
   );
 }
 
-function ItSoftwareSheet({ active }) {
-  const data = IT_SOFTWARE_SHEET;
+function DolmetscherAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`dolm-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${DOLMETSCHER_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function BeeidigteAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`beeidigt-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${BEEIDIGTE_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function StandesamtAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`standesamt-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${STANDESAMT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function WirtschaftAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`wirtschaft-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${WIRTSCHAFT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function BeglaubigteAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`beglaubigte-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${BEGLAUBIGTE_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function PointGridAsset({ base, asset, className = '', alt = '' }) {
+  return (
+    <span className={`point-grid-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${base}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+const REQUEST_CARD_COPY = {
+  de: { title: 'Unverbindliche Anfrage', translation: 'Übersetzungsanfrage ›', interpreting: 'Dolmetscher-Anfrage ›' },
+  en: { title: 'Non-binding request', translation: 'Translation request ›', interpreting: 'Interpreter request ›' },
+  ar: { title: 'طلب غير ملزم', translation: 'طلب ترجمة ›', interpreting: 'طلب مترجم فوري ›' },
+  tr: { title: 'Bağlayıcı olmayan talep', translation: 'Çeviri talebi ›', interpreting: 'Tercüman talebi ›' },
+  ru: { title: 'Запрос без обязательств', translation: 'Запрос перевода ›', interpreting: 'Запрос устного переводчика ›' },
+  fr: { title: 'Demande sans engagement', translation: 'Demande de traduction ›', interpreting: 'Demande d’interprète ›' },
+  uk: { title: 'Запит без зобов’язань', translation: 'Запит перекладу ›', interpreting: 'Запит усного перекладача ›' },
+};
+
+function RequestCard({ lang = 'de', className = '' }) {
+  const copy = REQUEST_CARD_COPY[lang] || REQUEST_CARD_COPY.de;
+
+  return (
+    <div className={`dolm-request-card ${className}`.trim()} aria-label={copy.title}>
+      <span className="dolm-request-info">i</span>
+      <div>
+        <strong>{copy.title}</strong>
+        <a href={getOfferHref(lang)}>{copy.translation}</a>
+        <a href={getOfferHref(lang)}>{copy.interpreting}</a>
+      </div>
+    </div>
+  );
+}
+
+function splitSentences(text = '', max = 3) {
+  return String(text)
+    .split(/(?<=[.!?؟])\s+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, max);
+}
+
+function localizeFeatures(active, fallbackFeatures = [], visualCopy, lang = 'de') {
+  if (lang === 'de') return fallbackFeatures;
+  const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
+  const labels = [
+    visualCopy.interpretingLanguages,
+    visualCopy.trustA,
+    visualCopy.trustC,
+    visualCopy.highlights,
+    visualCopy.typical,
+    visualCopy.details,
+  ].filter(Boolean);
+
+  return fallbackFeatures.map(([title, text, asset], index) => [
+    examples[index] || labels[index] || title,
+    examples[index + 1] || visualCopy.ctaSub || text,
+    asset,
+  ]);
+}
+
+function localizePointGridSheet(active, data, visualCopy, lang = 'de') {
+  if (lang === 'de') return data;
+
+  const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+  const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
+  const localizedRows = data.rows.map((row, index) => {
+    const nextRow = { ...row };
+    const rowText = paragraphs[index] || paragraphs[0] || row.paragraphs?.[0] || active?.text || '';
+    const parts = splitSentences(rowText, row.paragraphs?.length || 2);
+    nextRow.title = index === 0 ? normalizeText(active?.title || active?.label || row.title) : (row.title && (examples[index - 1] || row.title));
+    nextRow.paragraphs = parts.length ? parts : row.paragraphs;
+    if (row.lead) nextRow.lead = visualCopy.typical;
+    if (row.listTitle) nextRow.listTitle = visualCopy.typical;
+    if (row.items?.length) {
+      const sourceItems = examples.length ? examples : paragraphs.slice(index + 1, index + 1 + row.items.length);
+      nextRow.items = sourceItems.length ? sourceItems.slice(0, row.items.length) : row.items;
+    }
+    return nextRow;
+  });
+
+  return {
+    ...data,
+    kicker: normalizeText(active?.kicker || data.kicker),
+    title: normalizeText(active?.label || active?.title || data.title),
+    sectionTitle: data.sectionTitle ? visualCopy.typical : data.sectionTitle,
+    rows: localizedRows,
+    features: localizeFeatures(active, data.features, visualCopy, lang),
+  };
+}
+
+function RechtAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`recht-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${RECHT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function PointGridSheet({ active, data, lang = 'de' }) {
+  const featureCount = data.features?.length || 0;
+  const grid = data.wordGrid || {};
+  const tableCols = grid.columns || 2;
+  const iconSpan = grid.iconSpan || 1;
+  const copySpan = grid.copySpan || Math.max(tableCols - iconSpan, 1);
+  const featureSpans = grid.featureSpans || [];
+  const bottomCols = grid.featureColumns || tableCols || Math.min(Math.max(featureCount, 2), 4);
+  const template = `repeat(${tableCols}, minmax(0, 1fr))`;
+
+  return (
+    <div className="point-grid-sheet" data-service-id={active.id}>
+      <span className="point-grid-kicker">{data.kicker}</span>
+      <h3>{data.title}</h3>
+
+      <section className="point-grid-table" style={{ '--point-table-cols': template }} aria-label={`${data.title} Übersicht`}>
+        {data.rows.map((row, index) => (
+          <Fragment key={`${data.title}-${index}`}>
+            <div className="point-grid-icon-cell" style={{ gridColumn: `span ${row.iconSpan || iconSpan}` }}>
+              <PointGridAsset base={data.assetBase} asset={row.icon} />
+            </div>
+            <div className="point-grid-copy-cell" style={{ gridColumn: `span ${row.copySpan || copySpan}` }}>
+              {row.title && <h4>{row.title}</h4>}
+              {(row.paragraphs || []).map((text) => <p key={text}>{text}</p>)}
+              {row.listTitle && <h4>{row.listTitle}</h4>}
+              {row.lead && <p>{row.lead}</p>}
+              {row.items?.length ? (
+                <ul className={row.columns === 2 ? 'point-grid-list point-grid-list--two' : 'point-grid-list'}>
+                  {row.items.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              ) : null}
+              {data.request && index === 0 && (
+                <RequestCard lang={lang} className="point-grid-request-card" />
+              )}
+            </div>
+          </Fragment>
+        ))}
+      </section>
+
+      {data.sectionTitle && <h4 className="point-grid-section-title">{data.sectionTitle}</h4>}
+      {data.features?.length ? (
+        <section className="point-grid-card-grid" style={{ '--point-cols': bottomCols }} aria-label={`${data.title} Details`}>
+          {data.features.map(([title, text, asset], index) => (
+            <article className="point-grid-card" style={{ gridColumn: `span ${featureSpans[index] || 1}` }} key={title}>
+              <PointGridAsset base={data.assetBase} asset={asset} />
+              <strong>{title}</strong>
+              <p>{text}</p>
+            </article>
+          ))}
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
+function getLocalizedItSoftwareSheet(active, visualCopy, lang = 'de') {
+  if (lang === 'de') return IT_SOFTWARE_SHEET;
+  const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+  const groups = [
+    [paragraphs[3] || 'Software development & APIs', paragraphs.slice(4, 8), 'technology.png'],
+    [paragraphs[8] || 'Mobile apps', paragraphs.slice(9, 12), 'mobile-development.png'],
+    [paragraphs[12] || 'Gaming & Localization', paragraphs.slice(13, 16), 'mobile-development.png'],
+    [paragraphs[16] || 'Databases & Data Engineering', paragraphs.slice(17, 20), 'file.png'],
+    [paragraphs[20] || 'Cloud & Infrastructure', paragraphs.slice(21, 24), 'cloud-service.png'],
+    [paragraphs[24] || 'IT security & compliance', paragraphs.slice(25, 28), 'shield.png'],
+    [paragraphs[28] || 'E-learning & training', paragraphs.slice(29, 32), 'file.png'],
+    [paragraphs[32] || 'Technical documentation', paragraphs.slice(33, 36), 'file.png'],
+  ];
+  return {
+    ...IT_SOFTWARE_SHEET,
+    title: normalizeText(active?.label || active?.title || IT_SOFTWARE_SHEET.title),
+    sections: [
+      {
+        ...IT_SOFTWARE_SHEET.sections[0],
+        title: normalizeText(active?.title || active?.label || IT_SOFTWARE_SHEET.sections[0].title),
+        text: paragraphs[0] || active?.text || IT_SOFTWARE_SHEET.sections[0].text,
+      },
+      {
+        ...IT_SOFTWARE_SHEET.sections[1],
+        title: paragraphs[2] || visualCopy.typical,
+        items: groups.map(([title]) => title).slice(0, 8),
+      },
+      {
+        ...IT_SOFTWARE_SHEET.sections[2],
+        title: groups[7][0],
+        lead: visualCopy.typical,
+        items: groups[7][1],
+      },
+      {
+        ...IT_SOFTWARE_SHEET.sections[3],
+        title: visualCopy.highlights,
+        lead: visualCopy.details,
+        items: [groups[0][0], groups[4][0], groups[5][0], groups[3][0], groups[6][0], groups[7][0]],
+      },
+    ],
+    languageCard: {
+      ...IT_SOFTWARE_SHEET.languageCard,
+      title: (RICH_LABELS[lang] || RICH_LABELS.de).languagePairs,
+      items: (RICH_LABELS[lang] || RICH_LABELS.de).pairs,
+    },
+    international: {
+      ...IT_SOFTWARE_SHEET.international,
+      title: (RICH_LABELS[lang] || RICH_LABELS.de).internationalIt,
+      lead: visualCopy.highlights,
+      items: groups.map(([title]) => title).slice(0, 8),
+    },
+    workflow: [paragraphs[0], paragraphs[1]].filter(Boolean),
+    nationwide: {
+      ...IT_SOFTWARE_SHEET.nationwide,
+      title: (RICH_LABELS[lang] || RICH_LABELS.de).nationwide,
+      text: paragraphs[36] || visualCopy.ctaSub,
+    },
+    cta: {
+      ...IT_SOFTWARE_SHEET.cta,
+      question: paragraphs[37]?.split('\n')[0] || normalizeText(active?.cta || visualCopy.request),
+      text: paragraphs[37] || visualCopy.ctaSub,
+      button: normalizeText(active?.cta || visualCopy.request),
+    },
+    bottom: groups.slice(0, 6).map(([title, items, asset]) => [title, items.join(' '), asset]),
+  };
+}
+
+function ItSoftwareSheet({ active, visualCopy, lang = 'de' }) {
+  const data = getLocalizedItSoftwareSheet(active, visualCopy, lang);
   const [intro, apps, docs, competence] = data.sections;
   const renderList = (items, className = 'it-doc-list') => (
     <ul className={className}>
@@ -899,7 +1568,10 @@ function ItSoftwareSheet({ active }) {
         <p>{data.international.lead}</p>
         <div className="it-word-checks">
           {data.international.items.map((item) => (
-            <span key={item}>✓ {item}</span>
+            <span className="it-word-check-item" key={item}>
+              <span className="it-word-checkmark" aria-hidden="true">✓</span>
+              <span className="it-word-check-text">{item}</span>
+            </span>
           ))}
         </div>
       </section>
@@ -922,7 +1594,7 @@ function ItSoftwareSheet({ active }) {
       <section className="it-word-cell it-word-copy it-word-copy--cta">
         <h4>{data.cta.question}</h4>
         <p>{data.cta.text}</p>
-        <a href={getOfferHref('de')} className="it-doc-btn">
+        <a href={getOfferHref(lang)} className="it-doc-btn">
           {data.cta.button} <ArrowRight aria-hidden="true" />
         </a>
       </section>
@@ -1049,6 +1721,65 @@ function SpecialistSheet({ active, rich, visualCopy, lang }) {
   );
 }
 
+function RechtSheet({ active, visualCopy, lang = 'de' }) {
+  const data = lang === 'de' ? RECHT_SHEET : (() => {
+    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+    const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
+    return {
+      ...RECHT_SHEET,
+      kicker: normalizeText(active?.kicker || RECHT_SHEET.kicker),
+      title: normalizeText(active?.label || active?.title || RECHT_SHEET.title),
+      introTitle: normalizeText(active?.title || active?.label || RECHT_SHEET.introTitle),
+      intro: [paragraphs[0], paragraphs[1]].filter(Boolean),
+      documentsTitle: visualCopy.typical,
+      documents: examples.length ? examples : paragraphs.slice(2, 10),
+      features: localizeFeatures(active, RECHT_SHEET.features, visualCopy, lang),
+    };
+  })();
+
+  return (
+    <div className="recht-word-sheet" data-service-id={active.id}>
+      <div className="recht-word-title">
+        <span>{data.kicker}</span>
+        <h3>{data.title}</h3>
+      </div>
+
+      <div className="recht-word-icon recht-word-icon--intro">
+        <RechtAsset asset="gericht.png" />
+      </div>
+      <section className="recht-word-copy recht-word-copy--intro" aria-label="Recht Fachübersetzungen">
+        <div>
+          <h4>{data.introTitle}</h4>
+          {data.intro.map((text) => <p key={text}>{text}</p>)}
+        </div>
+        <RequestCard lang={lang} className="recht-request-card" />
+      </section>
+
+      <div className="recht-word-icon recht-word-icon--documents">
+        <RechtAsset asset="juristisches-papier.png" />
+      </div>
+      <section className="recht-word-copy recht-word-copy--documents" aria-label="Typische Rechtsdokumente">
+        <h4>{data.documentsTitle}</h4>
+        <ul>
+          {data.documents.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      </section>
+
+      <section className="recht-word-bottom-strip" aria-label="Recht Vorteile">
+        {data.features.map(([title, text, asset]) => (
+          <article className="recht-word-bottom-tile" key={title}>
+            <RechtAsset asset={asset} />
+            <div>
+              <strong>{title}</strong>
+              <span>{text}</span>
+            </div>
+          </article>
+        ))}
+      </section>
+    </div>
+  );
+}
+
 function HelpIcon(active) {
   if (active?.group === 'interpreting') return Headphones;
   if (active?.group === 'translation') return FileText;
@@ -1056,62 +1787,301 @@ function HelpIcon(active) {
 }
 
 function DolmetschenReferenceSheet({ active, visualCopy, lang }) {
-  const richLabels = RICH_LABELS[lang] || RICH_LABELS.de;
-  const paragraphs = (active?.paragraphs || []).map(normalizeText);
-  const main = paragraphs[0] || '';
-  const row1 = main.split('Seit 2019')[0]?.trim() || main;
-  const row2Rest = main.includes('Seit 2019') ? `Seit 2019${main.split('Seit 2019')[1]}` : paragraphs[1] || '';
-  const row2 = row2Rest.split('Wir vermitteln')[0]?.trim() || row2Rest;
-  const row3 = main.includes('Wir vermitteln')
-    ? `Wir vermitteln${main.split('Wir vermitteln')[1]}`.trim()
-    : paragraphs[1] || visualCopy.ctaSub;
-  const rows = [
-    { Icon: UsersRound, text: row1 },
-    { Icon: MapPin, text: row2 },
-    { Icon: Globe2, text: row3 },
-  ].filter((row) => row.text);
-  const benefits = lang === 'de'
-    ? [
-        ['ÜBER 190 SPRACHEN', 'Dolmetscher für nahezu alle Sprachen und Dialekte weltweit.', Globe2],
-        ['ERFAHRENE DOLMETSCHER', 'Qualifizierte und geprüfte Dolmetscher mit Fachkompetenz und Erfahrung.', UsersRound],
-        ['VIELSEITIGE EINSATZGEBIETE', 'Einsätze bei Unternehmen, Behörden, Gerichten, medizinischen Einrichtungen und für Privatkunden.', Landmark],
-        ['FLEXIBLE EINSATZFORMEN', 'Präsenztermine vor Ort, Online Meetings, Video- und Telefondolmetschen.', Video],
-      ]
-    : [
-        [visualCopy.interpretingLanguages, visualCopy.ctaSub, Globe2],
-        [visualCopy.trustA, visualCopy.ctaSub, UsersRound],
-        [richLabels.serviceProfile, visualCopy.ctaSub, Landmark],
-        [visualCopy.trustC, visualCopy.ctaSub, Video],
-      ];
-
+  const data = lang === 'de' ? DOLMETSCHER_SHEET : (() => {
+    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+    const overview = paragraphs[0] || active?.text || '';
+    const parts = splitSentences(overview, 3);
+    const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
+    return {
+      title: normalizeText(active?.label || active?.title || DOLMETSCHER_SHEET.title),
+      introRows: [
+        { asset: 'mannschaft.png', text: parts[0] || overview },
+        { asset: 'platzhalter.png', text: parts[1] || paragraphs[1] || visualCopy.ctaSub },
+        { asset: 'save-the-world.png', text: parts[2] || paragraphs[2] || visualCopy.ctaSub },
+      ],
+      benefits: [
+        [visualCopy.interpretingLanguages, examples[0] || visualCopy.ctaSub, 'save-the-world.png'],
+        [visualCopy.trustA, examples[1] || visualCopy.ctaSub, 'benutzer.png'],
+        [visualCopy.trustC, examples[2] || visualCopy.ctaSub, 'flexibel.png'],
+      ],
+      processTitle: visualCopy.process,
+      process: [
+        ['1', visualCopy.request, visualCopy.requestText, 'email.png'],
+        ['2', visualCopy.review, visualCopy.reviewText, 'bestatigung.png'],
+        ['3', visualCopy.delivery, visualCopy.deliveryText, 'ubersetzer.png'],
+      ],
+      cta: normalizeText(active?.cta || visualCopy.request),
+    };
+  })();
+  const kicker = normalizeText(active?.kicker || SIDE_LABELS[lang]?.specialist || DOLMETSCHER_SHEET.kicker);
   return (
-    <div className="pdf-dolmetschen-reference" data-service-id={active.id}>
-      <section className="pdf-dolmetschen-hero">
-        <div className="pdf-dolmetschen-copy">
-          <h3>{normalizeText(active.label || active.title)}</h3>
-          <div className="pdf-dolmetschen-rows">
-            {rows.map(({ Icon, text }) => (
-              <div className="pdf-dolmetschen-row" key={text}>
-                <IconBubble icon={Icon} />
-                <p>{text}</p>
-              </div>
-            ))}
-          </div>
+    <div className="dolm-doc-sheet" data-service-id={active.id}>
+      <span className="dolm-doc-kicker">{kicker}</span>
+      <h3>{data.title}</h3>
+
+      <section className="dolm-doc-table" aria-label="Dolmetschen Übersicht">
+        <div className="dolm-doc-icon-cell dolm-doc-icon-cell--top">
+          <DolmetscherAsset asset="mannschaft.png" />
         </div>
-        <figure className="pdf-dolmetschen-art pdf-visual-placeholder" aria-hidden="true">
-          <span />
-        </figure>
+        <div className="dolm-doc-copy-cell">
+          <p>{data.introRows[0].text}</p>
+        </div>
+
+        <div className="dolm-doc-icon-cell dolm-doc-icon-cell--wide">
+          <DolmetscherAsset asset="platzhalter.png" />
+        </div>
+        <div className="dolm-doc-copy-cell dolm-doc-copy-cell--wide">
+          <p>{data.introRows[1].text}</p>
+          <p>{data.introRows[2].text}</p>
+          <RequestCard lang={lang} />
+        </div>
+
       </section>
 
-      <div className="pdf-dolmetschen-benefits">
-        {benefits.map(([title, text, Icon]) => (
-          <div className="pdf-dolmetschen-benefit" key={title}>
-            <IconBubble icon={Icon} />
+      <h4 className="dolm-doc-process-title">{data.processTitle}</h4>
+
+      <section className="dolm-doc-card-grid" aria-label="So geht die Dolmetscher Bestellung">
+        {data.process.map(([step, title, text, asset]) => (
+          <article className="dolm-doc-card dolm-doc-card--process" key={step}>
+            <DolmetscherAsset asset={asset} />
+            <span>{step}.</span>
             <strong>{title}</strong>
-            <span>{text}</span>
-          </div>
+            <p>{text}</p>
+          </article>
         ))}
-      </div>
+      </section>
+
+      <section className="dolm-doc-card-grid dolm-doc-card-grid--benefits" aria-label="Dolmetschen Vorteile">
+        {data.benefits.map(([title, text, asset]) => (
+          <article className="dolm-doc-card dolm-doc-card--benefit" key={title}>
+            <DolmetscherAsset asset={asset} />
+            <strong>{title}</strong>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+function WirtschaftFinanzenSheet({ active, visualCopy, lang = 'de' }) {
+  const data = lang === 'de' ? WIRTSCHAFT_FINANZEN_SHEET : (() => {
+    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+    return {
+      ...WIRTSCHAFT_FINANZEN_SHEET,
+      kicker: normalizeText(active?.kicker || WIRTSCHAFT_FINANZEN_SHEET.kicker),
+      title: normalizeText(active?.label || active?.title || WIRTSCHAFT_FINANZEN_SHEET.title),
+      introTitle: normalizeText(active?.title || active?.label || WIRTSCHAFT_FINANZEN_SHEET.introTitle),
+      intro: paragraphs[0] || active?.text || WIRTSCHAFT_FINANZEN_SHEET.intro,
+      features: localizeFeatures(active, WIRTSCHAFT_FINANZEN_SHEET.features, visualCopy, lang),
+    };
+  })();
+
+  return (
+    <div className="wirtschaft-doc-sheet" data-service-id={active.id}>
+      <span className="wirtschaft-doc-kicker">{data.kicker}</span>
+      <h3>{data.title}</h3>
+
+      <section className="wirtschaft-doc-table" aria-label="Wirtschaft und Finanzen Übersicht">
+        <div className="wirtschaft-doc-icon-cell">
+          <WirtschaftAsset asset="wirtschaft.png" />
+        </div>
+        <div className="wirtschaft-doc-copy-cell">
+          <h4>{data.introTitle}</h4>
+          <p>{data.intro}</p>
+          <RequestCard lang={lang} className="wirtschaft-request-card" />
+        </div>
+      </section>
+
+      <section className="wirtschaft-doc-card-grid" aria-label="Wirtschaft und Finanzen Vorteile">
+        {data.features.map(([title, text, asset]) => (
+          <article className="wirtschaft-doc-card" key={title}>
+            <WirtschaftAsset asset={asset} />
+            <strong>{title}</strong>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+function BeglaubigteUebersetzungSheet({ active, visualCopy, lang = 'de' }) {
+  const data = lang === 'de' ? BEGLAUBIGTE_UEBERSETZUNG_SHEET : (() => {
+    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+    const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
+    return {
+      ...BEGLAUBIGTE_UEBERSETZUNG_SHEET,
+      kicker: normalizeText(active?.kicker || BEGLAUBIGTE_UEBERSETZUNG_SHEET.kicker),
+      title: normalizeText(active?.title || active?.label || BEGLAUBIGTE_UEBERSETZUNG_SHEET.title),
+      introTitle: normalizeText(active?.title || active?.label || BEGLAUBIGTE_UEBERSETZUNG_SHEET.introTitle),
+      intro: paragraphs[0] || active?.text || BEGLAUBIGTE_UEBERSETZUNG_SHEET.intro,
+      documentsTitle: paragraphs[1] || visualCopy.typical,
+      documentsLead: visualCopy.details,
+      documents: paragraphs.slice(2, 9).length ? paragraphs.slice(2, 9) : examples,
+      languagesTitle: paragraphs[10] || (RICH_LABELS[lang] || RICH_LABELS.de).languagePairs,
+      languagesLead: visualCopy.details,
+      languages: paragraphs.slice(11, 23).length ? paragraphs.slice(11, 23) : (RICH_LABELS[lang] || RICH_LABELS.de).pairs,
+      processTitle: visualCopy.process,
+      process: [
+        ['1.', visualCopy.requestText, 'word-media/image5.png'],
+        ['2.', visualCopy.reviewText, 'word-media/image6.png'],
+        ['3.', visualCopy.deliveryText, 'word-media/image7.png'],
+        ['4.', visualCopy.ctaSub, 'word-media/image8.png'],
+      ],
+      benefits: localizeFeatures(active, BEGLAUBIGTE_UEBERSETZUNG_SHEET.benefits, visualCopy, lang),
+    };
+  })();
+
+  return (
+    <div className="beglaubigte-doc-sheet" data-service-id={active.id}>
+      <span className="beglaubigte-doc-kicker">{data.kicker}</span>
+      <h3>{data.title}</h3>
+
+      <section className="beglaubigte-doc-table" aria-label="Beglaubigte Übersetzungen Übersicht">
+        <div className="beglaubigte-doc-icon-cell beglaubigte-doc-icon-cell--intro">
+          <BeglaubigteAsset asset="word-media/image1.png" />
+        </div>
+        <div className="beglaubigte-doc-copy-cell beglaubigte-doc-copy-cell--intro">
+          <h4>{data.introTitle}</h4>
+          <p>{data.intro}</p>
+          <RequestCard lang={lang} className="beglaubigte-request-card" />
+        </div>
+
+        <div className="beglaubigte-doc-icon-cell beglaubigte-doc-icon-cell--documents">
+          <BeglaubigteAsset asset="word-media/image3.png" />
+        </div>
+        <div className="beglaubigte-doc-copy-cell beglaubigte-doc-copy-cell--documents">
+          <h4>{data.documentsTitle}</h4>
+          <p>{data.documentsLead}</p>
+          <ul>
+            {data.documents.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
+
+        <div className="beglaubigte-doc-icon-cell beglaubigte-doc-icon-cell--languages">
+          <BeglaubigteAsset asset="word-media/image4.png" />
+        </div>
+        <div className="beglaubigte-doc-copy-cell beglaubigte-doc-copy-cell--languages">
+          <h4>{data.languagesTitle}</h4>
+          <p>{data.languagesLead}</p>
+          <ul>
+            {data.languages.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <h4 className="beglaubigte-doc-process-title">{data.processTitle}</h4>
+      <section className="beglaubigte-doc-process-grid" aria-label="Ablauf beglaubigte Übersetzung">
+        {data.process.map(([step, text, asset]) => (
+          <article className="beglaubigte-doc-process-card" key={step}>
+            <BeglaubigteAsset asset={asset} />
+            <strong>{step}</strong>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="beglaubigte-doc-card-grid" aria-label="Beglaubigte Übersetzung Vorteile">
+        {data.benefits.map(([title, text, asset]) => (
+          <article className="beglaubigte-doc-card" key={title}>
+            <BeglaubigteAsset asset={asset} />
+            <strong>{title}</strong>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+function BeeidigteDolmetscherSheet({ active, visualCopy, lang = 'de' }) {
+  const data = lang === 'de' ? BEEIDIGTE_DOLMETSCHER_SHEET : (() => {
+    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+    const parts = splitSentences(paragraphs[0], 2);
+    return {
+      ...BEEIDIGTE_DOLMETSCHER_SHEET,
+      kicker: normalizeText(active?.kicker || BEEIDIGTE_DOLMETSCHER_SHEET.kicker),
+      title: normalizeText(active?.label || active?.title || BEEIDIGTE_DOLMETSCHER_SHEET.title),
+      introRows: [
+        { ...BEEIDIGTE_DOLMETSCHER_SHEET.introRows[0], text: parts[0] || paragraphs[0] || BEEIDIGTE_DOLMETSCHER_SHEET.introRows[0].text },
+        { ...BEEIDIGTE_DOLMETSCHER_SHEET.introRows[1], paragraphs: [parts[1] || paragraphs[1] || visualCopy.ctaSub, paragraphs[1] || visualCopy.ctaSub] },
+      ],
+      features: localizeFeatures(active, BEEIDIGTE_DOLMETSCHER_SHEET.features, visualCopy, lang),
+    };
+  })();
+
+  return (
+    <div className="beeidigt-doc-sheet" data-service-id={active.id}>
+      <span className="beeidigt-doc-kicker">{data.kicker}</span>
+      <h3>{data.title}</h3>
+
+      <section className="beeidigt-doc-table" aria-label="Beeidigte Dolmetscher Übersicht">
+        <div className="beeidigt-doc-icon-cell beeidigt-doc-icon-cell--top">
+          <BeeidigteAsset asset={data.introRows[0].asset} />
+        </div>
+        <div className="beeidigt-doc-copy-cell">
+          <p>{data.introRows[0].text}</p>
+        </div>
+
+        <div className="beeidigt-doc-icon-cell beeidigt-doc-icon-cell--wide">
+          <BeeidigteAsset asset={data.introRows[1].asset} />
+        </div>
+        <div className="beeidigt-doc-copy-cell beeidigt-doc-copy-cell--wide">
+          {data.introRows[1].paragraphs.map((text) => <p key={text}>{text}</p>)}
+          <RequestCard lang={lang} className="beeidigt-request-card" />
+        </div>
+      </section>
+
+      <section className="beeidigt-doc-card-grid" aria-label="Beeidigte Dolmetscher Vorteile">
+        {data.features.map(([title, text, asset]) => (
+          <article className="beeidigt-doc-card" key={title}>
+            <BeeidigteAsset asset={asset} />
+            <strong>{title}</strong>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+function StandesamtDolmetscherSheet({ active, visualCopy, lang = 'de' }) {
+  const data = lang === 'de' ? STANDESAMT_DOLMETSCHER_SHEET : (() => {
+    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
+    const parts = splitSentences(paragraphs[0], 3);
+    return {
+      ...STANDESAMT_DOLMETSCHER_SHEET,
+      kicker: normalizeText(active?.kicker || STANDESAMT_DOLMETSCHER_SHEET.kicker),
+      title: normalizeText(active?.label || active?.title || STANDESAMT_DOLMETSCHER_SHEET.title),
+      introTitle: normalizeText(active?.title || active?.label || STANDESAMT_DOLMETSCHER_SHEET.introTitle),
+      intro: parts[0] || paragraphs[0] || STANDESAMT_DOLMETSCHER_SHEET.intro,
+      details: [parts[1] || paragraphs[1] || visualCopy.ctaSub, parts[2] || paragraphs[2] || visualCopy.ctaSub],
+    };
+  })();
+
+  return (
+    <div className="standesamt-doc-sheet" data-service-id={active.id}>
+      <span className="standesamt-doc-kicker">{data.kicker}</span>
+      <h3>{data.title}</h3>
+
+      <section className="standesamt-doc-table" aria-label="Standesamt Dolmetscher Übersicht">
+        <div className="standesamt-doc-icon-cell standesamt-doc-icon-cell--top">
+          <StandesamtAsset asset="eheringe.png" />
+        </div>
+        <div className="standesamt-doc-copy-cell">
+          <h4>{data.introTitle}</h4>
+          <p>{data.intro}</p>
+        </div>
+
+        <div className="standesamt-doc-icon-cell standesamt-doc-icon-cell--wide">
+          <StandesamtAsset asset="regierung.png" />
+        </div>
+        <div className="standesamt-doc-copy-cell standesamt-doc-copy-cell--wide">
+          {data.details.map((text) => <p key={text}>{text}</p>)}
+          <RequestCard lang={lang} className="standesamt-request-card" />
+        </div>
+      </section>
     </div>
   );
 }
@@ -1131,6 +2101,12 @@ function InterpretingSheet({ active, rich, visualCopy, lang }) {
 
   if (isOverview) {
     return <DolmetschenReferenceSheet active={active} visualCopy={visualCopy} lang={lang} />;
+  }
+  if (active.id === 'beeidigte-dolmetscher') {
+    return <BeeidigteDolmetscherSheet active={active} visualCopy={visualCopy} lang={lang} />;
+  }
+  if (active.id === 'standesamt-dolmetscher') {
+    return <StandesamtDolmetscherSheet active={active} visualCopy={visualCopy} lang={lang} />;
   }
 
   return (
@@ -1299,6 +2275,8 @@ export default function Services() {
     cta: visualCopy.request,
   }), [side.specialist, specialtyItems, ui.kicker, ui.sub, ui.title, visualCopy.ctaSub, visualCopy.request]);
   const [activeId, setActiveId] = useState(navItems[0]?.id);
+  const sectionRef = useRef(null);
+  const [drawerAvailable, setDrawerAvailable] = useState(false);
   const active = activeId === specialtyOverview.id ? specialtyOverview : navItems.find((item) => item.id === activeId) || navItems[0];
   const activeVisual = getVisualContent(active, visualCopy);
   const activeCta = normalizeText(active?.cta || visualCopy.request);
@@ -1306,6 +2284,7 @@ export default function Services() {
   const activeTheme = getServiceTheme(active);
   const ActiveThemeIcon = activeTheme.icon;
   const richService = getRichServiceData(active, visualCopy, lang);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const steps = [
     [visualCopy.request, visualCopy.requestText, Send],
     [visualCopy.review, visualCopy.reviewText, ClipboardList],
@@ -1314,12 +2293,27 @@ export default function Services() {
 
   useEffect(() => {
     setActiveId(navItems[0]?.id);
+    setSidebarOpen(false);
   }, [lang, navItems]);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      setDrawerAvailable(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setDrawerAvailable(entry.isIntersecting),
+      { root: null, threshold: 0.08, rootMargin: '-88px 0px -28% 0px' },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section className="services" id="services" aria-labelledby="services-heading">
       <div className="container">
-        <div className="specialties" id="fachuebersetzungen">
+        <div className="specialties" id="fachuebersetzungen" ref={sectionRef}>
           <div className="section-head specialties-head">
             <h2 data-reveal="">{ui.title}</h2>
             <p data-reveal="" style={{ '--ri': 1 }}>
@@ -1327,12 +2321,42 @@ export default function Services() {
             </p>
           </div>
 
+          <button
+            type="button"
+            className={`specialty-drawer-toggle specialty-drawer-toggle--services${lang === 'ar' ? ' is-rtl' : ''}${drawerAvailable || sidebarOpen ? ' is-visible' : ''}`}
+            onClick={() => setSidebarOpen(true)}
+            aria-expanded={sidebarOpen}
+            aria-controls="leistungen-point-menu"
+            aria-label={side.specialist}
+          >
+            <span className="specialty-drawer-icon" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+
           <div className="specialty-layout" data-reveal="" style={{ '--ri': 0 }}>
-            <aside className="specialty-sidebar" aria-label="Fachübersetzungen Navigation">
+            <aside
+              id="leistungen-point-menu"
+              className={`specialty-sidebar${lang === 'ar' ? ' is-rtl' : ''}${sidebarOpen ? ' is-open' : ''}`}
+              aria-label="Fachübersetzungen Navigation"
+            >
+              <button
+                type="button"
+                className="specialty-drawer-close"
+                onClick={() => setSidebarOpen(false)}
+                aria-label={side.close}
+              >
+                ×
+              </button>
               <button
                 type="button"
                 className={`specialty-side-row specialty-side-row--strong${active?.id === interpretingItems[0]?.id ? ' active' : ''}`}
-                onClick={() => setActiveId(interpretingItems[0]?.id)}
+                onClick={() => {
+                  setActiveId(interpretingItems[0]?.id);
+                  setSidebarOpen(false);
+                }}
                 aria-pressed={active?.id === interpretingItems[0]?.id}
               >
                 {side.interpreting} <span aria-hidden="true">›</span>
@@ -1345,7 +2369,10 @@ export default function Services() {
                       key={item.id}
                       type="button"
                       className={`specialty-side-row specialty-side-row--sub${item.id === 'standesamt-dolmetscher' ? ' specialty-side-row--strong' : ''}${active?.id === item.id ? ' active' : ''}`}
-                      onClick={() => setActiveId(item.id)}
+                      onClick={() => {
+                        setActiveId(item.id);
+                        setSidebarOpen(false);
+                      }}
                       aria-pressed={active?.id === item.id}
                     >
                       {item.label} <span aria-hidden="true">›</span>
@@ -1357,7 +2384,10 @@ export default function Services() {
               <button
                 type="button"
                 className={`specialty-side-row specialty-side-row--strong${active?.id === translationItem?.id ? ' active' : ''}`}
-                onClick={() => setActiveId(translationItem?.id)}
+                onClick={() => {
+                  setActiveId(translationItem?.id);
+                  setSidebarOpen(false);
+                }}
                 aria-pressed={active?.id === translationItem?.id}
               >
                 {side.translation} <span aria-hidden="true">›</span>
@@ -1366,7 +2396,10 @@ export default function Services() {
               <button
                 type="button"
                 className={`specialty-side-row specialty-side-row--active specialty-side-row--strong${active?.id === specialtyOverview.id ? ' active' : ''}`}
-                onClick={() => setActiveId(specialtyOverview.id)}
+                onClick={() => {
+                  setActiveId(specialtyOverview.id);
+                  setSidebarOpen(false);
+                }}
                 aria-pressed={active?.id === specialtyOverview.id}
               >
                 {side.specialist} <span aria-hidden="true">›</span>
@@ -1378,7 +2411,10 @@ export default function Services() {
                     key={item.id}
                     type="button"
                     className={`specialty-side-row specialty-side-row--sub${active?.id === item.id ? ' active' : ''}`}
-                    onClick={() => setActiveId(item.id)}
+                    onClick={() => {
+                      setActiveId(item.id);
+                      setSidebarOpen(false);
+                    }}
                     aria-pressed={active?.id === item.id}
                   >
                     {item.label} <span aria-hidden="true">›</span>
@@ -1390,8 +2426,18 @@ export default function Services() {
                 {side.faq} <span aria-hidden="true">›</span>
               </a>
             </aside>
+            <button
+              type="button"
+              className={`specialty-drawer-backdrop${sidebarOpen ? ' is-open' : ''}`}
+              onClick={() => setSidebarOpen(false)}
+              aria-label={side.close}
+            />
 
-            <article className={`service-visual-panel${richService ? ' service-visual-panel--rich' : ''}`} aria-live="polite">
+            <article
+              className={`service-visual-panel${richService ? ' service-visual-panel--rich' : ''}`}
+              data-active-service={active?.id}
+              aria-live="polite"
+            >
               {richService ? (
                 <RichServicePanel active={active} visualCopy={visualCopy} lang={lang} />
               ) : (

@@ -86,14 +86,13 @@ h1 { font-weight: 800; }
 /* Layout */
 .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; }
 .container-narrow { max-width: 960px; margin: 0 auto; padding: 0 32px; }
-section { padding: 10px 0; position: relative; }
+section { padding: 0px 0; position: relative; }
 .section-head { text-align: center; margin-bottom: 64px; }
 .section-head h2 { font-size: clamp(34px, 4.2vw, 58px); line-height: 1.0; letter-spacing: -0.04em; font-weight: 800; max-width: 920px; margin: 0 auto; }
 .section-head p { color: var(--muted); font-size: 17px; max-width: 540px; margin: 20px auto 0; line-height: 1.5; }
 
 .hero p.lead,
 .tablet-hero-lead,
-.section-head p,
 .feature-card p,
 .specialty-page-intro p,
 .specialty-page-copy p,
@@ -808,28 +807,30 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
 
 .services > .container {
   width: min(100%, calc(100vw - 28px));
-  max-width: 1780px;
+  max-width: 1400px;
 }
-.specialties { padding-top: 86px; }
+/* .specialties { padding-top: 86px; } */
 .specialties-head {
   margin-bottom: 28px;
-  max-width: 820px;
+  width: 100%;
+  /* background-color: red; */
 }
 .specialties-head h2 {
   max-width: 18ch;
 }
 .specialties-head p {
-  max-width: 720px;
+  /* max-width: 720px; */
+  text-align: center;
 }
 .specialty-layout {
   display: grid;
-  grid-template-columns: minmax(230px, 282px) minmax(0, 1fr);
-  gap: clamp(18px, 2.2vw, 30px);
+  grid-template-columns: 282px minmax(0, 1fr);
+  gap: 24px;
   align-items: start;
   width: 100%;
-  max-width: none;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: clamp(16px, 1.7vw, 22px);
+  padding: 18px;
   /* background: rgba(255,255,255,0.55); */
   /* border: 1px solid rgba(10,10,10,0.06); */
   border-radius: 8px;
@@ -838,7 +839,7 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
 .specialty-sidebar {
   position: sticky;
   top: 96px;
-  padding: 8px 0 4px;
+  padding: 0px 5px;
   background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(250,249,246,0.96));
   border: 1px solid rgba(10,10,10,0.06);
   border-radius: 8px;
@@ -1263,8 +1264,320 @@ html[dir="rtl"] .specialty-side-row--sub {
   height: 16px;
 }
 .service-visual-panel--rich {
-  gap: clamp(22px, 2vw, 30px);
+  width: 100%;
+  max-width: 1040px;
+  justify-self: start;
+  gap: clamp(14px, 1.5vw, 20px);
   padding-top: 0;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] {
+  width: 100%;
+  min-width: 0;
+  justify-self: start;
+}
+.service-visual-panel--rich .it-word-sheet,
+.service-visual-panel--rich .dolm-doc-sheet,
+.service-visual-panel--rich .beeidigt-doc-sheet,
+.service-visual-panel--rich .standesamt-doc-sheet,
+.service-visual-panel--rich .wirtschaft-doc-sheet,
+.service-visual-panel--rich .beglaubigte-doc-sheet,
+.service-visual-panel--rich .point-grid-sheet,
+.service-visual-panel--rich .recht-word-sheet {
+  width: 100%;
+  max-width: 100%;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-sheet {
+  width: 100%;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-table {
+  grid-template-columns: 112px minmax(0, 1fr);
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-sheet {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-table,
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-card-grid {
+  gap: 8px;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-icon-cell,
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-copy-cell,
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-card {
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 14px 34px rgba(11,30,154,.055);
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-process-title {
+  margin: 14px 0 0;
+  border: 0;
+  /* border-radius: 12px; */
+  /* background: rgba(255,255,255,0.92); */
+  /* box-shadow: 0 14px 34px rgba(11,30,154,.045); */
+  text-decoration: none;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-card-grid {
+  margin-top: 8px;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-card-grid .dolm-doc-card {
+  border: 0;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card {
+  width: min(360px, 100%);
+  min-height: 0;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(10,10,10,.06);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #FFFFFF, rgba(250,249,246,.96));
+  box-shadow: 0 18px 42px rgba(21,52,73,.08);
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-info {
+  width: 38px;
+  height: 38px;
+  background: #153449;
+  font-size: 15px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card strong {
+  color: #0A0A0A;
+  font-size: 18px;
+  letter-spacing: -0.025em;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card div {
+  gap: 8px;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card a {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  justify-content: center;
+  padding: 8px 13px;
+  border-radius: 9px;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 12px;
+  line-height: 1;
+  transition: transform .15s ease, background .15s ease;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card a:hover {
+  transform: translateY(-1px);
+  background: #153449;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-icon-cell--top,
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-table > .dolm-doc-copy-cell:first-of-type {
+  min-height: 0;
+  align-content: center;
+}
+.service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-doc-table > .dolm-doc-copy-cell:first-of-type {
+  padding-block: 18px;
+}
+
+.service-visual-panel--rich .it-word-sheet,
+.service-visual-panel--rich .dolm-doc-sheet,
+.service-visual-panel--rich .beeidigt-doc-sheet,
+.service-visual-panel--rich .standesamt-doc-sheet,
+.service-visual-panel--rich .wirtschaft-doc-sheet,
+.service-visual-panel--rich .beglaubigte-doc-sheet,
+.service-visual-panel--rich .point-grid-sheet,
+.service-visual-panel--rich .recht-word-sheet {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.service-visual-panel--rich .it-word-sheet,
+.service-visual-panel--rich .dolm-doc-table,
+.service-visual-panel--rich .beeidigt-doc-table,
+.service-visual-panel--rich .standesamt-doc-table,
+.service-visual-panel--rich .wirtschaft-doc-table,
+.service-visual-panel--rich .beglaubigte-doc-table,
+.service-visual-panel--rich .point-grid-table,
+.service-visual-panel--rich .recht-word-sheet,
+.service-visual-panel--rich .it-word-bottom-strip,
+.service-visual-panel--rich .dolm-doc-card-grid,
+.service-visual-panel--rich .beeidigt-doc-card-grid,
+.service-visual-panel--rich .wirtschaft-doc-card-grid,
+.service-visual-panel--rich .beglaubigte-doc-process-grid,
+.service-visual-panel--rich .beglaubigte-doc-card-grid,
+.service-visual-panel--rich .point-grid-card-grid,
+.service-visual-panel--rich .recht-word-bottom-strip {
+  gap: 8px;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.service-visual-panel--rich .it-word-cell,
+.service-visual-panel--rich .it-doc-bottom-tile,
+.service-visual-panel--rich .dolm-doc-icon-cell,
+.service-visual-panel--rich .dolm-doc-copy-cell,
+.service-visual-panel--rich .dolm-doc-card,
+.service-visual-panel--rich .beeidigt-doc-icon-cell,
+.service-visual-panel--rich .beeidigt-doc-copy-cell,
+.service-visual-panel--rich .beeidigt-doc-card,
+.service-visual-panel--rich .standesamt-doc-icon-cell,
+.service-visual-panel--rich .standesamt-doc-copy-cell,
+.service-visual-panel--rich .wirtschaft-doc-icon-cell,
+.service-visual-panel--rich .wirtschaft-doc-copy-cell,
+.service-visual-panel--rich .wirtschaft-doc-card,
+.service-visual-panel--rich .beglaubigte-doc-icon-cell,
+.service-visual-panel--rich .beglaubigte-doc-copy-cell,
+.service-visual-panel--rich .beglaubigte-doc-process-card,
+.service-visual-panel--rich .beglaubigte-doc-card,
+.service-visual-panel--rich .point-grid-icon-cell,
+.service-visual-panel--rich .point-grid-copy-cell,
+.service-visual-panel--rich .point-grid-card,
+.service-visual-panel--rich .recht-word-icon,
+.service-visual-panel--rich .recht-word-copy,
+.service-visual-panel--rich .recht-word-bottom-tile {
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 14px 34px rgba(11,30,154,.055);
+}
+
+
+.service-visual-panel--rich .beglaubigte-doc-process-title,
+.service-visual-panel--rich .point-grid-section-title {
+  margin: 14px 0 0;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 14px 34px rgba(11,30,154,.045);
+  text-decoration: none;
+}
+
+.service-visual-panel--rich .dolm-doc-card-grid,
+.service-visual-panel--rich .beglaubigte-doc-process-grid,
+.service-visual-panel--rich .point-grid-card-grid {
+  margin-top: 8px;
+}
+
+.service-visual-panel--rich .dolm-request-card {
+  width: min(360px, 100%);
+  min-height: 0;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(10,10,10,.06);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #FFFFFF, rgba(250,249,246,.96));
+  box-shadow: 0 18px 42px rgba(21,52,73,.08);
+}
+
+.service-visual-panel--rich .dolm-request-info {
+  width: 38px;
+  height: 38px;
+  background: #153449;
+  font-size: 15px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+}
+
+.service-visual-panel--rich .dolm-request-card strong {
+  color: #0A0A0A;
+  font-size: 18px;
+  letter-spacing: -0.025em;
+}
+
+.service-visual-panel--rich .dolm-request-card div {
+  gap: 8px;
+}
+
+.service-visual-panel--rich .dolm-request-card a {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  justify-content: center;
+  padding: 8px 13px;
+  border-radius: 9px;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 12px;
+  line-height: 1;
+  transition: transform .15s ease, background .15s ease;
+}
+
+.service-visual-panel--rich .dolm-request-card a:hover {
+  transform: translateY(-1px);
+  background: #153449;
+}
+
+.service-visual-panel--rich .dolm-doc-table,
+.service-visual-panel--rich .beeidigt-doc-table,
+.service-visual-panel--rich .standesamt-doc-table,
+.service-visual-panel--rich .wirtschaft-doc-table,
+.service-visual-panel--rich .beglaubigte-doc-table,
+.service-visual-panel--rich .point-grid-table {
+  grid-template-columns: 112px minmax(0, 1fr) !important;
+}
+
+.service-visual-panel--rich .dolm-doc-icon-cell,
+.service-visual-panel--rich .beeidigt-doc-icon-cell,
+.service-visual-panel--rich .standesamt-doc-icon-cell,
+.service-visual-panel--rich .wirtschaft-doc-icon-cell,
+.service-visual-panel--rich .beglaubigte-doc-icon-cell,
+.service-visual-panel--rich .point-grid-icon-cell {
+  grid-column: 1 !important;
+  min-height: 0;
+  padding: 16px 10px;
+  align-content: center;
+}
+
+.service-visual-panel--rich .dolm-doc-copy-cell,
+.service-visual-panel--rich .beeidigt-doc-copy-cell,
+.service-visual-panel--rich .standesamt-doc-copy-cell,
+.service-visual-panel--rich .wirtschaft-doc-copy-cell,
+.service-visual-panel--rich .beglaubigte-doc-copy-cell,
+.service-visual-panel--rich .point-grid-copy-cell {
+  grid-column: 2 !important;
+  min-height: 0;
+  padding: 18px;
+}
+
+.service-visual-panel--rich .dolm-doc-table .dolm-asset,
+.service-visual-panel--rich .beeidigt-doc-table .beeidigt-asset,
+.service-visual-panel--rich .standesamt-doc-table .standesamt-asset,
+.service-visual-panel--rich .wirtschaft-doc-table .wirtschaft-asset,
+.service-visual-panel--rich .beglaubigte-doc-table .beglaubigte-asset,
+.service-visual-panel--rich .point-grid-table .point-grid-asset {
+  width: 68px;
+  height: 68px;
+}
+
+.service-visual-panel--rich .dolm-doc-table .dolm-asset img,
+.service-visual-panel--rich .beeidigt-doc-table .beeidigt-asset img,
+.service-visual-panel--rich .standesamt-doc-table .standesamt-asset img,
+.service-visual-panel--rich .wirtschaft-doc-table .wirtschaft-asset img,
+.service-visual-panel--rich .beglaubigte-doc-table .beglaubigte-asset img,
+.service-visual-panel--rich .point-grid-table .point-grid-asset img {
+  width: 58px;
+  height: 58px;
+}
+
+.service-visual-panel--rich .dolm-doc-icon-cell--wide .dolm-asset,
+.service-visual-panel--rich .beeidigt-doc-icon-cell--wide .beeidigt-asset,
+.service-visual-panel--rich .standesamt-doc-icon-cell--wide .standesamt-asset {
+  width: 76px;
+  height: 76px;
+}
+
+.service-visual-panel--rich .dolm-doc-icon-cell--wide .dolm-asset img,
+.service-visual-panel--rich .beeidigt-doc-icon-cell--wide .beeidigt-asset img,
+.service-visual-panel--rich .standesamt-doc-icon-cell--wide .standesamt-asset img {
+  width: 66px;
+  height: 66px;
 }
 .rich-service {
   display: grid;
@@ -2319,15 +2632,36 @@ html[dir="rtl"] .specialty-side-row--sub {
   border-top: 0;
   border-left: 0;
 }
-.it-word-checks span {
+.it-word-check-item {
   min-width: 0;
-  padding: 5px 7px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 9px 11px;
   border: 1px solid rgba(11,30,154,.08);
   border-radius: 8px;
   background: #fbfcff;
   color: #071526;
-  font-size: 11.3px;
+  font-size: 12px;
   line-height: 1.25;
+}
+.it-word-checkmark {
+  grid-column: 1;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: rgba(8, 40, 90, 0.08);
+  color: var(--it-blue);
+  font-weight: 900;
+  line-height: 1;
+}
+.it-word-check-text {
+  grid-column: 2;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .it-word-bottom-strip {
   grid-area: bottom;
@@ -2353,6 +2687,1937 @@ html[dir="rtl"] .specialty-side-row--sub {
   font-size: 11px;
   line-height: 1.32;
 }
+
+.service-visual-panel--rich .it-word-sheet {
+  --it-blue: #08285A;
+  --it-red: #B5122B;
+  grid-template-columns: 104px minmax(0, 1fr) 88px minmax(240px, .62fr);
+  gap: 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #050505;
+  overflow: visible;
+  box-shadow: none;
+}
+.service-visual-panel--rich .it-word-title {
+  padding: 0 0 2px;
+  border-bottom: 0;
+  color: var(--it-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.service-visual-panel--rich .it-word-cell,
+.service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile {
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 14px 34px rgba(11,30,154,.055);
+}
+.service-visual-panel--rich .it-word-icon {
+  min-height: 112px;
+  place-items: center;
+  padding: 14px 10px;
+}
+.service-visual-panel--rich .it-word-icon .it-asset-bubble {
+  width: 72px;
+  height: 72px;
+  background: transparent;
+  border-radius: 0;
+}
+.service-visual-panel--rich .it-word-icon .it-asset-bubble img {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+.service-visual-panel--rich .it-word-copy {
+  padding: 16px 18px;
+  box-shadow: 0 14px 34px rgba(11,30,154,.055);
+}
+.service-visual-panel--rich .it-word-copy h4 {
+  margin: 0 0 8px;
+  color: var(--it-blue);
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.18;
+}
+.service-visual-panel--rich .it-word-copy p {
+  margin: 0 0 9px;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.42;
+  text-align: justify;
+}
+.service-visual-panel--rich .it-word-copy .it-doc-list {
+  margin: 5px 0 0;
+  padding-left: 19px;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.42;
+}
+.service-visual-panel--rich .it-word-copy .it-doc-list li {
+  margin-bottom: 4px;
+}
+.service-visual-panel--rich .it-word-copy .it-doc-list li::marker {
+  color: var(--it-blue);
+}
+.service-visual-panel--rich .it-word-copy--workflow p {
+  font-size: 12.5px;
+  line-height: 1.42;
+}
+.service-visual-panel--rich .it-word-checks {
+  gap: 6px;
+  margin-top: 8px;
+}
+.service-visual-panel--rich .it-word-check-item {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(8,40,90,.045);
+  color: #050505;
+  font-size: 12.5px;
+  line-height: 1.25;
+}
+.service-visual-panel--rich .it-word-copy--cta {
+  grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+  gap: 10px 18px;
+}
+.service-visual-panel--rich .it-word-copy--cta .it-doc-btn {
+  min-height: 38px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  background: #0A0A0A;
+  font-size: 12px;
+}
+.service-visual-panel--rich .it-word-bottom-strip {
+  gap: 8px;
+  border-top: 0;
+}
+.service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile {
+  min-height: 168px;
+  border-right: 0;
+  padding: 18px 10px 14px;
+}
+.service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile img {
+  width: 54px;
+  height: 54px;
+}
+.service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile strong {
+  color: var(--it-blue);
+  font-size: 12px;
+  line-height: 1.12;
+}
+.service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile span {
+  color: #050505;
+  font-size: 12px;
+  line-height: 1.28;
+}
+.dolm-word-sheet {
+  --dolm-blue: #08285A;
+  --dolm-ink: #111827;
+  --dolm-soft: #F1F5FA;
+  --dolm-line: rgba(8,40,90,.12);
+  display: grid;
+  gap: 14px;
+  padding: clamp(16px, 2vw, 26px);
+  border: 1px solid var(--dolm-line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--dolm-ink);
+  box-shadow: 0 18px 50px rgba(8,40,90,.045);
+}
+.dolm-word-hero {
+  display: grid;
+  grid-template-columns: minmax(300px, .82fr) minmax(360px, 1.18fr);
+  gap: 18px;
+  align-items: stretch;
+}
+.dolm-word-copy {
+  display: grid;
+  align-content: start;
+}
+.dolm-word-copy h3 {
+  margin: 0 0 16px;
+  color: var(--dolm-blue);
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: .92;
+  letter-spacing: -0.055em;
+}
+.dolm-word-intro-list {
+  display: grid;
+}
+.dolm-word-intro-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 16px 0;
+  border-top: 1px solid var(--dolm-line);
+}
+.dolm-word-intro-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.dolm-word-intro-row p,
+.dolm-bottom-cta p,
+.dolm-process-card p {
+  margin: 0;
+  color: var(--dolm-ink);
+  font-size: 14px;
+  line-height: 1.58;
+}
+.dolm-asset {
+  width: 48px;
+  height: 48px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--dolm-soft);
+  overflow: hidden;
+}
+.dolm-asset img {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+}
+.dolm-word-visual {
+  position: relative;
+  min-height: 330px;
+  margin: 0;
+  border: 1px solid var(--dolm-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: radial-gradient(circle at 52% 45%, rgba(8,40,90,.08), transparent 38%), linear-gradient(180deg,#F8FBFF,#EEF3F9);
+}
+.dolm-world-map {
+  position: absolute;
+  inset: 22px 24px 44px;
+  opacity: .42;
+  background:
+    radial-gradient(circle at 22% 42%, var(--dolm-blue) 0 3px, transparent 4px),
+    radial-gradient(circle at 38% 28%, var(--dolm-blue) 0 3px, transparent 4px),
+    radial-gradient(circle at 57% 35%, var(--dolm-blue) 0 3px, transparent 4px),
+    radial-gradient(circle at 72% 24%, var(--dolm-blue) 0 3px, transparent 4px);
+}
+.dolm-world-map::before,
+.dolm-world-map::after {
+  content: "";
+  position: absolute;
+  border: 2px dashed rgba(8,40,90,.35);
+  border-color: rgba(8,40,90,.35) transparent transparent transparent;
+  border-radius: 50%;
+}
+.dolm-world-map::before {
+  left: 10%;
+  right: 18%;
+  top: 22%;
+  height: 90px;
+  transform: rotate(-8deg);
+}
+.dolm-world-map::after {
+  left: 28%;
+  right: 10%;
+  top: 10%;
+  height: 120px;
+  transform: rotate(7deg);
+}
+.dolm-world-map span {
+  position: absolute;
+  width: 86px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(8,40,90,.08);
+}
+.dolm-world-map span:nth-child(1) { left: 7%; top: 28%; }
+.dolm-world-map span:nth-child(2) { left: 32%; top: 18%; width: 120px; }
+.dolm-world-map span:nth-child(3) { left: 55%; top: 34%; width: 100px; }
+.dolm-world-map span:nth-child(4) { left: 68%; top: 18%; width: 72px; }
+.dolm-world-map span:nth-child(5) { left: 45%; top: 58%; width: 92px; }
+.dolm-visual-table {
+  position: absolute;
+  left: 50%;
+  bottom: 38px;
+  width: min(350px, 70%);
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+  border-radius: 18px 18px 12px 12px;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 20px 50px rgba(8,40,90,.12);
+  backdrop-filter: blur(4px);
+}
+.dolm-visual-table::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 20px;
+  height: 10px;
+  border-radius: 99px;
+  background: rgba(8,40,90,.12);
+}
+.dolm-visual-table strong {
+  position: relative;
+  z-index: 1;
+  padding: 6px 14px;
+  border: 1px solid rgba(8,40,90,.18);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--dolm-blue);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+.dolm-asset--large {
+  position: relative;
+  z-index: 1;
+  width: 116px;
+  height: 116px;
+  background: rgba(241,245,250,.95);
+}
+.dolm-asset--large img {
+  width: 82px;
+  height: 82px;
+}
+.dolm-visual-card {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.86);
+  box-shadow: 0 12px 28px rgba(8,40,90,.12);
+}
+.dolm-visual-card--top {
+  right: 18%;
+  top: 48px;
+}
+.dolm-visual-card--right {
+  right: 46px;
+  bottom: 112px;
+}
+.dolm-benefit-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--dolm-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.dolm-benefit-tile {
+  min-height: 150px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 9px;
+  padding: 18px 12px;
+  text-align: center;
+  border-right: 1px solid var(--dolm-line);
+}
+.dolm-benefit-tile:last-child {
+  border-right: 0;
+}
+.dolm-benefit-tile strong {
+  color: var(--dolm-blue);
+  font-size: 11px;
+  line-height: 1.18;
+  text-transform: uppercase;
+}
+.dolm-benefit-tile span {
+  color: #344256;
+  font-size: 12px;
+  line-height: 1.38;
+}
+.dolm-process-section {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+}
+.dolm-process-section h4 {
+  margin: 0;
+  color: #050505;
+  font-size: clamp(17px, 1.7vw, 24px);
+  letter-spacing: -0.02em;
+}
+.dolm-process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.dolm-process-card {
+  position: relative;
+  min-height: 280px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0,1fr);
+  gap: 12px;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid var(--dolm-line);
+  border-radius: 12px;
+  background: linear-gradient(180deg,#fff,#F7FAFE);
+}
+.dolm-step-number {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--dolm-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 850;
+}
+.dolm-process-card h5 {
+  margin: 0 0 7px;
+  color: #0a0a0a;
+  font-size: 14px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.dolm-process-art {
+  justify-self: center;
+  align-self: end;
+  width: min(160px, 72%);
+  height: min(160px, 72%);
+  background: transparent;
+  border-radius: 0;
+}
+.dolm-process-art img {
+  width: 100%;
+  height: 100%;
+}
+.dolm-process-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--dolm-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.dolm-flow-item {
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: 26px 42px minmax(0, 1fr) 26px;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px;
+  border-right: 1px solid var(--dolm-line);
+}
+.dolm-flow-item:last-child {
+  border-right: 0;
+}
+.dolm-flow-item > span {
+  width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--dolm-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 850;
+}
+.dolm-flow-item .dolm-asset {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+}
+.dolm-flow-item .dolm-asset img {
+  width: 30px;
+  height: 30px;
+}
+.dolm-flow-item strong {
+  display: block;
+  color: var(--dolm-blue);
+  font-size: 12px;
+  line-height: 1.2;
+}
+.dolm-flow-item small {
+  display: block;
+  margin-top: 2px;
+  color: #3b4654;
+  font-size: 11px;
+  line-height: 1.25;
+}
+.dolm-flow-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--dolm-blue);
+}
+.dolm-bottom-cta {
+  display: grid;
+  gap: 10px;
+  padding: 22px 0 4px;
+  border-top: 1px solid var(--dolm-line);
+}
+.dolm-bottom-cta p {
+  max-width: 920px;
+  font-size: 14px;
+  line-height: 1.62;
+  text-align: justify;
+}
+.dolm-cta-btn {
+  justify-self: end;
+  min-width: 250px;
+}
+
+.dolm-doc-sheet {
+  --dolm-doc-blue: #08285A;
+  --dolm-doc-red: #B5122B;
+  --dolm-doc-line: rgba(8,40,90,.32);
+  width: min(742px, 100%);
+  max-width: none;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.dolm-doc-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--dolm-doc-red);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0;
+}
+.dolm-doc-sheet h3 {
+  margin: 0 0 13px;
+  color: var(--dolm-doc-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.dolm-doc-table {
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--dolm-doc-line);
+}
+.dolm-doc-icon-cell,
+.dolm-doc-copy-cell {
+  border-right: 1px solid var(--dolm-doc-line);
+  border-bottom: 1px solid var(--dolm-doc-line);
+}
+.dolm-doc-copy-cell {
+  border-right: 1px solid var(--dolm-doc-line);
+}
+.dolm-doc-icon-cell {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-left: 1px solid var(--dolm-doc-line);
+  background: #fff;
+}
+.dolm-doc-icon-cell--top {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 96px;
+  border-top: 1px solid var(--dolm-doc-line);
+}
+.dolm-doc-icon-cell--wide {
+  grid-column: 1;
+  grid-row: 2;
+  place-items: start center;
+  min-height: 230px;
+  padding-top: 34px;
+}
+.dolm-doc-copy-cell {
+  grid-column: 2;
+  min-height: 96px;
+  padding: 13px 14px;
+  background: #fff;
+}
+.dolm-doc-copy-cell--wide {
+  min-height: 230px;
+  align-content: start;
+}
+.dolm-doc-copy-cell p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.34;
+  text-align: justify;
+}
+.dolm-doc-copy-cell p:last-child {
+  margin-bottom: 0;
+}
+.dolm-doc-table .dolm-asset {
+  width: 102px;
+  height: 102px;
+  background: transparent;
+  border-radius: 0;
+}
+.dolm-doc-table .dolm-asset img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.dolm-doc-icon-cell--wide .dolm-asset {
+  width: 118px;
+  height: 118px;
+}
+.dolm-doc-icon-cell--wide .dolm-asset img {
+  width: 104px;
+  height: 104px;
+}
+.dolm-request-card {
+  width: min(314px, 74%);
+  max-width: 100%;
+  min-height: 120px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 15px 17px;
+  margin: 22px auto 0;
+  border: 1px solid rgba(10,10,10,.08);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(8,40,90,.06);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.dolm-request-info {
+  width: 20px;
+  height: 20px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #B5122B;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+.dolm-request-card div {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+.dolm-request-card strong {
+  color: #111;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.dolm-request-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 23px;
+  padding: 3px 7px;
+  border-radius: 2px;
+  background: #B5122B;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.dolm-doc-process-title {
+  margin: 0;
+  padding: 7px 8px;
+  color: var(--dolm-doc-blue);
+  /* background: #fff; */
+  /* box-shadow: inset 0 0 0 1px var(--dolm-doc-line); */
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 850;
+  text-decoration: underline;
+}
+.dolm-doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  border-left: 1px solid var(--dolm-doc-line);
+  border-right: 1px solid var(--dolm-doc-line);
+  box-shadow: none;
+}
+.dolm-doc-card {
+  min-height: 190px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 22px 10px 15px;
+  text-align: center;
+  background: #fff;
+  border-right: 1px solid var(--dolm-doc-line);
+  border-bottom: 1px solid var(--dolm-doc-line);
+}
+.dolm-doc-card-grid .dolm-doc-card:nth-child(3n) {
+  border-right: 0;
+}
+.dolm-doc-card-grid .dolm-doc-card:nth-last-child(-n+3) {
+  border-bottom: 0;
+}
+.dolm-doc-card .dolm-asset {
+  width: 84px;
+  height: 84px;
+  background: transparent;
+  border-radius: 0;
+}
+.dolm-doc-card .dolm-asset img {
+  width: 72px;
+  height: 72px;
+}
+.dolm-doc-card--benefit .dolm-asset {
+  margin-bottom: 8px;
+}
+.dolm-doc-card > span {
+  color: #050505;
+  font-size: 12px;
+  line-height: 1;
+}
+.dolm-doc-card strong {
+  display: block;
+  max-width: 150px;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.08;
+  font-weight: 850;
+}
+.dolm-doc-card--benefit strong {
+  color: var(--dolm-doc-blue);
+}
+.dolm-doc-card p {
+  max-width: 150px;
+  margin: 2px 0 0;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.14;
+  text-align: center;
+}
+.dolm-doc-card--process p {
+  margin-top: 0;
+}
+.beeidigt-doc-sheet {
+  --beeidigt-blue: #08285A;
+  --beeidigt-red: #B5122B;
+  --beeidigt-line: rgba(8,40,90,.32);
+  width: min(742px, 100%);
+  max-width: none;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.beeidigt-doc-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--beeidigt-red);
+  font-size: 11px;
+  font-weight: 850;
+}
+.beeidigt-doc-sheet h3 {
+  margin: 0 0 13px;
+  color: var(--beeidigt-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.beeidigt-doc-table {
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--beeidigt-line);
+}
+.beeidigt-doc-icon-cell,
+.beeidigt-doc-copy-cell {
+  border-right: 1px solid var(--beeidigt-line);
+  border-bottom: 1px solid var(--beeidigt-line);
+}
+.beeidigt-doc-copy-cell {
+  border-right: 1px solid var(--beeidigt-line);
+}
+.beeidigt-doc-icon-cell {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-left: 1px solid var(--beeidigt-line);
+  background: #fff;
+}
+.beeidigt-doc-icon-cell--top {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 135px;
+  border-top: 1px solid var(--beeidigt-line);
+}
+.beeidigt-doc-icon-cell--wide {
+  grid-column: 1;
+  grid-row: 2;
+  place-items: start center;
+  min-height: 300px;
+  padding-top: 42px;
+}
+.beeidigt-doc-copy-cell {
+  grid-column: 2;
+  min-height: 135px;
+  padding: 19px 14px;
+  background: #fff;
+}
+.beeidigt-doc-copy-cell--wide {
+  min-height: 300px;
+  align-content: start;
+}
+.beeidigt-doc-copy-cell p {
+  margin: 0 0 15px;
+  font-size: 13px;
+  line-height: 1.34;
+  text-align: justify;
+}
+.beeidigt-doc-copy-cell p:last-child {
+  margin-bottom: 0;
+}
+.beeidigt-asset {
+  width: 102px;
+  height: 102px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+.beeidigt-asset img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.beeidigt-doc-icon-cell--wide .beeidigt-asset {
+  width: 118px;
+  height: 118px;
+}
+.beeidigt-doc-icon-cell--wide .beeidigt-asset img {
+  width: 104px;
+  height: 104px;
+}
+.beeidigt-request-card {
+  width: min(314px, 74%);
+  min-height: 120px;
+  margin-top: 22px;
+}
+.beeidigt-doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  border-left: 1px solid var(--beeidigt-line);
+  border-right: 1px solid var(--beeidigt-line);
+  border-bottom: 1px solid var(--beeidigt-line);
+  box-shadow: none;
+}
+.beeidigt-doc-card {
+  min-height: 244px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 31px 10px 18px;
+  text-align: center;
+  background: #fff;
+  border-right: 1px solid var(--beeidigt-line);
+}
+.beeidigt-doc-card:last-child {
+  border-right: 0;
+}
+.beeidigt-doc-card .beeidigt-asset {
+  width: 84px;
+  height: 84px;
+}
+.beeidigt-doc-card .beeidigt-asset img {
+  width: 72px;
+  height: 72px;
+}
+.beeidigt-doc-card strong {
+  display: block;
+  width: 100%;
+  max-width: 150px;
+  color: var(--beeidigt-blue);
+  font-size: 13px;
+  line-height: 1.08;
+  font-weight: 850;
+  text-align: center;
+}
+.beeidigt-doc-card p {
+  max-width: 150px;
+  margin: 0;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.14;
+  text-align: center;
+}
+.standesamt-doc-sheet {
+  --standesamt-blue: #08285A;
+  --standesamt-red: #B5122B;
+  --standesamt-line: rgba(8,40,90,.32);
+  width: min(742px, 100%);
+  max-width: none;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.standesamt-doc-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--standesamt-red);
+  font-size: 11px;
+  font-weight: 850;
+}
+.standesamt-doc-sheet h3 {
+  margin: 0 0 13px;
+  color: var(--standesamt-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.standesamt-doc-table {
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--standesamt-line);
+}
+.standesamt-doc-icon-cell,
+.standesamt-doc-copy-cell {
+  border-right: 1px solid var(--standesamt-line);
+  border-bottom: 1px solid var(--standesamt-line);
+}
+.standesamt-doc-copy-cell {
+  grid-column: 2;
+  min-height: 135px;
+  padding: 13px 14px;
+  background: #fff;
+}
+.standesamt-doc-icon-cell {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-left: 1px solid var(--standesamt-line);
+  background: #fff;
+}
+.standesamt-doc-icon-cell--top {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 135px;
+  border-top: 1px solid var(--standesamt-line);
+}
+.standesamt-doc-icon-cell--wide {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 270px;
+  place-items: start center;
+  padding-top: 42px;
+}
+.standesamt-doc-copy-cell:first-of-type {
+  border-top: 1px solid var(--standesamt-line);
+}
+.standesamt-doc-copy-cell--wide {
+  min-height: 270px;
+  align-content: start;
+}
+.standesamt-doc-copy-cell h4 {
+  margin: 0 0 8px;
+  color: var(--standesamt-blue);
+  font-size: 14px;
+  line-height: 1.18;
+  font-weight: 850;
+}
+.standesamt-doc-copy-cell p {
+  margin: 0 0 15px;
+  font-size: 13px;
+  line-height: 1.34;
+  text-align: justify;
+}
+.standesamt-asset {
+  width: 102px;
+  height: 102px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+.standesamt-asset img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.standesamt-doc-icon-cell--wide .standesamt-asset {
+  width: 118px;
+  height: 118px;
+}
+.standesamt-doc-icon-cell--wide .standesamt-asset img {
+  width: 104px;
+  height: 104px;
+}
+.standesamt-request-card {
+  width: min(314px, 74%);
+  min-height: 120px;
+  margin-top: 22px;
+}
+.wirtschaft-doc-sheet {
+  --wirtschaft-blue: #08285A;
+  --wirtschaft-red: #B5122B;
+  --wirtschaft-line: rgba(8,40,90,.32);
+  width: min(742px, 100%);
+  max-width: none;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.wirtschaft-doc-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--wirtschaft-red);
+  font-size: 11px;
+  font-weight: 850;
+}
+.wirtschaft-doc-sheet h3 {
+  margin: 0 0 13px;
+  color: var(--wirtschaft-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.wirtschaft-doc-table {
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--wirtschaft-line);
+}
+.wirtschaft-doc-icon-cell,
+.wirtschaft-doc-copy-cell {
+  border-right: 1px solid var(--wirtschaft-line);
+  border-bottom: 1px solid var(--wirtschaft-line);
+  border-top: 1px solid var(--wirtschaft-line);
+}
+.wirtschaft-doc-icon-cell {
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  padding: 12px;
+  border-left: 1px solid var(--wirtschaft-line);
+  background: #fff;
+}
+.wirtschaft-doc-copy-cell {
+  min-height: 210px;
+  padding: 18px 14px;
+  background: #fff;
+}
+.wirtschaft-doc-copy-cell h4 {
+  margin: 0 0 13px;
+  color: var(--wirtschaft-blue);
+  font-size: 14px;
+  line-height: 1.18;
+  font-weight: 850;
+}
+.wirtschaft-doc-copy-cell p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.34;
+  text-align: justify;
+}
+.wirtschaft-asset {
+  width: 102px;
+  height: 102px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+.wirtschaft-asset img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.wirtschaft-request-card {
+  width: min(314px, 74%);
+  min-height: 120px;
+  margin-top: 22px;
+}
+.wirtschaft-doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  border-left: 1px solid var(--wirtschaft-line);
+  border-right: 1px solid var(--wirtschaft-line);
+  border-bottom: 1px solid var(--wirtschaft-line);
+}
+.wirtschaft-doc-card {
+  min-height: 244px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 31px 10px 18px;
+  text-align: center;
+  background: #fff;
+  border-right: 1px solid var(--wirtschaft-line);
+}
+.wirtschaft-doc-card:last-child {
+  border-right: 0;
+}
+.wirtschaft-doc-card .wirtschaft-asset {
+  width: 84px;
+  height: 84px;
+}
+.wirtschaft-doc-card .wirtschaft-asset img {
+  width: 72px;
+  height: 72px;
+}
+.wirtschaft-doc-card strong {
+  display: block;
+  max-width: 150px;
+  color: var(--wirtschaft-blue);
+  font-size: 13px;
+  line-height: 1.08;
+  font-weight: 850;
+  text-align: center;
+}
+.wirtschaft-doc-card p {
+  max-width: 150px;
+  margin: 0;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.14;
+  text-align: center;
+}
+.beglaubigte-doc-sheet {
+  --beglaubigte-blue: #08285A;
+  --beglaubigte-red: #B5122B;
+  --beglaubigte-line: rgba(8,40,90,.32);
+  width: min(742px, 100%);
+  max-width: none;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.beglaubigte-doc-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--beglaubigte-red);
+  font-size: 11px;
+  font-weight: 850;
+}
+.beglaubigte-doc-sheet h3 {
+  margin: 0 0 13px;
+  color: var(--beglaubigte-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.beglaubigte-doc-table {
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--beglaubigte-line);
+}
+.beglaubigte-doc-icon-cell,
+.beglaubigte-doc-copy-cell {
+  border-right: 1px solid var(--beglaubigte-line);
+  border-bottom: 1px solid var(--beglaubigte-line);
+}
+.beglaubigte-doc-icon-cell {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-left: 1px solid var(--beglaubigte-line);
+  background: #fff;
+}
+.beglaubigte-doc-icon-cell--intro,
+.beglaubigte-doc-copy-cell--intro {
+  border-top: 1px solid var(--beglaubigte-line);
+  min-height: 250px;
+}
+.beglaubigte-doc-icon-cell--documents,
+.beglaubigte-doc-copy-cell--documents {
+  min-height: 205px;
+}
+.beglaubigte-doc-icon-cell--languages,
+.beglaubigte-doc-copy-cell--languages {
+  min-height: 290px;
+}
+.beglaubigte-doc-copy-cell {
+  padding: 12px 14px;
+  background: #fff;
+}
+.beglaubigte-doc-copy-cell h4 {
+  margin: 0 0 6px;
+  color: var(--beglaubigte-blue);
+  font-size: 14px;
+  line-height: 1.18;
+  font-weight: 850;
+}
+.beglaubigte-doc-copy-cell p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.3;
+  text-align: justify;
+}
+.beglaubigte-doc-copy-cell ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.beglaubigte-doc-copy-cell li {
+  position: relative;
+  padding-left: 18px;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.24;
+}
+.beglaubigte-doc-copy-cell li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--beglaubigte-blue);
+  font-weight: 900;
+}
+.beglaubigte-asset {
+  width: 102px;
+  height: 102px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+.beglaubigte-asset img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.beglaubigte-request-card {
+  width: min(314px, 74%);
+  min-height: 120px;
+  margin-top: 22px;
+}
+.beglaubigte-doc-process-title {
+  margin: 0;
+  padding: 7px 8px;
+  color: var(--beglaubigte-blue);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--beglaubigte-line);
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 850;
+  text-decoration: underline;
+}
+.beglaubigte-doc-process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-left: 1px solid var(--beglaubigte-line);
+  border-right: 1px solid var(--beglaubigte-line);
+  border-bottom: 1px solid var(--beglaubigte-line);
+  background: #fff;
+}
+.beglaubigte-doc-process-card {
+  min-height: 118px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 3px;
+  padding: 10px 8px 8px;
+  text-align: center;
+  border-right: 1px solid var(--beglaubigte-line);
+}
+.beglaubigte-doc-process-card:last-child {
+  border-right: 0;
+}
+.beglaubigte-doc-process-card .beglaubigte-asset {
+  width: 52px;
+  height: 52px;
+}
+.beglaubigte-doc-process-card .beglaubigte-asset img {
+  width: 45px;
+  height: 45px;
+}
+.beglaubigte-doc-process-card strong,
+.beglaubigte-doc-process-card p {
+  margin: 0;
+  max-width: 140px;
+  color: #050505;
+  font-size: 11px;
+  line-height: 1.08;
+  text-align: center;
+}
+.beglaubigte-doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  border-left: 1px solid var(--beglaubigte-line);
+  border-right: 1px solid var(--beglaubigte-line);
+  border-bottom: 1px solid var(--beglaubigte-line);
+}
+.beglaubigte-doc-card {
+  min-height: 244px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 31px 10px 18px;
+  text-align: center;
+  background: #fff;
+  border-right: 1px solid var(--beglaubigte-line);
+}
+.beglaubigte-doc-card:last-child {
+  border-right: 0;
+}
+.beglaubigte-doc-card .beglaubigte-asset {
+  width: 84px;
+  height: 84px;
+}
+.beglaubigte-doc-card .beglaubigte-asset img {
+  width: 72px;
+  height: 72px;
+}
+.beglaubigte-doc-card strong {
+  display: block;
+  max-width: 150px;
+  color: var(--beglaubigte-blue);
+  font-size: 13px;
+  line-height: 1.08;
+  font-weight: 850;
+  text-align: center;
+}
+.beglaubigte-doc-card p {
+  max-width: 150px;
+  margin: 0;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.14;
+  text-align: center;
+}
+.point-grid-sheet {
+  --point-blue: #08285A;
+  --point-red: #B5122B;
+  --point-line: rgba(8,40,90,.32);
+  width: min(742px, 100%);
+  max-width: none;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.point-grid-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--point-red);
+  font-size: 11px;
+  font-weight: 850;
+}
+.point-grid-sheet h3 {
+  margin: 0 0 13px;
+  color: var(--point-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.point-grid-table {
+  display: grid;
+  grid-template-columns: var(--point-table-cols, 207px minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--point-line);
+}
+.point-grid-icon-cell,
+.point-grid-copy-cell {
+  border-right: 1px solid var(--point-line);
+  border-bottom: 1px solid var(--point-line);
+}
+.point-grid-icon-cell:nth-child(1),
+.point-grid-copy-cell:nth-child(2) {
+  border-top: 1px solid var(--point-line);
+}
+.point-grid-icon-cell {
+  display: grid;
+  place-items: start center;
+  min-height: 190px;
+  padding: 34px 12px 12px;
+  border-left: 1px solid var(--point-line);
+  background: #fff;
+}
+.point-grid-copy-cell {
+  min-height: 190px;
+  padding: 13px 14px;
+  background: #fff;
+}
+.point-grid-copy-cell h4 {
+  margin: 0 0 8px;
+  color: var(--point-blue);
+  font-size: 14px;
+  line-height: 1.18;
+  font-weight: 850;
+}
+.point-grid-copy-cell p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.34;
+  text-align: justify;
+}
+.point-grid-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.point-grid-list--two {
+  columns: 2;
+  column-gap: 26px;
+}
+.point-grid-list li {
+  position: relative;
+  break-inside: avoid;
+  padding-left: 18px;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.26;
+}
+.point-grid-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--point-blue);
+  font-weight: 900;
+}
+.point-grid-asset {
+  width: 102px;
+  height: 102px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+.point-grid-asset img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.point-grid-request-card {
+  width: min(314px, 74%);
+  min-height: 120px;
+  margin-top: 22px;
+}
+.point-grid-section-title {
+  margin: 0;
+  padding: 7px 8px;
+  color: var(--point-blue);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--point-line);
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 850;
+  text-decoration: underline;
+}
+.point-grid-card-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--point-cols, 4), minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  border-left: 1px solid var(--point-line);
+  border-right: 1px solid var(--point-line);
+  border-bottom: 1px solid var(--point-line);
+}
+.point-grid-card {
+  min-height: 244px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 31px 10px 18px;
+  text-align: center;
+  background: #fff;
+  border-right: 1px solid var(--point-line);
+  border-bottom: 1px solid var(--point-line);
+}
+.point-grid-card:last-child {
+  border-right: 0;
+}
+.point-grid-card .point-grid-asset {
+  width: 84px;
+  height: 84px;
+}
+.point-grid-card .point-grid-asset img {
+  width: 72px;
+  height: 72px;
+}
+.point-grid-card strong {
+  display: block;
+  max-width: 150px;
+  color: var(--point-blue);
+  font-size: 13px;
+  line-height: 1.08;
+  font-weight: 850;
+  text-align: center;
+}
+.point-grid-card p {
+  max-width: 350px;
+  margin: 0;
+  color: #050505;
+  font-size: 13px;
+  line-height: 1.14;
+  text-align: center;
+}
+
+/* Soft polish only; each point keeps the grid from its own Word file. */
+.dolm-doc-sheet { --dolm-doc-line: rgba(11,30,154,.14); }
+.beeidigt-doc-sheet { --beeidigt-line: rgba(11,30,154,.14); }
+.standesamt-doc-sheet { --standesamt-line: rgba(11,30,154,.14); }
+.wirtschaft-doc-sheet { --wirtschaft-line: rgba(11,30,154,.14); }
+.beglaubigte-doc-sheet { --beglaubigte-line: rgba(11,30,154,.14); }
+.point-grid-sheet { --point-line: rgba(11,30,154,.14); }
+.recht-word-sheet { --recht-line: rgba(11,30,154,.14); }
+
+.dolm-doc-sheet,
+.beeidigt-doc-sheet,
+.standesamt-doc-sheet,
+.wirtschaft-doc-sheet,
+.beglaubigte-doc-sheet,
+.point-grid-sheet,
+.recht-word-sheet {
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(11,30,154,.045);
+}
+
+.dolm-doc-table,
+.beeidigt-doc-table,
+.standesamt-doc-table,
+.wirtschaft-doc-table,
+.beglaubigte-doc-table,
+.point-grid-table,
+.dolm-doc-card-grid,
+.beeidigt-doc-card-grid,
+.wirtschaft-doc-card-grid,
+.beglaubigte-doc-process-grid,
+.beglaubigte-doc-card-grid,
+.point-grid-card-grid,
+.recht-word-bottom-strip {
+  border-color: rgba(11,30,154,.14);
+}
+
+.dolm-doc-icon-cell,
+.dolm-doc-copy-cell,
+.dolm-doc-card,
+.beeidigt-doc-icon-cell,
+.beeidigt-doc-copy-cell,
+.beeidigt-doc-card,
+.standesamt-doc-icon-cell,
+.standesamt-doc-copy-cell,
+.wirtschaft-doc-icon-cell,
+.wirtschaft-doc-copy-cell,
+.wirtschaft-doc-card,
+.beglaubigte-doc-icon-cell,
+.beglaubigte-doc-copy-cell,
+.beglaubigte-doc-process-card,
+.beglaubigte-doc-card,
+.point-grid-icon-cell,
+.point-grid-copy-cell,
+.point-grid-card {
+  border-color: rgba(11,30,154,.14);
+}
+
+.dolm-doc-copy-cell p,
+.beeidigt-doc-copy-cell p,
+.standesamt-doc-copy-cell p,
+.wirtschaft-doc-copy-cell p,
+.beglaubigte-doc-copy-cell p,
+.point-grid-copy-cell p {
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-style: normal;
+}
+
+.recht-doc-sheet {
+  --recht-blue: #08285A;
+  --recht-red: #B5122B;
+  --recht-line: rgba(8, 40, 90, .48);
+  max-width: 610px;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #050505;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.recht-doc-kicker {
+  display: block;
+  margin: 0 0 7px 0;
+  color: var(--recht-red);
+  font-size: 11px;
+  font-weight: 850;
+}
+.recht-doc-sheet h3 {
+  margin: 0 0 8px;
+  color: var(--recht-blue);
+  font-size: clamp(24px, 2.5vw, 31px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.recht-doc-table {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--recht-line);
+}
+.recht-doc-icon-cell,
+.recht-doc-copy-cell {
+  border-right: 1px solid var(--recht-line);
+  border-bottom: 1px solid var(--recht-line);
+}
+.recht-doc-copy-cell {
+  border-right: 0;
+  background: #fff;
+}
+.recht-doc-icon-cell {
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  background: rgba(8, 40, 90, .012);
+}
+.recht-doc-icon-cell--intro {
+  min-height: 168px;
+}
+.recht-doc-icon-cell--documents {
+  min-height: 126px;
+}
+.recht-doc-copy-cell--intro {
+  min-height: 168px;
+  padding: 5px 9px 10px;
+}
+.recht-doc-copy-cell--documents {
+  min-height: 126px;
+  padding: 3px 24px 6px;
+}
+.recht-doc-copy-cell h4 {
+  margin: 0 0 5px;
+  color: var(--recht-blue);
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 850;
+}
+.recht-doc-copy-cell p {
+  margin: 0 0 6px;
+  color: #050505;
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: justify;
+}
+.recht-doc-copy-cell ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 1;
+}
+.recht-doc-copy-cell li {
+  position: relative;
+  padding-left: 18px;
+  color: #050505;
+  font-size: 11.5px;
+  line-height: 1.16;
+}
+.recht-doc-copy-cell li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--recht-blue);
+  font-weight: 900;
+}
+.recht-asset {
+  width: 82px;
+  height: 82px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+.recht-asset img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+.recht-doc-icon-cell--documents .recht-asset {
+  width: 76px;
+  height: 76px;
+}
+.recht-doc-icon-cell--documents .recht-asset img {
+  width: 64px;
+  height: 64px;
+}
+.recht-request-card {
+  width: min(250px, 72%);
+  min-height: 82px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  grid-template-columns: 24px minmax(0, 1fr);
+}
+.recht-request-card strong {
+  font-size: 14px;
+}
+.recht-request-card a {
+  min-height: 19px;
+  padding: 3px 6px;
+  font-size: 9.5px;
+}
+.recht-doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--recht-line);
+}
+.recht-doc-card {
+  min-height: 154px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 4px;
+  padding: 15px 8px 10px;
+  text-align: center;
+  background: #fff;
+  border-right: 1px solid var(--recht-line);
+}
+.recht-doc-card:last-child {
+  border-right: 0;
+}
+.recht-doc-card .recht-asset {
+  width: 62px;
+  height: 62px;
+  margin-bottom: 7px;
+}
+.recht-doc-card .recht-asset img {
+  width: 54px;
+  height: 54px;
+}
+.recht-doc-card strong {
+  display: block;
+  max-width: 118px;
+  color: var(--recht-blue);
+  font-size: 11px;
+  line-height: 1.12;
+  font-weight: 850;
+}
+.recht-doc-card p {
+  max-width: 118px;
+  margin: 0;
+  color: #050505;
+  font-size: 11px;
+  line-height: 1.08;
+  text-align: center;
+}
+.recht-word-sheet {
+  --recht-blue: #08285A;
+  --recht-red: #B5122B;
+  --recht-line: rgba(8,40,90,.32);
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  grid-template-areas:
+    "title title"
+    "introIcon introCopy"
+    "docsIcon docsCopy"
+    "bottom bottom";
+  width: min(742px, 100%);
+  justify-self: start;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  color: #071526;
+  font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  overflow: visible;
+  box-shadow: none;
+}
+.recht-word-title {
+  grid-area: title;
+  display: grid;
+  gap: 4px;
+  padding: 0 0 13px;
+  border-bottom: 0;
+}
+.recht-word-title span {
+  color: var(--recht-red);
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1;
+}
+.recht-word-title h3 {
+  margin: 0;
+  color: var(--recht-blue);
+  font-size: clamp(32px, 3vw, 38px);
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+.recht-word-icon {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--recht-line);
+  border-left: 1px solid var(--recht-line);
+  border-right: 1px solid var(--recht-line);
+  background: #fff;
+}
+.recht-word-icon--intro {
+  grid-area: introIcon;
+  min-height: 277px;
+  border-top: 1px solid var(--recht-line);
+}
+.recht-word-icon--documents {
+  grid-area: docsIcon;
+  min-height: 170px;
+}
+.recht-word-icon .recht-asset {
+  width: 102px;
+  height: 102px;
+  border-radius: 0;
+  background: transparent;
+}
+.recht-word-icon .recht-asset img {
+  width: 90px;
+  height: 90px;
+}
+.recht-word-copy {
+  min-width: 0;
+  padding: 10px 14px;
+  border-right: 1px solid var(--recht-line);
+  border-bottom: 1px solid var(--recht-line);
+  background: #fff;
+}
+.recht-word-copy--intro {
+  grid-area: introCopy;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  min-height: 277px;
+  border-top: 1px solid var(--recht-line);
+}
+.recht-word-copy--documents {
+  grid-area: docsCopy;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  min-height: 170px;
+  padding-left: 24px;
+}
+.recht-word-copy h4 {
+  margin: 0 0 8px;
+  color: var(--recht-blue);
+  font-size: 14px;
+  line-height: 1.18;
+  font-weight: 850;
+}
+.recht-word-copy p {
+  margin: 0 0 10px;
+  color: #071526;
+  font-size: 13px;
+  line-height: 1.34;
+  text-align: justify;
+}
+.recht-word-copy ul {
+  margin: 0;
+  padding: 0;
+  columns: 1;
+  list-style: none;
+}
+.recht-word-copy li {
+  position: relative;
+  break-inside: avoid;
+  padding-left: 18px;
+  color: #071526;
+  font-size: 13px;
+  line-height: 1.28;
+}
+.recht-word-copy li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--recht-blue);
+  font-weight: 900;
+}
+.recht-word-sheet .recht-request-card {
+  width: min(314px, 74%);
+  min-height: 120px;
+  margin: 22px auto 0;
+  align-self: start;
+  border-color: rgba(8,40,90,.12);
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(8,40,90,.045);
+}
+.recht-word-bottom-strip {
+  grid-area: bottom;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-left: 1px solid var(--recht-line);
+  border-right: 1px solid var(--recht-line);
+  border-bottom: 1px solid var(--recht-line);
+  border-top: 0;
+}
+.recht-word-bottom-tile {
+  min-height: 244px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 31px 10px 18px;
+  text-align: center;
+  border-right: 1px solid var(--recht-line);
+  background: #fff;
+}
+.recht-word-bottom-tile:last-child {
+  border-right: 0;
+}
+.recht-word-bottom-tile .recht-asset {
+  width: 84px;
+  height: 84px;
+  border-radius: 0;
+  background: transparent;
+}
+.recht-word-bottom-tile .recht-asset img {
+  width: 72px;
+  height: 72px;
+}
+.recht-word-bottom-tile div {
+  display: grid;
+  gap: 5px;
+}
+.recht-word-bottom-tile strong {
+  color: var(--recht-blue);
+  font-size: 13px;
+  line-height: 1.08;
+}
+.recht-word-bottom-tile span {
+  color: #071526;
+  font-size: 13px;
+  line-height: 1.14;
+}
+
 .pdf-interpreter-visual {
   min-height: 280px;
   display: grid;
@@ -2625,6 +4890,73 @@ html[dir="rtl"] .service-info-label {
   font-size: clamp(15px, 1.05vw, 17px);
   line-height: 1.45;
 }
+
+html[dir="rtl"] .beglaubigte-doc-copy-cell li,
+html[dir="rtl"] .point-grid-list li,
+html[dir="rtl"] .recht-doc-copy-cell li,
+html[dir="rtl"] .recht-word-copy li {
+  padding-left: 0;
+  padding-right: 18px;
+  text-align: right;
+}
+
+html[dir="rtl"] .beglaubigte-doc-copy-cell li::before,
+html[dir="rtl"] .point-grid-list li::before,
+html[dir="rtl"] .recht-doc-copy-cell li::before,
+html[dir="rtl"] .recht-word-copy li::before {
+  left: auto;
+  right: 0;
+}
+
+html[dir="rtl"] .it-doc-list {
+  padding-left: 0;
+  padding-right: 18px;
+  text-align: right;
+}
+
+html[dir="rtl"] .it-word-check-item {
+  grid-template-columns: minmax(0, 1fr) 20px;
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .it-word-checkmark {
+  grid-column: 2;
+}
+
+html[dir="rtl"] .it-word-check-text {
+  grid-column: 1;
+}
+
+.service-visual-panel--rich {
+  gap: 12px;
+}
+.service-visual-panel--rich .it-word-sheet,
+.service-visual-panel--rich .dolm-doc-table,
+.service-visual-panel--rich .beeidigt-doc-table,
+.service-visual-panel--rich .standesamt-doc-table,
+.service-visual-panel--rich .wirtschaft-doc-table,
+.service-visual-panel--rich .beglaubigte-doc-table,
+.service-visual-panel--rich .point-grid-table,
+.service-visual-panel--rich .recht-word-sheet,
+.service-visual-panel--rich .it-word-bottom-strip,
+.service-visual-panel--rich .dolm-doc-card-grid,
+.service-visual-panel--rich .beeidigt-doc-card-grid,
+.service-visual-panel--rich .wirtschaft-doc-card-grid,
+.service-visual-panel--rich .beglaubigte-doc-process-grid,
+.service-visual-panel--rich .beglaubigte-doc-card-grid,
+.service-visual-panel--rich .point-grid-card-grid,
+.service-visual-panel--rich .recht-word-bottom-strip {
+  gap: 6px;
+}
+.service-visual-panel--rich .dolm-doc-card-grid,
+.service-visual-panel--rich .beeidigt-doc-card-grid,
+.service-visual-panel--rich .wirtschaft-doc-card-grid,
+.service-visual-panel--rich .beglaubigte-doc-process-grid,
+.service-visual-panel--rich .beglaubigte-doc-card-grid,
+.service-visual-panel--rich .point-grid-card-grid {
+  margin-top: 6px;
+}
 @media (max-width: 980px) {
   .it-sheet-top,
   .it-cta-card,
@@ -2706,6 +5038,30 @@ html[dir="rtl"] .service-info-label {
     justify-self: start;
     margin-top: 10px;
   }
+  .recht-word-sheet {
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-areas:
+      "title title"
+      "introIcon introCopy"
+      "docsIcon docsCopy"
+      "bottom bottom";
+  }
+  .recht-word-copy--intro,
+  .recht-word-copy--documents {
+    grid-template-columns: 1fr;
+  }
+  .recht-word-copy ul {
+    columns: 1;
+  }
+  .recht-word-bottom-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .recht-word-bottom-tile:nth-child(2) {
+    border-right: 0;
+  }
+  .recht-word-bottom-tile:nth-child(-n+2) {
+    border-bottom: 1px solid var(--recht-line);
+  }
   .specialty-layout {
     grid-template-columns: 1fr;
     gap: 22px;
@@ -2785,6 +5141,40 @@ html[dir="rtl"] .service-info-label {
   .it-word-bottom-strip {
     grid-template-columns: 1fr;
   }
+  .dolm-word-hero,
+  .dolm-process-grid,
+  .dolm-process-flow {
+    grid-template-columns: 1fr;
+  }
+  .dolm-word-visual {
+    min-height: 280px;
+  }
+  .dolm-doc-table {
+    grid-template-columns: 88px repeat(3, minmax(0, 1fr));
+  }
+  .dolm-doc-copy-cell p,
+  .dolm-doc-card strong {
+    font-size: 12px;
+  }
+  .dolm-doc-card p {
+    font-size: 11px;
+  }
+  .dolm-benefit-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dolm-benefit-tile:nth-child(2) {
+    border-right: 0;
+  }
+  .dolm-benefit-tile:nth-child(-n+2) {
+    border-bottom: 1px solid var(--dolm-line);
+  }
+  .dolm-flow-item {
+    border-right: 0;
+    border-bottom: 1px solid var(--dolm-line);
+  }
+  .dolm-flow-item:last-child {
+    border-bottom: 0;
+  }
   .it-word-bottom-strip .it-doc-bottom-tile {
     grid-template-columns: 46px minmax(0, 1fr);
     min-height: 0;
@@ -2793,6 +5183,274 @@ html[dir="rtl"] .service-info-label {
   }
   .it-word-bottom-strip .it-doc-bottom-tile:last-child {
     border-bottom: 0;
+  }
+  .dolm-doc-sheet h3 {
+    font-size: 31px;
+  }
+  .dolm-doc-table {
+    grid-template-columns: 1fr;
+  }
+  .dolm-doc-icon-cell,
+  .dolm-doc-copy-cell,
+  .dolm-doc-process-title,
+  .dolm-doc-card {
+    grid-column: 1 / -1;
+    border-right: 0;
+  }
+  .dolm-doc-icon-cell--top,
+  .dolm-doc-icon-cell--wide {
+    grid-row: auto;
+    min-height: 84px;
+    padding: 12px;
+  }
+  .dolm-doc-copy-cell,
+  .dolm-doc-copy-cell--wide {
+    min-height: 0;
+  }
+  .dolm-doc-card {
+    min-height: 0;
+  }
+  .dolm-doc-card:nth-last-child(-n+3) {
+    border-bottom: 1px solid var(--dolm-doc-line);
+  }
+  .dolm-doc-card:last-child {
+    border-bottom: 0;
+  }
+  .dolm-request-card {
+    width: 100%;
+    max-width: 340px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    justify-self: center;
+    padding: 14px;
+  }
+  .dolm-request-card strong {
+    font-size: clamp(16px, 4vw, 18px);
+  }
+  .dolm-request-card a,
+  .service-visual-panel--rich .dolm-request-card a,
+  .service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card a {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 34px;
+    padding: 8px 10px;
+    font-size: clamp(11px, 3.2vw, 12px);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .service-visual-panel--rich .dolm-doc-table,
+  .service-visual-panel--rich .beeidigt-doc-table,
+  .service-visual-panel--rich .standesamt-doc-table,
+  .service-visual-panel--rich .wirtschaft-doc-table,
+  .service-visual-panel--rich .beglaubigte-doc-table,
+  .service-visual-panel--rich .point-grid-table {
+    grid-template-columns: 1fr !important;
+  }
+  .service-visual-panel--rich .dolm-doc-icon-cell,
+  .service-visual-panel--rich .dolm-doc-copy-cell,
+  .service-visual-panel--rich .beeidigt-doc-icon-cell,
+  .service-visual-panel--rich .beeidigt-doc-copy-cell,
+  .service-visual-panel--rich .standesamt-doc-icon-cell,
+  .service-visual-panel--rich .standesamt-doc-copy-cell,
+  .service-visual-panel--rich .wirtschaft-doc-icon-cell,
+  .service-visual-panel--rich .wirtschaft-doc-copy-cell,
+  .service-visual-panel--rich .beglaubigte-doc-icon-cell,
+  .service-visual-panel--rich .beglaubigte-doc-copy-cell,
+  .service-visual-panel--rich .point-grid-icon-cell,
+  .service-visual-panel--rich .point-grid-copy-cell {
+    grid-column: 1 / -1 !important;
+  }
+  .service-visual-panel--rich .dolm-request-card,
+  .service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card,
+  .service-visual-panel--rich .recht-request-card,
+  .service-visual-panel--rich .wirtschaft-request-card,
+  .service-visual-panel--rich .beglaubigte-request-card,
+  .service-visual-panel--rich .beeidigt-request-card,
+  .service-visual-panel--rich .standesamt-request-card,
+  .service-visual-panel--rich .point-grid-request-card {
+    width: 100% !important;
+    max-width: none !important;
+    grid-template-columns: 42px minmax(0, 1fr);
+    justify-self: stretch;
+    margin: 14px 0 0;
+  }
+  .service-visual-panel--rich .dolm-request-card a,
+  .service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card a {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .beeidigt-doc-sheet h3 {
+    font-size: 31px;
+  }
+  .beeidigt-doc-table,
+  .beeidigt-doc-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .beeidigt-doc-icon-cell,
+  .beeidigt-doc-copy-cell,
+  .beeidigt-doc-card {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--beeidigt-line);
+  }
+  .beeidigt-doc-icon-cell--top,
+  .beeidigt-doc-icon-cell--wide {
+    grid-row: auto;
+    min-height: 84px;
+    padding: 12px;
+  }
+  .beeidigt-doc-copy-cell,
+  .beeidigt-doc-copy-cell--wide,
+  .beeidigt-doc-card {
+    min-height: 0;
+  }
+  .beeidigt-doc-card:last-child {
+    border-bottom: 0;
+  }
+  .standesamt-doc-sheet h3 {
+    font-size: 31px;
+  }
+  .standesamt-doc-table {
+    grid-template-columns: 1fr;
+  }
+  .standesamt-doc-icon-cell,
+  .standesamt-doc-copy-cell {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--standesamt-line);
+  }
+  .standesamt-doc-icon-cell--top,
+  .standesamt-doc-icon-cell--wide {
+    grid-row: auto;
+    min-height: 84px;
+    padding: 12px;
+  }
+  .standesamt-doc-copy-cell,
+  .standesamt-doc-copy-cell--wide {
+    min-height: 0;
+  }
+  .standesamt-request-card {
+    width: min(300px, 100%);
+  }
+  .wirtschaft-doc-sheet h3 {
+    font-size: 31px;
+  }
+  .wirtschaft-doc-table,
+  .wirtschaft-doc-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .wirtschaft-doc-icon-cell,
+  .wirtschaft-doc-copy-cell,
+  .wirtschaft-doc-card {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--wirtschaft-line);
+  }
+  .wirtschaft-doc-icon-cell,
+  .wirtschaft-doc-copy-cell,
+  .wirtschaft-doc-card {
+    min-height: 0;
+  }
+  .wirtschaft-doc-icon-cell {
+    padding: 12px;
+  }
+  .wirtschaft-request-card {
+    width: min(300px, 100%);
+  }
+  .beglaubigte-doc-sheet h3 {
+    font-size: 31px;
+  }
+  .beglaubigte-doc-table,
+  .beglaubigte-doc-process-grid,
+  .beglaubigte-doc-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .beglaubigte-doc-icon-cell,
+  .beglaubigte-doc-copy-cell,
+  .beglaubigte-doc-process-card,
+  .beglaubigte-doc-card {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--beglaubigte-line);
+  }
+  .beglaubigte-doc-icon-cell--intro,
+  .beglaubigte-doc-copy-cell--intro,
+  .beglaubigte-doc-icon-cell--documents,
+  .beglaubigte-doc-copy-cell--documents,
+  .beglaubigte-doc-icon-cell--languages,
+  .beglaubigte-doc-copy-cell--languages,
+  .beglaubigte-doc-process-card,
+  .beglaubigte-doc-card {
+    min-height: 0;
+  }
+  .beglaubigte-doc-icon-cell {
+    padding: 12px;
+  }
+  .beglaubigte-request-card {
+    width: min(300px, 100%);
+  }
+  .point-grid-sheet h3 {
+    font-size: 31px;
+  }
+  .point-grid-table,
+  .point-grid-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .point-grid-icon-cell,
+  .point-grid-copy-cell,
+  .point-grid-card {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--point-line);
+  }
+  .point-grid-icon-cell,
+  .point-grid-copy-cell,
+  .point-grid-card {
+    min-height: 0;
+  }
+  .point-grid-icon-cell {
+    padding: 12px;
+  }
+  .point-grid-list--two {
+    columns: 1;
+  }
+  .point-grid-request-card {
+    width: min(300px, 100%);
+  }
+  .recht-doc-sheet h3 {
+    font-size: 31px;
+  }
+  .recht-doc-table,
+  .recht-doc-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .recht-doc-icon-cell,
+  .recht-doc-copy-cell,
+  .recht-doc-card {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--recht-line);
+  }
+  .recht-doc-icon-cell--intro,
+  .recht-doc-icon-cell--documents,
+  .recht-doc-copy-cell--intro,
+  .recht-doc-copy-cell--documents,
+  .recht-doc-card {
+    min-height: 0;
+  }
+  .recht-doc-icon-cell--intro,
+  .recht-doc-icon-cell--documents {
+    padding: 12px;
+  }
+  .recht-doc-copy-cell--intro,
+  .recht-doc-copy-cell--documents {
+    padding: 14px;
+  }
+  .recht-doc-card:last-child {
+    border-bottom: 0;
+  }
+  .recht-request-card {
+    width: min(300px, 100%);
   }
   .specialties { padding-top: 64px; }
   .specialty-layout { padding: 12px; }
@@ -3132,8 +5790,203 @@ html[dir="rtl"] .specialty-page-rail button > svg:last-child { transform: scaleX
   .specialty-page-quote { width: 100%; }
 }
 
+.specialty-drawer-toggle,
+.specialty-drawer-close,
+.specialty-drawer-backdrop {
+  display: none;
+}
+.specialty-sidebar button.specialty-drawer-close,
+.specialty-page-rail button.specialty-drawer-close {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .specialties,
+  .specialty-page {
+    position: relative;
+  }
+
+  .specialty-drawer-toggle {
+    position: fixed;
+    inset-inline-start: 0;
+    left: 0;
+    right: auto;
+    top: 50dvh;
+    z-index: 980;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 52px;
+    min-height: 52px;
+    padding: 0;
+    border: 0;
+    border-radius: 0 14px 14px 0;
+    background: #0A0A0A;
+    color: #FFFFFF;
+    box-shadow: 0 16px 36px rgba(10,10,10,.22);
+    cursor: pointer;
+    transform: translateY(-50%);
+    touch-action: manipulation;
+  }
+  .specialty-drawer-toggle.is-visible {
+    display: inline-flex;
+  }
+  .specialty-drawer-toggle--page {
+    top: 50dvh;
+  }
+  .specialty-drawer-icon {
+    display: grid;
+    gap: 5px;
+    width: 18px;
+  }
+  .specialty-drawer-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+  }
+  html[dir="rtl"] .specialty-drawer-toggle,
+  .specialty-drawer-toggle.is-rtl {
+    inset-inline-start: auto !important;
+    inset-inline-end: 0 !important;
+    left: auto !important;
+    right: 0 !important;
+    border-radius: 14px 0 0 14px;
+  }
+
+  .specialty-sidebar,
+  .specialty-page-rail {
+    position: fixed !important;
+    inset-block: 0 !important;
+    inset-inline-start: 0 !important;
+    z-index: 2147483647;
+    display: block !important;
+    width: min(86vw, 342px);
+    height: 100dvh;
+    max-height: 100dvh;
+    padding: 54px 12px 18px !important;
+    border: 0;
+    border-radius: 0 16px 16px 0;
+    background: rgba(250,249,246,.98);
+    box-shadow: 24px 0 54px rgba(10,10,10,.18);
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(calc(-100% - 28px));
+    transition: transform .24s ease, visibility 0s linear .24s;
+  }
+  html[dir="rtl"] .specialty-sidebar,
+  html[dir="rtl"] .specialty-page-rail,
+  .specialty-sidebar.is-rtl,
+  .specialty-page-rail.is-rtl {
+    inset-inline-start: auto !important;
+    inset-inline-end: 0 !important;
+    border-radius: 16px 0 0 16px;
+    box-shadow: -24px 0 54px rgba(10,10,10,.18);
+    transform: translateX(calc(100% + 28px));
+  }
+  .specialty-sidebar.is-open,
+  .specialty-page-rail.is-open,
+  html[dir="rtl"] .specialty-sidebar.is-open,
+  html[dir="rtl"] .specialty-page-rail.is-open,
+  .specialty-sidebar.is-rtl.is-open,
+  .specialty-page-rail.is-rtl.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition: transform .24s ease;
+  }
+  .specialty-page-shell {
+    grid-template-columns: 1fr;
+  }
+  .specialty-page-rail-label {
+    margin: 0 44px 12px 5px;
+  }
+  html[dir="rtl"] .specialty-page-rail-label {
+    margin: 0 5px 12px 44px;
+  }
+  .specialty-drawer-close,
+  .specialty-page-rail .specialty-drawer-close {
+    position: absolute;
+    inset-block-start: 12px;
+    inset-inline-end: 12px;
+    z-index: 2;
+    display: grid !important;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    min-height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    /* background: #0A0A0A; */
+    color: black;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1;
+    /* box-shadow: 0 10px 22px rgba(10,10,10,.16); */
+    cursor: pointer;
+  }
+  html[dir="rtl"] .specialty-drawer-close,
+  html[dir="rtl"] .specialty-page-rail .specialty-drawer-close,
+  .specialty-sidebar.is-rtl .specialty-drawer-close,
+  .specialty-page-rail.is-rtl .specialty-drawer-close {
+    inset-inline-end: auto;
+    inset-inline-start: 12px;
+  }
+  .specialty-page-rail .specialty-drawer-close svg,
+  .specialty-page-rail .specialty-drawer-close span {
+    display: none;
+  }
+  .specialty-page-rail button:not(.specialty-drawer-close),
+  .specialty-page-rail button:not(.specialty-drawer-close):last-child {
+    border: 1px solid rgba(10,10,10,0.07);
+    border-radius: 8px;
+    margin-bottom: 7px;
+  }
+  .specialty-sidebar .specialty-side-row {
+    border-radius: 8px;
+  }
+  .specialty-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483646;
+    display: block;
+    border: 0;
+    background: rgba(10,10,10,.34);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    cursor: pointer;
+  }
+  .specialty-drawer-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body:has(.specialty-sidebar.is-open) nav.top,
+  body:has(.specialty-page-rail.is-open) nav.top,
+  body:has(.specialty-sidebar.is-open) .nav-mobile-overlay,
+  body:has(.specialty-page-rail.is-open) .nav-mobile-overlay,
+  body:has(.specialty-sidebar.is-open) .fab-wa,
+  body:has(.specialty-sidebar.is-open) .fab-phone,
+  body:has(.specialty-sidebar.is-open) .fab-phone-menu,
+  body:has(.specialty-sidebar.is-open) .fab-email,
+  body:has(.specialty-sidebar.is-open) .fab-top,
+  body:has(.specialty-page-rail.is-open) .fab-wa,
+  body:has(.specialty-page-rail.is-open) .fab-phone,
+  body:has(.specialty-page-rail.is-open) .fab-phone-menu,
+  body:has(.specialty-page-rail.is-open) .fab-email,
+  body:has(.specialty-page-rail.is-open) .fab-top {
+    z-index: 900;
+  }
+}
+
 /* BERATUNG */
-.beratung { padding: 100px 0; }
+.beratung { padding: 50px 0; }
 .beratung-top {
   display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px;
   align-items: center; margin-bottom: 48px;
@@ -4442,18 +7295,18 @@ html[dir="rtl"] .faq-more {
 }
 
 /* FOOTER */
-footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--line); margin-top: 100px; }
-.foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+footer { background: #FAF9F6; padding: 42px 0 22px; border-top: 1px solid var(--line); margin-top: 70px; }
+.foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 34px; margin-bottom: 26px; }
 .foot-col h5 { font-size: 11.5px; color: var(--muted); margin-bottom: 18px; font-family: "Geist", -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
 .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .foot-col a { color: #1A1A1A; font-size: 14px; font-weight: 500; transition: color .15s; }
 .foot-col a:hover { color: var(--muted); }
 .foot-about p { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 14px 0 18px; max-width: 320px; }
-.foot-brand { margin-bottom: 16px; }
+.foot-brand { margin-bottom: 10px; }
 .foot-brand img {  object-fit: contain; filter: grayscale(1) brightness(0); }
-.foot-contact-col { display: flex; flex-direction: column; gap: 10px; }
+.foot-contact-col { display: flex; flex-direction: column; gap: 8px; }
 .foot-hours { font-size: 12px; color: var(--muted-2); font-family: "Geist", -apple-system, sans-serif; padding-top: 2px; }
-.foot-social-row { display: flex; justify-content: flex-end; padding-bottom: 24px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+.foot-social-row { display: flex; justify-content: flex-end; padding-bottom: 12px; margin-bottom: 0; border-bottom: 1px solid var(--line); }
 .foot-contact-row {
   display: flex; align-items: center; gap: 8px;
   font-size: 13px; color: var(--muted); text-decoration: none;
@@ -4467,8 +7320,8 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
 .socials a { width: 34px; height: 34px; border-radius: 50%; background: #F3F3F3; display: grid; place-items: center; color: #0A0A0A; transition: background .15s; }
 .socials a:hover { background: #E5E5E5; }
 .foot-wordmark {
-  font-size: clamp(80px, 18vw, 240px); line-height: 0.85; letter-spacing: -0.07em;
-  font-weight: 800; padding: 20px 0 12px;
+  font-size: clamp(64px, 13vw, 170px); line-height: 0.78; letter-spacing: -0.07em;
+  font-weight: 800; padding: 14px 0 6px;
   display: flex; align-items: center;
   direction: ltr;
   color: rgba(10,10,10,0.06);
@@ -4480,7 +7333,7 @@ footer { background: #FAF9F6; padding: 80px 0 32px; border-top: 1px solid var(--
   line-height: 0.85;
   letter-spacing: -0.07em;
 }
-.foot-bottom { padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-family: "Geist", -apple-system, sans-serif; font-size: 11.5px; color: var(--muted-2); }
+.foot-bottom { padding-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-family: "Geist", -apple-system, sans-serif; font-size: 11.5px; color: var(--muted-2); }
 
 /* Hamburger */
 .nav-hamburger {
@@ -5567,3 +8420,678 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
 [dir="rtl"] .adm-nav-item { flex-direction: row-reverse; }
 [dir="rtl"] .adm-donut-leg-val { text-align: left; }
 [dir="rtl"] .adm-hbar-val { text-align: left; }
+
+/* Mobile service-point cleanup: keep content readable and stop decorative icon cells
+   from consuming narrow phone columns. */
+@media (max-width: 760px) {
+  .services > .container {
+    width: 100%;
+    padding-inline: 12px;
+  }
+
+  .service-visual-panel--rich {
+    width: 100%;
+    max-width: 100%;
+    gap: 10px;
+  }
+
+  .service-visual-panel--rich .it-word-sheet,
+  .service-visual-panel--rich .recht-word-sheet,
+  .service-visual-panel--rich .dolm-doc-table,
+  .service-visual-panel--rich .beeidigt-doc-table,
+  .service-visual-panel--rich .standesamt-doc-table,
+  .service-visual-panel--rich .wirtschaft-doc-table,
+  .service-visual-panel--rich .beglaubigte-doc-table,
+  .service-visual-panel--rich .point-grid-table {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: none !important;
+    gap: 10px !important;
+  }
+
+  .service-visual-panel--rich .it-word-title,
+  .service-visual-panel--rich .it-word-cell,
+  .service-visual-panel--rich .recht-word-icon,
+  .service-visual-panel--rich .recht-word-copy,
+  .service-visual-panel--rich .dolm-doc-icon-cell,
+  .service-visual-panel--rich .dolm-doc-copy-cell,
+  .service-visual-panel--rich .beeidigt-doc-icon-cell,
+  .service-visual-panel--rich .beeidigt-doc-copy-cell,
+  .service-visual-panel--rich .standesamt-doc-icon-cell,
+  .service-visual-panel--rich .standesamt-doc-copy-cell,
+  .service-visual-panel--rich .wirtschaft-doc-icon-cell,
+  .service-visual-panel--rich .wirtschaft-doc-copy-cell,
+  .service-visual-panel--rich .beglaubigte-doc-icon-cell,
+  .service-visual-panel--rich .beglaubigte-doc-copy-cell,
+  .service-visual-panel--rich .point-grid-icon-cell,
+  .service-visual-panel--rich .point-grid-copy-cell {
+    grid-area: auto !important;
+    grid-column: 1 / -1 !important;
+  }
+
+  .service-visual-panel--rich .it-word-icon,
+  .service-visual-panel--rich .recht-word-icon,
+  .service-visual-panel--rich .dolm-doc-icon-cell,
+  .service-visual-panel--rich .beeidigt-doc-icon-cell,
+  .service-visual-panel--rich .standesamt-doc-icon-cell,
+  .service-visual-panel--rich .wirtschaft-doc-icon-cell,
+  .service-visual-panel--rich .beglaubigte-doc-icon-cell,
+  .service-visual-panel--rich .point-grid-icon-cell {
+    display: none !important;
+  }
+
+  .service-visual-panel--rich .it-word-copy,
+  .service-visual-panel--rich .recht-word-copy,
+  .service-visual-panel--rich .dolm-doc-copy-cell,
+  .service-visual-panel--rich .beeidigt-doc-copy-cell,
+  .service-visual-panel--rich .standesamt-doc-copy-cell,
+  .service-visual-panel--rich .wirtschaft-doc-copy-cell,
+  .service-visual-panel--rich .beglaubigte-doc-copy-cell,
+  .service-visual-panel--rich .point-grid-copy-cell {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 16px !important;
+    text-align: start;
+  }
+
+  .service-visual-panel--rich .it-word-copy p,
+  .service-visual-panel--rich .recht-word-copy p,
+  .service-visual-panel--rich .dolm-doc-copy-cell p,
+  .service-visual-panel--rich .beeidigt-doc-copy-cell p,
+  .service-visual-panel--rich .standesamt-doc-copy-cell p,
+  .service-visual-panel--rich .wirtschaft-doc-copy-cell p,
+  .service-visual-panel--rich .beglaubigte-doc-copy-cell p,
+  .service-visual-panel--rich .point-grid-copy-cell p {
+    text-align: start !important;
+    font-size: clamp(13px, 3.8vw, 15px);
+    line-height: 1.55;
+  }
+
+  .service-visual-panel--rich .dolm-request-card,
+  .service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card,
+  .service-visual-panel--rich .recht-request-card,
+  .service-visual-panel--rich .wirtschaft-request-card,
+  .service-visual-panel--rich .beglaubigte-request-card,
+  .service-visual-panel--rich .beeidigt-request-card,
+  .service-visual-panel--rich .standesamt-request-card,
+  .service-visual-panel--rich .point-grid-request-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    align-items: center;
+    justify-self: stretch;
+    margin: 14px 0 0 !important;
+    padding: 14px !important;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .service-visual-panel--rich .dolm-request-info {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .service-visual-panel--rich .dolm-request-card div {
+    width: 100%;
+    min-width: 0;
+    justify-items: stretch;
+  }
+
+  .service-visual-panel--rich .dolm-request-card strong {
+    text-align: start;
+    font-size: clamp(18px, 5vw, 21px);
+    line-height: 1.18;
+  }
+
+  .service-visual-panel--rich .dolm-request-card a,
+  .service-visual-panel--rich[data-active-service="dolmetschen-overview"] .dolm-request-card a {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: clamp(12px, 3.5vw, 14px);
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip,
+  .service-visual-panel--rich .recht-word-bottom-strip,
+  .service-visual-panel--rich .dolm-doc-card-grid,
+  .service-visual-panel--rich .beeidigt-doc-card-grid,
+  .service-visual-panel--rich .wirtschaft-doc-card-grid,
+  .service-visual-panel--rich .beglaubigte-doc-process-grid,
+  .service-visual-panel--rich .beglaubigte-doc-card-grid,
+  .service-visual-panel--rich .point-grid-card-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .service-visual-panel--rich .it-doc-bottom-tile,
+  .service-visual-panel--rich .recht-word-bottom-tile,
+  .service-visual-panel--rich .dolm-doc-card,
+  .service-visual-panel--rich .beeidigt-doc-card,
+  .service-visual-panel--rich .wirtschaft-doc-card,
+  .service-visual-panel--rich .beglaubigte-doc-process-card,
+  .service-visual-panel--rich .beglaubigte-doc-card,
+  .service-visual-panel--rich .point-grid-card {
+    min-height: 0 !important;
+    grid-template-columns: 54px minmax(0, 1fr) !important;
+    align-items: center;
+    justify-items: start;
+    gap: 12px;
+    padding: 14px !important;
+    text-align: start;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+  }
+
+  .service-visual-panel--rich .it-doc-bottom-tile img,
+  .service-visual-panel--rich .recht-word-bottom-tile img,
+  .service-visual-panel--rich .dolm-doc-card img,
+  .service-visual-panel--rich .beeidigt-doc-card img,
+  .service-visual-panel--rich .wirtschaft-doc-card img,
+  .service-visual-panel--rich .beglaubigte-doc-process-card img,
+  .service-visual-panel--rich .beglaubigte-doc-card img,
+  .service-visual-panel--rich .point-grid-card img {
+    width: 46px !important;
+    height: 46px !important;
+    object-fit: contain;
+  }
+
+  .service-visual-panel--rich .it-doc-bottom-tile strong,
+  .service-visual-panel--rich .recht-word-bottom-tile strong,
+  .service-visual-panel--rich .dolm-doc-card strong,
+  .service-visual-panel--rich .beeidigt-doc-card strong,
+  .service-visual-panel--rich .wirtschaft-doc-card strong,
+  .service-visual-panel--rich .beglaubigte-doc-process-card strong,
+  .service-visual-panel--rich .beglaubigte-doc-card strong,
+  .service-visual-panel--rich .point-grid-card strong {
+    font-size: 13px;
+    line-height: 1.18;
+    text-align: start;
+  }
+
+  .service-visual-panel--rich .it-doc-bottom-tile span,
+  .service-visual-panel--rich .recht-word-bottom-tile span,
+  .service-visual-panel--rich .dolm-doc-card p,
+  .service-visual-panel--rich .beeidigt-doc-card p,
+  .service-visual-panel--rich .wirtschaft-doc-card p,
+  .service-visual-panel--rich .beglaubigte-doc-process-card span,
+  .service-visual-panel--rich .beglaubigte-doc-card p,
+  .service-visual-panel--rich .point-grid-card p {
+    font-size: 12.5px;
+    line-height: 1.35;
+    text-align: start;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-doc-bottom-tile,
+  html[dir="rtl"] .service-visual-panel--rich .recht-word-bottom-tile,
+  html[dir="rtl"] .service-visual-panel--rich .dolm-doc-card,
+  html[dir="rtl"] .service-visual-panel--rich .beeidigt-doc-card,
+  html[dir="rtl"] .service-visual-panel--rich .wirtschaft-doc-card,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-process-card,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-card,
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-card {
+    direction: rtl;
+  }
+}
+
+/* Final mobile guard for service/specialty pages. This keeps RTL content from
+   collapsing into the off-canvas menu column on narrow screens. */
+@media (max-width: 760px) {
+  .specialties > .container,
+  .specialty-page > .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  .specialty-layout,
+  .specialty-page-shell {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .service-visual-panel,
+  .service-visual-panel--rich,
+  .specialty-page-content {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .specialty-page-content {
+    padding: 22px 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .service-visual-panel--rich .it-word-sheet,
+  .service-visual-panel--rich .recht-word-sheet,
+  .service-visual-panel--rich .dolm-doc-sheet,
+  .service-visual-panel--rich .beeidigt-doc-sheet,
+  .service-visual-panel--rich .standesamt-doc-sheet,
+  .service-visual-panel--rich .wirtschaft-doc-sheet,
+  .service-visual-panel--rich .beglaubigte-doc-sheet,
+  .service-visual-panel--rich .point-grid-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .service-visual-panel--rich .recht-word-copy,
+  .service-visual-panel--rich .it-word-copy,
+  .service-visual-panel--rich .dolm-doc-copy-cell,
+  .service-visual-panel--rich .beeidigt-doc-copy-cell,
+  .service-visual-panel--rich .standesamt-doc-copy-cell,
+  .service-visual-panel--rich .wirtschaft-doc-copy-cell,
+  .service-visual-panel--rich .beglaubigte-doc-copy-cell,
+  .service-visual-panel--rich .point-grid-copy-cell,
+  .specialty-page-content h2,
+  .specialty-page-copy,
+  .specialty-page-copy p {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich,
+  html[dir="rtl"] .service-visual-panel--rich .recht-word-copy,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-copy,
+  html[dir="rtl"] .service-visual-panel--rich .dolm-doc-copy-cell,
+  html[dir="rtl"] .service-visual-panel--rich .beeidigt-doc-copy-cell,
+  html[dir="rtl"] .service-visual-panel--rich .standesamt-doc-copy-cell,
+  html[dir="rtl"] .service-visual-panel--rich .wirtschaft-doc-copy-cell,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-copy-cell,
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-copy-cell,
+  html[dir="rtl"] .specialty-page-content,
+  html[dir="rtl"] .specialty-page-copy,
+  html[dir="rtl"] .specialty-page-copy p {
+    direction: rtl;
+    text-align: right !important;
+    text-align-last: right !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .dolm-request-card,
+  html[dir="rtl"] .service-visual-panel--rich .recht-request-card,
+  html[dir="rtl"] .service-visual-panel--rich .wirtschaft-request-card,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-request-card,
+  html[dir="rtl"] .service-visual-panel--rich .beeidigt-request-card,
+  html[dir="rtl"] .service-visual-panel--rich .standesamt-request-card,
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-request-card {
+    direction: rtl;
+  }
+
+  .service-visual-panel--rich .recht-word-sheet {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .service-visual-panel--rich .recht-word-title {
+    width: 100% !important;
+    padding: 0 0 12px !important;
+  }
+
+  .service-visual-panel--rich .recht-word-copy--intro,
+  .service-visual-panel--rich .recht-word-copy--documents {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 0 10px !important;
+    padding: 16px !important;
+    border: 1px solid rgba(8,40,90,.12) !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 14px 34px rgba(11,30,154,.045);
+  }
+
+  .service-visual-panel--rich .recht-word-copy h4,
+  .service-visual-panel--rich .recht-word-copy p,
+  .service-visual-panel--rich .recht-word-copy ul,
+  .service-visual-panel--rich .recht-word-copy li {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .service-visual-panel--rich .recht-word-copy p {
+    margin-bottom: 12px;
+    font-size: clamp(14px, 4vw, 16px) !important;
+    line-height: 1.7 !important;
+  }
+
+  .service-visual-panel--rich .recht-word-copy li {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+
+  .service-visual-panel--rich .recht-word-sheet .recht-request-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 16px 0 0 !important;
+  }
+
+  .service-visual-panel--rich .point-grid-card {
+    display: grid !important;
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    align-items: start !important;
+    gap: 6px 12px !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+    overflow: visible !important;
+  }
+
+  .service-visual-panel--rich .point-grid-card .point-grid-asset {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    width: 52px !important;
+    height: 52px !important;
+    align-self: start !important;
+    justify-self: center !important;
+  }
+
+  .service-visual-panel--rich .point-grid-card .point-grid-asset img {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .service-visual-panel--rich .point-grid-card strong {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.22 !important;
+    text-align: start !important;
+  }
+
+  .service-visual-panel--rich .point-grid-card p {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    text-align: start !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-card p {
+    text-align: right !important;
+    text-align-last: right !important;
+  }
+
+  .service-visual-panel--rich .it-word-sheet {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .service-visual-panel--rich .it-word-title {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 4px !important;
+    font-size: clamp(28px, 8vw, 34px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .service-visual-panel--rich .it-word-copy,
+  .service-visual-panel--rich .it-word-copy--workflow,
+  .service-visual-panel--rich .it-word-copy--cta,
+  .service-visual-panel--rich .it-word-copy--apps,
+  .service-visual-panel--rich .it-word-copy--docs,
+  .service-visual-panel--rich .it-word-copy--languages,
+  .service-visual-panel--rich .it-word-copy--competence,
+  .service-visual-panel--rich .it-word-copy--international,
+  .service-visual-panel--rich .it-word-copy--nationwide {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 14px 34px rgba(11,30,154,.055) !important;
+  }
+
+  .service-visual-panel--rich .it-word-copy h4 {
+    width: 100% !important;
+    margin-bottom: 9px !important;
+    font-size: 15px !important;
+    line-height: 1.25 !important;
+    text-align: start !important;
+  }
+
+  .service-visual-panel--rich .it-word-copy p,
+  .service-visual-panel--rich .it-word-copy .it-doc-list {
+    width: 100% !important;
+    max-width: none !important;
+    font-size: 13.5px !important;
+    line-height: 1.55 !important;
+    text-align: start !important;
+  }
+
+  .service-visual-panel--rich .it-doc-list--two-columns,
+  .service-visual-panel--rich .it-word-copy .it-doc-list {
+    columns: 1 !important;
+    column-gap: 0 !important;
+  }
+
+  .service-visual-panel--rich .it-word-checks {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .service-visual-panel--rich .it-word-check-item {
+    display: grid !important;
+    grid-template-columns: 22px minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 10px 11px !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  .service-visual-panel--rich .it-word-copy--cta .it-doc-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 42px !important;
+    justify-content: center !important;
+    margin-top: 12px !important;
+    padding: 11px 12px !important;
+    font-size: 12.5px !important;
+    white-space: normal !important;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile {
+    display: grid !important;
+    grid-template-columns: 54px minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 12px !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+    text-align: start !important;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile img {
+    grid-column: 1 !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile div {
+    grid-column: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile strong,
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile span {
+    width: 100% !important;
+    max-width: none !important;
+    text-align: start !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-word-title,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-copy h4,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-copy p,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-copy .it-doc-list,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile strong,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile span {
+    text-align: right !important;
+    text-align-last: right !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-word-check-item,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile {
+    direction: rtl;
+    grid-template-columns: minmax(0, 1fr) 22px !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-word-checkmark {
+    grid-column: 2;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-word-check-text {
+    grid-column: 1;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile img {
+    grid-column: 2 !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile div {
+    grid-column: 1 !important;
+  }
+
+  .service-visual-panel--rich .dolm-doc-card,
+  .service-visual-panel--rich .beeidigt-doc-card,
+  .service-visual-panel--rich .wirtschaft-doc-card,
+  .service-visual-panel--rich .beglaubigte-doc-process-card,
+  .service-visual-panel--rich .beglaubigte-doc-card,
+  .service-visual-panel--rich .point-grid-card,
+  .service-visual-panel--rich .recht-word-bottom-tile,
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    min-height: 160px !important;
+    text-align: center !important;
+  }
+
+  .service-visual-panel--rich .dolm-doc-card img,
+  .service-visual-panel--rich .beeidigt-doc-card img,
+  .service-visual-panel--rich .wirtschaft-doc-card img,
+  .service-visual-panel--rich .beglaubigte-doc-process-card img,
+  .service-visual-panel--rich .beglaubigte-doc-card img,
+  .service-visual-panel--rich .point-grid-card .point-grid-asset,
+  .service-visual-panel--rich .recht-word-bottom-tile .recht-asset,
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile img {
+    flex: 0 0 auto !important;
+    align-self: center !important;
+    justify-self: center !important;
+  }
+
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile div,
+  .service-visual-panel--rich .recht-word-bottom-tile div {
+    width: 100% !important;
+    display: grid !important;
+    justify-items: center !important;
+    gap: 5px !important;
+  }
+
+  .service-visual-panel--rich .dolm-doc-card strong,
+  .service-visual-panel--rich .beeidigt-doc-card strong,
+  .service-visual-panel--rich .wirtschaft-doc-card strong,
+  .service-visual-panel--rich .beglaubigte-doc-process-card strong,
+  .service-visual-panel--rich .beglaubigte-doc-card strong,
+  .service-visual-panel--rich .point-grid-card strong,
+  .service-visual-panel--rich .recht-word-bottom-tile strong,
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile strong,
+  .service-visual-panel--rich .dolm-doc-card p,
+  .service-visual-panel--rich .beeidigt-doc-card p,
+  .service-visual-panel--rich .wirtschaft-doc-card p,
+  .service-visual-panel--rich .beglaubigte-doc-process-card span,
+  .service-visual-panel--rich .beglaubigte-doc-card p,
+  .service-visual-panel--rich .point-grid-card p,
+  .service-visual-panel--rich .recht-word-bottom-tile span,
+  .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile span {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100% !important;
+    max-width: 260px !important;
+    margin-inline: auto !important;
+    text-align: center !important;
+    text-align-last: center !important;
+  }
+
+  html[dir="rtl"] .service-visual-panel--rich .dolm-doc-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .beeidigt-doc-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .wirtschaft-doc-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-process-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-card strong,
+  html[dir="rtl"] .service-visual-panel--rich .recht-word-bottom-tile strong,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile strong,
+  html[dir="rtl"] .service-visual-panel--rich .dolm-doc-card p,
+  html[dir="rtl"] .service-visual-panel--rich .beeidigt-doc-card p,
+  html[dir="rtl"] .service-visual-panel--rich .wirtschaft-doc-card p,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-process-card span,
+  html[dir="rtl"] .service-visual-panel--rich .beglaubigte-doc-card p,
+  html[dir="rtl"] .service-visual-panel--rich .point-grid-card p,
+  html[dir="rtl"] .service-visual-panel--rich .recht-word-bottom-tile span,
+  html[dir="rtl"] .service-visual-panel--rich .it-word-bottom-strip .it-doc-bottom-tile span {
+    text-align: center !important;
+    text-align-last: center !important;
+  }
+}

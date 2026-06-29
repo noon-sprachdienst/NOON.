@@ -136,7 +136,6 @@ export default function Footer() {
             <span>·</span>
             <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('agb')}>{t('foot.agb')}</button>
           </div>
-          <div>ISO 17100</div>
         </div>
 
       </div>

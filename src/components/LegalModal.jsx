@@ -23,7 +23,7 @@ const ImpressumBody = ({ lang }) => {
       <h3>Angaben gemäß § 5 TMG</h3>
       <p>
         <strong>Noon Sprachdienst</strong><br/>
-        Möserstraße 14<br/>
+        Paul-Oeser-Straße 1<br/>
         49074 Osnabrück<br/>
         Deutschland
       </p>
@@ -34,11 +34,11 @@ const ImpressumBody = ({ lang }) => {
       </p>
       <h3>Weitere Standorte</h3>
       <p>
-        Königstraße 82, 70173 Stuttgart<br/>
-        Friedrichstraße 191, 10117 Berlin<br/>
-        Niederwall 21, 33602 Bielefeld<br/>
-        Schillerplatz 7, 55116 Mainz<br/>
-        Holstenstraße 64, 24103 Kiel
+        Friedrichstraße 15, 70174 Stuttgart<br/>
+        Potsdamerstr. 63, App. 908, 10785 Berlin<br/>
+        Teichstraße 24, 33615 Bielefeld<br/>
+        Richard-Wagner-Straße 13, 55118 Mainz<br/>
+        Bothwellstraße 25, 24143 Kiel
       </p>
       <h3>Haftung für Inhalte</h3>
       <p>
@@ -88,7 +88,7 @@ const DATENSCHUTZ = {
       <h4>Allgemeine Hinweise</h4>
       <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.</p>
       <h4>Datenerfassung auf dieser Website</h4>
-      <p><strong>Wer ist verantwortlich?</strong><br/>Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Wer ist verantwortlich?</strong><br/>Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>2. Ihre Rechte</h3>
       <p>Sie haben jederzeit das Recht auf:</p>
       <ul>
@@ -115,7 +115,7 @@ const DATENSCHUTZ = {
       <h4>General Information</h4>
       <p>The following information gives a simple overview of what happens to your personal data when you visit this website.</p>
       <h4>Data Collection</h4>
-      <p><strong>Who is responsible?</strong><br/>Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Who is responsible?</strong><br/>Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>2. Your Rights</h3>
       <p>You have the right at any time to:</p>
       <ul>
@@ -142,7 +142,7 @@ const DATENSCHUTZ = {
       <h4>معلومات عامة</h4>
       <p>تقدم المعلومات التالية نظرة عامة بسيطة حول ما يحدث لبياناتك الشخصية عند زيارة هذا الموقع.</p>
       <h4>جمع البيانات</h4>
-      <p><strong>من المسؤول؟</strong><br/>Noon Sprachdienst، Möserstraße 14، 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>من المسؤول؟</strong><br/>Noon Sprachdienst، Paul-Oeser-Straße 1، 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>٢. حقوقك</h3>
       <p>لديك في أي وقت الحق في:</p>
       <ul>
@@ -168,7 +168,7 @@ const DATENSCHUTZ = {
       <h4>Genel Bilgiler</h4>
       <p>Aşağıdaki bilgiler, bu web sitesini ziyaret ettiğinizde kişisel verilerinizle neler yapıldığına dair basit bir genel bakış sunmaktadır.</p>
       <h4>Veri Toplama</h4>
-      <p><strong>Kim sorumlu?</strong><br/>Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Kim sorumlu?</strong><br/>Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>2. Haklarınız</h3>
       <p>Her zaman şu haklara sahipsiniz:</p>
       <ul>
@@ -194,7 +194,7 @@ const DATENSCHUTZ = {
       <h4>Общая информация</h4>
       <p>Следующая информация даёт простой обзор того, что происходит с вашими персональными данными при посещении этого сайта.</p>
       <h4>Сбор данных</h4>
-      <p><strong>Кто несёт ответственность?</strong><br/>Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Кто несёт ответственность?</strong><br/>Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>2. Ваши права</h3>
       <p>Вы вправе в любое время:</p>
       <ul>
@@ -220,7 +220,7 @@ const DATENSCHUTZ = {
       <h4>Informations générales</h4>
       <p>Les informations suivantes donnent un aperçu simple de ce qui se passe avec vos données personnelles lorsque vous visitez ce site.</p>
       <h4>Collecte de données</h4>
-      <p><strong>Qui est responsable ?</strong><br/>Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Qui est responsable ?</strong><br/>Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>2. Vos droits</h3>
       <p>Vous avez à tout moment le droit de :</p>
       <ul>
@@ -246,7 +246,7 @@ const DATENSCHUTZ = {
       <h4>Загальна інформація</h4>
       <p>Наступна інформація дає простий огляд того, що відбувається з вашими персональними даними при відвідуванні цього сайту.</p>
       <h4>Збір даних</h4>
-      <p><strong>Хто несе відповідальність?</strong><br/>Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Хто несе відповідальність?</strong><br/>Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück — info@noon-sprachdienst.de</p>
       <h3>2. Ваші права</h3>
       <p>Ви маєте право в будь-який час:</p>
       <ul>
@@ -290,7 +290,7 @@ const AGB = {
       <p>Alle übermittelten Dokumente werden vertraulich behandelt. Mitarbeiter und Übersetzer sind zur Verschwiegenheit verpflichtet.</p>
       <h3>§ 9 Gerichtsstand</h3>
       <p>Es gilt deutsches Recht. Gerichtsstand ist Osnabrück für Kaufleute und juristische Personen des öffentlichen Rechts.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
   en: (
@@ -313,7 +313,7 @@ const AGB = {
       <p>All documents submitted are treated confidentially. Staff and translators are bound to secrecy.</p>
       <h3>§ 9 Jurisdiction</h3>
       <p>German law applies. Place of jurisdiction is Osnabrück for merchants and legal entities under public law.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
   ar: (
@@ -336,7 +336,7 @@ const AGB = {
       <p>تُعالَج جميع الوثائق المُرسلة بسرية تامة. يلتزم الموظفون والمترجمون بالسرية.</p>
       <h3>§ ٩ الاختصاص القضائي</h3>
       <p>يسري القانون الألماني. مكان الاختصاص هو Osnabrück للتجار والكيانات القانونية العامة.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
   tr: (
@@ -359,7 +359,7 @@ const AGB = {
       <p>İletilen tüm belgeler gizli tutulur. Personel ve çevirmenler gizlilik yükümlülüğüne tabidir.</p>
       <h3>§ 9 Yetki Alanı</h3>
       <p>Alman hukuku geçerlidir. Tacirler ve kamu hukuku tüzel kişileri için yetki alanı Osnabrück'tür.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
   ru: (
@@ -382,7 +382,7 @@ const AGB = {
       <p>Все переданные документы обрабатываются конфиденциально. Сотрудники и переводчики обязаны соблюдать конфиденциальность.</p>
       <h3>§ 9 Юрисдикция</h3>
       <p>Применяется немецкое право. Местом рассмотрения споров для коммерческих организаций и юридических лиц публичного права является Оснабрюк.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
   fr: (
@@ -405,7 +405,7 @@ const AGB = {
       <p>Tous les documents transmis sont traités de manière confidentielle. Le personnel et les traducteurs sont tenus au secret.</p>
       <h3>§ 9 Juridiction compétente</h3>
       <p>Le droit allemand s'applique. Le lieu de juridiction est Osnabrück pour les commerçants et personnes morales de droit public.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
   uk: (
@@ -428,7 +428,7 @@ const AGB = {
       <p>Всі передані документи обробляються конфіденційно. Співробітники та перекладачі зобов'язані дотримуватися конфіденційності.</p>
       <h3>§ 9 Юрисдикція</h3>
       <p>Застосовується німецьке право. Місцем розгляду спорів для комерційних організацій та юридичних осіб публічного права є Оснабрюк.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {new Date().getFullYear()} — Noon Sprachdienst, Möserstraße 14, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {new Date().getFullYear()} — Noon Sprachdienst, Paul-Oeser-Straße 1, 49074 Osnabrück</p>
     </div>
   ),
 };

@@ -12,6 +12,16 @@ const APPLICATION_LABEL = {
   uk: 'Заявка',
 };
 
+const NAV_ARIA = {
+  de: { main: 'Hauptnavigation', language: 'Sprache wechseln', menu: 'Menü öffnen' },
+  en: { main: 'Main navigation', language: 'Change language', menu: 'Open menu' },
+  ar: { main: 'التنقل الرئيسي', language: 'تغيير اللغة', menu: 'فتح القائمة' },
+  tr: { main: 'Ana gezinme', language: 'Dili değiştir', menu: 'Menüyü aç' },
+  ru: { main: 'Основная навигация', language: 'Сменить язык', menu: 'Открыть меню' },
+  fr: { main: 'Navigation principale', language: 'Changer de langue', menu: 'Ouvrir le menu' },
+  uk: { main: 'Основна навігація', language: 'Змінити мову', menu: 'Відкрити меню' },
+};
+
 export default function Nav() {
   const { t, lang, setLang, meta, LANG_META } = useI18n();
   const [scrolled, setScrolled] = useState(false);
@@ -34,6 +44,7 @@ export default function Nav() {
   const pricesHref = getPricingPathForLanguage(lang);
   const applicationHref = localizePath('/bewerbung');
   const applicationLabel = APPLICATION_LABEL[lang] || APPLICATION_LABEL.de;
+  const aria = NAV_ARIA[lang] || NAV_ARIA.de;
   const quoteHref = localizePath('/angebot');
   const switchLanguage = (code) => {
     setLang(code);
@@ -99,7 +110,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className={`top${scrolled ? ' scrolled' : ''}`} aria-label="Hauptnavigation">
+      <nav className={`top${scrolled ? ' scrolled' : ''}`} aria-label={aria.main}>
         <a href={localizedHome} className="nav-mobile-brand" aria-label="Noon Sprachdienst">
           <span>NOON</span><span className="dot">.</span>
         </a>
@@ -125,7 +136,7 @@ export default function Nav() {
               style={{ padding: '11px' }}
               aria-haspopup="listbox"
               aria-expanded={langOpen}
-              aria-label="Sprache wechseln"
+              aria-label={aria.language}
               onClick={(e) => { e.stopPropagation(); setLangOpen((v) => !v); }}
             >
               <span className="flag" aria-hidden="true">{meta.flag}</span>
@@ -162,7 +173,7 @@ export default function Nav() {
           <button
             type="button"
             className={`nav-hamburger${mobileOpen ? ' open' : ''}`}
-            aria-label="Menü öffnen"
+            aria-label={aria.menu}
             aria-expanded={mobileOpen}
             onClick={(e) => { e.stopPropagation(); setMobileOpen((v) => !v); }}
           >

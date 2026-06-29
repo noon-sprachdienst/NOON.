@@ -76,6 +76,44 @@ const FORM_UPLOAD_ERROR = {
   },
 };
 
+const FORM_LANGUAGE_OPTIONS = {
+  de: {
+    source: ['Arabisch', 'Türkisch', 'Russisch', 'Ukrainisch', 'Englisch', 'Persisch', 'Polnisch', 'Andere...'],
+    target: ['Deutsch', 'Englisch', 'Andere...'],
+    docPlaceholder: 'z.B. Heiratsurkunde aus Damaskus, beglaubigt für das Standesamt ...',
+  },
+  en: {
+    source: ['Arabic', 'Turkish', 'Russian', 'Ukrainian', 'English', 'Persian', 'Polish', 'Other...'],
+    target: ['German', 'English', 'Other...'],
+    docPlaceholder: 'e.g. marriage certificate from Damascus, certified for the registry office ...',
+  },
+  ar: {
+    source: ['العربية', 'التركية', 'الروسية', 'الأوكرانية', 'الإنجليزية', 'الفارسية', 'البولندية', 'لغة أخرى...'],
+    target: ['الألمانية', 'الإنجليزية', 'لغة أخرى...'],
+    docPlaceholder: 'مثلا: شهادة زواج من دمشق، ترجمة معتمدة لمكتب الأحوال المدنية ...',
+  },
+  tr: {
+    source: ['Arapça', 'Türkçe', 'Rusça', 'Ukraynaca', 'İngilizce', 'Farsça', 'Lehçe', 'Diğer...'],
+    target: ['Almanca', 'İngilizce', 'Diğer...'],
+    docPlaceholder: 'örn. Şam’dan evlilik belgesi, nüfus dairesi için onaylı çeviri ...',
+  },
+  ru: {
+    source: ['Арабский', 'Турецкий', 'Русский', 'Украинский', 'Английский', 'Персидский', 'Польский', 'Другой...'],
+    target: ['Немецкий', 'Английский', 'Другой...'],
+    docPlaceholder: 'например, свидетельство о браке из Дамаска, заверенный перевод для ЗАГСа ...',
+  },
+  fr: {
+    source: ['Arabe', 'Turc', 'Russe', 'Ukrainien', 'Anglais', 'Persan', 'Polonais', 'Autre...'],
+    target: ['Allemand', 'Anglais', 'Autre...'],
+    docPlaceholder: 'p. ex. acte de mariage de Damas, traduction certifiée pour l’état civil ...',
+  },
+  uk: {
+    source: ['Арабська', 'Турецька', 'Російська', 'Українська', 'Англійська', 'Перська', 'Польська', 'Інша...'],
+    target: ['Німецька', 'Англійська', 'Інша...'],
+    docPlaceholder: 'наприклад, свідоцтво про шлюб з Дамаска, засвідчений переклад для РАЦСу ...',
+  },
+};
+
 function getUploadError(files) {
   if (files.length > 6) return 'upload-count';
   if (files.reduce((total, file) => total + file.size, 0) > 3 * 1024 * 1024) return 'upload-size';
@@ -97,6 +135,7 @@ export default function HowContact() {
   const [serviceType, setServiceType] = useState('translation');
   const [startedAt] = useState(() => Date.now());
   const statusCopy = FORM_STATUS[lang] || FORM_STATUS.de;
+  const formOptions = FORM_LANGUAGE_OPTIONS[lang] || FORM_LANGUAGE_OPTIONS.de;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -206,7 +245,7 @@ export default function HowContact() {
                 </div>
                 <div>
                   <div className="info-lbl">{t('contact.hq')}</div>
-                  <div className="info-val">Möserstr. 14 · Osnabrück</div>
+                  <div className="info-val">Paul-Oeser-Straße 1 · Osnabrück</div>
                 </div>
               </div>
             </div>
@@ -264,22 +303,13 @@ export default function HowContact() {
               <div className="form-field">
                 <label htmlFor="form-from">{t('form.from')}</label>
                 <select id="form-from" name="sourceLanguage">
-                  <option>Arabisch</option>
-                  <option>Türkisch</option>
-                  <option>Russisch</option>
-                  <option>Ukrainisch</option>
-                  <option>Englisch</option>
-                  <option>Persisch</option>
-                  <option>Polnisch</option>
-                  <option>Andere…</option>
+                  {formOptions.source.map((option) => <option key={option}>{option}</option>)}
                 </select>
               </div>
               <div className="form-field">
                 <label htmlFor="form-to">{t('form.to')}</label>
                 <select id="form-to" name="targetLanguage">
-                  <option>Deutsch</option>
-                  <option>Englisch</option>
-                  <option>Andere…</option>
+                  {formOptions.target.map((option) => <option key={option}>{option}</option>)}
                 </select>
               </div>
             </div>
@@ -330,7 +360,7 @@ export default function HowContact() {
               <textarea
                 id="form-doc"
                 name="message"
-                placeholder="z.B. Heiratsurkunde aus Damaskus, beglaubigt für das Standesamt …"
+                placeholder={formOptions.docPlaceholder}
               />
             </div>
 

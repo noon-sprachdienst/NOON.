@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+﻿import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelopeCircleCheck, faPhoneVolume } from '@fortawesome/free-solid-svg-icons';
@@ -57,24 +57,24 @@ const getSimpleAlternates = (simplePath) => Object.keys(SEO_LANGUAGES).map((code
 
 const META_BY_LANG = {
   de: {
-    title: 'Noon Sprachdienst — Beglaubigte Übersetzungen & Dolmetschen in 75+ Sprachen',
-    description: 'Beglaubigte Übersetzungen, Dolmetschdienste und Sprachförderung in 75+ Sprachen — von beeidigten Profis, deutschlandweit seit 2009.',
+    title: 'Noon Sprachdienst — Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
+    description: 'Beglaubigte Übersetzungen, Dolmetschdienste und Sprachförderung in 190+ Sprachen — von beeidigten Profis, deutschlandweit seit 2019.',
   },
   en: {
-    title: 'Noon Sprachdienst — Certified Translations & Interpreting in 75+ Languages',
-    description: 'Certified translations, interpreting and language support in 75+ languages — by sworn professionals, across Germany since 2009.',
+    title: 'Noon Sprachdienst — Certified Translations & Interpreting in 190+ Languages',
+    description: 'Certified translations, interpreting and language support in 190+ languages — by sworn professionals, across Germany since 2019.',
   },
   ar: {
-    title: 'نون للخدمات اللغوية — ترجمات معتمدة وترجمة فورية بأكثر من 75 لغة',
-    description: 'ترجمات معتمدة، خدمات الترجمة الفورية والدعم اللغوي بأكثر من 75 لغة — من مترجمين محلفين، في جميع أنحاء ألمانيا منذ 2009.',
+    title: 'نون للخدمات اللغوية — ترجمات معتمدة وترجمة فورية بأكثر من 190 لغة',
+    description: 'ترجمات معتمدة، خدمات الترجمة الفورية والدعم اللغوي بأكثر من 190 لغة — من مترجمين محلفين، في جميع أنحاء ألمانيا منذ 2019.',
   },
   tr: {
-    title: 'Noon Sprachdienst — 75+ Dilde Yeminli Çeviri ve Tercümanlık',
-    description: `75+ dilde yeminli çeviriler, tercümanlık ve dil desteği — yeminli profesyonellerden, tüm Almanya genelinde, 2009’dan beri.`,
+    title: 'Noon Sprachdienst — 190+ Dilde Yeminli Çeviri ve Tercümanlık',
+    description: `190+ dilde yeminli çeviriler, tercümanlık ve dil desteği — yeminli profesyonellerden, tüm Almanya genelinde, 2019’dan beri.`,
   },
   ru: {
-    title: 'Noon Sprachdienst — Заверенные переводы и устный перевод на 75+ языках',
-    description: 'Заверенные переводы, услуги устных переводчиков и языковая поддержка на 75+ языках — от присяжных профессионалов, по всей Германии с 2009 года.',
+    title: 'Noon Sprachdienst — Заверенные переводы и устный перевод на 190+ языках',
+    description: 'Заверенные переводы, услуги устных переводчиков и языковая поддержка на 190+ языках — от присяжных профессионалов, по всей Германии с 2019 года.',
   },
 };
 
@@ -387,3 +387,4 @@ function FabTop() {
     </button>
   );
 }
+
