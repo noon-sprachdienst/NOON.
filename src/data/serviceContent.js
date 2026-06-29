@@ -587,7 +587,7 @@ const documentServiceBlocksDe = [
       "Benötigen Sie kurzfristig einen erfahrenen Dolmetscher oder planen Sie einen wichtigen internationalen Termin? Unser Team unterstützt Sie schnell, professionell und zuverlässig bei der passenden Dolmetschervermittlung.",
       "Qualitätsorientierte Abläufe, professionelle Kommunikation und ein hoher Serviceanspruch stehen bei uns an erster Stelle. Unsere Dienstleistungen orientieren sich an modernen Qualitätsstandards und strukturierten Arbeitsprozessen nach ISO-9001-Grundsätzen.",
     ],
-    examples: ["Pr?senz-Termine vor Ort", "Online-Meetings, Video- und Telefondolmetschen", "?ber 190 Sprachen"],
+    examples: ["Präsenz-Termine vor Ort", "Online-Meetings, Video- und Telefondolmetschen", "Über 190 Sprachen"],
     cta: "Kostenlose Dolmetscheranfrage",
   },
   {
@@ -605,32 +605,6 @@ const documentServiceBlocksDe = [
     cta: "Simultandolmetscher kostenlos anfragen",
   },
   {
-    id: "verhandlungsdolmetscher",
-    group: "interpreting",
-    label: "Verhandlungsdolmetscher",
-    title: "Verhandlungsdolmetscher",
-    kicker: "Dolmetscherdienste",
-    paragraphs: [
-      "Für wichtige Geschäftsverhandlungen, Vertragsabschlüsse oder Gespräche mit Behörden stellen wir Ihnen erfahrene Verhandlungsdolmetscher zur Seite. Typische Einsätze finden zum Beispiel in Stuttgart, Berlin und Mainz statt, etwa bei Terminen in den Sprachkombinationen\nDeutsch–Türkisch, Deutsch–Arabisch, Deutsch–Französisch, Deutsch–Englisch. Unsere Dolmetscher achten nicht nur auf die korrekte Wiedergabe der Inhalte, sondern auch auf Tonfall, Höflichkeitsformen und kulturelle Besonderheiten – eine wichtige Grundlage für erfolgreiche Verhandlungen.",
-      "Sie stehen vor wichtigen Vertragsverhandlungen oder einem geschäftlichen Termin mit internationalen Partnern? Fragen Sie unverbindlich an – wir stellen Ihnen einen geeigneten Verhandlungsdolmetscher zur Seite.",
-    ],
-    examples: ["Gesch?ftsverhandlungen", "Vertragsabschl?sse", "Gespr?che mit Beh?rden"],
-    cta: "Verhandlungsdolmetscher unverbindlich anfragen",
-  },
-  {
-    id: "video-telefondolmetscher",
-    group: "interpreting",
-    label: "Video- und Telefondolmetscher",
-    title: "Video- und Telefondolmetscher",
-    kicker: "Dolmetscherdienste",
-    paragraphs: [
-      "Mit unserem Video- und Telefondolmetschdienst erhalten Sie kurzfristig Unterstützung – ideal für Kliniken, Beratungsstellen, Soziale Dienste, Unternehmen und Behörden. Über sichere Leitungen verbinden wir Sie in Sekundenschnelle mit qualifizierten Dolmetschern, zum Beispiel für\nDeutsch–Arabisch, Deutsch–Kurdisch, Deutsch–Farsi, Deutsch–Tigrinya, Deutsch–Polnisch und viele weitere Sprachkombinationen. Dieser Service ist deutschlandweit verfügbar und eignet sich besonders, wenn vor Ort kein Dolmetscher in Ihrer Stadt verfügbar ist oder Termine sehr spontan stattfinden müssen.",
-      "Sie brauchen schnell und flexibel sprachliche Unterstützung per Video oder Telefon?\nSenden Sie uns Ihre Anfrage – wir organisieren kurzfristig einen passenden Dolmetscher für Ihren Termin.",
-    ],
-    examples: ["Kliniken und Beratungsstellen", "Soziale Dienste, Unternehmen und Beh?rden", "Kurzfristig per Video oder Telefon"],
-    cta: "Video-/Telefondolmetscher kostenlos anfragen",
-  },
-  {
     id: "beeidigte-dolmetscher",
     group: "interpreting",
     label: "Beeidigte Dolmetscher",
@@ -640,7 +614,7 @@ const documentServiceBlocksDe = [
       "Unsere allgemein beeidigten Dolmetscher unterstützen Sie bei Behördenterminen, Eheschließungen, Beurkundungen, Anhörungen und Konsulatsangelegenheiten. Sie sind bei den zuständigen Gerichten registriert und dürfen amtlich für verschiedene Sprachen dolmetschen. Ob beim Standesamt in Kiel, bei der Ausländerbehörde in Osnabrück oder in einer Kanzlei in Bielefeld – wir sorgen dafür, dass Ihre Aussagen rechtssicher und vollständig übertragen werden, damit sie von Behörden und Gerichten anerkannt werden.",
       "Für Ihren Termin bei Behörde, Standesamt oder Konsulat benötigen Sie einen allgemein beeidigten Dolmetscher?\nSchreiben Sie uns die Details – wir prüfen die Verfügbarkeit und melden uns umgehend bei Ihnen.",
     ],
-    examples: ["Beh?rdentermine und Anh?rungen", "Eheschlie?ungen und Beurkundungen", "Konsulatsangelegenheiten"],
+    examples: ["Behördentermine und Anhörungen", "Eheschließungen und Beurkundungen", "Konsulatsangelegenheiten"],
     cta: "Beeidigten Dolmetscher unverbindlich anfragen",
   },
   {
@@ -653,7 +627,7 @@ const documentServiceBlocksDe = [
       "Bei notariellen Beurkundungen – etwa Kaufverträgen, Eheverträgen, Gesellschaftsgründungen oder Vollmachten – ist präzises Dolmetschen unverzichtbar. Unsere Notardolmetscher arbeiten regelmäßig mit Notariaten in Stuttgart, Berlin, Mainz und anderen Städten zusammen und sind mit den Abläufen vor Ort vertraut. Wir stellen sicher, dass alle Beteiligten jedes Detail verstehen – unabhängig davon, ob der Termin auf Deutsch und nur einer weiteren Sprache oder mehrsprachig stattfindet.",
       "Sie haben einen Notartermin und brauchen eine zuverlässige sprachliche Begleitung bei der Beurkundung?\nÜbermitteln Sie uns Datum, Ort und Art des Geschäfts – wir kümmern uns um einen passenden Notardolmetscher.",
     ],
-    examples: ["Kaufvertr?ge und Ehevertr?ge", "Gesellschaftsgr?ndungen", "Vollmachten und notarielle Urkunden"],
+    examples: ["Kaufverträge und Eheverträge", "Gesellschaftsgründungen", "Vollmachten und notarielle Urkunden"],
     cta: "Notardolmetscher unverbindlich anfragen",
   },
   {
@@ -708,10 +682,10 @@ const documentServiceBlocksDe = [
       "Neben diesen häufigen Kombinationen bieten wir beglaubigte Übersetzungen in vielen weiteren Sprachen an – auf Anfrage teilen wir Ihnen gerne mit, ob Ihre gewünschte Sprachkombination verfügbar ist.",
       "So läuft Ihre beglaubigte Übersetzung ab – in 3 Schritten",
       "1. Dokument senden\nSchicken Sie uns ein gut lesbares Handyfoto oder einen Scan Ihres Dokuments – ganz einfach per WhatsApp, E-Mail oder direkt im Web-Formular. Das Original benötigen wir für das Angebot nicht.",
-      "2. Festpreis erhalten und bestätigen\nSie erhalten innerhalb von wenigen Minuten einen unverbindlichen Festpreis, transparent und ohne versteckte Kosten. Mit einem Klick oder mit einer kure Rückmeldung können Sie den Auftrag bequem bestätigen.",
+      "2. Festpreis erhalten und bestätigen\nSie erhalten innerhalb von wenigen Minuten einen unverbindlichen Festpreis, transparent und ohne versteckte Kosten. Mit einem Klick oder mit einer kurzen Rückmeldung können Sie den Auftrag bequem bestätigen.",
       "3. Beglaubigte Übersetzung empfangen\nNach Fertigstellung erhalten Sie Ihre beglaubigte Übersetzung digital als PDF oder auf Wunsch im Original per Post. Alternativ ist eine Abholung in einer unserer sechs Filialen deutschlandweit möglich.",
     ],
-    examples: ["Urkunden, Ausweise und F?hrerscheine", "Schul-, Ausbildungs- und Hochschulzeugnisse", "Gerichtliche Beschl?sse und notarielle Urkunden"],
+    examples: ["Urkunden, Ausweise und Führerscheine", "Schul-, Ausbildungs- und Hochschulzeugnisse", "Gerichtliche Beschlüsse und notarielle Urkunden"],
     cta: "Beglaubigte Übersetzung kostenlos anfragen",
   },
 ];
@@ -925,7 +899,7 @@ const serviceTranslatedParagraphs = {
     ],
     "verhandlungsdolmetscher": [
       "We provide you with experienced liaison interpreters for important business negotiations, the conclusion of contracts or discussions with authorities. Typical assignments take place in Stuttgart, Berlin and Mainz, for example, for appointments in the language combinations\nGerman-Turkish, German-Arabic, German-French, German-English. Our interpreters not only pay attention to the correct reproduction of the content, but also to the tone of voice, forms of politeness and cultural peculiarities - an important basis for successful negotiations.",
-      "Are you facing important contract negotiations or a business meeting with international partners? Make a non-binding inquiry – we will provide you with a suitable liaison interpreter.",
+      "Are you facing important contract negotiations or a business meeting with international partners? Send us a non-binding request, and we will arrange a suitable negotiation interpreter for you.",
     ],
     "video-telefondolmetscher": [
       "With our video and telephone interpreting service you will receive support at short notice - ideal for clinics, advice centers, social services, companies and authorities. We will connect you with qualified interpreters in a matter of seconds via secure lines, for example for\nGerman-Arabic, German-Kurdish, German-Farsi, German-Tigrinya, German-Polish and many other language combinations. This service is available throughout Germany and is particularly suitable if there is no local interpreter available in your city or if appointments have to take place very spontaneously.",
@@ -942,7 +916,7 @@ const serviceTranslatedParagraphs = {
     "standesamt-dolmetscher": [
       "Registry office interpreter for your wedding For your civil wedding you need a reliable interpreter so that both partners understand every word and the marriage is legally secure. Our sworn registry office interpreters will accompany you at your wedding in the town hall or registry office, explain all explanations in the relevant language and ensure that all formalities are completed correctly. So you can concentrate entirely on the moment - we take care of linguistic communication, throughout Germany and in many languages.",
       "Are you planning a civil wedding with an interpreter?",
-      "Simply send us a short inquiry with your registry office or town hall location and the desired date. We check availability, inform you transparently about costs and the process and send you a non-binding offer.",
+      "Simply send us a short request with the registry office or town hall location and the desired date. We will check availability, explain the costs and process transparently, and send you a non-binding offer.",
     ],
     "beglaubigte-uebersetzungen": [
       "For official purposes, we create certified translations that are recognized by courts, authorities, registry offices, universities and notaries. Our translation office generally employs sworn translators whose certifications confirm the authenticity and completeness of the translation.",
@@ -983,21 +957,21 @@ const serviceTranslatedParagraphs = {
       "As a specialist translation agency for business and finance, we support companies, law firms, tax consultants, banks and insurance companies with all technical translations. We translate your documents precisely and comprehensibly into the desired language - from business correspondence, contracts and general terms and conditions to annual financial statements, balance sheets, business reports and appraisals to marketing documents, presentations and websites in the field of business and finance.",
       "Our specialist translators have in-depth economic and financial know-how and know the terminology of accounting, controlling, taxes, investment, banking and insurance. In this way, we ensure that technical terms are used correctly and consistently - a crucial factor for professional financial translations, for example in international tenders, investor relations documents or contract negotiations.",
       "As a translation agency for business texts and financial documents that operates throughout Germany, we work for customers from Stuttgart, Berlin, Mainz, Kiel, Osnabrück, Bielefeld and many other locations - in numerous language combinations for international business transactions.",
-      "Do you have a translation job in the area of ​​business or finance?\nBriefly tell us which documents (e.g. annual financial statements, financial reports, loan agreements or insurance conditions) should be translated and into which language. We will provide you with a free and non-binding inquiry with price information, delivery time and process.",
+      "Do you have a translation job in the area of ​​business or finance?\nBriefly tell us which documents (e.g. annual financial statements, financial reports, loan agreements or insurance conditions) should be translated and into which language. We will send you a free, non-binding quote with price, delivery time and process details.",
     ],
     "recht": [
       "As a specialist legal translation agency, we support lawyers, notaries, companies, courts, authorities and private individuals with precise legal translations. We translate, among other things, contracts, general terms and conditions (GTC), judgments, resolutions, statements of claim, reminders and enforcement notices, powers of attorney, statutes, company documents, notarial documents as well as correspondence with courts and authorities.",
       "Our legal translators have in-depth knowledge of civil law, criminal law, commercial and corporate law, labor law, family law, tenancy law and administrative law. They master the terminology of both legal systems and ensure that wording remains legally secure and understandable - a crucial point when translating for court proceedings, contract negotiations, notarial certifications or international arbitration proceedings.",
       "As a translation agency for legal texts that operates throughout Germany, we work for law firms and notaries in Frankfurt am Main, Düsseldorf, Nuremberg, Hanover, Leipzig and Bremen, among others, as well as in many other cities. We offer specialist legal translations in numerous language combinations – for cross-border contracts, international mandates and communication with foreign business partners, courts and authorities.",
       "Do you need a specialist legal translation?",
-      "Briefly tell us which documents (e.g. purchase agreement, partnership agreement, judgment, notarial deed or power of attorney) should be translated and into which language. On this basis, we will create a free, non-binding inquiry for you with information on the price, processing time and process.",
+      "Briefly tell us which documents (e.g. purchase agreement, partnership agreement, judgment, notarial deed or power of attorney) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, processing time and process details.",
     ],
     "ingenieurwesen": [
       "As a specialist translation agency for technology and engineering, we support manufacturers, engineering offices, planning offices, mechanical engineers and industrial companies with precise technical translations. We translate your documents professionally into the desired language - from operating instructions, manuals and technical data sheets to requirements and functional specifications, maintenance instructions, safety documents, patent specifications, training documents and technical offers.",
       "Our technical translators have practical experience in areas such as mechanical engineering, plant engineering, electrical engineering, process engineering, construction, environmental technology and energy technology. They know the specific technical terminology used by engineers and ensure that dimensions, standards, safety and warning instructions are transmitted correctly and clearly. This creates professional technical translations that are understood by fitters, technicians, engineers and end customers alike - an important factor for product safety and customer satisfaction.",
       "As a translation service for technical documentation that operates throughout Germany, we work for companies in Munich, Hamburg, Karlsruhe, Dortmund, Mannheim and Dresden, among others, as well as at many other industrial locations. We support you with multilingual projects, international tenders and the localization of technical documentation for global export - in numerous language combinations.",
       "Do you need a technical translation in the field of engineering?",
-      "Briefly describe to us which documents (e.g. operating instructions, technical manual, specifications, safety document or patent) should be translated and into which language. On this basis, we will create a free and non-binding inquiry for you with information on price, delivery time and process.",
+      "Briefly describe which documents (e.g. operating instructions, technical manual, specifications, safety document or patent) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, delivery time and process details.",
     ],
     "medizin-dental": [
       "As a specialized translation agency for medical and dental translations, we support clinics, practices, medical facilities, laboratories, manufacturers and specialist publishers with precise, professionally tested translations. Our specialist medical translators have medical, scientific, dental technology or engineering training, many years of professional experience in the healthcare sector or medical technology and are very familiar with current specialist terminology and legal requirements.",
@@ -1018,7 +992,7 @@ const serviceTranslatedParagraphs = {
       "Material lists, price lists, safety data sheets and work instructions for dental laboratories and dental practices",
       "Our specially trained translators for dental technology ensure that all technical terms, abbreviations and device names are used correctly and consistently - a crucial factor for the safe use of software, materials and devices in everyday practice and laboratory life.",
       "As a medical translation service operating throughout Germany, we work for customers in Cologne, Bonn, Freiburg, Augsburg, Essen, Wiesbaden, Lübeck and Regensburg, among others, as well as in many other cities - in numerous language combinations for international exchange in the healthcare sector.",
-      "Do you have a translation job in the field of medicine or dentistry?\nBriefly describe to us which documents or software (e.g. device manual, findings, reports, dental software, product catalog, material list) should be translated and into which language. On this basis, we will create a free, non-binding inquiry for you with information on price, delivery time and process.",
+      "Do you have a translation job in the field of medicine or dentistry?\nBriefly describe which documents or software (e.g. device manual, findings, reports, dental software, product catalog, material list) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, delivery time and process details.",
     ],
     "pharmazeutik": [
       "As a specialized translation agency for pharmaceuticals, we support pharmaceutical companies, pharmacies, clinics, CROs (Clinical Research Organizations), manufacturers of medical devices and authorities with technically precise drug translations. Our specialist translators usually have pharmaceutical, medical or scientific training and are familiar with the regulatory requirements of the industry.",
@@ -1032,7 +1006,7 @@ const serviceTranslatedParagraphs = {
       "Training documents and marketing material for doctors, pharmacies and field staff",
       "We pay particular attention to correct active ingredient names, dosages, warnings, contraindications, side effects and legally relevant formulations so that your pharmaceutical documents are clearly understandable and legally compliant for both professionals and patients.",
       "As a translation service for pharmaceutical specialist texts that operates throughout Germany, we work for customers in Heidelberg, Leverkusen, Marburg, Tübingen, Erlangen and Jena, among others, as well as other important locations in the pharmaceutical and biotech industries. We support you with international approvals, multilingual pharmaceutical packaging and the localization of your pharmaceutical documentation in numerous language combinations.",
-      "Do you need a specialist pharmaceutical translation?\nBriefly tell us which documents (e.g. package leaflet, specialist information, label, study protocol or GMP document) should be translated and into which language. On this basis, we will create a free and non-binding inquiry for you with information about the price, processing time and process.",
+      "Do you need a specialist pharmaceutical translation?\nBriefly tell us which documents (e.g. package leaflet, specialist information, label, study protocol or GMP document) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, processing time and process details.",
     ],
     "literatur": [
       "As a specialist translation agency for literature and culture, we support publishers, authors, theaters, film productions, cultural institutions, museums and agencies with high-quality literary translations. Our goal is to transfer the style, tone and effect of the original into the target language - not just the pure content.",
@@ -1045,7 +1019,7 @@ const serviceTranslatedParagraphs = {
       "Blurbs, press releases, author biographies and advertising materials",
       "Our literary translators work with particular attention to style, linguistic rhythm, imagery, puns and cultural allusions. Many of them have literary or humanities training, their own publications or many years of publishing experience and are familiar with the practices of the international book and cultural market.",
       "As a translation agency for literature and cultural texts that operates throughout Germany, we work for clients in Weimar, Potsdam, Hildesheim, Oldenburg, Trier and Passau, among others, as well as in many other literary and cultural cities. We accompany you from the first text sample through the complete book translation to editing, proofreading and multilingual marketing campaigns.",
-      "Are you planning a literary or cultural translation?\nBriefly tell us which texts (e.g. novel, play, non-fiction book, catalog or exhibition text) are to be translated, into which language and for which publisher, occasion or publication channel they are intended. Based on this, we will create a free, non-binding inquiry for you with information about the price, processing time and workflow.",
+      "Are you planning a literary or cultural translation?\nBriefly tell us which texts (e.g. novel, play, non-fiction book, catalog or exhibition text) are to be translated, into which language and for which publisher, occasion or publication channel they are intended. Based on this, we will prepare a free, non-binding quote with price, processing time and workflow details.",
     ],
     "it-software": [
       "As a specialized translation agency for IT, software and localization, we support software manufacturers, start-ups, agencies, system houses and IT departments with the professional translation and localization of their digital products. We work with common file formats such as XML, YAML, JSON, PO, XLIFF, CSV and, if desired, integrate directly into existing localization workflows, Git repos or CI/CD pipelines.",
@@ -1085,7 +1059,7 @@ const serviceTranslatedParagraphs = {
       "Installation and configuration instructions",
       "ISO certificate documents, compliance and IT audit documents",
       "As an IT translation service operating throughout Germany, we work for customers in Berlin, Munich, Hamburg, Stuttgart, Münster, Bochum, Jena and Karlsruhe, among others, as well as for remote teams throughout Europe. We translate IT and software projects into numerous language combinations - from local app translation to multilingual enterprise software localization.",
-      "Do you need a specialist translation in the area of ​​IT or software localization?\nBriefly describe to us which files or documents (e.g. XML strings, API documentation, app texts, IT security guidelines or e-learning modules) should be translated and into which language. On this basis, we will create a free, non-binding inquiry for you with information about the price, delivery time and process.",
+      "Do you need a specialist translation in the area of ​​IT or software localization?\nBriefly describe which files or documents (e.g. XML strings, API documentation, app texts, IT security guidelines or e-learning modules) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, delivery time and process details.",
     ],
     "chemie-biowissenschaften": [
       "As a specialist translation agency for chemistry and life sciences, we support chemical companies, laboratories, research institutes, universities, biotech companies and manufacturers of laboratory and analysis equipment with precise scientific translations. We translate your documents professionally into the desired language - from safety data sheets (SDS), laboratory protocols and test reports to product catalogs, certificates of analysis and patent documents to scientific publications, study reports and presentations.",
@@ -1098,7 +1072,7 @@ const serviceTranslatedParagraphs = {
       "Biotechnology and life sciences",
       "They ensure that formulas, units, limit values, hazard warnings (GHS/CLP) and technical terms are reproduced correctly and consistently - a central requirement for legally compliant documentation, laboratory work and international knowledge transfer.",
       "As a translation agency for chemical and bioscientific texts that operates throughout Germany, we work for clients in, among others, the Basel border region (Germany-Switzerland), Frankfurt (Oder), Greifswald, Ulm, Saarbrücken and Göttingen, as well as at many other research and industrial locations. We support you with international projects, multilingual product documents and scientific publications in numerous language combinations",
-      "Do you need a specialist translation in the field of chemistry or life sciences?\nBriefly describe to us which documents (e.g. safety data sheet, laboratory report, study documents, patent document or product catalog) should be translated and into which language. On this basis, we will create a free, non-binding inquiry for you with information about the price, processing time and process.",
+      "Do you need a specialist translation in the field of chemistry or life sciences?\nBriefly describe which documents (e.g. safety data sheet, laboratory report, study documents, patent document or product catalog) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, processing time and process details.",
     ],
     "industrie-produktion": [
       "As a specialist translation agency for industry, production and mechanical engineering, we support manufacturing companies, suppliers, plant manufacturers and trading companies with all technical and commercial translations. We translate your documents professionally into the desired language - from product and material catalogs to assembly and operating instructions through to specifications/requirements specifications, work instructions, ISO documentation and safety documents.",
@@ -1112,7 +1086,7 @@ const serviceTranslatedParagraphs = {
       "Risk assessments, operating instructions, safety data",
       "Our specialist translators know the terminology from areas such as mechanical engineering, automation, logistics, metal processing, plastics technology and plant engineering. In this way, we ensure that technical terms, units of measurement, standards, safety instructions and warning pictograms are reproduced correctly and consistently - an important factor for safe operation, legally compliant documentation and smooth international cooperation.",
       "As a translation agency for industry and production that operates throughout Germany, we work for companies in Duisburg, Wolfsburg, Ingolstadt, Ludwigshafen, Kassel, Heilbronn and Paderborn, among others, as well as at many other industrial and logistics locations. We support you with multilingual product catalogs, export documents and technical documents in numerous language combinations.",
-      "Do you have a translation order in the industrial or production sector?\nBriefly describe to us which documents (e.g. product catalog, material list, assembly instructions, ISO document or safety document) should be translated and into which language. On this basis, we will create a free, non-binding inquiry for you with information about the price, processing time and process.",
+      "Do you have a translation order in the industrial or production sector?\nBriefly describe which documents (e.g. product catalog, material list, assembly instructions, ISO document or safety document) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, processing time and process details.",
     ],
   },
   ar: {
@@ -1391,21 +1365,21 @@ const serviceTranslatedParagraphs = {
       "İşletme ve finans alanında uzman bir çeviri bürosu olarak şirketlere, hukuk firmalarına, vergi danışmanlarına, bankalara ve sigorta şirketlerine tüm teknik çevirilerde destek veriyoruz. Ticari yazışmalar, sözleşmeler ve genel hüküm ve koşullardan, yıllık mali tablolara, bilançolara, iş raporları ve değerlendirmelere, pazarlama belgeleri, sunumlar ve işletme ve finans alanındaki web sitelerine kadar belgelerinizi tam ve anlaşılır bir şekilde istediğiniz dile çeviriyoruz.",
       "Uzman tercümanlarımız derin ekonomik ve finansal bilgi birikimine sahiptir ve muhasebe, kontrol, vergi, yatırım, bankacılık ve sigorta terminolojisini bilir. Bu şekilde, teknik terimlerin doğru ve tutarlı bir şekilde kullanılmasını sağlıyoruz; bu, örneğin uluslararası ihalelerde, yatırımcı ilişkileri belgelerinde veya sözleşme müzakerelerinde profesyonel finansal çeviriler için çok önemli bir faktördür.",
       "Almanya çapında faaliyet gösteren iş metinleri ve mali belgeler çeviri bürosu olarak, Stuttgart, Berlin, Mainz, Kiel, Osnabrück, Bielefeld ve diğer pek çok yerdeki müşterilerimizle, uluslararası ticari işlemler için çok sayıda dil kombinasyonunda çalışıyoruz.",
-      "İşletme veya finans alanında çeviri işiniz mi var?\nHangi belgelerin (örneğin yıllık mali tablolar, mali raporlar, kredi sözleşmeleri veya sigorta koşulları) hangi dile çevrilmesi gerektiğini kısaca bize bildirin. Size fiyat bilgisi, teslimat süresi ve süreci içeren ücretsiz ve bağlayıcı olmayan bir sorgulama sunacağız.",
+      "İşletme veya finans alanında çeviri işiniz mi var?\nHangi belgelerin (örneğin yıllık mali tablolar, mali raporlar, kredi sözleşmeleri veya sigorta koşulları) hangi dile çevrilmesi gerektiğini kısaca bize bildirin. Size fiyat bilgisi, teslimat süresi ve süreci içeren ücretsiz ve bağlayıcı olmayan bir teklif sunacağız.",
     ],
     "recht": [
       "Uzman bir hukuki çeviri bürosu olarak avukatlara, noterlere, şirketlere, mahkemelere, resmi makamlara ve özel kişilere kusursuz hukuki çevirilerle destek veriyoruz. Diğer şeylerin yanı sıra sözleşmeleri, genel şartlar ve koşulları (GTC), kararları, kararları, dava beyanlarını, hatırlatmaları ve icra bildirimlerini, vekaletnameleri, tüzükleri, şirket belgelerini, noter belgelerini ve ayrıca mahkemeler ve yetkililerle yapılan yazışmaları tercüme ediyoruz.",
       "Hukuki tercümanlarımız medeni hukuk, ceza hukuku, ticaret ve şirketler hukuku, iş hukuku, aile hukuku, kira hukuku ve idare hukuku alanlarında derinlemesine bilgiye sahiptir. Her iki hukuk sisteminin terminolojisine hakimdirler ve ifadelerin yasal olarak güvenli ve anlaşılır kalmasını sağlarlar; bu, mahkeme işlemleri, sözleşme müzakereleri, noter onayları veya uluslararası tahkim işlemleri için çeviri yaparken çok önemli bir noktadır.",
       "Almanya genelinde faaliyet gösteren hukuki metinler tercüme bürosu olarak, Frankfurt am Main, Düsseldorf, Nürnberg, Hannover, Leipzig ve Bremen'in yanı sıra diğer birçok şehirde hukuk firmaları ve noterler için çalışıyoruz. Sınır ötesi sözleşmeler, uluslararası yetkiler ve yabancı iş ortakları, mahkemeler ve yetkililerle iletişim için çok sayıda dil kombinasyonunda uzman hukuki çeviriler sunuyoruz.",
       "Uzman bir hukuki tercümeye mi ihtiyacınız var?",
-      "Hangi belgelerin (örneğin satın alma sözleşmesi, ortaklık sözleşmesi, karar, noter sözleşmesi veya vekaletname) hangi dile çevrilmesi gerektiğini kısaca bize bildirin. Bu temelde sizin için fiyat, işlem süresi ve süreçle ilgili bilgileri içeren ücretsiz, bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Hangi belgelerin (örneğin satın alma sözleşmesi, ortaklık sözleşmesi, karar, noter sözleşmesi veya vekaletname) hangi dile çevrilmesi gerektiğini kısaca bize bildirin. Bu temelde sizin için fiyat, işlem süresi ve süreçle ilgili bilgileri içeren ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "ingenieurwesen": [
       "Teknoloji ve mühendislik alanında uzman bir çeviri bürosu olarak üreticilere, mühendislik ofislerine, planlama ofislerine, makine mühendislerine ve sanayi şirketlerine kusursuz teknik çevirilerle destek veriyoruz. Kullanım talimatları, kılavuzlar ve teknik veri sayfalarından gereksinimler ve işlevsel spesifikasyonlara, bakım talimatlarına, güvenlik dokümanlarına, patent spesifikasyonlarına, eğitim dokümanlarına ve teknik tekliflere kadar belgelerinizi profesyonel bir şekilde istediğiniz dile çeviriyoruz.",
       "Teknik çevirmenlerimiz makine mühendisliği, tesis mühendisliği, elektrik mühendisliği, proses mühendisliği, inşaat, çevre teknolojisi ve enerji teknolojisi gibi alanlarda pratik deneyime sahiptir. Mühendislerin kullandığı spesifik teknik terminolojiyi bilirler ve boyutların, standartların, güvenlik ve uyarı talimatlarının doğru ve net bir şekilde iletilmesini sağlarlar. Bu, montajcılar, teknisyenler, mühendisler ve son müşteriler tarafından aynı şekilde anlaşılan profesyonel teknik çeviriler yaratır; bu, ürün güvenliği ve müşteri memnuniyeti açısından önemli bir faktördür.",
       "Almanya genelinde faaliyet gösteren teknik dokümantasyon çeviri hizmeti olarak, Münih, Hamburg, Karlsruhe, Dortmund, Mannheim ve Dresden'deki şirketlerin yanı sıra diğer birçok endüstriyel lokasyondaki şirketler için çalışıyoruz. Sizi çok dilli projeler, uluslararası ihaleler ve küresel ihracata yönelik teknik belgelerin çok sayıda dil kombinasyonunda yerelleştirilmesiyle destekliyoruz.",
       "Mühendislik alanında teknik çeviriye mi ihtiyacınız var?",
-      "Hangi belgelerin (örn. çalıştırma talimatları, teknik kılavuz, spesifikasyonlar, güvenlik belgesi veya patent) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç bilgilerini içeren ücretsiz ve bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Hangi belgelerin (örn. çalıştırma talimatları, teknik kılavuz, spesifikasyonlar, güvenlik belgesi veya patent) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç bilgilerini içeren ücretsiz ve bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "medizin-dental": [
       "Tıbbi ve dişçilik çevirileri konusunda uzmanlaşmış bir çeviri bürosu olarak klinikleri, muayenehaneleri, tıbbi tesisleri, laboratuvarları, üreticileri ve uzman yayıncıları kusursuz, profesyonelce test edilmiş çevirilerle destekliyoruz. Uzman tıbbi tercümanlarımız tıbbi, bilimsel, dişçilik teknolojisi veya mühendislik eğitimi almış, sağlık sektöründe veya tıbbi teknolojide uzun yıllara dayanan mesleki deneyime sahiptir ve güncel uzmanlık terminolojisine ve yasal gerekliliklere oldukça aşinadır.",
@@ -1426,7 +1400,7 @@ const serviceTranslatedParagraphs = {
       "Diş laboratuvarları ve diş muayenehaneleri için malzeme listeleri, fiyat listeleri, güvenlik bilgi formları ve çalışma talimatları",
       "Dental teknoloji için özel olarak eğitilmiş çevirmenlerimiz, tüm teknik terimlerin, kısaltmaların ve cihaz adlarının doğru ve tutarlı bir şekilde kullanılmasını sağlar; bu, yazılım, malzeme ve cihazların günlük pratikte ve laboratuvar yaşamında güvenli kullanımı için çok önemli bir faktördür.",
       "Almanya çapında faaliyet gösteren bir tıbbi çeviri hizmeti olarak, diğerlerinin yanı sıra Köln, Bonn, Freiburg, Augsburg, Essen, Wiesbaden, Lübeck ve Regensburg'daki ve diğer birçok şehirdeki müşterilerimiz için sağlık sektöründe uluslararası değişim için çok sayıda dil kombinasyonunda çalışıyoruz.",
-      "Tıp veya diş hekimliği alanında çeviri işiniz mi var?\nHangi belge veya yazılımın (örn. cihaz kılavuzu, bulgular, raporlar, dental yazılım, ürün kataloğu, malzeme listesi) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç bilgilerini içeren ücretsiz, bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Tıp veya diş hekimliği alanında çeviri işiniz mi var?\nHangi belge veya yazılımın (örn. cihaz kılavuzu, bulgular, raporlar, dental yazılım, ürün kataloğu, malzeme listesi) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç bilgilerini içeren ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "pharmazeutik": [
       "İlaç alanında uzmanlaşmış bir çeviri bürosu olarak ilaç şirketlerini, eczaneleri, klinikleri, CRO'ları (Klinik Araştırma Kuruluşları), tıbbi cihaz üreticilerini ve otoriteleri teknik açıdan kusursuz ilaç çevirileriyle destekliyoruz. Uzman çevirmenlerimiz genellikle farmasötik, tıbbi veya bilimsel eğitime sahiptir ve sektörün düzenleyici gerekliliklerine aşinadır.",
@@ -1440,7 +1414,7 @@ const serviceTranslatedParagraphs = {
       "Doktorlar, eczaneler ve saha personeli için eğitim belgeleri ve pazarlama materyalleri",
       "Farmasötik belgelerinizin hem profesyoneller hem de hastalar için açıkça anlaşılır ve yasal olarak uyumlu olması için aktif madde adlarının, dozajlarının, uyarılarının, kontrendikasyonlarının, yan etkilerinin ve yasal olarak ilgili formülasyonların doğru olmasına özellikle dikkat ediyoruz.",
       "Almanya çapında faaliyet gösteren farmasötik uzmanlık metinleri çeviri hizmeti olarak, Heidelberg, Leverkusen, Marburg, Tübingen, Erlangen ve Jena'nın yanı sıra ilaç ve biyoteknoloji endüstrilerindeki diğer önemli yerlerdeki müşteriler için çalışıyoruz. Uluslararası onaylar, çok dilli farmasötik ambalajlama ve farmasötik belgelerinizin çok sayıda dil kombinasyonunda yerelleştirilmesiyle sizi destekliyoruz.",
-      "Uzman farmasötik çeviriye mi ihtiyacınız var?\nHangi belgelerin (örn. paket broşürü, uzman bilgileri, etiket, çalışma protokolü veya GMP belgesi) hangi dile çevrilmesi gerektiğini kısaca bize bildirin. Bu temelde sizin için fiyat, işlem süresi ve süreç hakkında bilgi içeren ücretsiz ve bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Uzman farmasötik çeviriye mi ihtiyacınız var?\nHangi belgelerin (örn. paket broşürü, uzman bilgileri, etiket, çalışma protokolü veya GMP belgesi) hangi dile çevrilmesi gerektiğini kısaca bize bildirin. Bu temelde sizin için fiyat, işlem süresi ve süreç hakkında bilgi içeren ücretsiz ve bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "literatur": [
       "Edebiyat ve kültür alanında uzman bir çeviri bürosu olarak yayıncılara, yazarlara, tiyatrolara, film yapımcılarına, kültür kurumlarına, müzelere ve ajanslara yüksek kaliteli edebi çevirilerle destek veriyoruz. Amacımız sadece saf içeriği değil, orijinalin stilini, tonunu ve etkisini de hedef dile aktarmaktır.",
@@ -1453,7 +1427,7 @@ const serviceTranslatedParagraphs = {
       "Tanıtım yazıları, basın bültenleri, yazar biyografileri ve reklam materyalleri",
       "Edebi çevirmenlerimiz üslup, dilsel ritim, imgeler, kelime oyunları ve kültürel imalara özellikle dikkat ederek çalışırlar. Birçoğunun edebiyat veya beşeri bilimler eğitimi var, kendi yayınları var veya uzun yıllara dayanan yayıncılık deneyimi var ve uluslararası kitap ve kültür pazarının uygulamalarına aşinalar.",
       "Almanya genelinde faaliyet gösteren edebiyat ve kültürel metinler çeviri bürosu olarak Weimar, Potsdam, Hildesheim, Oldenburg, Trier ve Passau'nun yanı sıra diğer birçok edebiyat ve kültür şehrinde bulunan müşteriler için çalışıyoruz. İlk metin örneğinden kitabın tamamının çevirisine, düzenlemeye, redaksiyona ve çok dilli pazarlama kampanyalarına kadar size eşlik ediyoruz.",
-      "Edebi veya kültürel bir çeviri mi planlıyorsunuz?\nHangi metinlerin (örneğin roman, oyun, kurgu olmayan kitap, katalog veya sergi metni) hangi dile çevrileceğini ve bunların hangi yayıncı, etkinlik veya yayın kanalı için tasarlandığını kısaca bize bildirin. Buna dayanarak sizin için fiyat, işlem süresi ve iş akışına ilişkin bilgilerin yer aldığı ücretsiz, bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Edebi veya kültürel bir çeviri mi planlıyorsunuz?\nHangi metinlerin (örneğin roman, oyun, kurgu olmayan kitap, katalog veya sergi metni) hangi dile çevrileceğini ve bunların hangi yayıncı, etkinlik veya yayın kanalı için tasarlandığını kısaca bize bildirin. Buna dayanarak sizin için fiyat, işlem süresi ve iş akışına ilişkin bilgilerin yer aldığı ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "it-software": [
       "BT, yazılım ve yerelleştirme konusunda uzmanlaşmış bir çeviri bürosu olarak yazılım üreticilerini, start-up'ları, ajansları, sistem evlerini ve BT departmanlarını dijital ürünlerinin profesyonel çevirisi ve yerelleştirmesi konusunda destekliyoruz. XML, YAML, JSON, PO, XLIFF, CSV gibi yaygın dosya formatlarıyla çalışıyoruz ve istenirse doğrudan mevcut yerelleştirme iş akışlarına, Git depolarına veya CI/CD işlem hatlarına entegre oluyoruz.",
@@ -1493,7 +1467,7 @@ const serviceTranslatedParagraphs = {
       "Kurulum ve konfigürasyon talimatları",
       "ISO sertifika belgeleri, uyumluluk ve BT denetim belgeleri",
       "Almanya çapında faaliyet gösteren bir BT çeviri hizmeti olarak, diğerlerinin yanı sıra Berlin, Münih, Hamburg, Stuttgart, Münster, Bochum, Jena ve Karlsruhe'deki müşterilerimiz ve Avrupa çapındaki uzak ekipler için çalışıyoruz. BT ve yazılım projelerini, yerel uygulama çevirisinden çok dilli kurumsal yazılım yerelleştirmesine kadar çok sayıda dil kombinasyonuna çeviriyoruz.",
-      "BT veya yazılım yerelleştirmesi alanında uzman bir çeviriye mi ihtiyacınız var?\nHangi dosya veya belgelerin (örn. XML dizeleri, API belgeleri, uygulama metinleri, BT güvenlik yönergeleri veya e-öğrenme modülleri) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "BT veya yazılım yerelleştirmesi alanında uzman bir çeviriye mi ihtiyacınız var?\nHangi dosya veya belgelerin (örn. XML dizeleri, API belgeleri, uygulama metinleri, BT güvenlik yönergeleri veya e-öğrenme modülleri) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "chemie-biowissenschaften": [
       "Kimya ve yaşam bilimleri alanında uzman bir çeviri bürosu olarak kimya şirketlerini, laboratuvarları, araştırma enstitülerini, üniversiteleri, biyoteknoloji şirketlerini ve laboratuvar ve analiz ekipmanı üreticilerini hassas bilimsel çevirilerle destekliyoruz. Güvenlik veri sayfalarından (SDS), laboratuvar protokollerinden ve test raporlarından ürün kataloglarına, analiz sertifikalarından ve patent belgelerinden bilimsel yayınlara, çalışma raporlarına ve sunumlara kadar belgelerinizi profesyonelce istediğiniz dile çeviriyoruz.",
@@ -1506,7 +1480,7 @@ const serviceTranslatedParagraphs = {
       "Biyoteknoloji ve yaşam bilimleri",
       "Formüllerin, birimlerin, sınır değerlerin, tehlike uyarılarının (GHS/CLP) ve teknik terimlerin doğru ve tutarlı bir şekilde çoğaltılmasını sağlarlar; bu, yasal olarak uyumlu dokümantasyon, laboratuvar çalışması ve uluslararası bilgi aktarımı için merkezi bir gerekliliktir.",
       "Kimya ve biyobilimsel metinler için Almanya çapında faaliyet gösteren bir çeviri bürosu olarak, diğerlerinin yanı sıra Basel sınır bölgesi (Almanya-İsviçre), Frankfurt (Oder), Greifswald, Ulm, Saarbrücken ve Göttingen'deki ve ayrıca diğer birçok araştırma ve endüstriyel lokasyondaki müşteriler için çalışıyoruz. Sizi uluslararası projeler, çok dilli ürün belgeleri ve çok sayıda dil kombinasyonundaki bilimsel yayınlarla destekliyoruz",
-      "Kimya veya yaşam bilimleri alanında uzman bir çeviriye mi ihtiyacınız var?\nHangi belgelerin (örneğin güvenlik bilgi formu, laboratuvar raporu, çalışma belgeleri, patent belgesi veya ürün kataloğu) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, işlem süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Kimya veya yaşam bilimleri alanında uzman bir çeviriye mi ihtiyacınız var?\nHangi belgelerin (örneğin güvenlik bilgi formu, laboratuvar raporu, çalışma belgeleri, patent belgesi veya ürün kataloğu) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, işlem süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "industrie-produktion": [
       "Endüstri, üretim ve makine mühendisliği alanında uzman bir çeviri bürosu olarak, imalatçı şirketlere, tedarikçilere, tesis imalatçılarına ve ticaret şirketlerine tüm teknik ve ticari çevirilerde destek veriyoruz. Ürün ve malzeme kataloglarından montaj ve çalıştırma talimatlarına, spesifikasyonlar/gereksinim spesifikasyonlarına, çalışma talimatlarına, ISO dokümantasyonuna ve güvenlik dokümanlarına kadar belgelerinizi profesyonel bir şekilde istediğiniz dile çeviriyoruz.",
@@ -1520,7 +1494,7 @@ const serviceTranslatedParagraphs = {
       "Risk değerlendirmeleri, çalıştırma talimatları, güvenlik verileri",
       "Uzman tercümanlarımız makine mühendisliği, otomasyon, lojistik, metal işleme, plastik teknolojisi ve tesis mühendisliği gibi alanlardaki terminolojiyi biliyor. Bu şekilde, teknik terimlerin, ölçü birimlerinin, standartların, güvenlik talimatlarının ve uyarı piktogramlarının doğru ve tutarlı bir şekilde çoğaltılmasını sağlıyoruz; bu, güvenli çalışma, yasal olarak uyumlu dokümantasyon ve sorunsuz uluslararası işbirliği için önemli bir faktördür.",
       "Almanya çapında faaliyet gösteren endüstri ve üretim çeviri bürosu olarak, Duisburg, Wolfsburg, Ingolstadt, Ludwigshafen, Kassel, Heilbronn ve Paderborn'daki şirketlerin yanı sıra diğer birçok endüstriyel ve lojistik lokasyondaki şirketler için çalışıyoruz. Çok dilli ürün katalogları, ihracat belgeleri ve çok sayıda dil kombinasyonundaki teknik belgelerle sizi destekliyoruz.",
-      "Endüstriyel veya üretim sektöründe çeviri siparişiniz mi var?\nHangi belgelerin (örn. ürün kataloğu, malzeme listesi, montaj talimatları, ISO belgesi veya güvenlik belgesi) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, işlem süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir sorgulama oluşturacağız.",
+      "Endüstriyel veya üretim sektöründe çeviri siparişiniz mi var?\nHangi belgelerin (örn. ürün kataloğu, malzeme listesi, montaj talimatları, ISO belgesi veya güvenlik belgesi) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, işlem süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
   },
   ru: {
@@ -1939,7 +1913,7 @@ const serviceTranslatedParagraphs = {
       "Процеси, орієнтовані на якість, професійне спілкування та високі стандарти обслуговування є нашим головним пріоритетом. Наші послуги базуються на сучасних стандартах якості та структурованих робочих процесах відповідно до принципів ISO 9001.",
     ],
     "simultandolmetscher": [
-      "Our simultaneous interpreters ensure that international conferences and meetings run smoothly in multiple languages. Ми пропонуємо переклад у реальному часі мовними комбінаціями німецько-англійська, німецько-французька, німецько-російська, німецько-іспанська, німецько-італійська, німецько-арабська та багатьма іншими європейськими та неєвропейськими мовами. Whether it’s a multilingual specialist audience or international guests – we provide the right teams and technology for your event.",
+      "Наші синхронні перекладачі забезпечують безперебійний багатомовний супровід міжнародних конференцій, нарад і заходів. Ми пропонуємо переклад у реальному часі мовними комбінаціями німецько-англійська, німецько-французька, німецько-російська, німецько-іспанська, німецько-італійська, німецько-арабська та багатьма іншими європейськими й неєвропейськими мовами. Для багатомовної фахової аудиторії або міжнародних гостей ми надаємо відповідні команди та технічне рішення для вашого заходу.",
       "Плануєте конференцію чи багатомовний захід і шукаєте досвідчених перекладачів-синхроністів?",
       "Розкажіть нам ключові деталі вашої події, і ми створимо для вас відповідну пропозицію.",
     ],
@@ -2158,10 +2132,11 @@ export function getSpecialties(lang) {
 
 export function getServiceNavigation(lang) {
   const specialties = getSpecialties(lang);
+  const navigationSpecialties = specialties.filter((item) => item.id !== 'industrie-produktion');
   if (lang === 'de') {
     return [
       ...documentServiceBlocksDe,
-      ...specialties.map((item) => ({
+      ...navigationSpecialties.map((item) => ({
         ...item,
         ...(serviceDetailParagraphsDe[item.id] ? { paragraphs: serviceDetailParagraphsDe[item.id] } : {}),
         group: 'specialist',
@@ -2181,7 +2156,7 @@ export function getServiceNavigation(lang) {
   });
   return [
     ...documentBlocks,
-    ...specialties.map((item) => ({
+    ...navigationSpecialties.map((item) => ({
       ...item,
       ...(serviceTranslatedParagraphs[lang]?.[item.id] ? { paragraphs: serviceTranslatedParagraphs[lang][item.id] } : {}),
       group: 'specialist',

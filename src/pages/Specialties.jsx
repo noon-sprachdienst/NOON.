@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getSpecialties } from '../data/serviceContent';
 import { useI18n } from '../hooks/useI18n';
 
@@ -11,8 +11,9 @@ const PAGE_COPY = {
     qualityText: 'Fachlich geprüft, terminologisch konsistent und auf den konkreten Einsatzbereich abgestimmt.',
     price: 'ab',
     unit: '/ Wort',
-    tags: ['75+ Sprachen', 'ISO 17100', 'Express 24h', 'Vier-Augen-Prinzip'],
+    tags: ['190+ Sprachen', 'Express 24h', 'Vier-Augen-Prinzip'],
     nav: 'Fachgebiet auswählen',
+    close: 'Menü schließen',
   },
   en: {
     eyebrow: 'Specialist translations',
@@ -22,8 +23,9 @@ const PAGE_COPY = {
     qualityText: 'Reviewed by specialists, terminologically consistent and tailored to the intended use.',
     price: 'from',
     unit: '/ word',
-    tags: ['75+ languages', 'ISO 17100', 'Express 24h', 'Four-eyes principle'],
+    tags: ['190+ languages', 'Express 24h', 'Four-eyes principle'],
     nav: 'Select a field',
+    close: 'Close menu',
   },
   ar: {
     eyebrow: 'ترجمات متخصصة',
@@ -33,8 +35,9 @@ const PAGE_COPY = {
     qualityText: 'مراجعة تخصصية، مصطلحات متسقة، وصياغة تناسب مجال الاستخدام.',
     price: 'ابتداء من',
     unit: '/ كلمة',
-    tags: ['75+ لغة', 'ISO 17100', 'إكسبريس 24 ساعة', 'مراجعة مزدوجة'],
+    tags: ['190+ لغة', 'إكسبريس 24 ساعة', 'مراجعة مزدوجة'],
     nav: 'اختر المجال',
+    close: 'إغلاق القائمة',
   },
   tr: {
     eyebrow: 'Uzman çeviriler',
@@ -44,8 +47,9 @@ const PAGE_COPY = {
     qualityText: 'Uzman kontrolü, tutarlı terminoloji ve kullanım alanına uygun çeviri.',
     price: 'den itibaren',
     unit: '/ kelime',
-    tags: ['75+ dil', 'ISO 17100', 'Ekspres 24s', 'Çift kontrol'],
+    tags: ['190+ dil', 'Ekspres 24s', 'Çift kontrol'],
     nav: 'Alan seçin',
+    close: 'Menüyü kapat',
   },
   ru: {
     eyebrow: 'Профильные переводы',
@@ -55,8 +59,9 @@ const PAGE_COPY = {
     qualityText: 'Проверка специалистами, единая терминология и адаптация к назначению текста.',
     price: 'от',
     unit: '/ слово',
-    tags: ['75+ языков', 'ISO 17100', 'Экспресс 24ч', 'Двойная проверка'],
+    tags: ['190+ языков', 'Экспресс 24ч', 'Двойная проверка'],
     nav: 'Выберите отрасль',
+    close: 'Закрыть меню',
   },
   fr: {
     eyebrow: 'Traductions spécialisées',
@@ -66,8 +71,9 @@ const PAGE_COPY = {
     qualityText: 'Contrôle spécialisé, terminologie cohérente et traduction adaptée à son usage.',
     price: 'à partir de',
     unit: '/ mot',
-    tags: ['75+ langues', 'ISO 17100', 'Express 24h', 'Double contrôle'],
+    tags: ['190+ langues', 'Express 24h', 'Double contrôle'],
     nav: 'Choisir un domaine',
+    close: 'Fermer le menu',
   },
   uk: {
     eyebrow: 'Фахові переклади',
@@ -77,8 +83,9 @@ const PAGE_COPY = {
     qualityText: 'Фахова перевірка, узгоджена термінологія й адаптація до призначення тексту.',
     price: 'від',
     unit: '/ слово',
-    tags: ['75+ мов', 'ISO 17100', 'Експрес 24г', 'Подвійна перевірка'],
+    tags: ['190+ мов', 'Експрес 24г', 'Подвійна перевірка'],
     nav: 'Оберіть галузь',
+    close: 'Закрити меню',
   },
 };
 
@@ -210,16 +217,16 @@ const DOCUMENT_SPECIALTY_CONTENT_DE = {
   'industrie-produktion': {
     title: 'Übersetzungsbüro für Industrie und Produktion',
     paragraphs: [
-      'Wir unterstützen Produktionsunternehmen, Anlagenbauer und internationale Hersteller bei der Übersetzung technischer und industrieller Dokumentationen. Dazu gehören Fertigungsunterlagen, Prozessbeschreibungen, Qualitätsdokumentationen und technische Betriebsunterlagen.',
-      'Unsere Fachübersetzungen werden von Ingenieuren, Industrietechnikern und spezialisierten Fachübersetzern erstellt. Dadurch werden technische Anforderungen und Produktionsprozesse fachlich korrekt vermittelt.',
+      'Wir übersetzen technische und kaufmännische Texte für Industrie, Produktion, Maschinenbau und Handel. Dazu gehören Produktkataloge, Anleitungen, Spezifikationen, Qualitätsdokumente, Sicherheitsunterlagen und Prozessbeschreibungen.',
+      'Unsere Fachübersetzer sorgen dafür, dass Fachbegriffe, Maßeinheiten, Normen und Warnhinweise einheitlich und korrekt bleiben. So passt die Übersetzung zum praktischen Einsatz in Fertigung und Export.',
     ],
     examples: [
-      'Produktions- und Fertigungsdokumentationen',
-      'Qualitätsmanagement und ISO-Unterlagen',
-      'Maschinen-, Anlagen- und Prozessbeschreibungen',
+      'Fachtexte und Dokumentationen',
+      'Produkt- und Marketingunterlagen',
+      'Mehrsprachige Projekte und Webseiten',
     ],
-    quality: 'Industrielle Fachkompetenz',
-    qualityText: 'Technische Übersetzungen für Produktion, Fertigung und Industrie mit besonderem Fokus auf Verständlichkeit und Praxistauglichkeit.',
+    quality: 'Zertifizierte Qualität',
+    qualityText: 'Fachlich geprüft, terminologisch konsistent und auf den konkreten Einsatzbereich abgestimmt.',
   },
 };
 
@@ -309,12 +316,12 @@ const DOCUMENT_SPECIALTY_CONTENT = {
     'industrie-produktion': {
       title: 'Translation office for industry and production',
       paragraphs: [
-        'We support production companies, plant manufacturers and international manufacturers with the translation of technical and industrial documentation. This includes manufacturing documents, process descriptions, quality documentation and technical operating documents.',
-        'Our specialist translations are prepared by engineers, industrial technicians and specialized translators. This communicates technical requirements and production processes professionally and correctly.',
+        'We translate technical and commercial texts for industry, production, mechanical engineering and trade. This includes product catalogues, manuals, specifications, quality documents, safety documents and process descriptions.',
+        'Our specialist translators ensure that technical terms, units of measurement, standards and warnings remain consistent and correct. This makes the translation suitable for practical use in manufacturing and export.',
       ],
-      examples: ['Production and manufacturing documentation', 'Quality management and ISO documents', 'Machine, plant and process descriptions'],
-      quality: 'Industrial expertise',
-      qualityText: 'Technical translations for production, manufacturing and industry with a special focus on clarity and practical usability.',
+      examples: ['Specialist texts and documentation', 'Product and marketing materials', 'Multilingual projects and websites'],
+      quality: 'Certified quality',
+      qualityText: 'Reviewed by specialists, terminologically consistent and tailored to the intended use.',
     },
   },
   ar: {
@@ -401,12 +408,12 @@ const DOCUMENT_SPECIALTY_CONTENT = {
     'industrie-produktion': {
       title: 'مكتب ترجمة للصناعة والإنتاج',
       paragraphs: [
-        'ندعم شركات الإنتاج ومصنعي المنشآت والمصنعين الدوليين في ترجمة الوثائق التقنية والصناعية. ويشمل ذلك وثائق التصنيع ووصف العمليات ووثائق الجودة ووثائق التشغيل التقنية.',
-        'تُنجز ترجماتنا المتخصصة بواسطة مهندسين وفنيين صناعيين ومترجمين متخصصين. وبذلك تُنقل المتطلبات التقنية وعمليات الإنتاج بصورة صحيحة ومهنية.',
+        'نترجم النصوص التقنية والتجارية الخاصة بالصناعة والإنتاج والهندسة الميكانيكية والتجارة. ويشمل ذلك كتالوجات المنتجات والتعليمات والمواصفات ووثائق الجودة ووثائق السلامة ووصف العمليات.',
+        'يضمن مترجمونا المتخصصون بقاء المصطلحات الفنية ووحدات القياس والمعايير والتحذيرات موحدة وصحيحة. لذلك تكون الترجمة مناسبة للاستخدام العملي في التصنيع والتصدير.',
       ],
-      examples: ['وثائق الإنتاج والتصنيع', 'إدارة الجودة ووثائق ISO', 'وصف الآلات والمنشآت والعمليات'],
-      quality: 'خبرة صناعية',
-      qualityText: 'ترجمات تقنية للإنتاج والتصنيع والصناعة مع تركيز خاص على الوضوح والقابلية للاستخدام العملي.',
+      examples: ['نصوص ووثائق متخصصة', 'مواد المنتجات والتسويق', 'مشاريع ومواقع متعددة اللغات'],
+      quality: 'جودة معتمدة',
+      qualityText: 'مراجعة تخصصية، مصطلحات متسقة، وصياغة تناسب مجال الاستخدام.',
     },
   },
   tr: {
@@ -493,12 +500,12 @@ const DOCUMENT_SPECIALTY_CONTENT = {
     'industrie-produktion': {
       title: 'Sanayi ve üretim çeviri bürosu',
       paragraphs: [
-        'Üretim şirketlerini, tesis üreticilerini ve uluslararası üreticileri teknik ve endüstriyel dokümantasyon çevirilerinde destekliyoruz. Buna üretim belgeleri, süreç açıklamaları, kalite dokümantasyonu ve teknik işletme belgeleri dahildir.',
-        'Uzman çevirilerimiz mühendisler, endüstri teknisyenleri ve uzman çevirmenler tarafından hazırlanır. Böylece teknik gereklilikler ve üretim süreçleri mesleki olarak doğru aktarılır.',
+        'Sanayi, üretim, makine mühendisliği ve ticaret için teknik ve ticari metinler çeviriyoruz. Buna ürün katalogları, talimatlar, teknik şartnameler, kalite belgeleri, güvenlik dokümanları ve süreç açıklamaları dahildir.',
+        'Uzman çevirmenlerimiz teknik terimlerin, ölçü birimlerinin, standartların ve uyarıların tutarlı ve doğru kalmasını sağlar. Böylece çeviri üretim ve ihracatta pratik kullanıma uygun olur.',
       ],
-      examples: ['Üretim ve imalat dokümantasyonu', 'Kalite yönetimi ve ISO belgeleri', 'Makine, tesis ve süreç açıklamaları'],
-      quality: 'Endüstriyel uzmanlık',
-      qualityText: 'Üretim, imalat ve sanayi için açıklık ve pratik kullanıma özel odaklı teknik çeviriler.',
+      examples: ['Uzman metinler ve dokümantasyon', 'Ürün ve pazarlama materyalleri', 'Çok dilli projeler ve web siteleri'],
+      quality: 'Sertifikalı kalite',
+      qualityText: 'Uzman kontrolü, tutarlı terminoloji ve kullanım alanına uygun çeviri.',
     },
   },
   ru: {
@@ -585,12 +592,12 @@ const DOCUMENT_SPECIALTY_CONTENT = {
     'industrie-produktion': {
       title: 'Бюро переводов для промышленности и производства',
       paragraphs: [
-        'Мы поддерживаем производственные компании, изготовителей оборудования и международных производителей в переводе технической и промышленной документации. Это производственные документы, описания процессов, документация по качеству и технические эксплуатационные документы.',
-        'Наши профильные переводы выполняются инженерами, промышленными техниками и специализированными переводчиками. Благодаря этому технические требования и производственные процессы передаются профессионально и корректно.',
+        'Мы переводим технические и коммерческие тексты для промышленности, производства, машиностроения и торговли. Сюда входят каталоги продукции, инструкции, спецификации, документы по качеству, материалы по безопасности и описания процессов.',
+        'Наши профильные переводчики следят за тем, чтобы технические термины, единицы измерения, стандарты и предупреждения оставались единообразными и корректными. Поэтому перевод подходит для практического применения в производстве и экспорте.',
       ],
-      examples: ['Производственная и технологическая документация', 'Управление качеством и ISO-документы', 'Описания машин, установок и процессов'],
-      quality: 'Промышленная компетенция',
-      qualityText: 'Технические переводы для производства и промышленности с особым вниманием к понятности и практической применимости.',
+      examples: ['Профильные тексты и документация', 'Материалы о продуктах и маркетинге', 'Многоязычные проекты и сайты'],
+      quality: 'Сертифицированное качество',
+      qualityText: 'Проверка специалистами, единая терминология и адаптация к назначению текста.',
     },
   },
   fr: {
@@ -677,12 +684,12 @@ const DOCUMENT_SPECIALTY_CONTENT = {
     'industrie-produktion': {
       title: 'Bureau de traduction industrie et production',
       paragraphs: [
-        'Nous accompagnons entreprises de production, constructeurs d’installations et fabricants internationaux dans la traduction de documentations techniques et industrielles. Cela comprend documents de fabrication, descriptions de processus, documentation qualité et documents techniques d’exploitation.',
-        'Nos traductions spécialisées sont réalisées par des ingénieurs, techniciens industriels et traducteurs spécialisés. Les exigences techniques et processus de production sont ainsi transmis correctement et professionnellement.',
+        'Nous traduisons des textes techniques et commerciaux pour l’industrie, la production, la construction mécanique et le commerce. Cela comprend les catalogues produits, notices, spécifications, documents qualité, documents de sécurité et descriptions de processus.',
+        'Nos traducteurs spécialisés veillent à ce que les termes techniques, unités de mesure, normes et avertissements restent cohérents et corrects. La traduction est ainsi adaptée à l’utilisation pratique en production et à l’export.',
       ],
-      examples: ['Documentation de production et fabrication', 'Gestion qualité et documents ISO', 'Descriptions de machines, installations et processus'],
-      quality: 'Compétence industrielle',
-      qualityText: 'Traductions techniques pour production, fabrication et industrie avec un focus particulier sur la clarté et l’utilisabilité pratique.',
+      examples: ['Textes spécialisés et documentation', 'Supports produit et marketing', 'Projets et sites multilingues'],
+      quality: 'Qualité certifiée',
+      qualityText: 'Contrôle spécialisé, terminologie cohérente et traduction adaptée à son usage.',
     },
   },
   uk: {
@@ -769,12 +776,12 @@ const DOCUMENT_SPECIALTY_CONTENT = {
     'industrie-produktion': {
       title: 'Бюро перекладів для промисловості та виробництва',
       paragraphs: [
-        'Ми підтримуємо виробничі компанії, виробників обладнання та міжнародних виробників у перекладі технічної й промислової документації. Це виробничі документи, описи процесів, документація з якості та технічні експлуатаційні документи.',
-        'Наші профільні переклади виконують інженери, промислові техніки та спеціалізовані перекладачі. Завдяки цьому технічні вимоги й виробничі процеси передаються професійно та коректно.',
+        'Ми перекладаємо технічні та комерційні тексти для промисловості, виробництва, машинобудування й торгівлі. Це охоплює каталоги продукції, інструкції, специфікації, документи з якості, матеріали з безпеки та описи процесів.',
+        'Наші профільні перекладачі дбають про те, щоб технічні терміни, одиниці вимірювання, стандарти й попередження залишалися узгодженими та правильними. Тому переклад підходить для практичного використання у виробництві й експорті.',
       ],
-      examples: ['Виробнича та технологічна документація', 'Управління якістю та ISO-документи', 'Описи машин, установок і процесів'],
-      quality: 'Промислова компетенція',
-      qualityText: 'Технічні переклади для виробництва й промисловості з особливою увагою до зрозумілості та практичного використання.',
+      examples: ['Фахові тексти та документація', 'Продуктові й маркетингові матеріали', 'Багатомовні проєкти та сайти'],
+      quality: 'Сертифікована якість',
+      qualityText: 'Фахова перевірка, узгоджена термінологія й адаптація до призначення тексту.',
     },
   },
 };
@@ -784,6 +791,9 @@ export default function Specialties() {
   const copy = PAGE_COPY[lang] || PAGE_COPY.de;
   const specialties = useMemo(() => getSpecialties(lang), [lang]);
   const [activeId, setActiveId] = useState('medizin-dental');
+  const sectionRef = useRef(null);
+  const [drawerAvailable, setDrawerAvailable] = useState(false);
+  const [railOpen, setRailOpen] = useState(false);
   const active = specialties.find((item) => item.id === activeId) || specialties[0];
   const documentContent = DOCUMENT_SPECIALTY_CONTENT[lang]?.[active.id] || DOCUMENT_SPECIALTY_CONTENT.de[active.id];
   const paragraphs = active.paragraphs || [active.text];
@@ -792,8 +802,41 @@ export default function Specialties() {
   const qualityTitle = documentContent?.quality || copy.quality;
   const qualityText = documentContent?.qualityText || copy.qualityText;
 
+  const renderSummaryParagraph = (paragraph) => {
+    if (lang !== 'de' || active.id !== 'medizin-dental' || !paragraph.includes('spezialisiert')) {
+      return paragraph;
+    }
+    const match = paragraph.match(/\bspezialisiert\b/);
+    if (!match || match.index === undefined) {
+      return paragraph;
+    }
+    const before = paragraph.slice(0, match.index);
+    const after = paragraph.slice(match.index + 'spezialisiert'.length);
+    return (
+      <>
+        {before}
+        <strong>spezialisiert</strong>
+        {after}
+      </>
+    );
+  };
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      setDrawerAvailable(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setDrawerAvailable(entry.isIntersecting),
+      { root: null, threshold: 0.08, rootMargin: '-88px 0px -28% 0px' },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="specialty-page" id="fachuebersetzungen" aria-labelledby="specialty-page-heading">
+    <section className="specialty-page" id="fachuebersetzungen" aria-labelledby="specialty-page-heading" ref={sectionRef}>
       <div className="container specialty-page-intro">
         <span className="specialty-page-eyebrow">{copy.eyebrow}</span>
         <h1 id="specialty-page-heading">{copy.title}</h1>
@@ -801,12 +844,27 @@ export default function Specialties() {
       </div>
 
       <div className="container specialty-page-shell">
+        <button
+          type="button"
+          className={`specialty-drawer-toggle specialty-drawer-toggle--page${lang === 'ar' ? ' is-rtl' : ''}${drawerAvailable || railOpen ? ' is-visible' : ''}`}
+          onClick={() => setRailOpen(true)}
+          aria-expanded={railOpen}
+          aria-controls="fachwissen-point-menu"
+          aria-label={copy.nav}
+        >
+          <span className="specialty-drawer-icon" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+        </button>
+
         <article className="specialty-page-content">
           <span className="specialty-page-kicker">{copy.eyebrow}</span>
           <h2>{documentContent?.title || active.title}</h2>
 
           <div className="specialty-page-copy">
-            {summaryParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            {summaryParagraphs.map((paragraph) => <p key={paragraph}>{renderSummaryParagraph(paragraph)}</p>)}
           </div>
 
           <ul className="specialty-page-examples">
@@ -828,7 +886,7 @@ export default function Specialties() {
             <div className="specialty-page-quote">
               <div className="specialty-page-price">
                 <span>{copy.price}</span>
-                <strong>0,16€</strong>
+                <strong>0,09€</strong>
                 <small>{copy.unit}</small>
               </div>
               <a href="/angebot" className="btn btn-primary">
@@ -838,7 +896,19 @@ export default function Specialties() {
           </div>
         </article>
 
-        <aside className="specialty-page-rail" aria-label={copy.nav}>
+        <aside
+          id="fachwissen-point-menu"
+          className={`specialty-page-rail${lang === 'ar' ? ' is-rtl' : ''}${railOpen ? ' is-open' : ''}`}
+          aria-label={copy.nav}
+        >
+          <button
+            type="button"
+            className="specialty-drawer-close"
+            onClick={() => setRailOpen(false)}
+            aria-label={copy.close}
+          >
+            ×
+          </button>
           <span className="specialty-page-rail-label">{copy.nav}</span>
           {specialties.map((item) => {
             const Icon = ICONS[item.id] || BriefcaseIcon;
@@ -847,7 +917,10 @@ export default function Specialties() {
                 type="button"
                 key={item.id}
                 className={item.id === active.id ? 'active' : ''}
-                onClick={() => setActiveId(item.id)}
+                onClick={() => {
+                  setActiveId(item.id);
+                  setRailOpen(false);
+                }}
                 aria-pressed={item.id === active.id}
               >
                 <Icon />
@@ -857,6 +930,12 @@ export default function Specialties() {
             );
           })}
         </aside>
+        <button
+          type="button"
+          className={`specialty-drawer-backdrop${railOpen ? ' is-open' : ''}`}
+          onClick={() => setRailOpen(false)}
+          aria-label={copy.close}
+        />
       </div>
     </section>
   );

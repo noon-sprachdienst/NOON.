@@ -4,16 +4,27 @@ import { useAutoCarousel } from '../hooks/useAutoCarousel';
 import 'leaflet/dist/leaflet.css';
 
 const BRANCHES = [
-  { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Möserstr. 14, 49074 Osnabrück',     lat: 52.2770, lng: 8.0432, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Möserstraße+14,+49074+Osnabrück' },
-  { id: 'stuttgart',  tag: '02',       city: 'Stuttgart',  addr: 'Königstr. 82, 70173 Stuttgart',     lat: 48.7784, lng: 9.1800, hoursKey: 'branches.hours.stuttgart',  maps: 'https://maps.google.com/?q=Königstraße+82,+70173+Stuttgart' },
-  { id: 'berlin',     tag: '03',       city: 'Berlin',     addr: 'Friedrichstr. 191, 10117 Berlin',   lat: 52.5225, lng: 13.3870, hoursKey: 'branches.hours.berlin',   maps: 'https://maps.google.com/?q=Friedrichstraße+191,+10117+Berlin' },
-  { id: 'bielefeld',  tag: '04',       city: 'Bielefeld',  addr: 'Niederwall 21, 33602 Bielefeld',    lat: 52.0211, lng: 8.5325, hoursKey: 'branches.hours.bielefeld', maps: 'https://maps.google.com/?q=Niederwall+21,+33602+Bielefeld' },
-  { id: 'mainz',      tag: '05',       city: 'Mainz',      addr: 'Schillerplatz 7, 55116 Mainz',      lat: 49.9997, lng: 8.2721, hoursKey: 'branches.hours.mainz',     maps: 'https://maps.google.com/?q=Schillerplatz+7,+55116+Mainz' },
-  { id: 'kiel',       tag: '06',       city: 'Kiel',       addr: 'Holstenstr. 64, 24103 Kiel',        lat: 54.3213, lng: 10.1350, hoursKey: 'branches.hours.kiel',     maps: 'https://maps.google.com/?q=Holstenstraße+64,+24103+Kiel' },
+  { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Paul-Oeser-Straße 1, 49074 Osnabrück', lat: 52.2705, lng: 8.0475, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Paul-Oeser-Straße+1,+49074+Osnabrück' },
+  { id: 'stuttgart',  tag: '02',       city: 'Stuttgart',  addr: 'Friedrichstraße 15, 70174 Stuttgart', lat: 48.7827, lng: 9.1766, hoursKey: 'branches.hours.stuttgart',  maps: 'https://maps.google.com/?q=Friedrichstraße+15,+70174+Stuttgart' },
+  { id: 'berlin',     tag: '03',       city: 'Berlin',     addr: 'Potsdamerstr. 63, App. 908, 10785 Berlin', lat: 52.5031, lng: 13.3658, hoursKey: 'branches.hours.berlin',   maps: 'https://maps.google.com/?q=Potsdamerstr.+63,+App.+908,+10785+Berlin' },
+  { id: 'bielefeld',  tag: '04',       city: 'Bielefeld',  addr: 'Teichstraße 24, 33615 Bielefeld',      lat: 52.0324, lng: 8.5227, hoursKey: 'branches.hours.bielefeld', maps: 'https://maps.google.com/?q=Teichstraße+24,+33615+Bielefeld' },
+  { id: 'mainz',      tag: '05',       city: 'Mainz',      addr: 'Richard-Wagner-Straße 13, 55118 Mainz', lat: 50.0099, lng: 8.2604, hoursKey: 'branches.hours.mainz',     maps: 'https://maps.google.com/?q=Richard-Wagner-Straße+13,+55118+Mainz' },
+  { id: 'kiel',       tag: '06',       city: 'Kiel',       addr: 'Bothwellstraße 25, 24143 Kiel',       lat: 54.3110, lng: 10.1474, hoursKey: 'branches.hours.kiel',     maps: 'https://maps.google.com/?q=Bothwellstraße+25,+24143+Kiel' },
 ];
 
+const BRANCH_ARIA = {
+  de: { carousel: 'Standorte scrollen', prev: 'Vorherige Standorte', next: 'Nächste Standorte', office: 'Büro' },
+  en: { carousel: 'Scroll locations', prev: 'Previous locations', next: 'Next locations', office: 'Office' },
+  ar: { carousel: 'تمرير الفروع', prev: 'الفروع السابقة', next: 'الفروع التالية', office: 'فرع' },
+  tr: { carousel: 'Şubeleri kaydır', prev: 'Önceki şubeler', next: 'Sonraki şubeler', office: 'Ofis' },
+  ru: { carousel: 'Прокрутить филиалы', prev: 'Предыдущие филиалы', next: 'Следующие филиалы', office: 'Офис' },
+  fr: { carousel: 'Faire défiler les agences', prev: 'Agences précédentes', next: 'Agences suivantes', office: 'Bureau' },
+  uk: { carousel: 'Прокрутити філії', prev: 'Попередні філії', next: 'Наступні філії', office: 'Офіс' },
+};
+
 export default function Branches() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const aria = BRANCH_ARIA[lang] || BRANCH_ARIA.de;
   const [externalMapsAllowed, setExternalMapsAllowed] = useState(() => (
     localStorage.getItem('noon_cookie') === 'all'
   ));
@@ -36,13 +47,13 @@ export default function Branches() {
           <h2 id="branches-heading" data-reveal="">{t('branches.title')}</h2>
           <p data-reveal="" style={{ '--ri': 1 }}>{t('branches.sub')}</p>
         </div>
-        <div className="carousel-actions" aria-label="Standorte scrollen">
-          <button type="button" className="scroll-btn" onClick={() => scrollCards(-1)} aria-label="Vorherige Standorte">
+        <div className="carousel-actions" aria-label={aria.carousel}>
+          <button type="button" className="scroll-btn" onClick={() => scrollCards(-1)} aria-label={aria.prev}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M15 18l-6-6 6-6"/>
             </svg>
           </button>
-          <button type="button" className="scroll-btn" onClick={() => scrollCards(1)} aria-label="Nächste Standorte">
+          <button type="button" className="scroll-btn" onClick={() => scrollCards(1)} aria-label={aria.next}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M9 18l6-6-6-6"/>
             </svg>
@@ -54,7 +65,7 @@ export default function Branches() {
           {...interactionProps}
         >
           {BRANCHES.map((branch, i) => (
-            <BranchCard key={branch.id} branch={branch} t={t} index={i} externalMapsAllowed={externalMapsAllowed} />
+            <BranchCard key={branch.id} branch={branch} t={t} index={i} externalMapsAllowed={externalMapsAllowed} officeLabel={aria.office} />
           ))}
         </div>
       </div>
@@ -62,7 +73,7 @@ export default function Branches() {
   );
 }
 
-function BranchCard({ branch, t, index, externalMapsAllowed }) {
+function BranchCard({ branch, t, index, externalMapsAllowed, officeLabel }) {
   const cardRef = useRef(null);
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
@@ -124,7 +135,7 @@ function BranchCard({ branch, t, index, externalMapsAllowed }) {
   }, [mapEnabled, branch.lat, branch.lng]);
 
   return (
-    <article className="map-card" data-reveal="" style={{ '--ri': index % 3 }} aria-label={`Büro ${branch.city}`} ref={cardRef}>
+    <article className="map-card" data-reveal="" style={{ '--ri': index % 3 }} aria-label={`${officeLabel} ${branch.city}`} ref={cardRef}>
       <div className="map-canvas">
         <img
           className="map-preview"

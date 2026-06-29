@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 
 const STATS_BASE = [
-  { num: 75,    suffix: '+', labelKey: 'stats.languages' },
+  { num: 190,   suffix: '+', labelKey: 'stats.languages' },
   { num: 6,     suffix: '',  labelKey: 'stats.locations', pad: 2 },
-  { num: 15,    suffix: '+', labelKey: 'stats.years' },
+  { num: 7,     suffix: '',  labelKey: 'stats.years' },
   { num: 10000, suffix: '+', labelKey: 'stats.orders', locale: true },
 ];
 

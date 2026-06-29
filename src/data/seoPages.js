@@ -6,8 +6,8 @@ export const COMPANY = {
   name: 'NOON. Sprachdienst',
   email: 'info@noon-sprachdienst.de',
   telephone: '+4916095627666',
-  hours: 'Montag bis Samstag, 10:00 bis 19:00 Uhr',
-  foundingDate: '2009',
+  hours: 'Montag bis Samstag, telefonisch 24/7 erreichbar',
+  foundingDate: '2019',
 };
 
 export const SEO_LANGUAGES = {
@@ -21,12 +21,12 @@ export const SEO_LANGUAGES = {
 };
 
 export const LOCATIONS = [
-  { slug: 'osnabrueck', city: 'Osnabrück', street: 'Möserstr. 14', postalCode: '49074', image: 'osnabrueck.jpg', hq: true },
-  { slug: 'stuttgart', city: 'Stuttgart', street: 'Königstr. 82', postalCode: '70173', image: 'stuttgart.jpg' },
-  { slug: 'berlin', city: 'Berlin', street: 'Friedrichstr. 191', postalCode: '10117', image: 'berlin.jpg' },
-  { slug: 'bielefeld', city: 'Bielefeld', street: 'Niederwall 21', postalCode: '33602', image: 'bielefeld.jpg' },
-  { slug: 'mainz', city: 'Mainz', street: 'Schillerplatz 7', postalCode: '55116', image: 'mainz.jpg' },
-  { slug: 'kiel', city: 'Kiel', street: 'Holstenstr. 64', postalCode: '24103', image: 'kiel.jpg' },
+  { slug: 'osnabrueck', city: 'Osnabrück', street: 'Paul-Oeser-Straße 1', postalCode: '49074', image: 'osnabrueck.jpg', hq: true },
+  { slug: 'stuttgart', city: 'Stuttgart', street: 'Friedrichstraße 15', postalCode: '70174', image: 'stuttgart.jpg' },
+  { slug: 'berlin', city: 'Berlin', street: 'Potsdamerstr. 63, App. 908', postalCode: '10785', image: 'berlin.jpg' },
+  { slug: 'bielefeld', city: 'Bielefeld', street: 'Teichstraße 24', postalCode: '33615', image: 'bielefeld.jpg' },
+  { slug: 'mainz', city: 'Mainz', street: 'Richard-Wagner-Straße 13', postalCode: '55118', image: 'mainz.jpg' },
+  { slug: 'kiel', city: 'Kiel', street: 'Bothwellstraße 25', postalCode: '24143', image: 'kiel.jpg' },
 ];
 
 const deFaqs = {
@@ -98,7 +98,7 @@ const coreServicesDe = [
     title: 'Fachübersetzungen mit präziser Terminologie.',
     description: 'Professionelle Fachübersetzungen für Medizin, Recht, Wirtschaft, Technik, Pharma, IT, Chemie und Industrie. Terminologisch konsistent und fachlich geprüft.',
     intro: 'Fachtexte benötigen sprachliche Sicherheit und Verständnis für den jeweiligen Einsatzbereich. Unsere spezialisierten Übersetzer übertragen Terminologie, Ton und Inhalt verlässlich in die gewünschte Sprache.',
-    highlights: ['ISO 17100', 'Vier-Augen-Prinzip', '75+ Sprachen'],
+    highlights: ['ISO 17100', 'Vier-Augen-Prinzip', '190+ Sprachen'],
     sections: [
       ['Fachwissen für anspruchsvolle Inhalte', 'Wir bearbeiten Texte aus Medizin und Dentalmedizin, Recht, Wirtschaft und Finanzen, Ingenieurwesen, Pharmazeutik, IT und Software, Chemie und Biowissenschaften sowie Industrie und Produktion.'],
       ['Passend für Zielgruppe und Einsatzbereich', 'Eine gute Fachübersetzung berücksichtigt Fachsprache, Normen, Zielgruppe und Verwendungszweck. Auf Wunsch erstellen wir Terminologielisten für wiederkehrende Inhalte und mehrsprachige Projekte.'],
@@ -163,7 +163,7 @@ const documentPagesDe = [
       ['Auch für Familienunterlagen', 'Wenn mehrere Dokumente zusammen benötigt werden, zum Beispiel Heiratsurkunde, Geburtsurkunden und Meldeunterlagen, erstellen wir ein gemeinsames Angebot.'],
     ],
     faqs: [
-      ['Welche Sprachen übersetzen Sie?', 'Wir bearbeiten Geburtsurkunden in über 75 Sprachen, darunter Arabisch, Türkisch, Ukrainisch, Russisch, Englisch und Französisch.'],
+      ['Welche Sprachen übersetzen Sie?', 'Wir bearbeiten Geburtsurkunden in über 190 Sprachen, darunter Arabisch, Türkisch, Ukrainisch, Russisch, Englisch und Französisch.'],
       ['Wie bekomme ich die fertige Übersetzung?', 'Je nach Bedarf digital, per Post oder zur Abholung an einem Standort.'],
     ],
     serviceType: 'Geburtsurkunde Übersetzung',
@@ -538,7 +538,7 @@ const multilingualBase = {
       description: 'Professional specialist translations for medicine, law, finance, engineering, pharma, IT, chemistry and industry.',
       intro: 'Specialist texts require language accuracy and subject knowledge. Our translators adapt terminology, tone and content to the target use.',
       sections: [['Fields of expertise', 'We translate specialist content for law, medicine and dentistry, finance, engineering, pharma, IT, chemistry, life sciences and industry.'], ['Clear project process', 'Send your files or project description and receive information about price, delivery time and workflow.']],
-      highlights: ['ISO 17100', 'Terminology', '75+ languages'],
+      highlights: ['ISO 17100', 'Terminology', '190+ languages'],
       serviceType: 'Specialist translation',
       cta: 'Request a free specialist quote',
     },
@@ -576,7 +576,7 @@ const multilingualBase = {
       description: 'ترجمات متخصصة للطب والقانون والمال والهندسة والصيدلة وتقنية المعلومات والكيمياء والصناعة.',
       intro: 'النصوص المتخصصة تحتاج إلى دقة لغوية ومعرفة بالمجال. ينقل مترجمونا المصطلحات والنبرة والمحتوى بما يناسب الغرض النهائي.',
       sections: [['مجالات تخصص', 'نترجم في القانون والطب وطب الأسنان والمال والهندسة والصيدلة وتقنية المعلومات والكيمياء وعلوم الحياة والصناعة.'], ['عملية واضحة', 'أرسل الملفات أو وصف المشروع لتحصل على معلومات السعر والمدة وآلية العمل.']],
-      highlights: ['ISO 17100', 'مصطلحات دقيقة', '75+ لغة'],
+      highlights: ['ISO 17100', 'مصطلحات دقيقة', '190+ لغة'],
       serviceType: 'ترجمة متخصصة',
       cta: 'اطلب عرضا مجانيا',
     },
@@ -614,7 +614,7 @@ const multilingualBase = {
       description: 'Tıp, hukuk, finans, mühendislik, ilaç, IT, kimya ve endüstri için profesyonel uzmanlık çevirileri.',
       intro: 'Uzmanlık metinleri dil doğruluğu ve alan bilgisi gerektirir. Çevirmenlerimiz terminolojiyi ve içeriği kullanım amacına göre aktarır.',
       sections: [['Uzmanlık alanları', 'Hukuk, tıp, diş hekimliği, finans, mühendislik, ilaç, IT, kimya, yaşam bilimleri ve endüstri metinleri çeviriyoruz.'], ['Net proje süreci', 'Dosyalarınızı veya proje açıklamasını gönderin; fiyat, teslim süresi ve süreç bilgisi alın.']],
-      highlights: ['ISO 17100', 'Terminoloji', '75+ dil'],
+      highlights: ['ISO 17100', 'Terminoloji', '190+ dil'],
       serviceType: 'Uzmanlık çevirisi',
       cta: 'Ücretsiz teklif iste',
     },
@@ -659,7 +659,7 @@ const multilingualPages = [
       title: titles[index],
       description: `${titles[index]} ${extraLangDescriptionTail[lang]}`,
       intro: `${titles[index]} Senden Sie Ihre Anfrage mit Dokumenten, Termin oder Projektbeschreibung. Wir prüfen Preis, Lieferzeit und passende Umsetzung.`,
-      highlights: index === 1 ? ['Vor Ort oder online', '190+ Sprachen', 'Schnelle Anfrage'] : ['75+ Sprachen', 'Fachlich geprüft', 'Kostenlose Anfrage'],
+      highlights: index === 1 ? ['Vor Ort oder online', '190+ Sprachen', 'Schnelle Anfrage'] : ['190+ Sprachen', 'Fachlich geprüft', 'Kostenlose Anfrage'],
       sections: [
         ['Service', 'NOON unterstützt private, behördliche und geschäftliche Anliegen mit klaren Abläufen, persönlicher Beratung und mehrsprachigem Team.'],
         ['Anfrage', 'Senden Sie Unterlagen oder Termindaten digital. Sie erhalten vorab eine Einschätzung zu Preis, Lieferzeit und Ablauf.'],
@@ -670,7 +670,7 @@ const multilingualPages = [
   }),
 ].map((page) => ({
   kind: 'service',
-  highlights: ['75+ Sprachen', 'Kostenlose Anfrage', 'Persönliche Beratung'],
+  highlights: ['190+ Sprachen', 'Kostenlose Anfrage', 'Persönliche Beratung'],
   faqs: [],
   ...page,
 }));
