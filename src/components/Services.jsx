@@ -2298,16 +2298,30 @@ export default function Services() {
 
   useEffect(() => {
     const node = sectionRef.current;
-    if (!node || typeof IntersectionObserver === 'undefined') {
-      setDrawerAvailable(true);
+    if (!node || typeof window === 'undefined') {
+      setDrawerAvailable(false);
       return undefined;
     }
-    const observer = new IntersectionObserver(
-      ([entry]) => setDrawerAvailable(entry.isIntersecting),
-      { root: null, threshold: 0.08, rootMargin: '-88px 0px -28% 0px' },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+
+    let frame = 0;
+    const updateAvailability = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const rect = node.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        setDrawerAvailable(rect.top < viewportHeight - 72 && rect.bottom > 72);
+      });
+    };
+
+    updateAvailability();
+    window.addEventListener('scroll', updateAvailability, { passive: true });
+    window.addEventListener('resize', updateAvailability);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', updateAvailability);
+      window.removeEventListener('resize', updateAvailability);
+    };
   }, []);
 
   return (
