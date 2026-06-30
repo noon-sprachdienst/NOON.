@@ -4187,7 +4187,6 @@ html[dir="rtl"] .specialty-side-row--sub {
   text-align: center;
 }
 
-.point-grid-sheet[data-service-id="fachuebersetzung-overview"] .point-grid-card-grid,
 .point-grid-sheet[data-service-id="simultandolmetscher"] .point-grid-card-grid,
 .point-grid-sheet[data-service-id="notardolmetscher"] .point-grid-card-grid,
 .point-grid-sheet[data-service-id="chemie-biowissenschaften"] .point-grid-card-grid,
@@ -4196,13 +4195,24 @@ html[dir="rtl"] .specialty-side-row--sub {
   gap: 8px;
 }
 
-.point-grid-sheet[data-service-id="fachuebersetzung-overview"] .point-grid-card,
 .point-grid-sheet[data-service-id="simultandolmetscher"] .point-grid-card,
 .point-grid-sheet[data-service-id="notardolmetscher"] .point-grid-card,
 .point-grid-sheet[data-service-id="chemie-biowissenschaften"] .point-grid-card,
 .point-grid-sheet[data-service-id="ingenieurwesen"] .point-grid-card {
   grid-column: 1 / -1 !important;
   width: 100%;
+}
+
+@media (max-width: 760px) {
+  .point-grid-sheet[data-service-id="fachuebersetzung-overview"] .point-grid-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .point-grid-sheet[data-service-id="fachuebersetzung-overview"] .point-grid-card {
+    grid-column: 1 / -1 !important;
+    width: 100%;
+  }
 }
 
 /* Soft polish only; each point keeps the grid from its own Word file. */
@@ -5101,6 +5111,136 @@ html[dir="rtl"] .it-word-check-text {
     aspect-ratio: auto;
   }
 }
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-sheet {
+    width: 100% !important;
+    max-width: none !important;
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    grid-template-areas:
+      "title title"
+      "introIcon introCopy"
+      "docsIcon docsCopy"
+      "bottom bottom" !important;
+    gap: 10px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-icon {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 14px 10px !important;
+    overflow: hidden !important;
+    align-content: center !important;
+    justify-content: center !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-icon .recht-asset {
+    width: 68px !important;
+    height: 68px !important;
+    max-width: 68px !important;
+    max-height: 68px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-icon .recht-asset img {
+    width: 62px !important;
+    height: 62px !important;
+    max-width: 62px !important;
+    max-height: 62px !important;
+    object-fit: contain !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-bottom-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-bottom-tile .recht-asset {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="recht"] .recht-word-bottom-tile .recht-asset img {
+    width: 58px !important;
+    height: 58px !important;
+    object-fit: contain !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] {
+    width: 100% !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-sheet {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+    grid-template-areas:
+      "title title"
+      "introIcon introCopy"
+      "appsIcon appsCopy"
+      "docsIcon docsCopy"
+      "langIcon langCopy"
+      "compIcon compCopy"
+      "intlIcon intlCopy"
+      "intlIcon workflow"
+      "nationIcon nationCopy"
+      "ctaIcon ctaCopy"
+      "bottom bottom" !important;
+    gap: 10px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-title {
+    grid-area: title !important;
+    width: 100% !important;
+    font-size: clamp(34px, 5vw, 44px) !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-cell {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-icon {
+    min-height: 118px !important;
+    padding: 14px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy {
+    padding: 18px 20px !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy p,
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy .it-doc-list {
+    max-width: none !important;
+    text-align: start !important;
+    text-align-last: auto !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy--apps,
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy--languages,
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy--international,
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy--workflow,
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy--nationwide,
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-copy--cta {
+    border-right: 0 !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-checks {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .service-visual-panel--rich[data-active-service="it-software"] .it-word-bottom-strip {
+    grid-area: bottom !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+}
+
 @media (max-width: 640px) {
   .it-topic-grid {
     grid-template-columns: 1fr;

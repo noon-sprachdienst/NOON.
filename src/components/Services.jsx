@@ -726,6 +726,7 @@ const BEGLAUBIGTE_ASSET_BASE = '/assets/beglaubigte-uebersetzung/';
 const POINT_CONTENT_ASSET_BASE = '/assets/points-content/';
 
 const DOLMETSCHER_SHEET = {
+  kicker: 'Dolmetscherdienste',
   title: 'Dolmetschen',
   introRows: [
     {
@@ -755,6 +756,190 @@ const DOLMETSCHER_SHEET = {
   cta: 'Kostenlose Dolmetscheranfrage',
 };
 
+const DOLMETSCHER_SHEET_BY_LANG = {
+  de: DOLMETSCHER_SHEET,
+  en: {
+    kicker: 'Interpreting services',
+    title: 'Interpreting',
+    introRows: [
+      {
+        asset: 'mannschaft.png',
+        text: 'Professional interpreting services for companies, authorities, courts, medical institutions and private clients.',
+      },
+      {
+        asset: 'platzhalter.png',
+        text: 'Since 2019, our interpreting and translation office has supported clients in Osnabrück, Bielefeld, Kiel, Mainz, Stuttgart, Berlin and throughout Germany – internationally as well on request.',
+      },
+      {
+        asset: 'save-the-world.png',
+        text: 'We arrange qualified interpreters in over 190 languages for on-site appointments, online meetings, video conferences and telephone interpreting – quickly, reliably and professionally.',
+      },
+    ],
+    benefits: [
+      ['OVER 190 LANGUAGES', 'Interpreters for almost all languages and dialects worldwide.', 'save-the-world.png'],
+      ['EXPERIENCED INTERPRETERS', 'Qualified and checked interpreters with many years of experience and strong subject expertise.', 'benutzer.png'],
+      ['FLEXIBLE ASSIGNMENT TYPES', 'Short-notice assignments, individual appointment planning and nationwide availability.', 'flexibel.png'],
+    ],
+    processTitle: 'How an interpreter booking works',
+    process: [
+      ['1', 'Send request by e-mail', 'Provide language, assignment location and time.', 'email.png'],
+      ['2', 'Receive and confirm offer', 'Check the price and confirm the offer.', 'bestatigung.png'],
+      ['3', 'Interpreter on site', 'The interpreter is there for you at the agreed time and place.', 'ubersetzer.png'],
+    ],
+    cta: 'Free interpreter request',
+  },
+  ar: {
+    kicker: 'خدمات الترجمة الفورية',
+    title: 'الترجمة الفورية',
+    introRows: [
+      {
+        asset: 'mannschaft.png',
+        text: 'خدمات ترجمة فورية احترافية للشركات والجهات الحكومية والمحاكم والمؤسسات الطبية والعملاء من القطاع الخاص.',
+      },
+      {
+        asset: 'platzhalter.png',
+        text: 'منذ عام 2019، يدعم مكتبنا للترجمة الفورية والتحريرية العملاء في أوسنابروك وبيليفيلد وكيل وماينز وشتوتغارت وبرلين، وكذلك في جميع أنحاء ألمانيا، وعلى المستوى الدولي عند الطلب.',
+      },
+      {
+        asset: 'save-the-world.png',
+        text: 'نوفر مترجمين فوريين مؤهلين بأكثر من 190 لغة للمواعيد الحضورية والاجتماعات عبر الإنترنت ومؤتمرات الفيديو والترجمة عبر الهاتف، بسرعة وموثوقية واحترافية.',
+      },
+    ],
+    benefits: [
+      ['أكثر من 190 لغة', 'مترجمون فوريون لجميع اللغات واللهجات تقريبا حول العالم.', 'save-the-world.png'],
+      ['مترجمون فوريون ذوو خبرة', 'مترجمون مؤهلون ومراجعون يتمتعون بخبرة طويلة وكفاءة تخصصية عالية.', 'benutzer.png'],
+      ['أشكال استخدام مرنة', 'مواعيد عاجلة، تخطيط فردي للمواعيد وتوفر في جميع أنحاء ألمانيا.', 'flexibel.png'],
+    ],
+    processTitle: 'هكذا يتم طلب مترجم فوري',
+    process: [
+      ['1', 'إرسال طلب عبر البريد الإلكتروني', 'اذكر اللغة ومكان المهمة والوقت.', 'email.png'],
+      ['2', 'استلام العرض وتأكيده', 'راجع السعر وأكد العرض.', 'bestatigung.png'],
+      ['3', 'المترجم في الموعد', 'يكون المترجم حاضرا في المكان والوقت المتفق عليهما.', 'ubersetzer.png'],
+    ],
+    cta: 'طلب مترجم فوري مجاني',
+  },
+  tr: {
+    kicker: 'Tercümanlık hizmetleri',
+    title: 'Tercümanlık',
+    introRows: [
+      {
+        asset: 'mannschaft.png',
+        text: 'Şirketler, resmi kurumlar, mahkemeler, tıbbi kuruluşlar ve özel müşteriler için profesyonel tercümanlık hizmetleri.',
+      },
+      {
+        asset: 'platzhalter.png',
+        text: 'Tercümanlık ve çeviri büromuz 2019 yılından beri Osnabrück, Bielefeld, Kiel, Mainz, Stuttgart, Berlin ve Almanya genelindeki müşterilere destek verir; talep üzerine uluslararası hizmet de sunar.',
+      },
+      {
+        asset: 'save-the-world.png',
+        text: 'Yerinde randevular, çevrim içi toplantılar, video konferanslar ve telefon tercümanlığı için 190’dan fazla dilde nitelikli tercümanlar sağlıyoruz; hızlı, güvenilir ve profesyonel.',
+      },
+    ],
+    benefits: [
+      ['190’DAN FAZLA DİL', 'Dünya çapında neredeyse tüm diller ve lehçeler için tercümanlar.', 'save-the-world.png'],
+      ['DENEYİMLİ TERCÜMANLAR', 'Uzun yıllara dayanan deneyime ve güçlü uzmanlığa sahip nitelikli ve kontrol edilmiş tercümanlar.', 'benutzer.png'],
+      ['ESNEK GÖREV TÜRLERİ', 'Kısa süreli görevlendirmeler, kişiye özel randevu planlaması ve Almanya genelinde erişilebilirlik.', 'flexibel.png'],
+    ],
+    processTitle: 'Tercüman rezervasyonu nasıl işler',
+    process: [
+      ['1', 'E-posta ile talep gönderin', 'Dil, görev yeri ve saati belirtin.', 'email.png'],
+      ['2', 'Teklifi alın ve onaylayın', 'Fiyatı kontrol edin ve teklifi onaylayın.', 'bestatigung.png'],
+      ['3', 'Tercüman randevuda', 'Tercüman belirlenen yer ve zamanda sizin için hazır olur.', 'ubersetzer.png'],
+    ],
+    cta: 'Ücretsiz tercüman talebi',
+  },
+  ru: {
+    kicker: 'Услуги устного перевода',
+    title: 'Устный перевод',
+    introRows: [
+      {
+        asset: 'mannschaft.png',
+        text: 'Профессиональные услуги устного перевода для компаний, государственных органов, судов, медицинских учреждений и частных клиентов.',
+      },
+      {
+        asset: 'platzhalter.png',
+        text: 'С 2019 года наше бюро устного и письменного перевода помогает клиентам в Оснабрюке, Билефельде, Киле, Майнце, Штутгарте, Берлине и по всей Германии, а по запросу также на международном уровне.',
+      },
+      {
+        asset: 'save-the-world.png',
+        text: 'Мы подбираем квалифицированных устных переводчиков более чем для 190 языков для очных встреч, онлайн-встреч, видеоконференций и телефонного перевода — быстро, надежно и профессионально.',
+      },
+    ],
+    benefits: [
+      ['БОЛЕЕ 190 ЯЗЫКОВ', 'Устные переводчики почти для всех языков и диалектов по всему миру.', 'save-the-world.png'],
+      ['ОПЫТНЫЕ ПЕРЕВОДЧИКИ', 'Квалифицированные и проверенные устные переводчики с многолетним опытом и высокой профессиональной компетенцией.', 'benutzer.png'],
+      ['ГИБКИЕ ФОРМАТЫ РАБОТЫ', 'Срочные выезды, индивидуальное планирование встреч и доступность по всей Германии.', 'flexibel.png'],
+    ],
+    processTitle: 'Как проходит заказ устного переводчика',
+    process: [
+      ['1', 'Отправьте запрос по e-mail', 'Укажите язык, место задания и время.', 'email.png'],
+      ['2', 'Получите и подтвердите предложение', 'Проверьте цену и подтвердите предложение.', 'bestatigung.png'],
+      ['3', 'Переводчик на месте', 'Переводчик будет для вас в согласованное время и в согласованном месте.', 'ubersetzer.png'],
+    ],
+    cta: 'Бесплатный запрос устного переводчика',
+  },
+  fr: {
+    kicker: 'Services d’interprétation',
+    title: 'Interprétation',
+    introRows: [
+      {
+        asset: 'mannschaft.png',
+        text: 'Services d’interprétation professionnels pour entreprises, administrations, tribunaux, établissements médicaux et clients privés.',
+      },
+      {
+        asset: 'platzhalter.png',
+        text: 'Depuis 2019, notre bureau d’interprétation et de traduction accompagne des clients à Osnabrück, Bielefeld, Kiel, Mayence, Stuttgart, Berlin et dans toute l’Allemagne, ainsi qu’à l’international sur demande.',
+      },
+      {
+        asset: 'save-the-world.png',
+        text: 'Nous organisons des interprètes qualifiés dans plus de 190 langues pour des rendez-vous sur place, réunions en ligne, visioconférences et interprétation téléphonique — rapidement, fiablement et professionnellement.',
+      },
+    ],
+    benefits: [
+      ['PLUS DE 190 LANGUES', 'Des interprètes pour presque toutes les langues et tous les dialectes dans le monde.', 'save-the-world.png'],
+      ['INTERPRÈTES EXPÉRIMENTÉS', 'Des interprètes qualifiés et vérifiés, avec de nombreuses années d’expérience et une solide expertise.', 'benutzer.png'],
+      ['FORMATS D’INTERVENTION FLEXIBLES', 'Missions à court terme, planification individuelle des rendez-vous et disponibilité dans toute l’Allemagne.', 'flexibel.png'],
+    ],
+    processTitle: 'Comment se déroule une réservation d’interprète',
+    process: [
+      ['1', 'Envoyer une demande par e-mail', 'Indiquez la langue, le lieu de mission et l’heure.', 'email.png'],
+      ['2', 'Recevoir et confirmer l’offre', 'Vérifiez le prix et confirmez l’offre.', 'bestatigung.png'],
+      ['3', 'Interprète sur place', 'L’interprète est présent pour vous au lieu et à l’heure convenus.', 'ubersetzer.png'],
+    ],
+    cta: 'Demande gratuite d’interprète',
+  },
+  uk: {
+    kicker: 'Послуги усного перекладу',
+    title: 'Усний переклад',
+    introRows: [
+      {
+        asset: 'mannschaft.png',
+        text: 'Професійні послуги усного перекладу для компаній, органів влади, судів, медичних установ і приватних клієнтів.',
+      },
+      {
+        asset: 'platzhalter.png',
+        text: 'З 2019 року наше бюро усного та письмового перекладу підтримує клієнтів в Оснабрюку, Білефельді, Кілі, Майнці, Штутгарті, Берліні та по всій Німеччині, а за запитом також міжнародно.',
+      },
+      {
+        asset: 'save-the-world.png',
+        text: 'Ми організовуємо кваліфікованих усних перекладачів понад 190 мовами для очних зустрічей, онлайн-зустрічей, відеоконференцій і телефонного перекладу — швидко, надійно та професійно.',
+      },
+    ],
+    benefits: [
+      ['ПОНАД 190 МОВ', 'Усні перекладачі майже для всіх мов і діалектів у світі.', 'save-the-world.png'],
+      ['ДОСВІДЧЕНІ ПЕРЕКЛАДАЧІ', 'Кваліфіковані та перевірені усні перекладачі з багаторічним досвідом і високою фаховою компетентністю.', 'benutzer.png'],
+      ['ГНУЧКІ ФОРМАТИ РОБОТИ', 'Термінові виїзди, індивідуальне планування зустрічей і доступність по всій Німеччині.', 'flexibel.png'],
+    ],
+    processTitle: 'Як відбувається замовлення усного перекладача',
+    process: [
+      ['1', 'Надішліть запит електронною поштою', 'Вкажіть мову, місце виконання та час.', 'email.png'],
+      ['2', 'Отримайте та підтвердьте пропозицію', 'Перевірте ціну та підтвердьте пропозицію.', 'bestatigung.png'],
+      ['3', 'Перекладач на місці', 'Перекладач буде для вас у погоджений час і в погодженому місці.', 'ubersetzer.png'],
+    ],
+    cta: 'Безкоштовний запит усного перекладача',
+  },
+};
+
 const BEEIDIGTE_DOLMETSCHER_SHEET = {
   kicker: 'Dolmetschen',
   title: 'Beeidigte Dolmetscher',
@@ -772,8 +957,8 @@ const BEEIDIGTE_DOLMETSCHER_SHEET = {
     },
   ],
   features: [
-    ['Amtlich beeidigt', 'Beeidigte Dolmetscher für Behörden, Gerichte, Notare und offizielle Termine.', 'gesetz.png'],
-    ['Rechtssicher', 'Präzise Dolmetschleistungen für Anhörungen, Verfahren und behördliche Gespräche.', 'gericht.png'],
+    ['Amtlich beeidigt', 'Beeidigte Dolmetscher für Behörden, Gerichte, Notare und offizielle Termine.', 'gericht.png'],
+    ['Rechtssicher', 'Präzise Dolmetschleistungen für Anhörungen, Verfahren und behördliche Gespräche.', 'gesetz.png'],
     ['Vielseitig einsetzbar', 'Dolmetscher für Standesamt, Ausländerbehörde, Konsulat und weitere Fachbereiche.', 'vielseitig-einsetzbar.png'],
     ['Vertraulichkeit', 'Vertrauliche Behandlung Ihrer Daten, Dokumente und persönlichen Anliegen.', 'schild.png'],
   ],
@@ -855,25 +1040,33 @@ const POINT_GRID_SHEETS = {
     assetBase: `${POINT_CONTENT_ASSET_BASE}simultandolmetscher/`,
     kicker: 'Dolmetschen',
     title: 'Simultandolmetscher',
-    wordGrid: { columns: 5, iconSpan: 2, copySpan: 3, featureSpans: [1, 2, 1, 1] },
+    wordGrid: { columns: 4, iconSpan: 1, copySpan: 3, featureSpans: [1, 1, 1, 1] },
     rows: [
       {
-        icon: 'headset.png',
+        icon: 'dolmetscher.png',
         paragraphs: [
           'Unsere Simultandolmetscher sorgen dafür, dass internationale Konferenzen, Tagungen und Veranstaltungen reibungslos mehrsprachig ablaufen.',
-          'Wir vermitteln qualifizierte Dolmetscher in über 190 Sprachen für Präsenztermine, Online-Meetings, Videokonferenzen und Telefondolmetschen – schnell, zuverlässig und professionell.',
         ],
+      },
+      {
+        icon: 'globus.png',
         listTitle: 'Wir bieten professionelles Echtzeit-Dolmetschen unter anderem in den Sprachkombinationen:',
         items: ['Deutsch–Englisch', 'Deutsch–Französisch', 'Deutsch–Russisch', 'Deutsch–Spanisch', 'Deutsch–Italienisch', 'Deutsch–Arabisch', 'sowie in vielen weiteren europäischen und außereuropäischen Sprachen'],
       },
+      {
+        icon: 'benutzer.png',
+        paragraphs: [
+          'Wir vermitteln qualifizierte Dolmetscher in über 190 Sprachen für Präsenztermine, Online-Meetings, Videokonferenzen und Telefondolmetschen – schnell, zuverlässig und professionell.',
+        ],
+        request: true,
+      },
     ],
     features: [
-      ['Simultandolmetschen', 'Echtzeit-Dolmetschen für Konferenzen, Tagungen und internationale Veranstaltungen.', 'mikrofon.png'],
+      ['Simultandolmetschen', 'Echtzeit-Dolmetschen für Konferenzen, Tagungen und internationale Veranstaltungen.', 'headset.png'],
       ['Viele Sprachkombinationen', 'Professionelle Simultandolmetscher für Deutsch und zahlreiche internationale Sprachen.', 'sprachen.png'],
-      ['Erfahrene Teams', 'Qualifizierte Simultandolmetscher mit umfangreicher Konferenz- und Fachkompetenz.', 'benutzer.png'],
-      ['Moderne Technik', 'Dolmetschkabinen, Empfängeranlagen und professionelle Konferenztechnik aus einer Hand.', 'software.png'],
+      ['Erfahrene Teams', 'Qualifizierte Simultandolmetscher mit umfangreicher Konferenz- und Fachkompetenz.', 'coworking.png'],
+      ['Moderne Technik', 'Dolmetschkabinen, Empfängeranlagen und professionelle Konferenztechnik aus einer Hand.', 'digitale-transformation.png'],
     ],
-    request: true,
   },
   notardolmetscher: {
     assetBase: `${POINT_CONTENT_ASSET_BASE}notardolmetscher/`,
@@ -891,34 +1084,34 @@ const POINT_GRID_SHEETS = {
       },
     ],
     features: [
-      ['Präzision', 'Präzise Sprachmittlung für notarielle Beurkundungen und Verträge.', 'qualitat.png'],
-      ['Rechtssicherheit', 'Vollständige und rechtssichere Verständigung bei notariellen Terminen.', 'schild.png'],
+      ['Präzision', 'Präzise Sprachmittlung für notarielle Beurkundungen und Verträge.', 'fokus.png'],
+      ['Rechtssicherheit', 'Vollständige und rechtssichere Verständigung bei notariellen Terminen.', 'dritte-seite.png'],
       ['Erfahrung', 'Regelmäßige Zusammenarbeit mit Notariaten und umfassende Praxiserfahrung.', 'erfahrung.png'],
-      ['Flexibel & zuverlässig', 'Kurzfristige Termine und bundesweite Einsätze auf Anfrage möglich.', 'fokus.png'],
+      ['Flexibel & zuverlässig', 'Kurzfristige Termine und bundesweite Einsätze auf Anfrage möglich.', 'qualitat.png'],
     ],
     request: true,
   },
   'fachuebersetzung-overview': {
     assetBase: `${POINT_CONTENT_ASSET_BASE}fachuebersetzung-overview/`,
     kicker: 'Fachübersetzungen',
-    title: 'Fachübersetzung',
-    wordGrid: { columns: 5, iconSpan: 2, copySpan: 3, featureSpans: [1, 2, 1, 1, 1, 2, 1, 1] },
+    title: 'Was sind Fachübersetzungen?',
+    wordGrid: { columns: 4, iconSpan: 1, copySpan: 3, featureSpans: [2, 2, 2, 2, 2, 2, 2, 2] },
     rows: [
       {
-        icon: 'online-bildung.png',
-        title: 'Was sind Fachübersetzungen?',
+        icon: 'wirtschaft.png',
         paragraphs: [
           'Fachübersetzungen erfordern weit mehr als Sprachkenntnisse. Sie setzen fundiertes Fachwissen und Erfahrung im jeweiligen Fachgebiet voraus. Deshalb arbeiten wir ausschließlich mit qualifizierten Fachübersetzern.',
           'Unsere Fachübersetzer übertragen Inhalte sprachlich korrekt, fachlich präzise und zielgruppengerecht – für technische, juristische, medizinische, wissenschaftliche und wirtschaftliche Dokumente.',
         ],
+        request: true,
       },
     ],
     sectionTitle: 'Unsere Fachübersetzungsbereiche:',
     features: [
       ['Recht', 'Verträge, Urteile, Gutachten und juristische Dokumente.', 'gericht.png'],
       ['Ingenieurwesen', 'Technische Dokumentationen, Handbücher und Spezifikationen.', 'ingenieurwesen.png'],
-      ['Medizin & Zahnmedizin', 'Patientenunterlagen, Befunde, Studien und medizinische Fachtexte.', 'medizinisch.png'],
-      ['Pharmazie', 'Studien, Fachinformationen und Zulassungsunterlagen.', 'rotes-kreuz.png'],
+      ['Medizin & Zahnmedizin', 'Patientenunterlagen, Befunde, Studien und medizinische Fachtexte.', 'rotes-kreuz.png'],
+      ['Pharmazie', 'Studien, Fachinformationen und Zulassungsunterlagen.', 'medizinisch.png'],
       ['Literatur', 'Bücher, Fachtexte, Artikel und kulturelle Inhalte.', 'online-bildung.png'],
       ['IT & Software', 'Software, Apps, Handbücher und technische Dokumentationen.', 'it-service.png'],
       ['Chemie & Biowissenschaften', 'Patente, Laborberichte und wissenschaftliche Texte.', 'chemie.png'],
@@ -947,7 +1140,7 @@ const POINT_GRID_SHEETS = {
         columns: 2,
       },
       {
-        icon: 'abgeschlossene-aufgabe (1).png',
+        icon: 'fabrik.png',
         title: 'Internationale Technik- und Industrieprojekte',
         lead: 'Unsere technischen Übersetzungen unterstützen Sie bei:',
         items: ['Internationalen Ausschreibungen', 'Maschinenexporten', 'CE-Dokumentationen', 'Technischen Schulungen', 'Anlagenbauprojekten', 'Produktlokalisierung', 'Sicherheitsdokumentationen', 'Weltweitem Vertrieb'],
@@ -957,7 +1150,7 @@ const POINT_GRID_SHEETS = {
     features: [
       ['Maschinenbau', 'Fachübersetzungen für Maschinen, Anlagen und technische Systeme.', 'maschinenbau.png'],
       ['Elektrotechnik', 'Präzise Übersetzungen für Elektrotechnik und Steuerungstechnik.', 'leistung.png'],
-      ['Internationale Projekte', 'Übersetzungen für Export, Ausschreibungen und internationale Vorhaben.', 'fabrik.png'],
+      ['Internationale Projekte', 'Übersetzungen für Export, Ausschreibungen und internationale Vorhaben.', 'abgeschlossene-aufgabe (1).png'],
     ],
     request: true,
   },
@@ -983,7 +1176,7 @@ const POINT_GRID_SHEETS = {
         columns: 2,
       },
       {
-        icon: 'gesundheit.png',
+        icon: 'stethoskop.png',
         title: 'Gesundheitswesen & Medizintechnik',
         lead: 'Unsere Übersetzungen unterstützen:',
         items: ['Kliniken und Krankenhäuser', 'Arzt- und Zahnarztpraxen', 'Medizintechnik-Hersteller', 'Dentallabore', 'Klinische Studien', 'Medizinische Software', 'Patientenkommunikation', 'Internationale Zulassungen'],
@@ -992,7 +1185,7 @@ const POINT_GRID_SHEETS = {
     ],
     features: [
       ['Dentalmedizin & Zahntechnik', 'Fachübersetzungen für Zahnmedizin, Zahntechnik, Dentalfirmen und CAD/CAM-Systeme.', 'dental.png'],
-      ['Internationale Gesundheitskommunikation', 'Übersetzungen für Studien, Zulassungen und internationale Fachkommunikation.', 'stethoskop.png'],
+      ['Internationale Gesundheitskommunikation', 'Übersetzungen für Studien, Zulassungen und internationale Fachkommunikation.', 'gesundheit.png'],
     ],
     request: true,
   },
@@ -1043,14 +1236,14 @@ const POINT_GRID_SHEETS = {
         paragraphs: ['Als Fachübersetzungsbüro für Literatur und Kultur unterstützen wir Verlage, Autorinnen und Autoren, Theater, Filmproduktionen, Kulturinstitutionen, Museen und Agenturen mit hochwertigen literarischen Übersetzungen.'],
       },
       {
-        icon: 'dokumentieren.png',
+        icon: 'biografie.png',
         title: 'Literarische und kulturelle Texte',
         lead: 'Wir übersetzen unter anderem:',
         items: ['Romane', 'Erzählungen', 'Kinder- und Jugendbücher', 'Lyrik', 'Essays', 'Biografien', 'Sachbücher', 'Theaterstücke', 'Drehbücher', 'Hörspieltexte', 'Katalogtexte', 'Ausstellungstexte'],
         columns: 2,
       },
       {
-        icon: 'biografie.png',
+        icon: 'kultur.png',
         title: 'Verlage, Autoren & Kulturinstitutionen',
         lead: 'Unsere Übersetzungen unterstützen:',
         items: ['Buchübersetzungen', 'Literaturprojekte', 'Verlagsprogramme', 'Theaterproduktionen', 'Filmproduktionen', 'Museumsausstellungen', 'Mehrsprachige Marketingkampagnen', 'Internationale Kulturprojekte'],
@@ -1059,7 +1252,7 @@ const POINT_GRID_SHEETS = {
     ],
     features: [
       ['Kultur & Medien', 'Übersetzungen für Theater, Film, Hörspiele, Magazine und Kulturprojekte.', 'klappe.png'],
-      ['Lektorat & Korrektorat', 'Professionelles Lektorat und Korrektorat für sprachliche und stilistische Qualität.', 'kultur.png'],
+      ['Lektorat & Korrektorat', 'Professionelles Lektorat und Korrektorat für sprachliche und stilistische Qualität.', 'dokumentieren.png'],
     ],
     request: true,
   },
@@ -1112,9 +1305,9 @@ const RECHT_SHEET = {
   ],
   features: [
     ['Internationale Rechtskommunikation', 'Für Kanzleien, Unternehmen, Behörden und internationale Verfahren.', 'internationale-beziehungen.png'],
-    ['Rechtssichere Übersetzungen', 'Für Verträge, Gerichtsdokumente, Gutachten und Schriftsätze.', 'zertifikat.png'],
-    ['Juristische Fachterminologie', 'Einheitliche Fachbegriffe und höchste Übersetzungsqualität.', 'gericht.png'],
-    ['Verträge & Urkunden', 'Immobilienverträge, Vollmachten, Maklerverträge und notarielle Urkunden.', 'dokument.png'],
+    ['Rechtssichere Übersetzungen', 'Für Verträge, Gerichtsdokumente, Gutachten und Schriftsätze.', 'juristisches-papier.png'],
+    ['Juristische Fachterminologie', 'Einheitliche Fachbegriffe und höchste Übersetzungsqualität.', 'juristische-dienstleistung.png'],
+    ['Verträge & Urkunden', 'Immobilienverträge, Vollmachten, Maklerverträge und notarielle Urkunden.', 'zertifikat.png'],
   ],
 };
 
@@ -1326,21 +1519,118 @@ function splitSentences(text = '', max = 3) {
     .slice(0, max);
 }
 
+
+const SERVICE_SHEET_TEXT_TRANSLATIONS = {
+  'Juristische Fachübersetzungen': { en: 'Legal specialist translations', ar: 'ترجمات قانونية متخصصة', tr: 'Hukuki uzman çeviriler', ru: 'Юридические специализированные переводы', fr: 'Traductions juridiques spécialisées', uk: 'Юридичні фахові переклади' },
+  'Wir erstellen präzise Fachübersetzungen für Kanzleien, Notare, Gerichte, Unternehmen, Behörden und Privatpersonen.': { en: 'We prepare precise specialist translations for law firms, notaries, courts, companies, authorities and private clients.', ar: 'نعد ترجمات قانونية متخصصة ودقيقة للمحامين وكتاب العدل والمحاكم والشركات والجهات الحكومية والعملاء الأفراد.', tr: 'Hukuk büroları, noterler, mahkemeler, şirketler, resmi kurumlar ve özel müşteriler için hassas uzman çeviriler hazırlıyoruz.', ru: 'Мы выполняем точные специализированные переводы для юридических фирм, нотариусов, судов, компаний, органов власти и частных клиентов.', fr: 'Nous réalisons des traductions spécialisées précises pour cabinets d’avocats, notaires, tribunaux, entreprises, administrations et particuliers.', uk: 'Ми виконуємо точні фахові переклади для юридичних фірм, нотаріусів, судів, компаній, органів влади та приватних клієнтів.' },
+  'Wir übersetzen Verträge, Urteile, Beschlüsse, Vollmachten, Satzungen, Klageschriften, Urkunden und viele weitere juristische Dokumente.': { en: 'We translate contracts, judgments, decisions, powers of attorney, statutes, statements of claim, certificates and many other legal documents.', ar: 'نترجم العقود والأحكام والقرارات والتوكيلات والأنظمة الأساسية ولوائح الدعوى والوثائق الرسمية والعديد من المستندات القانونية الأخرى.', tr: 'Sözleşmeleri, kararları, hükümleri, vekaletnameleri, tüzükleri, dava dilekçelerini, belgeleri ve daha birçok hukuki dokümanı çeviriyoruz.', ru: 'Мы переводим договоры, судебные решения, постановления, доверенности, уставы, исковые заявления, документы и многие другие юридические материалы.', fr: 'Nous traduisons contrats, jugements, décisions, procurations, statuts, actes de procédure, certificats et de nombreux autres documents juridiques.', uk: 'Ми перекладаємо договори, судові рішення, постанови, довіреності, статути, позовні заяви, документи та багато інших юридичних матеріалів.' },
+  'Unsere allgemein beeidigten Dolmetscher begleiten Sie zuverlässig bei Terminen bei Behörden, Gerichten, Notaren, Standesämtern, Anhörungen sowie in Konsulaten und Botschaften.': { en: 'Our generally sworn interpreters reliably support you at appointments with authorities, courts, notaries, registry offices, hearings, consulates and embassies.', ar: 'يرافقكم مترجمونا الفوريون المحلفون بشكل موثوق في المواعيد لدى الجهات الحكومية والمحاكم وكتاب العدل ومكاتب الزواج وجلسات الاستماع والقنصليات والسفارات.', tr: 'Genel yeminli tercümanlarımız resmi kurumlar, mahkemeler, noterler, nüfus/evlendirme daireleri, duruşmalar, konsolosluklar ve büyükelçiliklerdeki randevularınızda size güvenilir şekilde eşlik eder.', ru: 'Наши присяжные устные переводчики надежно сопровождают вас на встречах в органах власти, судах, у нотариусов, в ЗАГСах, на слушаниях, в консульствах и посольствах.', fr: 'Nos interprètes généralement assermentés vous accompagnent de manière fiable lors de rendez-vous auprès des administrations, tribunaux, notaires, services d’état civil, auditions, consulats et ambassades.', uk: 'Наші присяжні усні перекладачі надійно супроводжують вас під час зустрічей в органах влади, судах, у нотаріусів, РАЦСах, на слуханнях, у консульствах і посольствах.' },
+  'Dank unseres bundesweiten Netzwerks mit über 8.000 qualifizierten Dolmetschern und Übersetzern finden wir für nahezu jede Sprache den passenden Ansprechpartner. Unsere Muttersprachler sind fachlich qualifiziert und – soweit erforderlich – allgemein beeidigt bzw. ermächtigt.': { en: 'Thanks to our nationwide network of more than 8,000 qualified interpreters and translators, we find the right contact for almost every language. Our native speakers are professionally qualified and, where required, generally sworn or authorized.', ar: 'بفضل شبكتنا المنتشرة في جميع أنحاء ألمانيا والتي تضم أكثر من 8,000 مترجم فوري وتحريري مؤهل، نجد الشخص المناسب لكل لغة تقريبا. متحدثونا الأصليون مؤهلون مهنيا ومحلفون أو مخولون عند الحاجة.', tr: 'Almanya genelindeki 8.000’den fazla nitelikli tercüman ve çevirmen ağımız sayesinde neredeyse her dil için uygun uzmanı buluyoruz. Ana dili uzmanlarımız mesleki olarak yetkindir ve gerektiğinde genel yeminli veya yetkilidir.', ru: 'Благодаря нашей общегерманской сети из более чем 8 000 квалифицированных устных и письменных переводчиков мы находим подходящего специалиста почти для любого языка. Наши носители языка профессионально квалифицированы и, при необходимости, присяжные или уполномоченные.', fr: 'Grâce à notre réseau national de plus de 8 000 interprètes et traducteurs qualifiés, nous trouvons le bon interlocuteur pour presque chaque langue. Nos locuteurs natifs sont qualifiés professionnellement et, si nécessaire, assermentés ou habilités.', uk: 'Завдяки нашій загальнонімецькій мережі з понад 8 000 кваліфікованих усних і письмових перекладачів ми знаходимо відповідного фахівця майже для кожної мови. Наші носії мови мають професійну кваліфікацію і, за потреби, є присяжними або уповноваженими.' },
+  'Ob bei der Ausländerbehörde, vor Gericht, beim Notar oder im Standesamt – wir sorgen für eine präzise, neutrale und rechtssichere Sprachmittlung, damit Ihre Kommunikation reibungslos und offiziell anerkannt erfolgt.': { en: 'Whether at the immigration office, in court, at a notary or at the registry office, we ensure precise, neutral and legally reliable interpreting so your communication runs smoothly and is officially recognized.', ar: 'سواء في مكتب الأجانب أو أمام المحكمة أو لدى كاتب العدل أو في مكتب الزواج، نضمن ترجمة فورية دقيقة ومحايدة وموثوقة قانونيا حتى تسير تواصلكم بسلاسة ويتم الاعتراف به رسميا.', tr: 'Yabancılar dairesinde, mahkemede, noterde veya evlendirme dairesinde; iletişiminizin sorunsuz ve resmi olarak kabul edilebilir olması için hassas, tarafsız ve hukuken güvenilir tercümanlık sağlarız.', ru: 'Будь то ведомство по делам иностранцев, суд, нотариус или ЗАГС, мы обеспечиваем точный, нейтральный и юридически надежный устный перевод, чтобы ваша коммуникация проходила гладко и официально признавалась.', fr: 'Que ce soit auprès du service des étrangers, au tribunal, chez le notaire ou à l’état civil, nous assurons une interprétation précise, neutre et juridiquement fiable afin que votre communication soit fluide et officiellement reconnue.', uk: 'Чи то у відомстві у справах іноземців, у суді, у нотаріуса чи в РАЦСі, ми забезпечуємо точний, нейтральний і юридично надійний усний переклад, щоб ваша комунікація проходила безперешкодно й офіційно визнавалася.' },
+  'Für Ihre standesamtliche Trauung stellen wir zuverlässige Dolmetscher, damit beide Partner jedes Wort verstehen und die Eheschließung rechtswirksam erfolgen kann.': { en: 'For your civil wedding, we provide reliable interpreters so both partners understand every word and the marriage can be legally valid.', ar: 'لحفل الزواج المدني نوفر مترجمين فوريين موثوقين حتى يفهم الطرفان كل كلمة ويتم عقد الزواج بصورة قانونية صحيحة.', tr: 'Resmi nikahınız için her iki eşin de her kelimeyi anlaması ve evliliğin hukuken geçerli şekilde yapılabilmesi için güvenilir tercümanlar sağlıyoruz.', ru: 'Для вашей регистрации брака мы предоставляем надежных переводчиков, чтобы оба партнера понимали каждое слово и брак был заключен юридически действительно.', fr: 'Pour votre mariage civil, nous fournissons des interprètes fiables afin que les deux partenaires comprennent chaque mot et que le mariage soit juridiquement valable.', uk: 'Для вашого цивільного шлюбу ми надаємо надійних перекладачів, щоб обидва партнери розуміли кожне слово і шлюб був юридично чинним.' },
+  'Unsere beeidigten Standesamt-Dolmetscher begleiten Sie zum Standesamt, erläutern alle Erklärungen in Ihrer Sprache und sorgen für eine reibungslose Verständigung.': { en: 'Our sworn registry-office interpreters accompany you to the registry office, explain all statements in your language and ensure smooth communication.', ar: 'يرافقكم مترجمونا المحلفون إلى مكتب الزواج، ويوضحون جميع الإقرارات بلغتكم ويضمنون تواصلا سلسا.', tr: 'Yeminli evlendirme dairesi tercümanlarımız size evlendirme dairesinde eşlik eder, tüm beyanları dilinizde açıklar ve sorunsuz iletişim sağlar.', ru: 'Наши присяжные переводчики для ЗАГСа сопровождают вас в ЗАГС, объясняют все заявления на вашем языке и обеспечивают беспрепятственное взаимопонимание.', fr: 'Nos interprètes assermentés pour l’état civil vous accompagnent au service d’état civil, expliquent toutes les déclarations dans votre langue et assurent une communication fluide.', uk: 'Наші присяжні перекладачі для РАЦСу супроводжують вас до РАЦСу, пояснюють усі заяви вашою мовою та забезпечують безперешкодне порозуміння.' },
+  'So können Sie sich ganz auf Ihren besonderen Tag konzentrieren – wir übernehmen die sprachliche Begleitung.': { en: 'This lets you focus fully on your special day while we take care of the language support.', ar: 'وبذلك يمكنكم التركيز تماما على يومكم الخاص، بينما نتولى نحن الدعم اللغوي.', tr: 'Böylece siz özel gününüze tamamen odaklanabilirsiniz; dil desteğini biz üstleniriz.', ru: 'Так вы можете полностью сосредоточиться на своем особенном дне, а языковое сопровождение берем на себя мы.', fr: 'Vous pouvez ainsi vous concentrer pleinement sur votre journée spéciale pendant que nous prenons en charge l’accompagnement linguistique.', uk: 'Так ви можете повністю зосередитися на своєму особливому дні, а мовний супровід беремо на себе ми.' },
+  'Wir unterstützen Unternehmen, Kanzleien, Banken und Versicherungen mit präzisen Fachübersetzungen im Bereich Wirtschaft und Finanzen.': { en: 'We support companies, law firms, banks and insurance providers with precise specialist translations in business and finance.', ar: 'ندعم الشركات ومكاتب المحاماة والبنوك وشركات التأمين بترجمات متخصصة دقيقة في مجال الأعمال والمال.', tr: 'Şirketleri, hukuk bürolarını, bankaları ve sigorta şirketlerini ekonomi ve finans alanında hassas uzman çevirilerle destekliyoruz.', ru: 'Мы поддерживаем компании, юридические фирмы, банки и страховые компании точными специализированными переводами в области экономики и финансов.', fr: 'Nous accompagnons entreprises, cabinets d’avocats, banques et assurances avec des traductions spécialisées précises dans le domaine économique et financier.', uk: 'Ми підтримуємо компанії, юридичні фірми, банки та страхові компанії точними фаховими перекладами у сфері економіки й фінансів.' },
+  'Dolmetscherdienste': { en: 'Interpreting services', ar: 'خدمات الترجمة الفورية', tr: 'Tercümanlık hizmetleri', ru: 'Услуги устного перевода', fr: 'Services d’interprétation', uk: 'Послуги усного перекладу' },
+  'Fachübersetzungen': { en: 'Specialist translations', ar: 'ترجمات متخصصة', tr: 'Uzman çeviriler', ru: 'Специализированные переводы', fr: 'Traductions spécialisées', uk: 'Фахові переклади' },
+  'Fachübersetzung': { en: 'Specialist translation', ar: 'ترجمة متخصصة', tr: 'Uzman çeviri', ru: 'Специализированный перевод', fr: 'Traduction spécialisée', uk: 'Фаховий переклад' },
+  'Übersetzung': { en: 'Translation', ar: 'ترجمة', tr: 'Çeviri', ru: 'Перевод', fr: 'Traduction', uk: 'Переклад' },
+  'Was sind Fachübersetzungen?': { en: 'What are specialist translations?', ar: 'ما هي الترجمات المتخصصة؟', tr: 'Uzman çeviriler nedir?', ru: 'Что такое специализированные переводы?', fr: 'Que sont les traductions spécialisées ?', uk: 'Що таке фахові переклади?' },
+  'Unsere Fachübersetzungsbereiche:': { en: 'Our specialist translation areas:', ar: 'مجالات الترجمة المتخصصة لدينا:', tr: 'Uzman çeviri alanlarımız:', ru: 'Наши направления специализированного перевода:', fr: 'Nos domaines de traduction spécialisée :', uk: 'Наші напрями фахового перекладу:' },
+  'Über 190 Sprachen': { en: 'Over 190 languages', ar: 'أكثر من 190 لغة', tr: '190’dan fazla dil', ru: 'Более 190 языков', fr: 'Plus de 190 langues', uk: 'Понад 190 мов' },
+  'Erfahrene Dolmetscher': { en: 'Experienced interpreters', ar: 'مترجمون فوريون ذوو خبرة', tr: 'Deneyimli tercümanlar', ru: 'Опытные устные переводчики', fr: 'Interprètes expérimentés', uk: 'Досвідчені усні перекладачі' },
+  'Flexible Einsatzformen': { en: 'Flexible assignment formats', ar: 'أشكال عمل مرنة', tr: 'Esnek görev biçimleri', ru: 'Гибкие форматы работы', fr: 'Formats d’intervention flexibles', uk: 'Гнучкі формати роботи' },
+  'Simultandolmetschen': { en: 'Simultaneous interpreting', ar: 'ترجمة فورية متزامنة', tr: 'Simultane tercümanlık', ru: 'Синхронный перевод', fr: 'Interprétation simultanée', uk: 'Синхронний переклад' },
+  'Viele Sprachkombinationen': { en: 'Many language combinations', ar: 'تركيبات لغوية عديدة', tr: 'Birçok dil kombinasyonu', ru: 'Многие языковые комбинации', fr: 'Nombreuses combinaisons linguistiques', uk: 'Багато мовних комбінацій' },
+  'Erfahrene Teams': { en: 'Experienced teams', ar: 'فرق ذات خبرة', tr: 'Deneyimli ekipler', ru: 'Опытные команды', fr: 'Équipes expérimentées', uk: 'Досвідчені команди' },
+  'Moderne Technik': { en: 'Modern technology', ar: 'تقنية حديثة', tr: 'Modern teknoloji', ru: 'Современная техника', fr: 'Technologie moderne', uk: 'Сучасна техніка' },
+  'Präzision': { en: 'Precision', ar: 'الدقة', tr: 'Hassasiyet', ru: 'Точность', fr: 'Précision', uk: 'Точність' },
+  'Rechtssicherheit': { en: 'Legal certainty', ar: 'الأمان القانوني', tr: 'Hukuki güvence', ru: 'Правовая надежность', fr: 'Sécurité juridique', uk: 'Правова надійність' },
+  'Erfahrung': { en: 'Experience', ar: 'الخبرة', tr: 'Deneyim', ru: 'Опыт', fr: 'Expérience', uk: 'Досвід' },
+  'Flexibel & zuverlässig': { en: 'Flexible and reliable', ar: 'مرن وموثوق', tr: 'Esnek ve güvenilir', ru: 'Гибко и надежно', fr: 'Flexible et fiable', uk: 'Гнучко та надійно' },
+  'Amtlich beeidigt': { en: 'Officially sworn', ar: 'محلف رسميا', tr: 'Resmi yeminli', ru: 'Официально присяжный', fr: 'Assermenté officiellement', uk: 'Офіційно присяжний' },
+  'Rechtssicher': { en: 'Legally reliable', ar: 'موثوق قانونيا', tr: 'Hukuken güvenilir', ru: 'Юридически надежно', fr: 'Juridiquement fiable', uk: 'Юридично надійно' },
+  'Vielseitig einsetzbar': { en: 'Versatile use', ar: 'استخدامات متعددة', tr: 'Çok yönlü kullanım', ru: 'Универсальное применение', fr: 'Utilisation polyvalente', uk: 'Універсальне застосування' },
+  'Vertraulichkeit': { en: 'Confidentiality', ar: 'السرية', tr: 'Gizlilik', ru: 'Конфиденциальность', fr: 'Confidentialité', uk: 'Конфіденційність' },
+  'Internationale Rechtskommunikation': { en: 'International legal communication', ar: 'تواصل قانوني دولي', tr: 'Uluslararası hukuk iletişimi', ru: 'Международная юридическая коммуникация', fr: 'Communication juridique internationale', uk: 'Міжнародна правова комунікація' },
+  'Rechtssichere Übersetzungen': { en: 'Legally reliable translations', ar: 'ترجمات موثوقة قانونيا', tr: 'Hukuken güvenilir çeviriler', ru: 'Юридически надежные переводы', fr: 'Traductions juridiquement fiables', uk: 'Юридично надійні переклади' },
+  'Juristische Fachterminologie': { en: 'Legal terminology', ar: 'مصطلحات قانونية متخصصة', tr: 'Hukuki terminoloji', ru: 'Юридическая терминология', fr: 'Terminologie juridique', uk: 'Юридична термінологія' },
+  'Verträge & Urkunden': { en: 'Contracts and certificates', ar: 'العقود والوثائق', tr: 'Sözleşmeler ve belgeler', ru: 'Договоры и документы', fr: 'Contrats et actes', uk: 'Договори та документи' },
+  'Recht': { en: 'Law', ar: 'القانون', tr: 'Hukuk', ru: 'Право', fr: 'Droit', uk: 'Право' },
+  'Ingenieurwesen': { en: 'Engineering', ar: 'الهندسة', tr: 'Mühendislik', ru: 'Инженерия', fr: 'Ingénierie', uk: 'Інженерія' },
+  'Medizin & Zahnmedizin': { en: 'Medicine and dentistry', ar: 'الطب وطب الأسنان', tr: 'Tıp ve diş hekimliği', ru: 'Медицина и стоматология', fr: 'Médecine et dentisterie', uk: 'Медицина та стоматологія' },
+  'Pharmazie': { en: 'Pharmacy', ar: 'الصيدلة', tr: 'Eczacılık', ru: 'Фармацевтика', fr: 'Pharmacie', uk: 'Фармація' },
+  'Literatur': { en: 'Literature', ar: 'الأدب', tr: 'Edebiyat', ru: 'Литература', fr: 'Littérature', uk: 'Література' },
+  'IT & Software': { en: 'IT and software', ar: 'تقنية المعلومات والبرمجيات', tr: 'BT ve yazılım', ru: 'IT и программное обеспечение', fr: 'IT et logiciels', uk: 'IT та програмне забезпечення' },
+  'Chemie & Biowissenschaften': { en: 'Chemistry and life sciences', ar: 'الكيمياء وعلوم الحياة', tr: 'Kimya ve yaşam bilimleri', ru: 'Химия и науки о жизни', fr: 'Chimie et sciences de la vie', uk: 'Хімія та науки про життя' },
+  'Industrie & Produktion': { en: 'Industry and production', ar: 'الصناعة والإنتاج', tr: 'Sanayi ve üretim', ru: 'Промышленность и производство', fr: 'Industrie et production', uk: 'Промисловість і виробництво' },
+  'Typische Rechtsdokumente, die wir regelmäßig übersetzen:': { en: 'Typical legal documents we regularly translate:', ar: 'وثائق قانونية نموذجية نترجمها بانتظام:', tr: 'Düzenli olarak çevirdiğimiz tipik hukuki belgeler:', ru: 'Типичные юридические документы, которые мы регулярно переводим:', fr: 'Documents juridiques typiques que nous traduisons régulièrement :', uk: 'Типові юридичні документи, які ми регулярно перекладаємо:' },
+  'Wir stellen sicher, dass alle Beteiligten jedes Detail verstehen – unabhängig davon, ob der Termin ein- oder mehrsprachig stattfindet.': { en: 'We make sure everyone involved understands every detail, regardless of whether the appointment is monolingual or multilingual.', ar: 'نضمن أن يفهم جميع المشاركين كل التفاصيل، سواء كان الموعد بلغة واحدة أو بعدة لغات.', tr: 'Randevu tek dilli veya çok dilli olsun, tüm katılımcıların her ayrıntıyı anlamasını sağlarız.', ru: 'Мы гарантируем, что все участники понимают каждую деталь, независимо от того, проходит встреча на одном или нескольких языках.', fr: 'Nous veillons à ce que toutes les personnes concernées comprennent chaque détail, que le rendez-vous soit monolingue ou multilingue.', uk: 'Ми забезпечуємо, щоб усі учасники розуміли кожну деталь, незалежно від того, чи зустріч проходить однією мовою чи кількома.' },
+  'Präzise Sprachmittlung für notarielle Beurkundungen und Verträge.': { en: 'Precise interpreting for notarial certifications and contracts.', ar: 'ترجمة فورية دقيقة للتوثيقات والعقود لدى كاتب العدل.', tr: 'Noter tasdikleri ve sözleşmeler için hassas sözlü çeviri.', ru: 'Точный устный перевод для нотариальных удостоверений и договоров.', fr: 'Interprétation précise pour les actes notariés et les contrats.', uk: 'Точний усний переклад для нотаріальних посвідчень і договорів.' },
+  'Vollständige und rechtssichere Verständigung bei notariellen Terminen.': { en: 'Complete and legally reliable communication at notary appointments.', ar: 'تواصل كامل وموثوق قانونيا في مواعيد كاتب العدل.', tr: 'Noter randevularında eksiksiz ve hukuken güvenilir iletişim.', ru: 'Полное и юридически надежное взаимопонимание на нотариальных встречах.', fr: 'Communication complète et juridiquement fiable lors des rendez-vous notariés.', uk: 'Повна та юридично надійна комунікація під час нотаріальних зустрічей.' },
+  'Regelmäßige Zusammenarbeit mit Notariaten und umfassende Praxiserfahrung.': { en: 'Regular cooperation with notary offices and extensive practical experience.', ar: 'تعاون منتظم مع مكاتب كاتب العدل وخبرة عملية واسعة.', tr: 'Noterliklerle düzenli iş birliği ve kapsamlı uygulama deneyimi.', ru: 'Регулярное сотрудничество с нотариальными конторами и обширный практический опыт.', fr: 'Collaboration régulière avec des études notariales et grande expérience pratique.', uk: 'Регулярна співпраця з нотаріальними конторами та широкий практичний досвід.' },
+  'Kurzfristige Termine und bundesweite Einsätze auf Anfrage möglich.': { en: 'Short-notice appointments and nationwide assignments are possible on request.', ar: 'يمكن توفير مواعيد عاجلة ومهام في جميع أنحاء ألمانيا عند الطلب.', tr: 'Talep üzerine kısa süreli randevular ve Almanya genelinde görevlendirmeler mümkündür.', ru: 'По запросу возможны срочные встречи и выезды по всей Германии.', fr: 'Rendez-vous à court terme et interventions dans toute l’Allemagne possibles sur demande.', uk: 'За запитом можливі термінові зустрічі та виїзди по всій Німеччині.' },
+  'Für Kanzleien, Unternehmen, Behörden und internationale Verfahren.': { en: 'For law firms, companies, authorities and international proceedings.', ar: 'للمحامين والشركات والجهات الحكومية والإجراءات الدولية.', tr: 'Hukuk büroları, şirketler, resmi kurumlar ve uluslararası süreçler için.', ru: 'Для юридических фирм, компаний, органов власти и международных процедур.', fr: 'Pour cabinets d’avocats, entreprises, administrations et procédures internationales.', uk: 'Для юридичних фірм, компаній, органів влади та міжнародних процедур.' },
+  'Für Verträge, Gerichtsdokumente, Gutachten und Schriftsätze.': { en: 'For contracts, court documents, expert opinions and pleadings.', ar: 'للعقود ووثائق المحاكم والتقارير القانونية والمذكرات.', tr: 'Sözleşmeler, mahkeme belgeleri, bilirkişi raporları ve dilekçeler için.', ru: 'Для договоров, судебных документов, заключений и процессуальных документов.', fr: 'Pour contrats, documents judiciaires, expertises et écritures juridiques.', uk: 'Для договорів, судових документів, експертних висновків і процесуальних документів.' },
+  'Einheitliche Fachbegriffe und höchste Übersetzungsqualität.': { en: 'Consistent specialist terminology and the highest translation quality.', ar: 'مصطلحات متخصصة موحدة وأعلى جودة ترجمة.', tr: 'Tutarlı uzman terminoloji ve en yüksek çeviri kalitesi.', ru: 'Единая специализированная терминология и высочайшее качество перевода.', fr: 'Terminologie spécialisée cohérente et qualité de traduction maximale.', uk: 'Узгоджена фахова термінологія та найвища якість перекладу.' },
+  'Immobilienverträge, Vollmachten, Maklerverträge und notarielle Urkunden.': { en: 'Real estate contracts, powers of attorney, brokerage contracts and notarial deeds.', ar: 'عقود العقارات والتوكيلات وعقود الوساطة والوثائق الموثقة.', tr: 'Gayrimenkul sözleşmeleri, vekaletnameler, aracılık sözleşmeleri ve noter belgeleri.', ru: 'Договоры недвижимости, доверенности, брокерские договоры и нотариальные документы.', fr: 'Contrats immobiliers, procurations, mandats de courtage et actes notariés.', uk: 'Договори нерухомості, довіреності, брокерські договори та нотаріальні документи.' },
+  'Beeidigte Dolmetscher für Behörden, Gerichte, Notare und offizielle Termine.': { en: 'Sworn interpreters for authorities, courts, notaries and official appointments.', ar: 'مترجمون فوريون محلفون للجهات الحكومية والمحاكم وكتاب العدل والمواعيد الرسمية.', tr: 'Resmi kurumlar, mahkemeler, noterler ve resmi randevular için yeminli tercümanlar.', ru: 'Присяжные устные переводчики для ведомств, судов, нотариусов и официальных встреч.', fr: 'Interprètes assermentés pour administrations, tribunaux, notaires et rendez-vous officiels.', uk: 'Присяжні усні перекладачі для органів влади, судів, нотаріусів та офіційних зустрічей.' },
+  'Präzise Dolmetschleistungen für Anhörungen, Verfahren und behördliche Gespräche.': { en: 'Precise interpreting for hearings, proceedings and official conversations.', ar: 'ترجمة فورية دقيقة لجلسات الاستماع والإجراءات والمحادثات الرسمية.', tr: 'Duruşmalar, işlemler ve resmi görüşmeler için hassas tercümanlık.', ru: 'Точный устный перевод для слушаний, процедур и официальных бесед.', fr: 'Interprétation précise pour auditions, procédures et entretiens administratifs.', uk: 'Точний усний переклад для слухань, процедур та офіційних розмов.' },
+  'Dolmetscher für Standesamt, Ausländerbehörde, Konsulat und weitere Fachbereiche.': { en: 'Interpreters for registry offices, immigration authorities, consulates and other specialist areas.', ar: 'مترجمون لمكتب الزواج ومصلحة الأجانب والقنصليات ومجالات تخصصية أخرى.', tr: 'Nikah dairesi, yabancılar dairesi, konsolosluk ve diğer uzman alanlar için tercümanlar.', ru: 'Переводчики для ЗАГСа, ведомства по делам иностранцев, консульства и других сфер.', fr: 'Interprètes pour état civil, services des étrangers, consulats et autres domaines spécialisés.', uk: 'Перекладачі для РАЦСу, відомства у справах іноземців, консульства та інших сфер.' },
+  'Vertrauliche Behandlung Ihrer Daten, Dokumente und persönlichen Anliegen.': { en: 'Confidential handling of your data, documents and personal matters.', ar: 'معالجة سرية لبياناتك ووثائقك وطلباتك الشخصية.', tr: 'Verilerinizin, belgelerinizin ve kişisel konularınızın gizli şekilde işlenmesi.', ru: 'Конфиденциальная обработка ваших данных, документов и личных вопросов.', fr: 'Traitement confidentiel de vos données, documents et demandes personnelles.', uk: 'Конфіденційна обробка ваших даних, документів та особистих питань.' },
+  'Verträge, Urteile, Gutachten und juristische Dokumente.': { en: 'Contracts, judgments, expert opinions and legal documents.', ar: 'العقود والأحكام والتقارير القانونية والوثائق القانونية.', tr: 'Sözleşmeler, kararlar, raporlar ve hukuki belgeler.', ru: 'Договоры, судебные решения, заключения и юридические документы.', fr: 'Contrats, jugements, expertises et documents juridiques.', uk: 'Договори, судові рішення, висновки та юридичні документи.' },
+  'Technische Dokumentationen, Handbücher und Spezifikationen.': { en: 'Technical documentation, manuals and specifications.', ar: 'الوثائق التقنية والأدلة والمواصفات.', tr: 'Teknik dokümantasyon, kılavuzlar ve şartnameler.', ru: 'Техническая документация, руководства и спецификации.', fr: 'Documentations techniques, manuels et spécifications.', uk: 'Технічна документація, посібники та специфікації.' },
+  'Patientenunterlagen, Befunde, Studien und medizinische Fachtexte.': { en: 'Patient records, findings, studies and specialist medical texts.', ar: 'ملفات المرضى والنتائج والدراسات والنصوص الطبية المتخصصة.', tr: 'Hasta belgeleri, bulgular, çalışmalar ve tıbbi uzman metinleri.', ru: 'Документы пациентов, заключения, исследования и медицинские специализированные тексты.', fr: 'Dossiers patients, résultats, études et textes médicaux spécialisés.', uk: 'Документи пацієнтів, висновки, дослідження та фахові медичні тексти.' },
+  'Studien, Fachinformationen und Zulassungsunterlagen.': { en: 'Studies, specialist information and approval documents.', ar: 'الدراسات والمعلومات المتخصصة ووثائق الترخيص.', tr: 'Çalışmalar, uzman bilgileri ve ruhsat belgeleri.', ru: 'Исследования, специализированная информация и регистрационные документы.', fr: 'Études, informations spécialisées et dossiers d’autorisation.', uk: 'Дослідження, фахова інформація та реєстраційні документи.' },
+  'Bücher, Fachtexte, Artikel und kulturelle Inhalte.': { en: 'Books, specialist texts, articles and cultural content.', ar: 'الكتب والنصوص المتخصصة والمقالات والمحتوى الثقافي.', tr: 'Kitaplar, uzman metinler, makaleler ve kültürel içerikler.', ru: 'Книги, специализированные тексты, статьи и культурный контент.', fr: 'Livres, textes spécialisés, articles et contenus culturels.', uk: 'Книги, фахові тексти, статті та культурний контент.' },
+  'Software, Apps, Handbücher und technische Dokumentationen.': { en: 'Software, apps, manuals and technical documentation.', ar: 'البرمجيات والتطبيقات والأدلة والوثائق التقنية.', tr: 'Yazılım, uygulamalar, kılavuzlar ve teknik dokümantasyon.', ru: 'Программное обеспечение, приложения, руководства и техническая документация.', fr: 'Logiciels, applications, manuels et documentation technique.', uk: 'Програмне забезпечення, застосунки, посібники та технічна документація.' },
+  'Patente, Laborberichte und wissenschaftliche Texte.': { en: 'Patents, laboratory reports and scientific texts.', ar: 'براءات الاختراع وتقارير المختبر والنصوص العلمية.', tr: 'Patentler, laboratuvar raporları ve bilimsel metinler.', ru: 'Патенты, лабораторные отчеты и научные тексты.', fr: 'Brevets, rapports de laboratoire et textes scientifiques.', uk: 'Патенти, лабораторні звіти та наукові тексти.' },
+  'Produktionsunterlagen, Prozesse und Qualitätsdokumente.': { en: 'Production documents, processes and quality documents.', ar: 'وثائق الإنتاج والعمليات ووثائق الجودة.', tr: 'Üretim belgeleri, süreçler ve kalite dokümanları.', ru: 'Производственная документация, процессы и документы качества.', fr: 'Documents de production, processus et documents qualité.', uk: 'Виробнича документація, процеси та документи якості.' },
+  'Wir übersetzen Wirtschafts- und Finanzdokumente für Unternehmen – professionell, präzise und termingerecht.': { en: 'We translate business and financial documents for companies professionally, precisely and on time.', ar: 'نترجم الوثائق الاقتصادية والمالية للشركات باحترافية ودقة وفي الموعد المحدد.', tr: 'Şirketler için ekonomi ve finans belgelerini profesyonel, hassas ve zamanında çeviriyoruz.', ru: 'Мы профессионально, точно и в срок переводим деловые и финансовые документы для компаний.', fr: 'Nous traduisons les documents économiques et financiers des entreprises avec professionnalisme, précision et ponctualité.', uk: 'Ми професійно, точно та вчасно перекладаємо економічні й фінансові документи для компаній.' },
+  'Fachübersetzungen für Banken, Versicherungen und Finanzdienstleister.': { en: 'Specialist translations for banks, insurers and financial service providers.', ar: 'ترجمات متخصصة للبنوك وشركات التأمين ومقدمي الخدمات المالية.', tr: 'Bankalar, sigorta şirketleri ve finans hizmet sağlayıcıları için uzman çeviriler.', ru: 'Специализированные переводы для банков, страховых компаний и поставщиков финансовых услуг.', fr: 'Traductions spécialisées pour banques, assurances et prestataires financiers.', uk: 'Фахові переклади для банків, страхових компаній і фінансових установ.' },
+  'Übersetzungen von Bilanzen, Reports und Controlling-Unterlagen.': { en: 'Translations of balance sheets, reports and controlling documents.', ar: 'ترجمة الميزانيات والتقارير ومستندات الرقابة المالية.', tr: 'Bilançolar, raporlar ve kontrol belgelerinin çevirileri.', ru: 'Переводы балансов, отчетов и документов контроллинга.', fr: 'Traductions de bilans, rapports et documents de contrôle de gestion.', uk: 'Переклади балансів, звітів і документів контролінгу.' },
+  'Rechtssichere Übersetzungen von Verträgen und Richtlinien.': { en: 'Legally reliable translations of contracts and policies.', ar: 'ترجمات موثوقة قانونيا للعقود والسياسات.', tr: 'Sözleşmeler ve yönergeler için hukuken güvenilir çeviriler.', ru: 'Юридически надежные переводы договоров и регламентов.', fr: 'Traductions juridiquement fiables de contrats et de directives.', uk: 'Юридично надійні переклади договорів і правил.' },
+  'Dokumente fotografieren oder einscannen': { en: 'Photograph or scan documents', ar: 'تصوير المستندات أو مسحها ضوئيا', tr: 'Belgeleri fotoğraflayın veya tarayın', ru: 'Сфотографируйте или отсканируйте документы', fr: 'Photographier ou scanner les documents', uk: 'Сфотографуйте або відскануйте документи' },
+  'Dokumente senden & Preis erfahren': { en: 'Send documents and receive the price', ar: 'إرسال المستندات ومعرفة السعر', tr: 'Belgeleri gönderin ve fiyatı öğrenin', ru: 'Отправьте документы и узнайте цену', fr: 'Envoyer les documents et recevoir le prix', uk: 'Надішліть документи та дізнайтеся ціну' },
+  'Adresse per E-Mail senden & Preis bestätigen': { en: 'Send address by e-mail and confirm the price', ar: 'إرسال العنوان بالبريد الإلكتروني وتأكيد السعر', tr: 'Adresi e-posta ile gönderin ve fiyatı onaylayın', ru: 'Отправьте адрес по e-mail и подтвердите цену', fr: 'Envoyer l’adresse par e-mail et confirmer le prix', uk: 'Надішліть адресу електронною поштою та підтвердьте ціну' },
+  'Übersetzung per Post erhalten & Rechnung bezahlen': { en: 'Receive the translation by post and pay the invoice', ar: 'استلام الترجمة بالبريد ودفع الفاتورة', tr: 'Çeviriyi posta ile alın ve faturayı ödeyin', ru: 'Получите перевод по почте и оплатите счет', fr: 'Recevoir la traduction par courrier et payer la facture', uk: 'Отримайте переклад поштою та оплатіть рахунок' },
+  'Beglaubigte Übersetzungen für Visa, Einbürgerung, Anerkennungsverfahren und offizielle Anträge.': { en: 'Certified translations for visas, naturalization, recognition procedures and official applications.', ar: 'ترجمات معتمدة للتأشيرات والتجنيس وإجراءات الاعتراف والطلبات الرسمية.', tr: 'Vizeler, vatandaşlık, denklik işlemleri ve resmi başvurular için yeminli çeviriler.', ru: 'Заверенные переводы для виз, натурализации, процедур признания и официальных заявлений.', fr: 'Traductions certifiées pour visas, naturalisation, procédures de reconnaissance et demandes officielles.', uk: 'Засвідчені переклади для віз, натуралізації, процедур визнання та офіційних заяв.' },
+  'Jede Übersetzung wird von einem zweiten qualifizierten Linguisten geprüft.': { en: 'Every translation is checked by a second qualified linguist.', ar: 'تتم مراجعة كل ترجمة من قبل لغوي مؤهل ثان.', tr: 'Her çeviri ikinci bir nitelikli dil uzmanı tarafından kontrol edilir.', ru: 'Каждый перевод проверяется вторым квалифицированным лингвистом.', fr: 'Chaque traduction est contrôlée par un deuxième linguiste qualifié.', uk: 'Кожен переклад перевіряється другим кваліфікованим лінгвістом.' },
+  'Einheitliche Fachterminologie für präzise und normgerechte Übersetzungen.': { en: 'Consistent specialist terminology for precise and standards-compliant translations.', ar: 'مصطلحات متخصصة موحدة لترجمات دقيقة ومتوافقة مع المعايير.', tr: 'Hassas ve standartlara uygun çeviriler için tutarlı uzman terminoloji.', ru: 'Единая специализированная терминология для точных и соответствующих нормам переводов.', fr: 'Terminologie spécialisée cohérente pour des traductions précises et conformes aux normes.', uk: 'Узгоджена фахова термінологія для точних перекладів, що відповідають нормам.' },
+  'Schneller Versand per Post oder Kurier – deutschlandweit und zuverlässig.': { en: 'Fast delivery by post or courier throughout Germany, reliably.', ar: 'إرسال سريع بالبريد أو البريد السريع في جميع أنحاء ألمانيا وبموثوقية.', tr: 'Posta veya kurye ile Almanya genelinde hızlı ve güvenilir gönderim.', ru: 'Быстрая и надежная доставка почтой или курьером по всей Германии.', fr: 'Envoi rapide par courrier ou coursier dans toute l’Allemagne, de manière fiable.', uk: 'Швидка та надійна доставка поштою або кур’єром по всій Німеччині.' },
+  'Echtzeit-Dolmetschen für Konferenzen, Tagungen und internationale Veranstaltungen.': { en: 'Real-time interpreting for conferences, meetings and international events.', ar: 'ترجمة فورية مباشرة للمؤتمرات والاجتماعات والفعاليات الدولية.', tr: 'Konferanslar, toplantılar ve uluslararası etkinlikler için gerçek zamanlı tercümanlık.', ru: 'Синхронный перевод в реальном времени для конференций, совещаний и международных мероприятий.', fr: 'Interprétation en temps réel pour conférences, réunions et événements internationaux.', uk: 'Переклад у реальному часі для конференцій, нарад і міжнародних заходів.' },
+  'Professionelle Simultandolmetscher für Deutsch und zahlreiche internationale Sprachen.': { en: 'Professional simultaneous interpreters for German and many international languages.', ar: 'مترجمون فوريون متزامنون محترفون للألمانية والعديد من اللغات الدولية.', tr: 'Almanca ve çok sayıda uluslararası dil için profesyonel simultane tercümanlar.', ru: 'Профессиональные синхронные переводчики для немецкого и многих международных языков.', fr: 'Interprètes simultanés professionnels pour l’allemand et de nombreuses langues internationales.', uk: 'Професійні синхронні перекладачі для німецької та багатьох міжнародних мов.' },
+  'Qualifizierte Simultandolmetscher mit umfangreicher Konferenz- und Fachkompetenz.': { en: 'Qualified simultaneous interpreters with extensive conference and subject expertise.', ar: 'مترجمون فوريون متزامنون مؤهلون بخبرة واسعة في المؤتمرات والمجالات المتخصصة.', tr: 'Kapsamlı konferans ve alan uzmanlığına sahip nitelikli simultane tercümanlar.', ru: 'Квалифицированные синхронные переводчики с большим опытом конференций и предметной экспертизой.', fr: 'Interprètes simultanés qualifiés avec une solide expertise de conférence et de domaine.', uk: 'Кваліфіковані синхронні перекладачі з великим конференційним і фаховим досвідом.' },
+  'Dolmetschkabinen, Empfängeranlagen und professionelle Konferenztechnik aus einer Hand.': { en: 'Interpreting booths, receiver systems and professional conference technology from one source.', ar: 'كبائن ترجمة وأنظمة استقبال وتقنيات مؤتمرات احترافية من جهة واحدة.', tr: 'Tercüman kabinleri, alıcı sistemleri ve profesyonel konferans teknolojisi tek elden.', ru: 'Кабины переводчиков, приемное оборудование и профессиональная конференц-техника из одних рук.', fr: 'Cabines d’interprétation, systèmes de réception et technique de conférence professionnelle auprès d’un seul prestataire.', uk: 'Кабіни перекладачів, приймальні системи та професійна конференц-техніка з одного джерела.' },
+  'Fachübersetzungen für Maschinen, Anlagen und technische Systeme.': { en: 'Specialist translations for machines, plants and technical systems.', ar: 'ترجمات متخصصة للآلات والمنشآت والأنظمة التقنية.', tr: 'Makineler, tesisler ve teknik sistemler için uzman çeviriler.', ru: 'Специализированные переводы для машин, установок и технических систем.', fr: 'Traductions spécialisées pour machines, installations et systèmes techniques.', uk: 'Фахові переклади для машин, установок і технічних систем.' },
+  'Präzise Übersetzungen für Elektrotechnik und Steuerungstechnik.': { en: 'Precise translations for electrical engineering and control technology.', ar: 'ترجمات دقيقة للهندسة الكهربائية وتقنية التحكم.', tr: 'Elektrik mühendisliği ve kontrol teknolojisi için hassas çeviriler.', ru: 'Точные переводы для электротехники и техники управления.', fr: 'Traductions précises pour l’électrotechnique et l’automatisation.', uk: 'Точні переклади для електротехніки та систем керування.' },
+  'Übersetzungen für Export, Ausschreibungen und internationale Vorhaben.': { en: 'Translations for export, tenders and international projects.', ar: 'ترجمات للتصدير والمناقصات والمشاريع الدولية.', tr: 'İhracat, ihaleler ve uluslararası projeler için çeviriler.', ru: 'Переводы для экспорта, тендеров и международных проектов.', fr: 'Traductions pour export, appels d’offres et projets internationaux.', uk: 'Переклади для експорту, тендерів та міжнародних проєктів.' },
+  'Fachübersetzungen für Zahnmedizin, Zahntechnik, Dentalfirmen und CAD/CAM-Systeme.': { en: 'Specialist translations for dentistry, dental technology, dental companies and CAD/CAM systems.', ar: 'ترجمات متخصصة لطب الأسنان وتقنية الأسنان وشركات الأسنان وأنظمة CAD/CAM.', tr: 'Diş hekimliği, diş teknolojisi, dental firmalar ve CAD/CAM sistemleri için uzman çeviriler.', ru: 'Специализированные переводы для стоматологии, зуботехники, стоматологических компаний и CAD/CAM-систем.', fr: 'Traductions spécialisées pour dentisterie, technologie dentaire, entreprises dentaires et systèmes CAD/CAM.', uk: 'Фахові переклади для стоматології, зуботехніки, стоматологічних компаній і CAD/CAM-систем.' },
+  'Übersetzungen für Studien, Zulassungen und internationale Fachkommunikation.': { en: 'Translations for studies, approvals and international specialist communication.', ar: 'ترجمات للدراسات والتراخيص والتواصل التخصصي الدولي.', tr: 'Çalışmalar, ruhsatlandırmalar ve uluslararası uzman iletişimi için çeviriler.', ru: 'Переводы для исследований, регистраций и международной профессиональной коммуникации.', fr: 'Traductions pour études, autorisations et communication spécialisée internationale.', uk: 'Переклади для досліджень, реєстрацій і міжнародної фахової комунікації.' },
+  'Präzise Übersetzungen für Arzneimittel, Packungsbeilagen und Zulassungsunterlagen.': { en: 'Precise translations for medicines, package leaflets and approval documents.', ar: 'ترجمات دقيقة للأدوية والنشرات ووثائق الترخيص.', tr: 'İlaçlar, prospektüsler ve ruhsat belgeleri için hassas çeviriler.', ru: 'Точные переводы для лекарств, инструкций и регистрационных документов.', fr: 'Traductions précises pour médicaments, notices et dossiers d’autorisation.', uk: 'Точні переклади для лікарських засобів, інструкцій і реєстраційних документів.' },
+  'Übersetzungen für Studien, Protokolle, Einwilligungserklärungen und Patienteninformationen.': { en: 'Translations for studies, protocols, consent forms and patient information.', ar: 'ترجمات للدراسات والبروتوكولات ونماذج الموافقة ومعلومات المرضى.', tr: 'Çalışmalar, protokoller, onam formları ve hasta bilgileri için çeviriler.', ru: 'Переводы исследований, протоколов, форм согласия и информации для пациентов.', fr: 'Traductions pour études, protocoles, consentements et informations patients.', uk: 'Переклади досліджень, протоколів, форм згоди та інформації для пацієнтів.' },
+  'Einheitliche Fachbegriffe nach aktuellen regulatorischen Anforderungen.': { en: 'Consistent terminology according to current regulatory requirements.', ar: 'مصطلحات متخصصة موحدة وفق المتطلبات التنظيمية الحالية.', tr: 'Güncel düzenleyici gerekliliklere uygun tutarlı uzman terimler.', ru: 'Единая терминология в соответствии с актуальными регуляторными требованиями.', fr: 'Terminologie cohérente selon les exigences réglementaires actuelles.', uk: 'Узгоджена термінологія відповідно до актуальних регуляторних вимог.' },
+  'Übersetzungen für Theater, Film, Hörspiele, Magazine und Kulturprojekte.': { en: 'Translations for theatre, film, audio plays, magazines and cultural projects.', ar: 'ترجمات للمسرح والسينما والمسرحيات الصوتية والمجلات والمشاريع الثقافية.', tr: 'Tiyatro, film, radyo oyunları, dergiler ve kültür projeleri için çeviriler.', ru: 'Переводы для театра, кино, аудиоспектаклей, журналов и культурных проектов.', fr: 'Traductions pour théâtre, film, pièces audio, magazines et projets culturels.', uk: 'Переклади для театру, кіно, аудіоп’єс, журналів і культурних проєктів.' },
+  'Professionelles Lektorat und Korrektorat für sprachliche und stilistische Qualität.': { en: 'Professional editing and proofreading for linguistic and stylistic quality.', ar: 'تحرير وتدقيق احترافي للجودة اللغوية والأسلوبية.', tr: 'Dilsel ve üslup kalitesi için profesyonel redaksiyon ve düzeltme.', ru: 'Профессиональная редактура и корректура для языкового и стилистического качества.', fr: 'Révision et correction professionnelles pour la qualité linguistique et stylistique.', uk: 'Професійне редагування та коректура для мовної й стилістичної якості.' },
+  'Lokalisierung von Software, Webanwendungen und IT-Produkten in zahlreiche Sprachen.': { en: 'Localization of software, web applications and IT products into many languages.', ar: 'توطين البرمجيات وتطبيقات الويب ومنتجات تقنية المعلومات إلى لغات عديدة.', tr: 'Yazılım, web uygulamaları ve BT ürünlerinin birçok dile yerelleştirilmesi.', ru: 'Локализация программного обеспечения, веб-приложений и IT-продуктов на многие языки.', fr: 'Localisation de logiciels, applications web et produits IT dans de nombreuses langues.', uk: 'Локалізація програмного забезпечення, вебзастосунків та IT-продуктів багатьма мовами.' },
+  'Übersetzungen für Cloud-Architekturen, DevOps-Dokumentationen, Runbooks und IT-Infrastrukturen.': { en: 'Translations for cloud architectures, DevOps documentation, runbooks and IT infrastructures.', ar: 'ترجمات لهندسات السحابة ووثائق DevOps ودلائل التشغيل والبنى التحتية لتقنية المعلومات.', tr: 'Bulut mimarileri, DevOps dokümantasyonu, runbooklar ve BT altyapıları için çeviriler.', ru: 'Переводы для облачных архитектур, DevOps-документации, runbook и IT-инфраструктур.', fr: 'Traductions pour architectures cloud, documentation DevOps, runbooks et infrastructures IT.', uk: 'Переклади для хмарних архітектур, DevOps-документації, runbook та IT-інфраструктур.' },
+  'Fachgerechte Übersetzungen für Sicherheitsrichtlinien, Datenschutzdokumente und Compliance-Anforderungen.': { en: 'Specialist translations for security policies, data protection documents and compliance requirements.', ar: 'ترجمات متخصصة لسياسات الأمان ووثائق حماية البيانات ومتطلبات الامتثال.', tr: 'Güvenlik politikaları, veri koruma belgeleri ve uyum gereklilikleri için uzman çeviriler.', ru: 'Профессиональные переводы политик безопасности, документов защиты данных и требований комплаенса.', fr: 'Traductions spécialisées pour politiques de sécurité, documents de protection des données et exigences de conformité.', uk: 'Фахові переклади політик безпеки, документів захисту даних і вимог комплаєнсу.' },
+  'Lokalisierung von Apps, Spielen und Benutzeroberflächen für optimale Nutzererlebnisse weltweit.': { en: 'Localization of apps, games and user interfaces for optimal user experiences worldwide.', ar: 'توطين التطبيقات والألعاب وواجهات المستخدم لتجربة استخدام مثالية عالميا.', tr: 'Dünya çapında en iyi kullanıcı deneyimleri için uygulama, oyun ve kullanıcı arayüzü yerelleştirmesi.', ru: 'Локализация приложений, игр и интерфейсов для оптимального пользовательского опыта по всему миру.', fr: 'Localisation d’applications, jeux et interfaces pour une expérience utilisateur optimale dans le monde entier.', uk: 'Локалізація застосунків, ігор та інтерфейсів для оптимального користувацького досвіду у світі.' },
+  'Übersetzung von API-Dokumentationen, Benutzerhandbüchern, Installationsanleitungen und technischen Spezifikationen.': { en: 'Translation of API documentation, user manuals, installation guides and technical specifications.', ar: 'ترجمة وثائق API وأدلة المستخدم وتعليمات التثبيت والمواصفات التقنية.', tr: 'API dokümantasyonu, kullanıcı kılavuzları, kurulum talimatları ve teknik şartnamelerin çevirisi.', ru: 'Перевод API-документации, руководств пользователя, инструкций по установке и технических спецификаций.', fr: 'Traduction de documentations API, manuels utilisateur, guides d’installation et spécifications techniques.', uk: 'Переклад API-документації, посібників користувача, інструкцій зі встановлення та технічних специфікацій.' },
+  'Ihr zuverlässiger Partner für IT-Übersetzungen und Softwarelokalisierung – bundesweit und international.': { en: 'Your reliable partner for IT translations and software localization throughout Germany and internationally.', ar: 'شريكك الموثوق لترجمات تقنية المعلومات وتوطين البرمجيات في ألمانيا وعلى المستوى الدولي.', tr: 'Almanya genelinde ve uluslararası IT çevirileri ve yazılım yerelleştirmesi için güvenilir ortağınız.', ru: 'Ваш надежный партнер по IT-переводам и локализации программного обеспечения в Германии и за рубежом.', fr: 'Votre partenaire fiable pour les traductions IT et la localisation logicielle en Allemagne et à l’international.', uk: 'Ваш надійний партнер для IT-перекладів і локалізації програмного забезпечення в Німеччині та міжнародно.' },
+};
+
+function translateServiceSheetText(text, lang = 'de', fallback = '') {
+  if (lang === 'de' || !text) return text;
+  const normalized = normalizeText(text);
+  return SERVICE_SHEET_TEXT_TRANSLATIONS[normalized]?.[lang] || normalizeText(fallback) || normalized;
+}
+
 function localizeFeatures(active, fallbackFeatures = [], visualCopy, lang = 'de') {
   if (lang === 'de') return fallbackFeatures;
-  const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
-  const labels = [
-    visualCopy.interpretingLanguages,
-    visualCopy.trustA,
-    visualCopy.trustC,
-    visualCopy.highlights,
-    visualCopy.typical,
-    visualCopy.details,
-  ].filter(Boolean);
-
-  return fallbackFeatures.map(([title, text, asset], index) => [
-    examples[index] || labels[index] || title,
-    examples[index + 1] || visualCopy.ctaSub || text,
+  return fallbackFeatures.map(([title, text, asset]) => [
+    translateServiceSheetText(title, lang),
+    translateServiceSheetText(text, lang),
     asset,
   ]);
 }
@@ -1349,18 +1639,26 @@ function localizePointGridSheet(active, data, visualCopy, lang = 'de') {
   if (lang === 'de') return data;
 
   const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
-  const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
+  let paragraphIndex = 0;
   const localizedRows = data.rows.map((row, index) => {
     const nextRow = { ...row };
-    const rowText = paragraphs[index] || paragraphs[0] || row.paragraphs?.[0] || active?.text || '';
-    const parts = splitSentences(rowText, row.paragraphs?.length || 2);
-    nextRow.title = index === 0 ? normalizeText(active?.title || active?.label || row.title) : (row.title && (examples[index - 1] || row.title));
-    nextRow.paragraphs = parts.length ? parts : row.paragraphs;
-    if (row.lead) nextRow.lead = visualCopy.typical;
-    if (row.listTitle) nextRow.listTitle = visualCopy.typical;
+
+    if (index === 0) {
+      nextRow.title = normalizeText(active?.title || active?.label || translateServiceSheetText(row.title, lang));
+    } else if (row.title) {
+      nextRow.title = translateServiceSheetText(row.title, lang);
+    }
+
+    if (row.paragraphs?.length) {
+      const available = paragraphs.slice(paragraphIndex, paragraphIndex + row.paragraphs.length);
+      nextRow.paragraphs = row.paragraphs.map((text, itemIndex) => translateServiceSheetText(text, lang, available[itemIndex]));
+      paragraphIndex += row.paragraphs.length;
+    }
+
+    if (row.lead) nextRow.lead = translateServiceSheetText(row.lead, lang);
+    if (row.listTitle) nextRow.listTitle = translateServiceSheetText(row.listTitle, lang);
     if (row.items?.length) {
-      const sourceItems = examples.length ? examples : paragraphs.slice(index + 1, index + 1 + row.items.length);
-      nextRow.items = sourceItems.length ? sourceItems.slice(0, row.items.length) : row.items;
+      nextRow.items = row.items.map((item) => translateServiceSheetText(item, lang));
     }
     return nextRow;
   });
@@ -1369,7 +1667,7 @@ function localizePointGridSheet(active, data, visualCopy, lang = 'de') {
     ...data,
     kicker: normalizeText(active?.kicker || data.kicker),
     title: normalizeText(active?.label || active?.title || data.title),
-    sectionTitle: data.sectionTitle ? visualCopy.typical : data.sectionTitle,
+    sectionTitle: data.sectionTitle ? translateServiceSheetText(data.sectionTitle, lang) : data.sectionTitle,
     rows: localizedRows,
     features: localizeFeatures(active, data.features, visualCopy, lang),
   };
@@ -1414,7 +1712,7 @@ function PointGridSheet({ active, data, lang = 'de' }) {
                   {row.items.map((item) => <li key={item}>{item}</li>)}
                 </ul>
               ) : null}
-              {data.request && index === 0 && (
+              {(row.request || (data.request && index === 0)) && (
                 <RequestCard lang={lang} className="point-grid-request-card" />
               )}
             </div>
@@ -1441,67 +1739,44 @@ function PointGridSheet({ active, data, lang = 'de' }) {
 function getLocalizedItSoftwareSheet(active, visualCopy, lang = 'de') {
   if (lang === 'de') return IT_SOFTWARE_SHEET;
   const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
-  const groups = [
-    [paragraphs[3] || 'Software development & APIs', paragraphs.slice(4, 8), 'technology.png'],
-    [paragraphs[8] || 'Mobile apps', paragraphs.slice(9, 12), 'mobile-development.png'],
-    [paragraphs[12] || 'Gaming & Localization', paragraphs.slice(13, 16), 'mobile-development.png'],
-    [paragraphs[16] || 'Databases & Data Engineering', paragraphs.slice(17, 20), 'file.png'],
-    [paragraphs[20] || 'Cloud & Infrastructure', paragraphs.slice(21, 24), 'cloud-service.png'],
-    [paragraphs[24] || 'IT security & compliance', paragraphs.slice(25, 28), 'shield.png'],
-    [paragraphs[28] || 'E-learning & training', paragraphs.slice(29, 32), 'file.png'],
-    [paragraphs[32] || 'Technical documentation', paragraphs.slice(33, 36), 'file.png'],
-  ];
   return {
     ...IT_SOFTWARE_SHEET,
     title: normalizeText(active?.label || active?.title || IT_SOFTWARE_SHEET.title),
-    sections: [
-      {
-        ...IT_SOFTWARE_SHEET.sections[0],
-        title: normalizeText(active?.title || active?.label || IT_SOFTWARE_SHEET.sections[0].title),
-        text: paragraphs[0] || active?.text || IT_SOFTWARE_SHEET.sections[0].text,
-      },
-      {
-        ...IT_SOFTWARE_SHEET.sections[1],
-        title: paragraphs[2] || visualCopy.typical,
-        items: groups.map(([title]) => title).slice(0, 8),
-      },
-      {
-        ...IT_SOFTWARE_SHEET.sections[2],
-        title: groups[7][0],
-        lead: visualCopy.typical,
-        items: groups[7][1],
-      },
-      {
-        ...IT_SOFTWARE_SHEET.sections[3],
-        title: visualCopy.highlights,
-        lead: visualCopy.details,
-        items: [groups[0][0], groups[4][0], groups[5][0], groups[3][0], groups[6][0], groups[7][0]],
-      },
-    ],
+    sections: IT_SOFTWARE_SHEET.sections.map((section) => ({
+      ...section,
+      title: translateServiceSheetText(section.title, lang),
+      lead: section.lead ? translateServiceSheetText(section.lead, lang) : section.lead,
+      text: section.text ? translateServiceSheetText(section.text, lang, paragraphs[0]) : section.text,
+      items: section.items?.map((item) => translateServiceSheetText(item, lang)),
+    })),
     languageCard: {
       ...IT_SOFTWARE_SHEET.languageCard,
-      title: (RICH_LABELS[lang] || RICH_LABELS.de).languagePairs,
-      items: (RICH_LABELS[lang] || RICH_LABELS.de).pairs,
+      title: translateServiceSheetText(IT_SOFTWARE_SHEET.languageCard.title, lang),
+      items: IT_SOFTWARE_SHEET.languageCard.items.map((item) => translateServiceSheetText(item, lang)),
     },
     international: {
       ...IT_SOFTWARE_SHEET.international,
-      title: (RICH_LABELS[lang] || RICH_LABELS.de).internationalIt,
-      lead: visualCopy.highlights,
-      items: groups.map(([title]) => title).slice(0, 8),
+      title: translateServiceSheetText(IT_SOFTWARE_SHEET.international.title, lang),
+      lead: translateServiceSheetText(IT_SOFTWARE_SHEET.international.lead, lang),
+      items: IT_SOFTWARE_SHEET.international.items.map((item) => translateServiceSheetText(item, lang)),
     },
-    workflow: [paragraphs[0], paragraphs[1]].filter(Boolean),
+    workflow: IT_SOFTWARE_SHEET.workflow.map((text, index) => translateServiceSheetText(text, lang, paragraphs[index])),
     nationwide: {
       ...IT_SOFTWARE_SHEET.nationwide,
-      title: (RICH_LABELS[lang] || RICH_LABELS.de).nationwide,
-      text: paragraphs[36] || visualCopy.ctaSub,
+      title: translateServiceSheetText(IT_SOFTWARE_SHEET.nationwide.title, lang),
+      text: translateServiceSheetText(IT_SOFTWARE_SHEET.nationwide.text, lang, paragraphs[36]),
     },
     cta: {
       ...IT_SOFTWARE_SHEET.cta,
-      question: paragraphs[37]?.split('\n')[0] || normalizeText(active?.cta || visualCopy.request),
-      text: paragraphs[37] || visualCopy.ctaSub,
+      question: translateServiceSheetText(IT_SOFTWARE_SHEET.cta.question, lang),
+      text: translateServiceSheetText(IT_SOFTWARE_SHEET.cta.text, lang, paragraphs[37]),
       button: normalizeText(active?.cta || visualCopy.request),
     },
-    bottom: groups.slice(0, 6).map(([title, items, asset]) => [title, items.join(' '), asset]),
+    bottom: IT_SOFTWARE_SHEET.bottom.map(([title, text, asset]) => [
+      translateServiceSheetText(title, lang),
+      translateServiceSheetText(text, lang),
+      asset,
+    ]),
   };
 }
 
@@ -1730,9 +2005,9 @@ function RechtSheet({ active, visualCopy, lang = 'de' }) {
       kicker: normalizeText(active?.kicker || RECHT_SHEET.kicker),
       title: normalizeText(active?.label || active?.title || RECHT_SHEET.title),
       introTitle: normalizeText(active?.title || active?.label || RECHT_SHEET.introTitle),
-      intro: [paragraphs[0], paragraphs[1]].filter(Boolean),
-      documentsTitle: visualCopy.typical,
-      documents: examples.length ? examples : paragraphs.slice(2, 10),
+      intro: RECHT_SHEET.intro.map((text, index) => translateServiceSheetText(text, lang, paragraphs[index])),
+      documentsTitle: translateServiceSheetText(RECHT_SHEET.documentsTitle, lang),
+      documents: RECHT_SHEET.documents.map((item, index) => translateServiceSheetText(item, lang, examples[index])),
       features: localizeFeatures(active, RECHT_SHEET.features, visualCopy, lang),
     };
   })();
@@ -1756,7 +2031,7 @@ function RechtSheet({ active, visualCopy, lang = 'de' }) {
       </section>
 
       <div className="recht-word-icon recht-word-icon--documents">
-        <RechtAsset asset="juristisches-papier.png" />
+        <RechtAsset asset="dokument.png" />
       </div>
       <section className="recht-word-copy recht-word-copy--documents" aria-label="Typische Rechtsdokumente">
         <h4>{data.documentsTitle}</h4>
@@ -1787,33 +2062,8 @@ function HelpIcon(active) {
 }
 
 function DolmetschenReferenceSheet({ active, visualCopy, lang }) {
-  const data = lang === 'de' ? DOLMETSCHER_SHEET : (() => {
-    const paragraphs = (active?.paragraphs || []).map(normalizeText).filter(Boolean);
-    const overview = paragraphs[0] || active?.text || '';
-    const parts = splitSentences(overview, 3);
-    const examples = (active?.examples || []).map(normalizeText).filter(Boolean);
-    return {
-      title: normalizeText(active?.label || active?.title || DOLMETSCHER_SHEET.title),
-      introRows: [
-        { asset: 'mannschaft.png', text: parts[0] || overview },
-        { asset: 'platzhalter.png', text: parts[1] || paragraphs[1] || visualCopy.ctaSub },
-        { asset: 'save-the-world.png', text: parts[2] || paragraphs[2] || visualCopy.ctaSub },
-      ],
-      benefits: [
-        [visualCopy.interpretingLanguages, examples[0] || visualCopy.ctaSub, 'save-the-world.png'],
-        [visualCopy.trustA, examples[1] || visualCopy.ctaSub, 'benutzer.png'],
-        [visualCopy.trustC, examples[2] || visualCopy.ctaSub, 'flexibel.png'],
-      ],
-      processTitle: visualCopy.process,
-      process: [
-        ['1', visualCopy.request, visualCopy.requestText, 'email.png'],
-        ['2', visualCopy.review, visualCopy.reviewText, 'bestatigung.png'],
-        ['3', visualCopy.delivery, visualCopy.deliveryText, 'ubersetzer.png'],
-      ],
-      cta: normalizeText(active?.cta || visualCopy.request),
-    };
-  })();
-  const kicker = normalizeText(active?.kicker || SIDE_LABELS[lang]?.specialist || DOLMETSCHER_SHEET.kicker);
+  const data = DOLMETSCHER_SHEET_BY_LANG[lang] || DOLMETSCHER_SHEET_BY_LANG.de;
+  const kicker = normalizeText(data.kicker || active?.kicker || SIDE_LABELS[lang]?.specialist || DOLMETSCHER_SHEET.kicker);
   return (
     <div className="dolm-doc-sheet" data-service-id={active.id}>
       <span className="dolm-doc-kicker">{kicker}</span>
@@ -1872,7 +2122,7 @@ function WirtschaftFinanzenSheet({ active, visualCopy, lang = 'de' }) {
       kicker: normalizeText(active?.kicker || WIRTSCHAFT_FINANZEN_SHEET.kicker),
       title: normalizeText(active?.label || active?.title || WIRTSCHAFT_FINANZEN_SHEET.title),
       introTitle: normalizeText(active?.title || active?.label || WIRTSCHAFT_FINANZEN_SHEET.introTitle),
-      intro: paragraphs[0] || active?.text || WIRTSCHAFT_FINANZEN_SHEET.intro,
+      intro: translateServiceSheetText(WIRTSCHAFT_FINANZEN_SHEET.intro, lang, paragraphs[0] || active?.text),
       features: localizeFeatures(active, WIRTSCHAFT_FINANZEN_SHEET.features, visualCopy, lang),
     };
   })();
@@ -1915,20 +2165,19 @@ function BeglaubigteUebersetzungSheet({ active, visualCopy, lang = 'de' }) {
       kicker: normalizeText(active?.kicker || BEGLAUBIGTE_UEBERSETZUNG_SHEET.kicker),
       title: normalizeText(active?.title || active?.label || BEGLAUBIGTE_UEBERSETZUNG_SHEET.title),
       introTitle: normalizeText(active?.title || active?.label || BEGLAUBIGTE_UEBERSETZUNG_SHEET.introTitle),
-      intro: paragraphs[0] || active?.text || BEGLAUBIGTE_UEBERSETZUNG_SHEET.intro,
-      documentsTitle: paragraphs[1] || visualCopy.typical,
-      documentsLead: visualCopy.details,
-      documents: paragraphs.slice(2, 9).length ? paragraphs.slice(2, 9) : examples,
-      languagesTitle: paragraphs[10] || (RICH_LABELS[lang] || RICH_LABELS.de).languagePairs,
-      languagesLead: visualCopy.details,
-      languages: paragraphs.slice(11, 23).length ? paragraphs.slice(11, 23) : (RICH_LABELS[lang] || RICH_LABELS.de).pairs,
-      processTitle: visualCopy.process,
-      process: [
-        ['1.', visualCopy.requestText, 'word-media/image5.png'],
-        ['2.', visualCopy.reviewText, 'word-media/image6.png'],
-        ['3.', visualCopy.deliveryText, 'word-media/image7.png'],
-        ['4.', visualCopy.ctaSub, 'word-media/image8.png'],
-      ],
+      intro: translateServiceSheetText(BEGLAUBIGTE_UEBERSETZUNG_SHEET.intro, lang, paragraphs[0] || active?.text),
+      documentsTitle: translateServiceSheetText(BEGLAUBIGTE_UEBERSETZUNG_SHEET.documentsTitle, lang, paragraphs[1]),
+      documentsLead: translateServiceSheetText(BEGLAUBIGTE_UEBERSETZUNG_SHEET.documentsLead, lang),
+      documents: BEGLAUBIGTE_UEBERSETZUNG_SHEET.documents.map((item, index) => translateServiceSheetText(item, lang, examples[index] || paragraphs[index + 2])),
+      languagesTitle: translateServiceSheetText(BEGLAUBIGTE_UEBERSETZUNG_SHEET.languagesTitle, lang, paragraphs[10]),
+      languagesLead: translateServiceSheetText(BEGLAUBIGTE_UEBERSETZUNG_SHEET.languagesLead, lang),
+      languages: BEGLAUBIGTE_UEBERSETZUNG_SHEET.languages.map((item, index) => translateServiceSheetText(item, lang, paragraphs[index + 11])),
+      processTitle: translateServiceSheetText(BEGLAUBIGTE_UEBERSETZUNG_SHEET.processTitle, lang),
+      process: BEGLAUBIGTE_UEBERSETZUNG_SHEET.process.map(([step, text, asset]) => [
+        step,
+        translateServiceSheetText(text, lang),
+        asset,
+      ]),
       benefits: localizeFeatures(active, BEGLAUBIGTE_UEBERSETZUNG_SHEET.benefits, visualCopy, lang),
     };
   })();
@@ -2004,8 +2253,14 @@ function BeeidigteDolmetscherSheet({ active, visualCopy, lang = 'de' }) {
       kicker: normalizeText(active?.kicker || BEEIDIGTE_DOLMETSCHER_SHEET.kicker),
       title: normalizeText(active?.label || active?.title || BEEIDIGTE_DOLMETSCHER_SHEET.title),
       introRows: [
-        { ...BEEIDIGTE_DOLMETSCHER_SHEET.introRows[0], text: parts[0] || paragraphs[0] || BEEIDIGTE_DOLMETSCHER_SHEET.introRows[0].text },
-        { ...BEEIDIGTE_DOLMETSCHER_SHEET.introRows[1], paragraphs: [parts[1] || paragraphs[1] || visualCopy.ctaSub, paragraphs[1] || visualCopy.ctaSub] },
+        {
+          ...BEEIDIGTE_DOLMETSCHER_SHEET.introRows[0],
+          text: translateServiceSheetText(BEEIDIGTE_DOLMETSCHER_SHEET.introRows[0].text, lang, parts[0] || paragraphs[0]),
+        },
+        {
+          ...BEEIDIGTE_DOLMETSCHER_SHEET.introRows[1],
+          paragraphs: BEEIDIGTE_DOLMETSCHER_SHEET.introRows[1].paragraphs.map((text, index) => translateServiceSheetText(text, lang, index === 0 ? (parts[1] || paragraphs[1]) : paragraphs[1])),
+        },
       ],
       features: localizeFeatures(active, BEEIDIGTE_DOLMETSCHER_SHEET.features, visualCopy, lang),
     };
@@ -2055,8 +2310,8 @@ function StandesamtDolmetscherSheet({ active, visualCopy, lang = 'de' }) {
       kicker: normalizeText(active?.kicker || STANDESAMT_DOLMETSCHER_SHEET.kicker),
       title: normalizeText(active?.label || active?.title || STANDESAMT_DOLMETSCHER_SHEET.title),
       introTitle: normalizeText(active?.title || active?.label || STANDESAMT_DOLMETSCHER_SHEET.introTitle),
-      intro: parts[0] || paragraphs[0] || STANDESAMT_DOLMETSCHER_SHEET.intro,
-      details: [parts[1] || paragraphs[1] || visualCopy.ctaSub, parts[2] || paragraphs[2] || visualCopy.ctaSub],
+      intro: translateServiceSheetText(STANDESAMT_DOLMETSCHER_SHEET.intro, lang, parts[0] || paragraphs[0]),
+      details: STANDESAMT_DOLMETSCHER_SHEET.details.map((text, index) => translateServiceSheetText(text, lang, parts[index + 1] || paragraphs[index + 1])),
     };
   })();
 
