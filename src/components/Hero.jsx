@@ -103,7 +103,7 @@ export default function Hero() {
               onClick={() => { window.location.href = '/angebot'; }}
             >
               <span className="hero-svc-icon" aria-hidden="true">
-                <img className="hero-svc-img-icon" src="/assets/person talking.png" alt="" width="30" height="30" />
+                <img className="hero-svc-img-icon" src="/assets/person talking.webp" alt="" width="30" height="30" />
               </span>
               {t('service.interpreting')}
             </button>
@@ -211,7 +211,7 @@ function HeroActions({ t, className }) {
         onClick={() => { window.location.href = '/angebot'; }}
       >
         <span className="hero-svc-icon" aria-hidden="true">
-          <img className="hero-svc-img-icon" src="/assets/person talking.png" alt="" width="22" height="18" />
+          <img className="hero-svc-img-icon" src="/assets/person talking.webp" alt="" width="22" height="18" />
         </span>
         {t('service.interpreting')}
       </button>
