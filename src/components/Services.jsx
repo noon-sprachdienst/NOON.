@@ -807,6 +807,14 @@ function RequestCard({ lang = 'de', className = '' }) {
   );
 }
 
+function splitSentences(text = '', max = 3) {
+  return String(text)
+    .split(/(?<=[.!?؟])\s+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, max);
+}
+
 function translateServiceSheetText(text, lang = 'de', fallback = '') {
   if (lang === 'de' || !text) return text;
   const normalized = normalizeText(text);
@@ -1693,7 +1701,7 @@ function CertifiedTranslationSheet({ active, rich, visualCopy, lang }) {
   );
 }
 
-export default function Services() {
+export default function Services({ initialActiveId } = {}) {
   const { lang } = useI18n();
   const navItems = useMemo(() => getServiceNavigation(lang), [lang]);
   const interpretingItems = navItems.filter((item) => item.group === 'interpreting');
@@ -1717,7 +1725,7 @@ export default function Services() {
     examples: specialtyItems.slice(0, 6).map((item) => item.label),
     cta: visualCopy.request,
   }), [side.specialist, specialtyItems, ui.kicker, ui.sub, ui.title, visualCopy.ctaSub, visualCopy.request]);
-  const [activeId, setActiveId] = useState(navItems[0]?.id);
+  const [activeId, setActiveId] = useState(initialActiveId || navItems[0]?.id);
   const sectionRef = useRef(null);
   const [drawerAvailable, setDrawerAvailable] = useState(false);
   const active = activeId === specialtyOverview.id ? specialtyOverview : navItems.find((item) => item.id === activeId) || navItems[0];
@@ -1735,9 +1743,9 @@ export default function Services() {
   ];
 
   useEffect(() => {
-    setActiveId(navItems[0]?.id);
+    setActiveId(initialActiveId || navItems[0]?.id);
     setSidebarOpen(false);
-  }, [lang, navItems]);
+  }, [initialActiveId, lang, navItems]);
 
   useEffect(() => {
     const node = sectionRef.current;
