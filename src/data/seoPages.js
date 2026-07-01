@@ -20,6 +20,51 @@ export const SEO_LANGUAGES = {
   uk: { html: 'uk', label: 'Українська', prefix: '/uk' },
 };
 
+export const LANGUAGE_HOME_META = {
+  de: {
+    title: 'Noon Sprachdienst — Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
+    description: 'Beglaubigte Übersetzungen, Dolmetschdienste und Sprachförderung in 190+ Sprachen — von beeidigten Profis, deutschlandweit seit 2019.',
+    heading: 'Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
+    cta: 'Kostenloses Angebot anfordern',
+  },
+  en: {
+    title: 'Noon Sprachdienst — Certified Translations & Interpreting in 190+ Languages',
+    description: 'Certified translations, interpreting and language support in 190+ languages — by sworn professionals, across Germany since 2019.',
+    heading: 'Certified translations & interpreting in 190+ languages',
+    cta: 'Request a free quote',
+  },
+  ar: {
+    title: 'نون للخدمات اللغوية — ترجمات معتمدة وترجمة فورية بأكثر من 190 لغة',
+    description: 'ترجمات معتمدة، خدمات الترجمة الفورية والدعم اللغوي بأكثر من 190 لغة — من مترجمين محلفين، في جميع أنحاء ألمانيا منذ 2019.',
+    heading: 'ترجمات معتمدة وترجمة فورية بأكثر من 190 لغة',
+    cta: 'اطلب عرض سعر مجاني',
+  },
+  tr: {
+    title: 'Noon Sprachdienst — 190+ Dilde Yeminli Çeviri ve Tercümanlık',
+    description: '190+ dilde yeminli çeviriler, tercümanlık ve dil desteği — yeminli profesyonellerden, tüm Almanya genelinde, 2019’dan beri.',
+    heading: '190+ dilde yeminli çeviri ve tercümanlık',
+    cta: 'Ücretsiz teklif alın',
+  },
+  ru: {
+    title: 'Noon Sprachdienst — Заверенные переводы и устный перевод на 190+ языках',
+    description: 'Заверенные переводы, услуги устных переводчиков и языковая поддержка на 190+ языках — от присяжных профессионалов, по всей Германии с 2019 года.',
+    heading: 'Заверенные переводы и устный перевод на 190+ языках',
+    cta: 'Запросить бесплатное предложение',
+  },
+  fr: {
+    title: 'Noon Sprachdienst — Traductions certifiées et interprétation en 190+ langues',
+    description: 'Traductions certifiées, services d’interprétation et accompagnement linguistique en 190+ langues — par des professionnels assermentés, partout en Allemagne depuis 2019.',
+    heading: 'Traductions certifiées et interprétation en 190+ langues',
+    cta: 'Demander un devis gratuit',
+  },
+  uk: {
+    title: 'Noon Sprachdienst — Завірені переклади та усний переклад 190+ мовами',
+    description: 'Завірені переклади, послуги усного перекладу та мовна підтримка 190+ мовами — від присяжних фахівців, по всій Німеччині з 2019 року.',
+    heading: 'Завірені переклади та усний переклад 190+ мовами',
+    cta: 'Замовити безкоштовну пропозицію',
+  },
+};
+
 export const LOCATIONS = [
   { slug: 'osnabrueck', city: 'Osnabrück', street: 'Paul-Oeser-Straße 1', postalCode: '49074', image: 'osnabrueck.jpg', hq: true },
   { slug: 'stuttgart', city: 'Stuttgart', street: 'Friedrichstraße 15', postalCode: '70174', image: 'stuttgart.jpg' },

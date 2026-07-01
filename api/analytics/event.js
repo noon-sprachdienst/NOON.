@@ -1,12 +1,20 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { getDatabase } from '../_lib/firebase.js';
 import { cleanPath, cleanReferrer, cleanText, readJson, sendJson } from '../_lib/http.js';
+import { getClientIp, rateLimit } from '../_lib/rateLimit.js';
 
 const ALLOWED_EVENTS = new Set(['page_view', 'page_leave', 'cta_click', 'consent_withdrawn']);
 const ALLOWED_DEVICES = new Set(['desktop', 'tablet', 'mobile']);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return sendJson(res, 405, { error: 'Method not allowed.' });
+
+  const limit = rateLimit(`event:${getClientIp(req)}`, { limit: 120, windowMs: 60 * 1000 });
+  if (!limit.allowed) {
+    res.setHeader('Retry-After', String(limit.retryAfter));
+    return sendJson(res, 429, { error: 'Too many requests.' });
+  }
+
   const origin = req.headers.origin;
   if (origin) {
     try {
