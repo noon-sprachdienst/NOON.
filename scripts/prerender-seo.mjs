@@ -7,6 +7,7 @@ import {
   getOrganizationSchema,
   getPageSchema,
   getWebsiteSchema,
+  LANGUAGE_HOME_META,
   PRICE_PAGES,
   SEO_PAGES,
   SEO_LANGUAGES,
@@ -48,6 +49,7 @@ function renderPage(page) {
   html = html.replace(/<html[^>]*>/, `<html lang="${htmlLang}" dir="${htmlDir}">`);
   html = setTag(html, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(page.metaTitle || page.title)}</title>`);
   html = setTag(html, /<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeHtml(page.description)}" />`);
+  html = setTag(html, /<meta name="robots" content="[^"]*"\s*\/?>/, `<meta name="robots" content="index, follow" />`);
   html = setTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${canonical}" />`);
   html = setTag(html, /<meta property="og:url" content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${canonical}" />`);
   html = setTag(html, /<meta property="og:title" content="[^"]*"\s*\/?>/, `<meta property="og:title" content="${escapeHtml(page.metaTitle || page.title)}" />`);
@@ -79,18 +81,31 @@ for (const page of pricingPages) {
   await writeFile(target, renderPage(page), 'utf8');
 }
 
+function languageHomeMarkup(meta, lang) {
+  const label = lang === 'ar' ? 'الترجمات المتخصصة' : lang === 'de' ? 'Leistungen' : 'Services';
+  const servicesHref = lang === 'de' ? '/leistungen' : `/${lang}/leistungen`;
+  return `<main><article><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.description)}</p><p><a href="${servicesHref}">${escapeHtml(label)}</a></p><p><a href="/angebot#contact">${escapeHtml(meta.cta)}</a></p></article></main>`;
+}
+
 function renderLanguageHome(page) {
   const canonical = getCanonicalUrl(page.path);
+  const meta = LANGUAGE_HOME_META[page.code] || LANGUAGE_HOME_META.de;
   let html = template;
   html = html.replace(/<html[^>]*>/, `<html lang="${page.meta.html}" dir="${page.code === 'ar' ? 'rtl' : 'ltr'}">`);
+  html = setTag(html, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(meta.title)}</title>`);
+  html = setTag(html, /<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeHtml(meta.description)}" />`);
+  html = setTag(html, /<meta name="robots" content="[^"]*"\s*\/?>/, `<meta name="robots" content="index, follow" />`);
   html = setTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${canonical}" />`);
   html = setTag(html, /<meta property="og:url" content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${canonical}" />`);
+  html = setTag(html, /<meta property="og:title" content="[^"]*"\s*\/?>/, `<meta property="og:title" content="${escapeHtml(meta.title)}" />`);
+  html = setTag(html, /<meta property="og:description" content="[^"]*"\s*\/?>/, `<meta property="og:description" content="${escapeHtml(meta.description)}" />`);
   html = html.replace(/\s*<link rel="alternate" hrefLang="[^"]*" href="[^"]*"\s*\/?>/g, '');
   html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
   const alternates = Object.entries(SEO_LANGUAGES).map(([code, meta]) => (
     `  <link rel="alternate" hreflang="${meta.html}" href="${getCanonicalUrl(code === 'de' ? '/' : `/${code}`)}" />`
   ));
   html = html.replace('</head>', `${alternates.join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${getCanonicalUrl('/')}" />\n</head>`);
+  html = html.replace('<div id="root"></div>', `<div id="root">${languageHomeMarkup(meta, page.code)}</div>`);
   return html;
 }
 

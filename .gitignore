@@ -6,3 +6,8 @@ test/
 !.env.example
 *.log
 .DS_Store
+
+# Local tooling, scratch output, and Word lock files
+.claude/
+outputs/
+~$*.docx

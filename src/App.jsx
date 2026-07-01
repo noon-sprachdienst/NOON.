@@ -7,8 +7,6 @@ import { useI18n } from './hooks/useI18n';
 
 import Nav from './components/Nav.jsx';
 import Hero from './components/Hero.jsx';
-// const Feature2 = lazy(() => import('./components/Feature2.jsx'));
-// const Feature3 = lazy(() => import('./components/Feature3.jsx'));
 import StatsStrip from './components/StatsStrip.jsx';
 const Services = lazy(() => import('./components/Services.jsx'));
 import Beratung from './components/Beratung.jsx';
@@ -22,11 +20,12 @@ const Specialties = lazy(() => import('./pages/Specialties.jsx'));
 const SeoLanding = lazy(() => import('./pages/SeoLanding.jsx'));
 const Application = lazy(() => import('./pages/Application.jsx'));
 const Appointment = lazy(() => import('./pages/Appointment.jsx'));
+const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 import CookieConsent from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
 import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
 import { CONTACT } from './config/contact.js';
-import { getCanonicalUrl, getLanguageAlternates, getPricingPage, getSeoPage, PRICE_PAGES, SEO_LANGUAGES, SEO_PATHS } from './data/seoPages.js';
+import { getCanonicalUrl, getLanguageAlternates, getPricingPage, getSeoPage, LANGUAGE_HOME_META, PRICE_PAGES, SEO_LANGUAGES, SEO_PATHS } from './data/seoPages.js';
 
 
 const normalizePath = (value) => {
@@ -55,28 +54,7 @@ const getSimpleAlternates = (simplePath) => Object.keys(SEO_LANGUAGES).map((code
   href: getCanonicalUrl(getLocalizedSimplePath(simplePath, code)),
 }));
 
-const META_BY_LANG = {
-  de: {
-    title: 'Noon Sprachdienst — Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
-    description: 'Beglaubigte Übersetzungen, Dolmetschdienste und Sprachförderung in 190+ Sprachen — von beeidigten Profis, deutschlandweit seit 2019.',
-  },
-  en: {
-    title: 'Noon Sprachdienst — Certified Translations & Interpreting in 190+ Languages',
-    description: 'Certified translations, interpreting and language support in 190+ languages — by sworn professionals, across Germany since 2019.',
-  },
-  ar: {
-    title: 'نون للخدمات اللغوية — ترجمات معتمدة وترجمة فورية بأكثر من 190 لغة',
-    description: 'ترجمات معتمدة، خدمات الترجمة الفورية والدعم اللغوي بأكثر من 190 لغة — من مترجمين محلفين، في جميع أنحاء ألمانيا منذ 2019.',
-  },
-  tr: {
-    title: 'Noon Sprachdienst — 190+ Dilde Yeminli Çeviri ve Tercümanlık',
-    description: `190+ dilde yeminli çeviriler, tercümanlık ve dil desteği — yeminli profesyonellerden, tüm Almanya genelinde, 2019’dan beri.`,
-  },
-  ru: {
-    title: 'Noon Sprachdienst — Заверенные переводы и устный перевод на 190+ языках',
-    description: 'Заверенные переводы, услуги устных переводчиков и языковая поддержка на 190+ языках — от присяжных профессионалов, по всей Германии с 2019 года.',
-  },
-};
+const META_BY_LANG = LANGUAGE_HOME_META;
 
 const REQUEST_PAGE = {
   title: 'Kostenloses Angebot anfordern | NOON. Sprachdienst',
@@ -86,6 +64,16 @@ const REQUEST_PAGE = {
 const APPLICATION_PAGE = {
   title: 'Bewerbung einreichen | NOON. Sprachdienst',
   description: 'Bewerben Sie sich als Dolmetscher, Uebersetzer oder Sprachmittler im Netzwerk von NOON. Sprachdienst.',
+};
+
+const NOT_FOUND_META = {
+  de: { title: 'Seite nicht gefunden (404) | NOON. Sprachdienst', description: 'Die angeforderte Seite existiert nicht oder wurde verschoben.' },
+  en: { title: 'Page not found (404) | NOON. Sprachdienst', description: 'The page you requested does not exist or has been moved.' },
+  ar: { title: 'الصفحة غير موجودة (404) | NOON. Sprachdienst', description: 'الصفحة المطلوبة غير موجودة أو تم نقلها.' },
+  tr: { title: 'Sayfa bulunamadı (404) | NOON. Sprachdienst', description: 'İstediğiniz sayfa mevcut değil veya taşınmış.' },
+  ru: { title: 'Страница не найдена (404) | NOON. Sprachdienst', description: 'Запрошенная страница не существует или была перемещена.' },
+  fr: { title: 'Page introuvable (404) | NOON. Sprachdienst', description: 'La page demandée n’existe pas ou a été déplacée.' },
+  uk: { title: 'Сторінку не знайдено (404) | NOON. Sprachdienst', description: 'Запитувана сторінка не існує або була переміщена.' },
 };
 
 export default function App() {
@@ -101,8 +89,10 @@ export default function App() {
   const isServicesPage = simpleRoute.path === '/leistungen' || simpleRoute.path === '/services';
   const isPricingPage = !!pricingPage;
   const isSpecialtiesPage = simpleRoute.path === '/fachuebersetzungen' || simpleRoute.path === '/specialties';
+  const isHome = path === '/' || !!languageHomeLang;
+  const isNotFound = !(seoPage || isRequestPage || isAppointmentPage || isApplicationPage || isServicesPage || isPricingPage || isSpecialtiesPage || isHome);
   const simpleCanonicalPath = isRequestPage ? '/angebot' : isAppointmentPage ? '/termin' : isApplicationPage ? '/bewerbung' : isServicesPage ? '/leistungen' : isSpecialtiesPage ? '/fachuebersetzungen' : null;
-  const m = seoPage || (isRequestPage ? REQUEST_PAGE : isAppointmentPage ? REQUEST_PAGE : isApplicationPage ? APPLICATION_PAGE : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
+  const m = seoPage || (isNotFound ? (NOT_FOUND_META[lang] || NOT_FOUND_META.de) : isRequestPage ? REQUEST_PAGE : isAppointmentPage ? REQUEST_PAGE : isApplicationPage ? APPLICATION_PAGE : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
   const canonicalUrl = getCanonicalUrl(seoPage?.path || pricingPage?.path || (simpleCanonicalPath ? getLocalizedSimplePath(simpleCanonicalPath, simpleRoute.lang || lang) : languageHomeLang ? (languageHomeLang === 'de' ? '/' : `/${languageHomeLang}`) : '/'));
   const languageAlternates = seoPage ? getLanguageAlternates(seoPage) : (pricingPage ? PRICE_PAGES.map((page) => ({
     lang: SEO_LANGUAGES[page.lang].html,
@@ -238,6 +228,7 @@ export default function App() {
       <Helmet htmlAttributes={{ lang: meta.html, dir: meta.dir }}>
         <title>{m.metaTitle || m.title}</title>
         <meta name="description" content={m.description} />
+        <meta name="robots" content={isNotFound ? 'noindex, follow' : 'index, follow'} />
         <meta property="og:title" content={m.metaTitle || m.title} />
         <meta property="og:description" content={m.description} />
         <meta property="og:url" content={canonicalUrl} />
@@ -269,6 +260,8 @@ export default function App() {
           <Pricing />
         ) : isSpecialtiesPage ? (
           <Specialties />
+        ) : isNotFound ? (
+          <NotFound />
         ) : (
           <>
             <Hero />
