@@ -51,6 +51,7 @@ import {
   POINT_GRID_SHEETS,
   IT_SOFTWARE_SHEET,
   SERVICE_SHEET_TEXT_TRANSLATIONS,
+  REQUEST_CARD_COPY,
 } from '../content/services/sheets.jsx';
 
 const SIDE_LABELS = {
@@ -734,6 +735,76 @@ function IconBubble({ icon: Icon }) {
   );
 }
 
+function ItAssetBubble({ asset, alt = '' }) {
+  return (
+    <span className="it-asset-bubble" aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${IT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function DolmetscherAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`dolm-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${DOLMETSCHER_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function BeeidigteAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`beeidigt-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${BEEIDIGTE_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function StandesamtAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`standesamt-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${STANDESAMT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function WirtschaftAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`wirtschaft-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${WIRTSCHAFT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function BeglaubigteAsset({ asset, className = '', alt = '' }) {
+  return (
+    <span className={`beglaubigte-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${BEGLAUBIGTE_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function PointGridAsset({ base, asset, className = '', alt = '' }) {
+  return (
+    <span className={`point-grid-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
+      <img src={`${base}${asset}`} alt={alt} loading="lazy" />
+    </span>
+  );
+}
+
+function RequestCard({ lang = 'de', className = '' }) {
+  const copy = REQUEST_CARD_COPY[lang] || REQUEST_CARD_COPY.de;
+
+  return (
+    <div className={`dolm-request-card ${className}`.trim()} aria-label={copy.title}>
+      <span className="dolm-request-info">i</span>
+      <div>
+        <strong>{copy.title}</strong>
+        <a href={getOfferHref(lang)}>{copy.translation}</a>
+        <a href={getOfferHref(lang)}>{copy.interpreting}</a>
+      </div>
+    </div>
+  );
+}
 
 function translateServiceSheetText(text, lang = 'de', fallback = '') {
   if (lang === 'de' || !text) return text;
