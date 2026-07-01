@@ -7689,7 +7689,9 @@ footer { background: #FAF9F6; padding: 42px 0 22px; border-top: 1px solid var(--
 [data-reveal].is-visible { opacity: 1; transform: none; }
 
 .route-loading {
-  min-height: 42vh;
+  /* Reserve at least a viewport height so the footer stays below the fold
+     while lazy route chunks load, preventing a large layout shift (CLS). */
+  min-height: 100vh;
 }
 
 /* Responsive */
