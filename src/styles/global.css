@@ -7784,7 +7784,7 @@ footer { background: #FAF9F6; padding: 42px 0 22px; border-top: 1px solid var(--
   .hero-copy::before {
     inset: -18px -14px;
     border-radius: 24px;
-    background: rgba(250, 249, 246, 0.48);
+    /* background: rgba(250, 249, 246, 0.48); */
   }
   .hero-title {
     width: 100%;
