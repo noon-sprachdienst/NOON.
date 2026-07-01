@@ -335,7 +335,7 @@ html[dir="rtl"] .nav-links { direction: rtl; }
   width: min(1120px, 112vw);
   aspect-ratio: 1200 / 755;
   transform: translateX(-50%);
-  background: url('/assets/world-map-hero.png') center / contain no-repeat;
+  background: url('/assets/world-map-hero.webp') center / contain no-repeat;
   opacity: 0.12;
 }
 @media (min-width: 1101px) and (max-width: 1488px) {
@@ -574,7 +574,7 @@ html[dir="rtl"] .hero--rtl .counter-label {
     width: min(1100px, 138vw);
     aspect-ratio: 1200 / 755;
     transform: translateX(-50%);
-    background: url('/assets/world-map-hero.png') center / contain no-repeat;
+    background: url('/assets/world-map-hero.webp') center / contain no-repeat;
     opacity: 0.075;
   }
   .tablet-hero-copy {

@@ -210,8 +210,8 @@ const VISUAL_COPY = {
 
 const SERVICE_IMAGES = {
   interpreting: '/assets/service-scenes/male-interpreting-scene.webp',
-  translation: '/assets/service-scenes/certified-translation-scene.png',
-  specialist: '/assets/service-scenes/specialist-translation-scene.png',
+  translation: '/assets/service-scenes/certified-translation-scene.webp',
+  specialist: '/assets/service-scenes/specialist-translation-scene.webp',
 };
 
 const SERVICE_THEMES = {
