@@ -704,72 +704,6 @@ export const IT_SOFTWARE_SHEET = {
   ],
 };
 
-function DatabaseIcon(props) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <ellipse cx="12" cy="5" rx="7" ry="3" />
-      <path d="M5 5v6c0 1.66 3.13 3 7 3s7-1.34 7-3V5" />
-      <path d="M5 11v6c0 1.66 3.13 3 7 3s7-1.34 7-3v-6" />
-    </svg>
-  );
-}
-
-function ItAssetBubble({ asset, alt = '' }) {
-  return (
-    <span className="it-asset-bubble" aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${IT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
-function DolmetscherAsset({ asset, className = '', alt = '' }) {
-  return (
-    <span className={`dolm-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${DOLMETSCHER_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
-function BeeidigteAsset({ asset, className = '', alt = '' }) {
-  return (
-    <span className={`beeidigt-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${BEEIDIGTE_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
-function StandesamtAsset({ asset, className = '', alt = '' }) {
-  return (
-    <span className={`standesamt-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${STANDESAMT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
-function WirtschaftAsset({ asset, className = '', alt = '' }) {
-  return (
-    <span className={`wirtschaft-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${WIRTSCHAFT_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
-function BeglaubigteAsset({ asset, className = '', alt = '' }) {
-  return (
-    <span className={`beglaubigte-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${BEGLAUBIGTE_ASSET_BASE}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
-function PointGridAsset({ base, asset, className = '', alt = '' }) {
-  return (
-    <span className={`point-grid-asset ${className}`} aria-hidden={alt ? undefined : 'true'}>
-      <img src={`${base}${asset}`} alt={alt} loading="lazy" />
-    </span>
-  );
-}
-
 export const REQUEST_CARD_COPY = {
   de: { title: 'Unverbindliche Anfrage', translation: 'Übersetzungsanfrage ›', interpreting: 'Dolmetscher-Anfrage ›' },
   en: { title: 'Non-binding request', translation: 'Translation request ›', interpreting: 'Interpreter request ›' },
@@ -779,29 +713,6 @@ export const REQUEST_CARD_COPY = {
   fr: { title: 'Demande sans engagement', translation: 'Demande de traduction ›', interpreting: 'Demande d’interprète ›' },
   uk: { title: 'Запит без зобов’язань', translation: 'Запит перекладу ›', interpreting: 'Запит усного перекладача ›' },
 };
-
-function RequestCard({ lang = 'de', className = '' }) {
-  const copy = REQUEST_CARD_COPY[lang] || REQUEST_CARD_COPY.de;
-
-  return (
-    <div className={`dolm-request-card ${className}`.trim()} aria-label={copy.title}>
-      <span className="dolm-request-info">i</span>
-      <div>
-        <strong>{copy.title}</strong>
-        <a href={getOfferHref(lang)}>{copy.translation}</a>
-        <a href={getOfferHref(lang)}>{copy.interpreting}</a>
-      </div>
-    </div>
-  );
-}
-
-function splitSentences(text = '', max = 3) {
-  return String(text)
-    .split(/(?<=[.!?؟])\s+/)
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .slice(0, max);
-}
 
 
 export const SERVICE_SHEET_TEXT_TRANSLATIONS = {
