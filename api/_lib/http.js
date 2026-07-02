@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 const COOKIE_NAME = 'noon_admin_session';
-const SESSION_SECONDS = 60 * 60 * 12;
+const SESSION_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
 export function sendJson(res, status, body) {
   res.status(status).setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -59,11 +59,11 @@ export function createSessionCookie() {
   if (!getSecret()) throw new Error('Admin session secret is not configured.');
   const expires = Math.floor(Date.now() / 1000) + SESSION_SECONDS;
   const payload = Buffer.from(JSON.stringify({ expires })).toString('base64url');
-  return `${COOKIE_NAME}=${payload}.${sign(payload)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_SECONDS}`;
+  return `${COOKIE_NAME}=${payload}.${sign(payload)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_SECONDS}`;
 }
 
 export function clearSessionCookie() {
-  return `${COOKIE_NAME}=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`;
+  return `${COOKIE_NAME}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
 }
 
 export function isAdminRequest(req) {
