@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="foot-col foot-about">
             <div className="foot-brand">
-              <img src="/assets/logo2.png" alt="Noon Sprachdienst" width="300" />
+              <img src="/assets/logo2.webp" alt="Noon Sprachdienst" width="300" height="204" />
             </div>
             <p>{t('foot.about')}</p>
             <div className="foot-contact-col">
