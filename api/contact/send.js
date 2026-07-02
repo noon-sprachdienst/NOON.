@@ -21,7 +21,7 @@ const FILE_TYPES_BY_EXTENSION = {
   '.heic': 'image/heic',
 };
 const MAX_FILES = 6;
-const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
+const MAX_TOTAL_FILE_BYTES = 3.5 * 1024 * 1024;
 function validateOrigin(req) {
   if (!req.headers.origin) return true;
   try {
@@ -34,6 +34,11 @@ function validateOrigin(req) {
 function cleanEmail(value) {
   const email = cleanText(value, 160);
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+}
+
+function cleanUrl(value) {
+  const url = cleanText(value, 500);
+  return /^https?:\/\/\S+$/i.test(url) ? url : '';
 }
 
 function escapeHtml(value) {
@@ -107,6 +112,7 @@ export default async function handler(req, res) {
       sourceLanguage: cleanText(body.sourceLanguage, 80) || '-',
       targetLanguage: cleanText(body.targetLanguage, 80) || '-',
       message: cleanText(body.message, 3000) || '-',
+      driveLink: cleanUrl(body.driveLink),
       language: cleanText(body.language, 8) || '-',
       appointmentLocation: cleanText(body.appointmentLocation, 120) || '-',
       appointmentTime: cleanText(body.appointmentTime, 80) || '-',
@@ -143,6 +149,7 @@ export default async function handler(req, res) {
         `Ausgangssprache: ${fields.sourceLanguage}`,
         `Zielsprache: ${fields.targetLanguage}`,
         `Website-Sprache: ${fields.language}`,
+        ...(fields.driveLink ? [`Datei-Link (Google Drive): ${fields.driveLink}`] : []),
         '',
         'Nachricht:',
         fields.message,
@@ -159,7 +166,8 @@ export default async function handler(req, res) {
             <strong>Gewünschte Uhrzeit:</strong> ${escapeHtml(fields.appointmentTime)}<br>` : ''}
             <strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
             <strong>Zielsprache:</strong> ${escapeHtml(fields.targetLanguage)}<br>
-            <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}
+            <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}${fields.driveLink ? `<br>
+            <strong>Datei-Link (Google Drive):</strong> <a href="${escapeHtml(fields.driveLink)}">${escapeHtml(fields.driveLink)}</a>` : ''}
           </p>
           <p><strong>Nachricht:</strong><br>${escapeHtml(fields.message).replace(/\n/g, '<br>')}</p>
         </div>
