@@ -85,6 +85,9 @@
       border: 3px solid rgba(164, 25, 44, 0.18);
       border-top-color: #A4192C;
       animation: appLoaderSpin .8s linear infinite;
+      /* Promote to its own compositor layer so the spin keeps running even
+         while the main thread is busy parsing the app/route JS chunk. */
+      will-change: transform;
     }
     @keyframes appLoaderSpin { to { transform: rotate(360deg); } }
     @keyframes appLoaderPulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
@@ -111,9 +114,14 @@
       var loader = document.getElementById('app-loader');
       if (!loader) return;
       var start = Date.now();
+      var isAdmin = window.location.pathname === '/admin';
       function ready() {
         var root = document.getElementById('root');
         if (!root) return false;
+        // The admin panel renders its own chrome (login box / dashboard), never
+        // the public site <nav>. Hide the loader as soon as anything mounts so
+        // it doesn't sit until the 8s safety timeout.
+        if (isAdmin) return root.childElementCount > 0;
         // Wait until React has mounted the real app chrome (the <nav>), not just
         // the prerendered SEO fallback markup — otherwise the loader hides while
         // only the unstyled fallback text is on screen, causing a visible flash.
