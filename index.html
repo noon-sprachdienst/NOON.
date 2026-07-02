@@ -92,8 +92,10 @@
     @keyframes appLoaderSpin { to { transform: rotate(360deg); } }
     @keyframes appLoaderPulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
     @media (prefers-reduced-motion: reduce) {
-      #app-loader .app-loader__logo,
-      #app-loader .app-loader__spinner { animation: none; }
+      /* The pulse is decorative -> disable it. The spinner is essential loading
+         feedback (WCAG-exempt), so keep it turning, just a little slower. */
+      #app-loader .app-loader__logo { animation: none; }
+      #app-loader .app-loader__spinner { animation-duration: 1.2s; }
     }
   </style>
 
