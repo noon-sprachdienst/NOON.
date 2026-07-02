@@ -515,6 +515,57 @@ const locationPages = LOCATIONS.map((location) => ({
   cta: 'Kostenloses Angebot anfordern',
 }));
 
+// Service-area cities: places we serve digitally/deutschlandweit but do NOT
+// have a physical office in. These pages deliberately carry NO street address
+// and NO opening hours — only honest "areaServed" signals — so we never
+// fabricate a local NAP that would harm SEO and mislead visitors.
+export const SERVICE_AREAS = [
+  { slug: 'hamburg', city: 'Hamburg', region: 'Hamburg' },
+  { slug: 'koeln', city: 'Köln', region: 'Nordrhein-Westfalen' },
+  { slug: 'muenchen', city: 'München', region: 'Bayern' },
+  { slug: 'frankfurt-am-main', city: 'Frankfurt am Main', region: 'Hessen' },
+  { slug: 'duesseldorf', city: 'Düsseldorf', region: 'Nordrhein-Westfalen' },
+  { slug: 'dortmund', city: 'Dortmund', region: 'Nordrhein-Westfalen' },
+  { slug: 'essen', city: 'Essen', region: 'Nordrhein-Westfalen' },
+  { slug: 'bochum', city: 'Bochum', region: 'Nordrhein-Westfalen' },
+  { slug: 'wuppertal', city: 'Wuppertal', region: 'Nordrhein-Westfalen' },
+  { slug: 'bremen', city: 'Bremen', region: 'Bremen' },
+  { slug: 'hannover', city: 'Hannover', region: 'Niedersachsen' },
+  { slug: 'leipzig', city: 'Leipzig', region: 'Sachsen' },
+  { slug: 'dresden', city: 'Dresden', region: 'Sachsen' },
+  { slug: 'nuernberg', city: 'Nürnberg', region: 'Bayern' },
+  { slug: 'braunschweig', city: 'Braunschweig', region: 'Niedersachsen' },
+  { slug: 'oldenburg', city: 'Oldenburg', region: 'Niedersachsen' },
+  { slug: 'rheine', city: 'Rheine', region: 'Nordrhein-Westfalen' },
+  { slug: 'lingen', city: 'Lingen', region: 'Niedersachsen' },
+  { slug: 'ibbenbueren', city: 'Ibbenbüren', region: 'Nordrhein-Westfalen' },
+];
+
+const serviceAreaPages = SERVICE_AREAS.map(({ slug, city, region }) => ({
+  path: `/de/standorte/${slug}`,
+  kind: 'location',
+  serviceArea: true,
+  lang: 'de',
+  group: `service-area-${slug}`,
+  location: { slug, city, region, serviceArea: true },
+  eyebrow: `Übersetzungsbüro ${city}`,
+  title: `Beglaubigte Übersetzungen und Dolmetschen in ${city}.`,
+  description: `NOON. Sprachdienst für ${city}: beglaubigte Übersetzungen, Fachübersetzungen und Dolmetscher-Vermittlung in ${region} – digital, schnell und deutschlandweit.`,
+  intro: `NOON. Sprachdienst unterstützt Privatpersonen, Unternehmen und Behörden in ${city} (${region}) bei beglaubigten Übersetzungen, Fachübersetzungen und der Vermittlung geeigneter Dolmetscher – vollständig digital abgewickelt und deutschlandweit zuverlässig.`,
+  highlights: ['Beglaubigte Übersetzungen', 'Digitale Abwicklung', 'Dolmetscher-Vermittlung'],
+  sections: [
+    [`Beglaubigte Übersetzungen für ${city}`, `Für ${city} und Umgebung erstellen wir beglaubigte Übersetzungen von Urkunden, Zeugnissen, Führerscheinen und weiteren Dokumenten. Senden Sie uns Ihre Unterlagen einfach per WhatsApp, E-Mail oder über unser Webformular – Sie erhalten vorab ein transparentes Festpreisangebot.`],
+    [`Fachübersetzungen in ${region}`, `Ob Recht, Medizin, Wirtschaft oder Technik: Wir übersetzen Fachtexte für Kunden in ${city} und ganz ${region} nach dem Vier-Augen-Prinzip. Die fertige Übersetzung erhalten Sie digital und auf Wunsch zusätzlich per Post.`],
+    [`Dolmetscher in ${city} anfragen`, `Für Termine bei Behörden, Standesamt, Notar, Gericht oder in der Klinik vermitteln wir passende Dolmetscher in ${city} und Umgebung. Auch Video- und Telefondolmetschen sind kurzfristig möglich.`],
+  ],
+  faqs: [
+    [`Bietet NOON auch beglaubigte Übersetzungen für ${city} an?`, `Ja. Wir betreuen ${city} deutschlandweit digital: Sie senden Ihre Dokumente online und erhalten die beglaubigte Übersetzung per Post sowie als PDF.`],
+    [`Muss ich für einen Auftrag nach ${city} kommen?`, 'Nein. Der gesamte Ablauf – von der Anfrage bis zur Lieferung – funktioniert bequem online. Ein persönlicher Besuch ist nicht erforderlich.'],
+    ['Wie schnell erhalte ich mein Angebot?', 'In der Regel erhalten Sie innerhalb weniger Stunden ein kostenloses Festpreisangebot. Für eilige Dokumente prüfen wir eine Express-Bearbeitung.'],
+  ],
+  cta: 'Kostenloses Angebot anfordern',
+}));
+
 const locationI18n = {
   en: { prefix: '/en/locations', label: 'Translation office', title: 'Certified translations and interpreting in {city}.', intro: 'NOON supports private customers, companies and institutions in {city} with certified translations, specialist translations and interpreter requests.', services: 'Services in {city}', local: 'Local support', sections: [['Digital or personal request', 'Send documents by WhatsApp, email or the form. For in-person support, please arrange an appointment first.'], ['Translations and interpreting', 'We support official documents, specialist texts, authorities, registry offices, notaries, clinics and business appointments.']], highlights: ['Local branch', 'Digital requests', 'Personal support'], cta: 'Request a free quote', faq: [['Can I send documents online?', 'Yes. You can send readable scans or photos by WhatsApp, email or form.'], ['Do I need an appointment?', 'For in-person support, please arrange an appointment first.']] },
   ar: { prefix: '/ar/locations', label: 'مكتب ترجمة', title: 'ترجمات معتمدة وترجمة فورية في {city}.', intro: 'يدعم NOON العملاء والأفراد والشركات في {city} بالترجمات المعتمدة والمتخصصة وطلبات المترجمين الفوريين.', services: 'الخدمات في {city}', local: 'دعم محلي', sections: [['طلب رقمي أو شخصي', 'يمكنك إرسال المستندات عبر واتساب أو البريد أو النموذج. للحضور الشخصي يرجى حجز موعد مسبق.'], ['ترجمة ومستندات ومواعيد', 'ندعم الوثائق الرسمية والنصوص المتخصصة ومواعيد الدوائر وStandesamt والكاتب العدل والعيادات والشركات.']], highlights: ['فرع محلي', 'طلبات رقمية', 'دعم شخصي'], cta: 'اطلب عرضا مجانيا', faq: [['هل يمكن إرسال المستندات أونلاين؟', 'نعم، يمكن إرسال صور أو ملفات واضحة عبر واتساب أو البريد أو النموذج.'], ['هل أحتاج إلى موعد؟', 'للحضور الشخصي يرجى حجز موعد مسبق.']] },
@@ -1111,7 +1162,7 @@ export function getPricingPathForLanguage(lang) {
   return PRICE_PAGES.find((page) => page.lang === lang)?.path || '/preise';
 }
 
-export const SEO_PAGES = [...servicePages, ...locationPages, ...localizedLocationPages];
+export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedLocationPages];
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
 export function getSeoPage(path) {
@@ -1212,6 +1263,27 @@ export function getPageSchema(page) {
       acceptedAnswer: { '@type': 'Answer', text: answer },
     })),
   } : null;
+
+  if (page.kind === 'location' && page.serviceArea) {
+    // Service-area city: no physical office, so no PostalAddress / opening
+    // hours. We only declare the city as an area we serve.
+    return [common, breadcrumb, faqSchema, {
+      '@context': 'https://schema.org',
+      '@type': 'ProfessionalService',
+      '@id': `${getCanonicalUrl(page.path)}#servicearea`,
+      name: `${COMPANY.name} — ${page.location.city}`,
+      url: getCanonicalUrl(page.path),
+      email: COMPANY.email,
+      telephone: COMPANY.telephone,
+      areaServed: { '@type': 'City', name: page.location.city },
+      availableChannel: {
+        '@type': 'ServiceChannel',
+        serviceUrl: `${SITE_URL}/angebot/`,
+        availableLanguage: ['de', 'en', 'ar', 'tr', 'ru', 'fr', 'uk'],
+      },
+      parentOrganization: { '@id': `${SITE_URL}/#organization` },
+    }].filter(Boolean);
+  }
 
   if (page.kind === 'location') {
     return [common, breadcrumb, faqSchema, {

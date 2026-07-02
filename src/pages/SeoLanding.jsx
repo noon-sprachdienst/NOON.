@@ -151,7 +151,7 @@ export default function SeoLanding({ page }) {
             )}
           </article>
           <aside className="seo-related">
-            {isLocation && (
+            {isLocation && !page.serviceArea && (
               <>
                 <img src={`/assets/maps/${page.location.image}`} alt={`${copy.mapAlt} ${page.location.city}`} loading="lazy" decoding="async" />
                 <h3>{page.location.street}</h3>
