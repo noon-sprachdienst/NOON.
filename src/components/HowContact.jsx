@@ -432,6 +432,11 @@ export default function HowContact() {
                   <li>{uploadErrorCopy.driveStep2}</li>
                   <li>{uploadErrorCopy.driveStep3}</li>
                 </ol>
+                <p style={{ margin: '8px 0 0' }}>
+                  {uploadErrorCopy.mail}
+                  {' '}
+                  <a href={`mailto:${CONTACT.email}`}>{uploadErrorCopy.action}</a>
+                </p>
               </div>
             )}
             {status === 'upload-count' && (
