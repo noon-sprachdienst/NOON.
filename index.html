@@ -114,6 +114,10 @@
       function ready() {
         var root = document.getElementById('root');
         if (!root) return false;
+        // Wait until React has mounted the real app chrome (the <nav>), not just
+        // the prerendered SEO fallback markup — otherwise the loader hides while
+        // only the unstyled fallback text is on screen, causing a visible flash.
+        if (!root.querySelector('nav')) return false;
         // Still showing the Suspense fallback -> lazy chunks not ready yet.
         if (root.querySelector('.route-loading')) return false;
         var main = root.querySelector('main');

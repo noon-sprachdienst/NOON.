@@ -600,6 +600,137 @@ const localizedLocationPages = Object.entries(locationI18n).flatMap(([lang, copy
   }))
 ));
 
+// Localized copy for the 19 service-area cities (no physical office). Mirrors
+// the shape of locationI18n but the wording is digital/deutschlandweit and
+// never implies an in-person address. {city} and {region} are placeholders.
+const serviceAreaI18n = {
+  en: {
+    prefix: '/en/locations',
+    label: 'Translation service',
+    title: 'Certified translations and interpreting for {city}.',
+    desc: 'NOON language service for {city}: certified translations, specialist translations and interpreter arrangement in {region} — online, fast and across Germany.',
+    intro: 'NOON supports private clients, companies and authorities in {city} ({region}) with certified translations, specialist translations and interpreter arrangements — handled fully online and reliably across Germany.',
+    highlights: ['Certified translations', 'Fully online process', 'Interpreter arrangement'],
+    sections: [
+      ['Certified translations for {city}', 'For {city} and the surrounding area we produce certified translations of certificates, diplomas, driving licences and other documents. Send your files by WhatsApp, email or our web form and receive a transparent fixed-price quote in advance.'],
+      ['Interpreters and specialist texts', 'We arrange suitable interpreters in {city} for appointments at authorities, registry offices, notaries, courts and clinics — video and phone interpreting are also available at short notice. Specialist translations are produced using the four-eyes principle.'],
+    ],
+    faq: [
+      ['Do I have to come to {city} in person?', 'No. The whole process — from request to delivery — works conveniently online. Certified translations are sent by post and as a PDF.'],
+      ['How fast do I get a quote?', 'You usually receive a free fixed-price quote within a few hours. For urgent documents we check express handling.'],
+    ],
+    cta: 'Request a free quote',
+  },
+  ar: {
+    prefix: '/ar/locations',
+    label: 'خدمة ترجمة',
+    title: 'ترجمات معتمدة وترجمة فورية في {city}.',
+    desc: 'خدمة NOON اللغوية لـ {city}: ترجمات معتمدة ومتخصصة وتوفير مترجمين فوريين في {region} — رقمياً وبسرعة وفي جميع أنحاء ألمانيا.',
+    intro: 'يدعم NOON الأفراد والشركات والجهات الرسمية في {city} ({region}) بالترجمات المعتمدة والمتخصصة وتوفير مترجمين فوريين — بمعالجة رقمية بالكامل وبموثوقية في جميع أنحاء ألمانيا.',
+    highlights: ['ترجمات معتمدة', 'إجراء رقمي بالكامل', 'توفير مترجمين فوريين'],
+    sections: [
+      ['ترجمات معتمدة لـ {city}', 'لـ {city} وما حولها نُعِدّ ترجمات معتمدة للشهادات والوثائق ورخص القيادة وغيرها. أرسل مستنداتك عبر واتساب أو البريد الإلكتروني أو النموذج واحصل مسبقاً على عرض سعر ثابت وشفاف.'],
+      ['مترجمون فوريون ونصوص متخصصة', 'نوفّر مترجمين فوريين مناسبين في {city} لمواعيد الدوائر والزواج والكاتب العدل والمحاكم والعيادات — كما تتوفر الترجمة عبر الفيديو والهاتف بسرعة. تُنجَز الترجمات المتخصصة وفق مبدأ التدقيق المزدوج.'],
+    ],
+    faq: [
+      ['هل يجب أن أحضر إلى {city} شخصياً؟', 'لا. تتم العملية بالكامل عبر الإنترنت من الطلب حتى التسليم، وتُرسَل الترجمة المعتمدة بالبريد وكملف PDF.'],
+      ['ما مدى سرعة حصولي على العرض؟', 'عادةً تحصل على عرض سعر مجاني خلال ساعات قليلة. وللمستندات العاجلة نتحقق من المعالجة السريعة.'],
+    ],
+    cta: 'اطلب عرضاً مجانياً',
+  },
+  tr: {
+    prefix: '/tr/subeler',
+    label: 'Çeviri hizmeti',
+    title: '{city} için yeminli çeviri ve tercümanlık.',
+    desc: '{city} için NOON dil hizmeti: {region} bölgesinde yeminli çeviri, uzmanlık çevirisi ve tercüman temini — dijital, hızlı ve Almanya genelinde.',
+    intro: 'NOON, {city} ({region}) bölgesindeki özel müşterilere, şirketlere ve kurumlara yeminli çeviri, uzmanlık çevirisi ve tercüman temininde destek verir — tamamen dijital olarak ve Almanya genelinde güvenilir şekilde.',
+    highlights: ['Yeminli çeviriler', 'Tamamen dijital süreç', 'Tercüman temini'],
+    sections: [
+      ['{city} için yeminli çeviriler', '{city} ve çevresi için belge, diploma, ehliyet ve diğer evrakların yeminli çevirilerini hazırlıyoruz. Belgelerinizi WhatsApp, e-posta veya form ile gönderin, önceden şeffaf sabit fiyat teklifi alın.'],
+      ['Tercüman ve uzmanlık metinleri', '{city} içinde resmî daire, nikah dairesi, noter, mahkeme ve klinik randevuları için uygun tercüman temin ediyoruz — video ve telefon tercümesi de kısa sürede mümkündür. Uzmanlık çevirileri dört göz ilkesiyle hazırlanır.'],
+    ],
+    faq: [
+      ['{city} şehrine şahsen gelmem gerekir mi?', 'Hayır. Talepten teslimata kadar tüm süreç çevrimiçi işler. Yeminli çeviri posta ile ve PDF olarak gönderilir.'],
+      ['Teklifi ne kadar sürede alırım?', 'Genellikle birkaç saat içinde ücretsiz sabit fiyat teklifi alırsınız. Acil belgeler için ekspres işlem imkânını kontrol ederiz.'],
+    ],
+    cta: 'Ücretsiz teklif iste',
+  },
+  ru: {
+    prefix: '/ru/filialy',
+    label: 'Переводческая услуга',
+    title: 'Заверенные переводы и устный перевод для {city}.',
+    desc: 'Языковая служба NOON для {city}: заверенные и специализированные переводы и подбор переводчиков в {region} — онлайн, быстро и по всей Германии.',
+    intro: 'NOON поддерживает частных клиентов, компании и учреждения в {city} ({region}): заверенные переводы, специализированные переводы и подбор устных переводчиков — полностью онлайн и надёжно по всей Германии.',
+    highlights: ['Заверенные переводы', 'Полностью онлайн', 'Подбор переводчиков'],
+    sections: [
+      ['Заверенные переводы для {city}', 'Для {city} и окрестностей мы выполняем заверенные переводы свидетельств, дипломов, водительских удостоверений и других документов. Отправьте файлы через WhatsApp, email или форму и заранее получите прозрачное фиксированное предложение.'],
+      ['Устные переводчики и специализированные тексты', 'Мы подбираем подходящих устных переводчиков в {city} для визитов в ведомства, загс, к нотариусу, в суд и клинику — видео- и телефонный перевод также доступны в короткие сроки. Специализированные переводы выполняются по принципу «четырёх глаз».'],
+    ],
+    faq: [
+      ['Нужно ли лично приезжать в {city}?', 'Нет. Весь процесс — от запроса до доставки — проходит онлайн. Заверенный перевод отправляется почтой и в виде PDF.'],
+      ['Как быстро я получу предложение?', 'Обычно вы получаете бесплатное фиксированное предложение в течение нескольких часов. Для срочных документов проверяем экспресс-обработку.'],
+    ],
+    cta: 'Отправить запрос',
+  },
+  fr: {
+    prefix: '/fr/agences',
+    label: 'Service de traduction',
+    title: 'Traductions certifiées et interprétariat pour {city}.',
+    desc: 'Service linguistique NOON pour {city} : traductions certifiées, traductions spécialisées et mise à disposition d’interprètes en {region} — en ligne, rapide et partout en Allemagne.',
+    intro: 'NOON accompagne les particuliers, les entreprises et les administrations à {city} ({region}) pour les traductions certifiées, les traductions spécialisées et la mise à disposition d’interprètes — entièrement en ligne et de manière fiable partout en Allemagne.',
+    highlights: ['Traductions certifiées', 'Traitement 100 % en ligne', 'Mise à disposition d’interprètes'],
+    sections: [
+      ['Traductions certifiées pour {city}', 'Pour {city} et ses environs, nous réalisons des traductions certifiées d’actes, de diplômes, de permis de conduire et d’autres documents. Envoyez vos fichiers par WhatsApp, e-mail ou formulaire et recevez à l’avance un devis à prix fixe transparent.'],
+      ['Interprètes et textes spécialisés', 'Nous mettons à disposition des interprètes adaptés à {city} pour les rendez-vous auprès des administrations, de l’état civil, des notaires, des tribunaux et des cliniques — l’interprétariat par vidéo et téléphone est aussi possible à court terme. Les traductions spécialisées sont réalisées selon le principe des quatre yeux.'],
+    ],
+    faq: [
+      ['Dois-je me rendre à {city} en personne ?', 'Non. Tout le processus, de la demande à la livraison, se fait en ligne. La traduction certifiée est envoyée par courrier et en PDF.'],
+      ['Sous quel délai ai-je un devis ?', 'Vous recevez généralement un devis gratuit à prix fixe en quelques heures. Pour les documents urgents, nous étudions un traitement express.'],
+    ],
+    cta: 'Demander un devis gratuit',
+  },
+  uk: {
+    prefix: '/uk/filiji',
+    label: 'Перекладацька послуга',
+    title: 'Засвідчені переклади та усний переклад для {city}.',
+    desc: 'Мовна служба NOON для {city}: засвідчені та спеціалізовані переклади й підбір перекладачів у {region} — онлайн, швидко та по всій Німеччині.',
+    intro: 'NOON підтримує приватних клієнтів, компанії та установи в {city} ({region}): засвідчені переклади, спеціалізовані переклади та підбір усних перекладачів — повністю онлайн і надійно по всій Німеччині.',
+    highlights: ['Засвідчені переклади', 'Повністю онлайн', 'Підбір перекладачів'],
+    sections: [
+      ['Засвідчені переклади для {city}', 'Для {city} та околиць ми виконуємо засвідчені переклади свідоцтв, дипломів, посвідчень водія та інших документів. Надішліть файли через WhatsApp, email або форму та заздалегідь отримайте прозору фіксовану пропозицію.'],
+      ['Усні перекладачі та спеціалізовані тексти', 'Ми підбираємо відповідних усних перекладачів у {city} для візитів до установ, РАЦСу, нотаріуса, суду та клініки — відео- та телефонний переклад також доступні найближчим часом. Спеціалізовані переклади виконуються за принципом «чотирьох очей».'],
+    ],
+    faq: [
+      ['Чи потрібно особисто приїжджати до {city}?', 'Ні. Увесь процес — від запиту до доставки — відбувається онлайн. Засвідчений переклад надсилається поштою та у форматі PDF.'],
+      ['Як швидко я отримаю пропозицію?', 'Зазвичай ви отримуєте безкоштовну фіксовану пропозицію протягом кількох годин. Для термінових документів перевіряємо експрес-обробку.'],
+    ],
+    cta: 'Надіслати запит',
+  },
+};
+
+function withArea(text, city, region) {
+  return text.replaceAll('{city}', city).replaceAll('{region}', region);
+}
+
+const localizedServiceAreaPages = Object.entries(serviceAreaI18n).flatMap(([lang, copy]) => (
+  SERVICE_AREAS.map(({ slug, city, region }) => ({
+    path: `${copy.prefix}/${slug}`,
+    kind: 'location',
+    serviceArea: true,
+    lang,
+    group: `service-area-${slug}`,
+    location: { slug, city, region, serviceArea: true },
+    eyebrow: `${copy.label} ${city}`,
+    title: withArea(copy.title, city, region),
+    description: withArea(copy.desc, city, region),
+    intro: withArea(copy.intro, city, region),
+    highlights: copy.highlights,
+    sections: copy.sections.map(([heading, body]) => [withArea(heading, city, region), withArea(body, city, region)]),
+    faqs: copy.faq.map(([question, answer]) => [withArea(question, city, region), withArea(answer, city, region)]),
+    cta: copy.cta,
+  }))
+));
+
 const multilingualBase = {
   en: {
     certified: {
@@ -1162,7 +1293,7 @@ export function getPricingPathForLanguage(lang) {
   return PRICE_PAGES.find((page) => page.lang === lang)?.path || '/preise';
 }
 
-export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedLocationPages];
+export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages];
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
 export function getSeoPage(path) {
