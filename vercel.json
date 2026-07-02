@@ -1,3 +1,52 @@
 {
+  "redirects": [
+    { "source": "/about", "destination": "/", "permanent": true },
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/sprachen", "destination": "/", "permanent": true },
+    { "source": "/kontakt", "destination": "/", "permanent": true },
+    { "source": "/service", "destination": "/leistungen", "permanent": true },
+    { "source": "/ubersetzung-beauftragen", "destination": "/angebot", "permanent": true },
+    { "source": "/dolmetscherbuchen", "destination": "/termin", "permanent": true },
+
+    { "source": "/stuttgart", "destination": "/de/standorte/stuttgart/", "permanent": true },
+    { "source": "/osnabrueck", "destination": "/de/standorte/osnabrueck/", "permanent": true },
+    { "source": "/bielefeld", "destination": "/de/standorte/bielefeld/", "permanent": true },
+    { "source": "/kiel", "destination": "/de/standorte/kiel/", "permanent": true },
+    { "source": "/mainz", "destination": "/de/standorte/mainz/", "permanent": true },
+    { "source": "/berlin", "destination": "/de/standorte/berlin/", "permanent": true },
+
+    { "source": "/dolmetscher-uebersetzungsbuero-stuttgart", "destination": "/de/standorte/stuttgart/", "permanent": true },
+    { "source": "/dolmetscher-uebersetzungsbuero-osnabrueck", "destination": "/de/standorte/osnabrueck/", "permanent": true },
+    { "source": "/dolmetscher-uebersetzungsbuero-bielefeld", "destination": "/de/standorte/bielefeld/", "permanent": true },
+    { "source": "/dolmetscher-uebersetzungsbuero-kiel", "destination": "/de/standorte/kiel/", "permanent": true },
+    { "source": "/dolmetscher-uebersetzungsbuero-mainz", "destination": "/de/standorte/mainz/", "permanent": true },
+    { "source": "/dolmetscher-uebersetzungsbuero-berlin", "destination": "/de/standorte/berlin/", "permanent": true },
+
+    { "source": "/ubersetzungsburo-hannover", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-bremen", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-dortmund", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-rheine", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-rheine-1", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-frankfurt-am-main", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-munchen", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-hamburg", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-koln", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-dusseldorf", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-wuppertal", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-bochum", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-essen", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-leipzig", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-dresden", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-nurenberg", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-lingen", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-braunschweig", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-oldenburg", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+    { "source": "/ubersetzungsburo-ibbenburen", "destination": "/de/beglaubigte-uebersetzungen/", "permanent": true },
+
+    { "source": "/neue-seite", "destination": "/", "permanent": true },
+    { "source": "/neue-seite-1", "destination": "/", "permanent": true },
+    { "source": "/neue-seite-2", "destination": "/", "permanent": true },
+    { "source": "/neue-seite-3", "destination": "/", "permanent": true }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
