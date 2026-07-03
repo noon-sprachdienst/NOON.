@@ -84,6 +84,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return sendJson(res, 405, { error: 'Method not allowed.' });
   if (!validateOrigin(req)) return sendJson(res, 403, { error: 'Invalid request origin.' });
 
+  let fromHeader = '(not built yet)';
   try {
     const body = await readJson(req);
     if (cleanText(body.website, 80)) return sendJson(res, 202, { ok: true });
@@ -132,8 +133,10 @@ export default async function handler(req, res) {
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
     });
 
+    const fromAddress = (process.env.SMTP_FROM || process.env.SMTP_USER || '').trim();
+    fromHeader = `"NOON Website Anfrage" <${fromAddress}>`;
     await transporter.sendMail({
-      from: `"NOON Website Anfrage" <${process.env.SMTP_USER}>`,
+      from: fromHeader,
       to: recipient,
       replyTo: email || undefined,
       subject: `Neue Website-Anfrage: ${fields.service}`,
@@ -177,7 +180,7 @@ export default async function handler(req, res) {
 
     return sendJson(res, 202, { ok: true });
   } catch (error) {
-    console.error('contact form error', error.message);
+    console.error('contact form error', error.message, 'fromHeader:', JSON.stringify(fromHeader));
     if (error.statusCode === 400) return sendJson(res, 400, { error: error.message });
     if (error.statusCode === 413) return sendJson(res, 413, { error: error.message });
     return sendJson(res, 503, { error: 'Message delivery unavailable.' });
