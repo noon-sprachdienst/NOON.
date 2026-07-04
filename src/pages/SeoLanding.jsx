@@ -104,6 +104,41 @@ export default function SeoLanding({ page }) {
     : null;
   const isSpecialistDetail = !isLocation && page.serviceGroup === 'specialist' && !!activeService;
 
+  if (isSpecialistDetail) {
+    return (
+      <div className="seo-page seo-page--specialist">
+        <section className="services" aria-labelledby="seo-specialist-heading">
+          <div className="container">
+            <div className="specialties">
+              <nav className="seo-breadcrumbs" aria-label="Breadcrumb">
+                <a href="/">{copy.home}</a>
+                <span>/</span>
+                <a href={servicesHref}>{copy.services}</a>
+                <span>/</span>
+                <strong>{page.eyebrow}</strong>
+              </nav>
+              <div className="section-head specialties-head">
+                <h1 id="seo-specialist-heading">{page.title}</h1>
+              </div>
+              <div className="specialty-layout specialty-layout--solo">
+                <article className="service-visual-panel service-visual-panel--rich" data-active-service={activeService.id}>
+                  <RichServicePanel
+                    active={activeService}
+                    visualCopy={VISUAL_COPY[page.lang] || VISUAL_COPY.de}
+                    lang={page.lang}
+                  />
+                </article>
+              </div>
+              <div className="seo-hub-link">
+                <a href={servicesHref}>{copy.hubLink} <span className="arrow">→</span></a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="seo-page">
       <section className="seo-hero">
@@ -143,25 +178,12 @@ export default function SeoLanding({ page }) {
       <section className="seo-content">
         <div className="container seo-content-grid">
           <article>
-            {isSpecialistDetail ? (
-              <>
-                <RichServicePanel
-                  active={activeService}
-                  visualCopy={VISUAL_COPY[page.lang] || VISUAL_COPY.de}
-                  lang={page.lang}
-                />
-                <div className="seo-hub-link">
-                  <a href={servicesHref}>{copy.hubLink} <span className="arrow">→</span></a>
-                </div>
-              </>
-            ) : (
-              page.sections.map(([title, text]) => (
-                <section className="seo-copy-block" key={title}>
-                  <h2>{title}</h2>
-                  <p>{text}</p>
-                </section>
-              ))
-            )}
+            {page.sections.map(([title, text]) => (
+              <section className="seo-copy-block" key={title}>
+                <h2>{title}</h2>
+                <p>{text}</p>
+              </section>
+            ))}
             {!!page.faqs?.length && (
               <section className="seo-copy-block">
                 <h2>{copy.faq}</h2>

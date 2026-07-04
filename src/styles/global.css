@@ -836,6 +836,10 @@ html[dir="rtl"] .stats-strip .item:last-child { border-left: 0; }
   border-radius: 8px;
   /* box-shadow: 0 16px 50px rgba(10,10,10,0.04); */
 }
+.specialty-layout--solo {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 960px;
+}
 .specialty-sidebar {
   position: sticky;
   top: 96px;
