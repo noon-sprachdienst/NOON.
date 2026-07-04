@@ -1058,7 +1058,7 @@ const serviceTranslatedParagraphs = {
       "User and Administrator Guides",
       "Installation and configuration instructions",
       "ISO certificate documents, compliance and IT audit documents",
-      "As an IT translation service operating throughout Germany, we work for customers in Berlin, Munich, Hamburg, Stuttgart, Münster, Bochum, Jena and Karlsruhe, among others, as well as for remote teams throughout Europe. We translate IT and software projects into numerous language combinations - from local app translation to multilingual enterprise software localization.",
+      "As an IT translation service operating throughout Germany, we work for customers in Berlin, Hamburg, Munich, Stuttgart, Hanover, Frankfurt, Cologne and Osnabrück, among others, as well as for remote teams throughout Europe. We translate IT and software projects into numerous language combinations - from local app translation to multilingual enterprise software localization.",
       "Do you need a specialist translation in the area of ​​IT or software localization?\nBriefly describe which files or documents (e.g. XML strings, API documentation, app texts, IT security guidelines or e-learning modules) should be translated and into which language. Based on this, we will prepare a free, non-binding quote with price, delivery time and process details.",
     ],
     "chemie-biowissenschaften": [
@@ -1262,7 +1262,7 @@ const serviceTranslatedParagraphs = {
       "أدلة المستخدم والمسؤول",
       "تعليمات التثبيت والتكوين",
       "وثائق شهادة ISO والامتثال ووثائق تدقيق تكنولوجيا المعلومات",
-      "باعتبارنا خدمة ترجمة تكنولوجيا المعلومات تعمل في جميع أنحاء ألمانيا، فإننا نعمل لصالح العملاء في برلين وميونيخ وهامبورغ وشتوتغارت ومونستر وبوخوم ويينا وكارلسروه، من بين أماكن أخرى، بالإضافة إلى الفرق البعيدة في جميع أنحاء أوروبا. نقوم بترجمة مشاريع تكنولوجيا المعلومات والبرامج إلى مجموعات لغوية عديدة - بدءًا من ترجمة التطبيقات المحلية وحتى توطين برامج المؤسسات متعددة اللغات.",
+      "باعتبارنا خدمة ترجمة تكنولوجيا المعلومات تعمل في جميع أنحاء ألمانيا، فإننا نعمل لصالح العملاء في برلين وهامبورغ وميونيخ وشتوتغارت وهانوفر وفرانكفورت وكولونيا وأوسنابروك، من بين أماكن أخرى، بالإضافة إلى الفرق البعيدة في جميع أنحاء أوروبا. نقوم بترجمة مشاريع تكنولوجيا المعلومات والبرامج إلى مجموعات لغوية عديدة - بدءًا من ترجمة التطبيقات المحلية وحتى توطين برامج المؤسسات متعددة اللغات.",
       "هل تحتاج إلى ترجمة متخصصة في مجال تكنولوجيا المعلومات أو تعريب البرامج؟\nصف لنا بإيجاز الملفات أو المستندات (مثل سلاسل XML أو وثائق API أو نصوص التطبيقات أو إرشادات أمان تكنولوجيا المعلومات أو وحدات التعلم الإلكتروني) التي يجب ترجمتها وإلى أي لغة. وعلى هذا الأساس، سنقوم بإنشاء استفسار مجاني وغير ملزم لك يتضمن معلومات حول السعر ووقت التسليم والعملية.",
     ],
     "chemie-biowissenschaften": [
@@ -1466,7 +1466,7 @@ const serviceTranslatedParagraphs = {
       "Kullanıcı ve Yönetici Kılavuzları",
       "Kurulum ve konfigürasyon talimatları",
       "ISO sertifika belgeleri, uyumluluk ve BT denetim belgeleri",
-      "Almanya çapında faaliyet gösteren bir BT çeviri hizmeti olarak, diğerlerinin yanı sıra Berlin, Münih, Hamburg, Stuttgart, Münster, Bochum, Jena ve Karlsruhe'deki müşterilerimiz ve Avrupa çapındaki uzak ekipler için çalışıyoruz. BT ve yazılım projelerini, yerel uygulama çevirisinden çok dilli kurumsal yazılım yerelleştirmesine kadar çok sayıda dil kombinasyonuna çeviriyoruz.",
+      "Almanya çapında faaliyet gösteren bir BT çeviri hizmeti olarak, diğerlerinin yanı sıra Berlin, Hamburg, Münih, Stuttgart, Hannover, Frankfurt, Köln ve Osnabrück'teki müşterilerimiz ve Avrupa çapındaki uzak ekipler için çalışıyoruz. BT ve yazılım projelerini, yerel uygulama çevirisinden çok dilli kurumsal yazılım yerelleştirmesine kadar çok sayıda dil kombinasyonuna çeviriyoruz.",
       "BT veya yazılım yerelleştirmesi alanında uzman bir çeviriye mi ihtiyacınız var?\nHangi dosya veya belgelerin (örn. XML dizeleri, API belgeleri, uygulama metinleri, BT güvenlik yönergeleri veya e-öğrenme modülleri) hangi dile çevrilmesi gerektiğini bize kısaca açıklayın. Bu temelde sizin için fiyat, teslimat süresi ve süreç hakkında bilgi içeren ücretsiz, bağlayıcı olmayan bir teklif oluşturacağız.",
     ],
     "chemie-biowissenschaften": [
@@ -1670,7 +1670,7 @@ const serviceTranslatedParagraphs = {
       "Руководства пользователя и администратора",
       "Инструкции по установке и настройке",
       "Документы сертификата ISO, документы соответствия и ИТ-аудита",
-      "Как служба ИТ-переводов, работающая по всей Германии, мы работаем для клиентов в Берлине, Мюнхене, Гамбурге, Штутгарте, Мюнстере, Бохуме, Йене и Карлсруэ, среди других, а также для удаленных команд по всей Европе. Мы переводим проекты ИТ и программного обеспечения на многочисленные языковые комбинации — от перевода локальных приложений до многоязычной локализации корпоративного программного обеспечения.",
+      "Как служба ИТ-переводов, работающая по всей Германии, мы работаем для клиентов в Берлине, Гамбурге, Мюнхене, Штутгарте, Ганновере, Франкфурте, Кёльне и Оснабрюке, среди других, а также для удаленных команд по всей Европе. Мы переводим проекты ИТ и программного обеспечения на многочисленные языковые комбинации — от перевода локальных приложений до многоязычной локализации корпоративного программного обеспечения.",
       "Вам нужен специализированный перевод в области ИТ или локализации программного обеспечения?\nКратко опишите нам, какие файлы или документы (например, строки XML, документация API, тексты приложений, рекомендации по ИТ-безопасности или модули электронного обучения) должны быть переведены и на какой язык. На этой основе мы создадим для вас бесплатный, ни к чему не обязывающий запрос с информацией о цене, сроках доставки и процессе.",
     ],
     "chemie-biowissenschaften": [
@@ -1874,7 +1874,7 @@ const serviceTranslatedParagraphs = {
       "Guides de l'utilisateur et de l'administrateur",
       "Instructions d'installation et de configuration",
       "Documents de certificat ISO, documents d'audit de conformité et informatique",
-      "En tant que service de traduction informatique opérant dans toute l'Allemagne, nous travaillons entre autres pour des clients à Berlin, Munich, Hambourg, Stuttgart, Münster, Bochum, Iéna et Karlsruhe, ainsi que pour des équipes distantes dans toute l'Europe. Nous traduisons des projets informatiques et logiciels dans de nombreuses combinaisons linguistiques - de la traduction d'applications locales à la localisation de logiciels d'entreprise multilingues.",
+      "En tant que service de traduction informatique opérant dans toute l'Allemagne, nous travaillons entre autres pour des clients à Berlin, Hambourg, Munich, Stuttgart, Hanovre, Francfort, Cologne et Osnabrück, ainsi que pour des équipes distantes dans toute l'Europe. Nous traduisons des projets informatiques et logiciels dans de nombreuses combinaisons linguistiques - de la traduction d'applications locales à la localisation de logiciels d'entreprise multilingues.",
       "Avez-vous besoin d'une traduction spécialisée dans le domaine de l'informatique ou de la localisation de logiciels ?\nDécrivez-nous brièvement quels fichiers ou documents (par exemple, chaînes XML, documentation API, textes d'application, directives de sécurité informatique ou modules d'apprentissage en ligne) doivent être traduits et dans quelle langue. Sur cette base, nous établirons pour vous une demande gratuite et sans engagement contenant des informations sur le prix, le délai de livraison et le processus.",
     ],
     "chemie-biowissenschaften": [
@@ -2078,7 +2078,7 @@ const serviceTranslatedParagraphs = {
       "Посібники користувача та адміністратора",
       "Інструкція з встановлення та налаштування",
       "Документи про сертифікат ISO, документи щодо відповідності та аудиту ІТ",
-      "Як IT-служба перекладу, яка працює по всій Німеччині, ми працюємо для клієнтів у Берліні, Мюнхені, Гамбурзі, Штутгарті, Мюнстері, Бохумі, Єні та Карлсруе, а також для віддалених команд по всій Європі. Ми перекладаємо ІТ-проекти та проекти програмного забезпечення на численні мовні комбінації - від перекладу локальних додатків до багатомовної локалізації корпоративного програмного забезпечення.",
+      "Як IT-служба перекладу, яка працює по всій Німеччині, ми працюємо для клієнтів у Берліні, Гамбурзі, Мюнхені, Штутгарті, Ганновері, Франкфурті, Кельні та Оснабрюку, а також для віддалених команд по всій Європі. Ми перекладаємо ІТ-проекти та проекти програмного забезпечення на численні мовні комбінації - від перекладу локальних додатків до багатомовної локалізації корпоративного програмного забезпечення.",
       "Вам потрібен спеціальний переклад у сфері ІТ чи локалізації програмного забезпечення?\nКоротко опишіть нам, які файли чи документи (наприклад, рядки XML, документація API, тексти програм, інструкції з ІТ-безпеки чи модулі електронного навчання) потрібно перекласти та якою мовою. На основі цього ми створимо для вас безкоштовний необов’язковий запит із інформацією про ціну, час доставки та процес.",
     ],
     "chemie-biowissenschaften": [

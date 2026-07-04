@@ -21,7 +21,7 @@ const T = {
     analyticsHint: 'Full-site analytics runs on Google Analytics 4 — included in the SEO & Visibility package. Open GA4 to view real-time data across all visitors:',
     dataSession: 'Data & Session', clearData: 'Clear Local Data', logout: 'Sign Out',
     dataCleared: '✓ Data cleared.', confirmClear: 'Delete all local analytics data?',
-    unknown: 'Unknown', noCountry: 'No country data yet',
+    unknown: 'Unknown', noCountry: 'No country data yet', menu: 'Menu',
   },
   ar: {
     dir: 'rtl', loginTitle: 'دخول المشرف', loginDesc: 'أدخل كلمة مرور المشرف للمتابعة.',
@@ -40,7 +40,7 @@ const T = {
     analyticsHint: 'التحليلات الكاملة تعمل عبر Google Analytics 4 — مضمّن في حزمة SEO. افتح GA4 لعرض البيانات الفورية لجميع الزوار:',
     dataSession: 'البيانات والجلسة', clearData: 'حذف البيانات المحلية', logout: 'تسجيل الخروج',
     dataCleared: '✓ تم الحذف.', confirmClear: 'حذف جميع بيانات التحليلات؟',
-    unknown: 'غير معروف', noCountry: 'لا توجد بيانات دول بعد',
+    unknown: 'غير معروف', noCountry: 'لا توجد بيانات دول بعد', menu: 'القائمة',
   },
   de: {
     dir: 'ltr', loginTitle: 'Admin · Anmelden', loginDesc: 'Geben Sie das Admin-Passwort ein.',
@@ -59,7 +59,7 @@ const T = {
     analyticsHint: 'Die vollständige Website-Analyse läuft über Google Analytics 4 — im SEO-Paket enthalten. GA4 öffnen, um Echtzeit-Daten aller Besucher anzuzeigen:',
     dataSession: 'Daten & Sitzung', clearData: 'Lokale Daten löschen', logout: 'Abmelden',
     dataCleared: '✓ Daten gelöscht.', confirmClear: 'Alle lokalen Analysedaten löschen?',
-    unknown: 'Unbekannt', noCountry: 'Noch keine Länderdaten',
+    unknown: 'Unbekannt', noCountry: 'Noch keine Länderdaten', menu: 'Menü',
   },
 };
 
@@ -497,9 +497,17 @@ export default function Admin() {
   const [tab,    setTab]    = useState('dashboard');
   const [visits, setVisits] = useState([]);
   const [lang,   setLang]   = useState(() => localStorage.getItem(LANG_KEY) || 'en');
+  const [navOpen, setNavOpen] = useState(false);
 
   const changeLang = (l) => { setLang(l); localStorage.setItem(LANG_KEY, l); };
+  const goTab = (nextTab) => { setTab(nextTab); setNavOpen(false); };
   const t = T[lang];
+
+  useEffect(() => {
+    if (!navOpen) return undefined;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, [navOpen]);
 
   useEffect(() => {
     fetch('/api/admin/status')
@@ -525,10 +533,21 @@ export default function Admin() {
 
   return (
     <div className="adm-root" dir={t.dir}>
+      {/* Mobile backdrop */}
+      {navOpen && <div className="adm-sidebar-backdrop" onClick={() => setNavOpen(false)} />}
+
       {/* Sidebar */}
-      <aside className="adm-sidebar">
+      <aside className={`adm-sidebar${navOpen ? ' adm-sidebar--open' : ''}`}>
         <div className="adm-sidebar-logo">
           <img src="/assets/logo2.png" alt="Noon" height="30" style={{ filter:'brightness(0) invert(1)' }} />
+          <button
+            type="button"
+            className="adm-sidebar-close"
+            aria-label={t.menu}
+            onClick={() => setNavOpen(false)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
         </div>
 
         {/* Language switcher */}
@@ -541,11 +560,11 @@ export default function Admin() {
         </div>
 
         <nav className="adm-nav">
-          <button className={`adm-nav-item${tab==='dashboard'?' active':''}`} type="button" onClick={() => setTab('dashboard')}>
+          <button className={`adm-nav-item${tab==='dashboard'?' active':''}`} type="button" onClick={() => goTab('dashboard')}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             <span>{t.dashboard}</span>
           </button>
-          <button className={`adm-nav-item${tab==='settings'?' active':''}`} type="button" onClick={() => setTab('settings')}>
+          <button className={`adm-nav-item${tab==='settings'?' active':''}`} type="button" onClick={() => goTab('settings')}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
             <span>{t.settings}</span>
           </button>
@@ -560,6 +579,15 @@ export default function Admin() {
       {/* Content */}
       <main className="adm-main">
         <div className="adm-topbar">
+          <button
+            type="button"
+            className="adm-hamburger"
+            aria-label={t.menu}
+            aria-expanded={navOpen}
+            onClick={() => setNavOpen(true)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
           <h1 className="adm-page-title">{tab === 'dashboard' ? t.dashboard : t.settings}</h1>
           <div className="adm-topbar-right">
             <span className="adm-live-dot" />
