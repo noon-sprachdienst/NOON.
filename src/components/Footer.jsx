@@ -129,14 +129,13 @@ export default function Footer() {
 
         <div className="foot-bottom">
           <div>© {new Date().getFullYear()} Noon Sprachdienst</div>
+          <a href="https://3assem0.github.io/MyPortflio/" target="_blank" rel="noopener noreferrer" className="foot-legal-link foot-legal-link--sm foot-credit-center">Built by 3A</a>
           <div className="foot-bottom-links">
             <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('impressum')}>{t('foot.imprint')}</button>
             <span>·</span>
             <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('datenschutz')}>{t('foot.privacy')}</button>
             <span>·</span>
             <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('agb')}>{t('foot.agb')}</button>
-            <span>·</span>
-            <a href="https://3assem0.github.io/MyPortflio/" target="_blank" rel="noopener noreferrer" className="foot-legal-link foot-legal-link--sm">Built by 3A</a>
           </div>
         </div>
 
