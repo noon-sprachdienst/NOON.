@@ -138,6 +138,10 @@ export default function Footer() {
           </div>
         </div>
 
+        <div className="foot-credit">
+          <a href="https://3assem0.github.io/MyPortflio/" target="_blank" rel="noopener noreferrer" className="foot-legal-link foot-legal-link--sm">by 3A</a>
+        </div>
+
       </div>
     </footer>
   );

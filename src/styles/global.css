@@ -8157,6 +8157,8 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
 }
 .foot-legal-link--sm { font-size: 13px; color: var(--muted); }
 .foot-legal-link--sm:hover { color: var(--accent); }
+.foot-credit { width: 100%; text-align: center; margin-top: 8px; }
+.foot-credit .foot-legal-link { display: inline; }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ADMIN PANEL
