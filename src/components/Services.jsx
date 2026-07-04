@@ -65,7 +65,7 @@ const SIDE_LABELS = {
   uk: { interpreting: 'Усний переклад', translation: 'Засвідчені переклади', specialist: 'Фаховий переклад', faq: 'FAQ', close: 'Закрити меню' },
 };
 
-const VISUAL_COPY = {
+export const VISUAL_COPY = {
   de: {
     overview: 'Überblick',
     highlights: 'Wichtig für Sie',
@@ -701,7 +701,7 @@ function getRichServiceData(active, visualCopy, lang = 'de') {
   };
 }
 
-function RichServicePanel({ active, visualCopy, lang }) {
+export function RichServicePanel({ active, visualCopy, lang }) {
   const rich = getRichServiceData(active, visualCopy, lang);
   if (!rich) return null;
   if (active?.id === 'it-software') {

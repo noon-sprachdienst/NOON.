@@ -2,6 +2,7 @@ import HowContact from '../components/HowContact.jsx';
 import { CONTACT } from '../config/contact.js';
 import { LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
 import { getServiceNavigation } from '../data/serviceContent.js';
+import { RichServicePanel, VISUAL_COPY } from '../components/Services.jsx';
 
 const UI = {
   de: {
@@ -13,6 +14,7 @@ const UI = {
     hours: 'Mo – Sa · 24/7 telefonisch erreichbar',
     faq: 'Häufige Fragen',
     mapAlt: 'Karte des Standorts',
+    hubLink: 'Alle Fachübersetzungen im Überblick',
   },
   en: {
     home: 'Home',
@@ -23,6 +25,7 @@ const UI = {
     hours: 'Mon – Sat · reachable by phone 24/7',
     faq: 'Frequently asked questions',
     mapAlt: 'Map of the branch',
+    hubLink: 'See all specialist translation services',
   },
   ar: {
     home: 'الرئيسية',
@@ -33,6 +36,7 @@ const UI = {
     hours: 'الإثنين – السبت · متاحون هاتفيا 24/7',
     faq: 'أسئلة شائعة',
     mapAlt: 'خريطة الفرع',
+    hubLink: 'عرض جميع الترجمات المتخصصة',
   },
   tr: {
     home: 'Ana sayfa',
@@ -43,6 +47,7 @@ const UI = {
     hours: 'Pzt – Cmt · telefonla 24/7 ulaşılabilir',
     faq: 'Sık sorulan sorular',
     mapAlt: 'Şube haritası',
+    hubLink: 'Tüm uzman çevirileri görüntüle',
   },
   ru: {
     home: 'Главная',
@@ -53,6 +58,7 @@ const UI = {
     hours: 'Пн – Сб · по телефону 24/7',
     faq: 'Частые вопросы',
     mapAlt: 'Карта филиала',
+    hubLink: 'Все профильные переводы',
   },
   fr: {
     home: 'Accueil',
@@ -63,6 +69,7 @@ const UI = {
     hours: 'Lun – Sam · joignables par téléphone 24/7',
     faq: 'Questions fréquentes',
     mapAlt: 'Carte de l’agence',
+    hubLink: 'Voir toutes les traductions spécialisées',
   },
   uk: {
     home: 'Головна',
@@ -73,6 +80,7 @@ const UI = {
     hours: 'Пн – Сб · телефоном 24/7',
     faq: 'Поширені питання',
     mapAlt: 'Карта філії',
+    hubLink: 'Переглянути всі фахові переклади',
   },
 };
 
@@ -90,6 +98,11 @@ export default function SeoLanding({ page }) {
     SEO_PAGES.find((item) => item.kind === 'location' && item.lang === page.lang && item.location?.slug === slug)?.path
     || `/de/standorte/${slug}`
   );
+  const servicesHref = page.lang === 'de' ? '/leistungen' : `/${page.lang}/leistungen`;
+  const activeService = !isLocation
+    ? getServiceNavigation(page.lang).find((item) => item.id === page.serviceNavId)
+    : null;
+  const isSpecialistDetail = !isLocation && page.serviceGroup === 'specialist' && !!activeService;
 
   return (
     <div className="seo-page">
@@ -99,7 +112,7 @@ export default function SeoLanding({ page }) {
             <nav className="seo-breadcrumbs" aria-label="Breadcrumb">
               <a href="/">{copy.home}</a>
               <span>/</span>
-              <a href={isLocation ? '/#branches' : '/leistungen'}>{isLocation ? copy.locations : copy.services}</a>
+              <a href={isLocation ? '/#branches' : servicesHref}>{isLocation ? copy.locations : copy.services}</a>
               <span>/</span>
               <strong>{page.eyebrow}</strong>
             </nav>
@@ -130,12 +143,25 @@ export default function SeoLanding({ page }) {
       <section className="seo-content">
         <div className="container seo-content-grid">
           <article>
-            {page.sections.map(([title, text]) => (
-              <section className="seo-copy-block" key={title}>
-                <h2>{title}</h2>
-                <p>{text}</p>
-              </section>
-            ))}
+            {isSpecialistDetail ? (
+              <>
+                <RichServicePanel
+                  active={activeService}
+                  visualCopy={VISUAL_COPY[page.lang] || VISUAL_COPY.de}
+                  lang={page.lang}
+                />
+                <div className="seo-hub-link">
+                  <a href={servicesHref}>{copy.hubLink} <span className="arrow">→</span></a>
+                </div>
+              </>
+            ) : (
+              page.sections.map(([title, text]) => (
+                <section className="seo-copy-block" key={title}>
+                  <h2>{title}</h2>
+                  <p>{text}</p>
+                </section>
+              ))
+            )}
             {!!page.faqs?.length && (
               <section className="seo-copy-block">
                 <h2>{copy.faq}</h2>

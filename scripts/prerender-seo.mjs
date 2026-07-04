@@ -13,6 +13,85 @@ import {
   SEO_LANGUAGES,
   SITE_URL,
 } from '../src/data/seoPages.js';
+import { getServiceNavigation } from '../src/data/serviceContent.js';
+
+function isListHeadingText(text = '') {
+  return /^(wir übersetzen|typische|dazu gehören|dazu gehoren|häufig|haufig|so läuft|so lauft|these|typical|we translate|nous traduisons|nous proposons|نترجم|تشمل|نموذجية|типичные|ми перекладаємо|çevirdiğimiz)/i.test(text.trim());
+}
+
+function isQuestionText(text = '') {
+  return /[?؟]\s*$/.test(text.trim());
+}
+
+function getSpecialistGroups(paragraphs) {
+  const segments = [];
+  for (let index = 0; index < paragraphs.length; index += 1) {
+    const text = paragraphs[index];
+    const next = paragraphs[index + 1];
+    const looksLikeHeading = isListHeadingText(text) || (text.length <= 85 && next && next.length <= 130 && !isQuestionText(text));
+    if (!looksLikeHeading) continue;
+
+    const items = [];
+    for (let cursor = index + 1; cursor < paragraphs.length; cursor += 1) {
+      const item = paragraphs[cursor];
+      if (!item || isQuestionText(item)) break;
+      if (item.length > 150) break;
+      if (isListHeadingText(item) && items.length) break;
+      items.push(item);
+    }
+
+    if (items.length >= 2) {
+      segments.push({ title: text.replace(/:$/, ''), items: items.slice(0, 8) });
+      index += items.length;
+    }
+  }
+  return segments.slice(0, 8);
+}
+
+const SPECIALIST_HUB_LINK = {
+  de: 'Alle Fachübersetzungen im Überblick',
+  en: 'See all specialist translation services',
+  ar: 'عرض جميع الترجمات المتخصصة',
+  tr: 'Tüm uzman çevirileri görüntüle',
+  ru: 'Все профильные переводы',
+  fr: 'Voir toutes les traductions spécialisées',
+  uk: 'Переглянути всі фахові переклади',
+};
+
+function specialistFallbackMarkup(page, activeService) {
+  const paragraphs = (activeService.paragraphs || []).filter(Boolean);
+  const longParagraphs = paragraphs.filter((item) => item.length > 125 && !isQuestionText(item));
+  const groups = getSpecialistGroups(paragraphs);
+  const questionIndex = paragraphs.findIndex(isQuestionText);
+  const ctaAnswer = questionIndex >= 0 ? paragraphs[questionIndex + 1] : '';
+  const ctaParagraph = questionIndex >= 0
+    ? [paragraphs[questionIndex], ctaAnswer].filter(Boolean).join(' ')
+    : (longParagraphs[longParagraphs.length - 1] || '');
+  const intro = paragraphs[0] || page.intro;
+  const competence = longParagraphs[1] && longParagraphs[1] !== intro ? longParagraphs[1] : '';
+  const nationwideCandidate = [...longParagraphs].reverse().find((item) => (
+    item !== intro && item !== competence && item !== ctaAnswer && item !== ctaParagraph
+  ));
+  const nationwide = nationwideCandidate || '';
+  const servicesHref = page.lang === 'de' ? '/leistungen' : `/${page.lang}/leistungen`;
+  const hubLinkLabel = SPECIALIST_HUB_LINK[page.lang] || SPECIALIST_HUB_LINK.de;
+
+  const groupsHtml = groups
+    .map((group) => `<section><h3>${escapeHtml(group.title)}</h3><ul>${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></section>`)
+    .join('');
+
+  return `<main><article>
+    <p>${escapeHtml(page.eyebrow)}</p>
+    <h1>${escapeHtml(page.title)}</h1>
+    <p>${escapeHtml(intro)}</p>
+    ${competence ? `<p>${escapeHtml(competence)}</p>` : ''}
+    ${groupsHtml}
+    ${nationwide ? `<p>${escapeHtml(nationwide)}</p>` : ''}
+    ${ctaParagraph ? `<p>${escapeHtml(ctaParagraph)}</p>` : ''}
+    <p><a href="/angebot#contact">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p>
+    <p><a href="${servicesHref}">${escapeHtml(hubLinkLabel)}</a></p>
+  </article></main>`;
+}
 
 const distDir = join(process.cwd(), 'dist');
 const template = await readFile(join(distDir, 'index.html'), 'utf8');
@@ -59,7 +138,11 @@ function renderPage(page) {
   html = html.replace('</head>', `${alternates.map((item) => `  <link rel="alternate" hreflang="${item.lang}" href="${item.href}" />`).join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${getCanonicalUrl('/de/beglaubigte-uebersetzungen')}" />\n</head>`);
   html = html.replace(/\s*<!-- JSON-LD: LocalBusiness -->\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/, '');
   html = html.replace('</head>', `${schemas.map((schema) => `  <script type="application/ld+json">${JSON.stringify(schema)}</script>`).join('\n')}\n</head>`);
-  html = html.replace('<div id="root"></div>', `<div id="root">${fallbackMarkup(page)}</div>`);
+  const activeService = page.kind === 'service' && page.serviceGroup === 'specialist'
+    ? getServiceNavigation(page.lang).find((item) => item.id === page.serviceNavId)
+    : null;
+  const markup = activeService ? specialistFallbackMarkup(page, activeService) : fallbackMarkup(page);
+  html = html.replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
   return html;
 }
 
