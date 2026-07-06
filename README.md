@@ -126,6 +126,11 @@ SMTP_SECURE=true
 SMTP_USER=info@noon-sprachdienst.de
 SMTP_PASSWORD=replace-with-google-app-password
 CONTACT_EMAIL=info@noon-sprachdienst.de
+# Optional: routes "Übersetzung" (translation) quote requests to a
+# different inbox than "Dolmetschen" (interpreting) / appointment / job
+# requests, which keep going to CONTACT_EMAIL. Defaults to
+# uebersetzung@noon-sprachdienst.de if unset.
+CONTACT_EMAIL_TRANSLATION=uebersetzung@noon-sprachdienst.de
 ```
 
 ### Google Workspace App Password

@@ -119,7 +119,9 @@ export default async function handler(req, res) {
       appointmentTime: cleanText(body.appointmentTime, 80) || '-',
     };
     const attachments = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
-    const recipient = process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de';
+    const recipient = service === 'translation'
+      ? (process.env.CONTACT_EMAIL_TRANSLATION || 'uebersetzung@noon-sprachdienst.de')
+      : (process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de');
     const smtpPort = Number(process.env.SMTP_PORT || 465);
 
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
