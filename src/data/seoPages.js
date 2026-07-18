@@ -1,6 +1,6 @@
 import { getServiceNavigation, serviceUi } from './serviceContent.js';
 
-export const SITE_URL = 'https://noon-sprachdienst.de';
+export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
 export const COMPANY = {
   name: 'NOON. Sprachdienst',

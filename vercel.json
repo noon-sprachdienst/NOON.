@@ -46,6 +46,13 @@
     { "source": "/dolmetscher-uebersetzungsbuero-mainz(/)?", "destination": "/de/standorte/mainz/", "permanent": true },
     { "source": "/dolmetscher-uebersetzungsbuero-berlin(/)?", "destination": "/de/standorte/berlin/", "permanent": true },
 
+    { "source": "/ubersetzungsburo(/)?", "destination": "/", "permanent": true },
+    { "source": "/ubersetzungsburo-berlin(/)?", "destination": "/de/standorte/berlin/", "permanent": true },
+    { "source": "/ubersetzungsburo-kiel(/)?", "destination": "/de/standorte/kiel/", "permanent": true },
+    { "source": "/ubersetzungsburo-mainz(/)?", "destination": "/de/standorte/mainz/", "permanent": true },
+    { "source": "/ubersetzungsburo-stuttgart(/)?", "destination": "/de/standorte/stuttgart/", "permanent": true },
+    { "source": "/ubersetzungsburo-osnabrueck(/)?", "destination": "/de/standorte/osnabrueck/", "permanent": true },
+    { "source": "/ubersetzungsburo-bielefeld(/)?", "destination": "/de/standorte/bielefeld/", "permanent": true },
     { "source": "/ubersetzungsburo-hannover(/)?", "destination": "/de/standorte/hannover/", "permanent": true },
     { "source": "/ubersetzungsburo-bremen(/)?", "destination": "/de/standorte/bremen/", "permanent": true },
     { "source": "/ubersetzungsburo-dortmund(/)?", "destination": "/de/standorte/dortmund/", "permanent": true },
