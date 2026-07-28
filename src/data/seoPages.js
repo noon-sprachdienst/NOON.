@@ -712,7 +712,17 @@ function withArea(text, city, region) {
   return text.replaceAll('{city}', city).replaceAll('{region}', region);
 }
 
-const localizedServiceAreaPages = Object.entries(serviceAreaI18n).flatMap(([lang, copy]) => (
+// Only English gets a dedicated service-area page alongside German. The other
+// five languages (ar, tr, ru, fr, uk) would multiply these no-office template
+// pages 19 cities x 5 languages = 95 near-duplicate pages, which is what
+// triggered Google's "Crawled - currently not indexed" flag for this page
+// group. Real office locations (localizedLocationPages below) keep every
+// language since that content is genuinely unique per office.
+const SERVICE_AREA_LANGUAGES = ['en'];
+
+const localizedServiceAreaPages = Object.entries(serviceAreaI18n)
+  .filter(([lang]) => SERVICE_AREA_LANGUAGES.includes(lang))
+  .flatMap(([lang, copy]) => (
   SERVICE_AREAS.map(({ slug, city, region }) => ({
     path: `${copy.prefix}/${slug}`,
     kind: 'location',
