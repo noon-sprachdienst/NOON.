@@ -30,11 +30,11 @@
     { "source": "/fachuebersetzungen/literatur(/)?", "destination": "/de/fachuebersetzungen/literatur/", "permanent": true },
     { "source": "/fachuebersetzungen/it-software(/)?", "destination": "/de/fachuebersetzungen/it-software/", "permanent": true },
     { "source": "/fachuebersetzungen/chemie-biowissenschaften(/)?", "destination": "/de/fachuebersetzungen/chemie-biowissenschaften/", "permanent": true },
-    { "source": "/fachuebersetzungen/industrie-produktion(/)?", "destination": "/de/fachuebersetzungen/industrie-produktion/", "permanent": true },
+    { "source": "/fachuebersetzungen/industrie-produktion(/)?", "destination": "/de/fachuebersetzungen/", "permanent": true },
 
     { "source": "/dolmetschen/simultandolmetscher(/)?", "destination": "/de/dolmetschen/simultandolmetscher/", "permanent": true },
-    { "source": "/dolmetschen/verhandlungsdolmetscher(/)?", "destination": "/de/dolmetschen/verhandlungsdolmetscher/", "permanent": true },
-    { "source": "/dolmetschen/video-telefondolmetscher(/)?", "destination": "/de/dolmetschen/video-und-telefondolmetscher/", "permanent": true },
+    { "source": "/dolmetschen/verhandlungsdolmetscher(/)?", "destination": "/de/dolmetschen/", "permanent": true },
+    { "source": "/dolmetschen/video-telefondolmetscher(/)?", "destination": "/de/dolmetschen/", "permanent": true },
     { "source": "/dolmetschen/beeidigte-dolmetscher(/)?", "destination": "/de/dolmetschen/beeidigte-dolmetscher/", "permanent": true },
     { "source": "/dolmetschen/notardolmetscher(/)?", "destination": "/de/dolmetschen/notardolmetscher/", "permanent": true },
     { "source": "/dolmetschen/standesamt-dolmetscher(/)?", "destination": "/de/dolmetschen/standesamt-dolmetscher/", "permanent": true },
@@ -79,5 +79,7 @@
     { "source": "/neue-seite-2(/)?", "destination": "/", "permanent": true },
     { "source": "/neue-seite-3(/)?", "destination": "/", "permanent": true }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/admin(/)?", "destination": "/index.html" }
+  ]
 }

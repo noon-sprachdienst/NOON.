@@ -152,6 +152,47 @@ const languageHomePages = Object.entries(SEO_LANGUAGES)
   .map(([code, meta]) => ({ code, path: `/${code}`, meta }));
 const pricingPages = PRICE_PAGES;
 
+const SIMPLE_PAGE_META = {
+  '/angebot': {
+    title: 'Kostenloses Angebot anfordern | NOON. Sprachdienst',
+    description: 'Senden Sie Ihre Anfrage für Übersetzung oder Dolmetschen. NOON. Sprachdienst prüft Ihre Angaben und erstellt ein kostenloses Angebot.',
+    heading: 'Kostenloses Angebot anfordern',
+    text: 'Senden Sie uns Ihre Unterlagen und Angaben zu Ihrem Übersetzungs- oder Dolmetschauftrag. Wir melden uns mit einem passenden Angebot bei Ihnen.',
+  },
+  '/termin': {
+    title: 'Termin anfragen | NOON. Sprachdienst',
+    description: 'Fragen Sie einen Termin für Dolmetschen, Übersetzung oder eine Beratung bei NOON. Sprachdienst an.',
+    heading: 'Termin anfragen',
+    text: 'Teilen Sie uns Ihren Wunschtermin und die Anforderungen Ihres Auftrags mit. Wir prüfen die Verfügbarkeit und melden uns zeitnah.',
+  },
+  '/bewerbung': {
+    title: 'Bewerbung einreichen | NOON. Sprachdienst',
+    description: 'Bewerben Sie sich als Dolmetscher, Übersetzer oder Sprachmittler im Netzwerk von NOON. Sprachdienst.',
+    heading: 'Bewerbung einreichen',
+    text: 'Werden Sie Teil unseres Netzwerks für Übersetzung und Dolmetschen. Reichen Sie Ihre Angaben und Unterlagen über das Bewerbungsformular ein.',
+  },
+  '/leistungen': {
+    title: 'Leistungen für Übersetzung und Dolmetschen | NOON. Sprachdienst',
+    description: 'Entdecken Sie die Leistungen von NOON. Sprachdienst: beglaubigte Übersetzungen, Fachübersetzungen und Dolmetschen in über 190 Sprachen.',
+    heading: 'Unsere Leistungen',
+    text: 'NOON. Sprachdienst unterstützt Sie mit beglaubigten Übersetzungen, Fachübersetzungen und professionellen Dolmetschleistungen.',
+  },
+  '/fachuebersetzungen': {
+    title: 'Fachübersetzungen | NOON. Sprachdienst',
+    description: 'Fachübersetzungen für Recht, Medizin, Technik, Wirtschaft und weitere Bereiche durch qualifizierte Sprachprofis.',
+    heading: 'Fachübersetzungen',
+    text: 'Wir vermitteln qualifizierte Fachübersetzer für anspruchsvolle Inhalte aus Recht, Medizin, Technik, Wirtschaft und weiteren Fachgebieten.',
+  },
+};
+
+const simplePages = Object.entries(SEO_LANGUAGES).flatMap(([lang]) => (
+  Object.entries(SIMPLE_PAGE_META).map(([path, meta]) => ({
+    lang,
+    path: lang === 'de' ? path : `/${lang}${path}`,
+    ...meta,
+  }))
+));
+
 for (const page of prerenderPages) {
   const target = join(distDir, page.path.slice(1), 'index.html');
   await mkdir(dirname(target), { recursive: true });
@@ -162,6 +203,36 @@ for (const page of pricingPages) {
   const target = join(distDir, page.path.slice(1), 'index.html');
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, renderPage(page), 'utf8');
+}
+
+function renderSimplePage(page) {
+  const canonical = getCanonicalUrl(page.path);
+  const htmlLang = SEO_LANGUAGES[page.lang]?.html || 'de-DE';
+  const htmlDir = page.lang === 'ar' ? 'rtl' : 'ltr';
+  const basePath = page.path.replace(/^\/(de|en|ar|tr|ru|fr|uk)/, '');
+  const alternates = Object.entries(SEO_LANGUAGES).map(([lang, meta]) => (
+    `  <link rel="alternate" hreflang="${meta.html}" href="${getCanonicalUrl(lang === 'de' ? basePath : `/${lang}${basePath}`)}" />`
+  ));
+  let html = template;
+  html = html.replace(/<html[^>]*>/, `<html lang="${htmlLang}" dir="${htmlDir}">`);
+  html = setTag(html, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(page.title)}</title>`);
+  html = setTag(html, /<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeHtml(page.description)}" />`);
+  html = setTag(html, /<meta name="robots" content="[^"]*"\s*\/?>/, `<meta name="robots" content="index, follow" />`);
+  html = setTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${canonical}" />`);
+  html = setTag(html, /<meta property="og:url" content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${canonical}" />`);
+  html = setTag(html, /<meta property="og:title" content="[^"]*"\s*\/?>/, `<meta property="og:title" content="${escapeHtml(page.title)}" />`);
+  html = setTag(html, /<meta property="og:description" content="[^"]*"\s*\/?>/, `<meta property="og:description" content="${escapeHtml(page.description)}" />`);
+  html = html.replace(/\s*<link rel="alternate" hrefLang="[^"]*" href="[^"]*"\s*\/?>/g, '');
+  html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
+  html = html.replace('</head>', `${alternates.join('\n')}\n</head>`);
+  html = html.replace('<div id="root"></div>', `<div id="root"><main><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.text)}</p><p><a href="${page.lang === 'de' ? '/angebot#contact' : `/${page.lang}/angebot#contact`}">Kontakt aufnehmen</a></p></article></main></div>`);
+  return html;
+}
+
+for (const page of simplePages) {
+  const target = join(distDir, page.path.slice(1), 'index.html');
+  await mkdir(dirname(target), { recursive: true });
+  await writeFile(target, renderSimplePage(page), 'utf8');
 }
 
 function languageHomeMarkup(meta, lang) {
@@ -198,7 +269,7 @@ for (const page of languageHomePages) {
   await writeFile(target, renderLanguageHome(page), 'utf8');
 }
 
-const sitemapPaths = ['/', ...languageHomePages.map((page) => page.path), ...pricingPages.map((page) => page.path), ...SEO_PAGES.map((page) => page.path)];
+const sitemapPaths = ['/', ...languageHomePages.map((page) => page.path), ...simplePages.map((page) => page.path), ...pricingPages.map((page) => page.path), ...SEO_PAGES.map((page) => page.path)];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemapPaths.map((path) => `  <url><loc>${getCanonicalUrl(path)}</loc></url>`).join('\n')}
@@ -206,4 +277,13 @@ ${sitemapPaths.map((path) => `  <url><loc>${getCanonicalUrl(path)}</loc></url>`)
 `;
 await writeFile(join(distDir, 'sitemap.xml'), sitemap, 'utf8');
 
-console.log(`Generated ${prerenderPages.length} SEO pages, ${pricingPages.length} pricing pages, ${languageHomePages.length} language home pages, and sitemap.xml for ${COMPANY.name}.`);
+let notFoundHtml = template;
+notFoundHtml = notFoundHtml.replace(/<html[^>]*>/, '<html lang="de-DE" dir="ltr">');
+notFoundHtml = setTag(notFoundHtml, /<title>[\s\S]*?<\/title>/, '<title>Seite nicht gefunden (404) | NOON. Sprachdienst</title>');
+notFoundHtml = setTag(notFoundHtml, /<meta name="description" content="[^"]*"\s*\/?>/, '<meta name="description" content="Die angeforderte Seite existiert nicht oder wurde verschoben." />');
+notFoundHtml = setTag(notFoundHtml, /<meta name="robots" content="[^"]*"\s*\/?>/, '<meta name="robots" content="noindex, follow" />');
+notFoundHtml = notFoundHtml.replace(/\s*<link rel="canonical" href="[^"]*"\s*\/?>/, '');
+notFoundHtml = notFoundHtml.replace('<div id="root"></div>', '<div id="root"><main><article><h1>Seite nicht gefunden</h1><p>Die angeforderte Seite existiert nicht oder wurde verschoben.</p><p><a href="/">Zur Startseite</a></p></article></main></div>');
+await writeFile(join(distDir, '404.html'), notFoundHtml, 'utf8');
+
+console.log(`Generated ${prerenderPages.length} SEO pages, ${pricingPages.length} pricing pages, ${simplePages.length} application pages, ${languageHomePages.length} language home pages, sitemap.xml, and 404.html for ${COMPANY.name}.`);

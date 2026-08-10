@@ -61,6 +61,21 @@ const REQUEST_PAGE = {
   description: 'Senden Sie Ihre Anfrage für Übersetzung oder Dolmetschen. NOON. Sprachdienst prüft Ihre Angaben und erstellt ein kostenloses Angebot.',
 };
 
+const APPOINTMENT_PAGE = {
+  title: 'Termin anfragen | NOON. Sprachdienst',
+  description: 'Fragen Sie einen Termin für Dolmetschen, Übersetzung oder eine Beratung bei NOON. Sprachdienst an.',
+};
+
+const SERVICES_PAGE = {
+  title: 'Leistungen für Übersetzung und Dolmetschen | NOON. Sprachdienst',
+  description: 'Entdecken Sie die Leistungen von NOON. Sprachdienst: beglaubigte Übersetzungen, Fachübersetzungen und Dolmetschen in über 190 Sprachen.',
+};
+
+const SPECIALTIES_PAGE = {
+  title: 'Fachübersetzungen | NOON. Sprachdienst',
+  description: 'Fachübersetzungen für Recht, Medizin, Technik, Wirtschaft und weitere Bereiche durch qualifizierte Sprachprofis.',
+};
+
 const APPLICATION_PAGE = {
   title: 'Bewerbung einreichen | NOON. Sprachdienst',
   description: 'Bewerben Sie sich als Dolmetscher, Uebersetzer oder Sprachmittler im Netzwerk von NOON. Sprachdienst.',
@@ -92,7 +107,7 @@ export default function App() {
   const isHome = path === '/' || !!languageHomeLang;
   const isNotFound = !(seoPage || isRequestPage || isAppointmentPage || isApplicationPage || isServicesPage || isPricingPage || isSpecialtiesPage || isHome);
   const simpleCanonicalPath = isRequestPage ? '/angebot' : isAppointmentPage ? '/termin' : isApplicationPage ? '/bewerbung' : isServicesPage ? '/leistungen' : isSpecialtiesPage ? '/fachuebersetzungen' : null;
-  const m = seoPage || (isNotFound ? (NOT_FOUND_META[lang] || NOT_FOUND_META.de) : isRequestPage ? REQUEST_PAGE : isAppointmentPage ? REQUEST_PAGE : isApplicationPage ? APPLICATION_PAGE : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
+  const m = seoPage || (isNotFound ? (NOT_FOUND_META[lang] || NOT_FOUND_META.de) : isRequestPage ? REQUEST_PAGE : isAppointmentPage ? APPOINTMENT_PAGE : isApplicationPage ? APPLICATION_PAGE : isServicesPage ? SERVICES_PAGE : isSpecialtiesPage ? SPECIALTIES_PAGE : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
   const canonicalUrl = getCanonicalUrl(seoPage?.path || pricingPage?.path || (simpleCanonicalPath ? getLocalizedSimplePath(simpleCanonicalPath, simpleRoute.lang || lang) : languageHomeLang ? (languageHomeLang === 'de' ? '/' : `/${languageHomeLang}`) : '/'));
   const languageAlternates = seoPage ? getLanguageAlternates(seoPage) : (pricingPage ? PRICE_PAGES.map((page) => ({
     lang: SEO_LANGUAGES[page.lang].html,
@@ -380,4 +395,3 @@ function FabTop() {
     </button>
   );
 }
-
