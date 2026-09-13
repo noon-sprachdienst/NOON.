@@ -72,12 +72,8 @@
     { "source": "/ubersetzungsburo-lingen(/)?", "destination": "/de/standorte/lingen/", "permanent": true },
     { "source": "/ubersetzungsburo-braunschweig(/)?", "destination": "/de/standorte/braunschweig/", "permanent": true },
     { "source": "/ubersetzungsburo-oldenburg(/)?", "destination": "/de/standorte/oldenburg/", "permanent": true },
-    { "source": "/ubersetzungsburo-ibbenburen(/)?", "destination": "/de/standorte/ibbenbueren/", "permanent": true },
+    { "source": "/ubersetzungsburo-ibbenburen(/)?", "destination": "/de/standorte/ibbenbueren/", "permanent": true }
 
-    { "source": "/neue-seite(/)?", "destination": "/", "permanent": true },
-    { "source": "/neue-seite-1(/)?", "destination": "/", "permanent": true },
-    { "source": "/neue-seite-2(/)?", "destination": "/", "permanent": true },
-    { "source": "/neue-seite-3(/)?", "destination": "/", "permanent": true }
   ],
   "rewrites": [
     { "source": "/admin(/)?", "destination": "/index.html" }
