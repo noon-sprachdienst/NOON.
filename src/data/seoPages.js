@@ -1,6 +1,7 @@
 import { getServiceNavigation, serviceUi } from './serviceContent.js';
 
 import { LANGUAGE_PAGES } from './languagePages.js';
+import { applyPageSeo } from './pageTitles.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -24,13 +25,13 @@ export const SEO_LANGUAGES = {
 
 export const LANGUAGE_HOME_META = {
   de: {
-    title: 'Noon Sprachdienst — Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
+    title: 'Noon Dolmetscher & Übersetzungsbüro – Beglaubigte Übersetzungen in 190+ Sprachen',
     description: 'Beglaubigte Übersetzungen, Dolmetschdienste und Sprachförderung in 190+ Sprachen — von beeidigten Profis, deutschlandweit seit 2019.',
     heading: 'Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
     cta: 'Kostenloses Angebot anfordern',
   },
   en: {
-    title: 'Noon Sprachdienst — Certified Translations & Interpreting in 190+ Languages',
+    title: 'Noon Translation Office – Certified Translations & Interpreting in 190+ Languages',
     description: 'Certified translations, interpreting and language support in 190+ languages — by sworn professionals, across Germany since 2019.',
     heading: 'Certified translations & interpreting in 190+ languages',
     cta: 'Request a free quote',
@@ -42,25 +43,25 @@ export const LANGUAGE_HOME_META = {
     cta: 'اطلب عرض سعر مجاني',
   },
   tr: {
-    title: 'Noon Sprachdienst — 190+ Dilde Yeminli Çeviri ve Tercümanlık',
+    title: 'Noon Übersetzungsbüro – 190+ Dilde Yeminli Çeviri ve Tercümanlık',
     description: '190+ dilde yeminli çeviriler, tercümanlık ve dil desteği — yeminli profesyonellerden, tüm Almanya genelinde, 2019’dan beri.',
     heading: '190+ dilde yeminli çeviri ve tercümanlık',
     cta: 'Ücretsiz teklif alın',
   },
   ru: {
-    title: 'Noon Sprachdienst — Заверенные переводы и устный перевод на 190+ языках',
+    title: 'Noon Übersetzungsbüro – Заверенные переводы и устный перевод на 190+ языках',
     description: 'Заверенные переводы, услуги устных переводчиков и языковая поддержка на 190+ языках — от присяжных профессионалов, по всей Германии с 2019 года.',
     heading: 'Заверенные переводы и устный перевод на 190+ языках',
     cta: 'Запросить бесплатное предложение',
   },
   fr: {
-    title: 'Noon Sprachdienst — Traductions certifiées et interprétation en 190+ langues',
+    title: 'Noon Übersetzungsbüro – Traductions certifiées et interprétation en 190+ langues',
     description: 'Traductions certifiées, services d’interprétation et accompagnement linguistique en 190+ langues — par des professionnels assermentés, partout en Allemagne depuis 2019.',
     heading: 'Traductions certifiées et interprétation en 190+ langues',
     cta: 'Demander un devis gratuit',
   },
   uk: {
-    title: 'Noon Sprachdienst — Завірені переклади та усний переклад 190+ мовами',
+    title: 'Noon Übersetzungsbüro – Завірені переклади та усний переклад 190+ мовами',
     description: 'Завірені переклади, послуги усного перекладу та мовна підтримка 190+ мовами — від присяжних фахівців, по всій Німеччині з 2019 року.',
     heading: 'Завірені переклади та усний переклад 190+ мовами',
     cta: 'Замовити безкоштовну пропозицію',
@@ -1294,7 +1295,7 @@ export const PRICE_PAGES = [
     highlights: PRICE_PAGE.highlights,
     faqs: [],
   })),
-];
+].map(applyPageSeo);
 
 export function getPricingPage(path) {
   const normalized = path.replace(/\/+$/, '') || '/';
@@ -1305,7 +1306,24 @@ export function getPricingPathForLanguage(lang) {
   return PRICE_PAGES.find((page) => page.lang === lang)?.path || '/preise';
 }
 
-export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES];
+// Standesamt- and Notardolmetscher already exist under /de/dolmetschen/, so only
+// the pages without a duplicate are published.
+const DOCUMENT_DELIVERY = ['Wie schnell ist die Übersetzung fertig?', 'In der Regel in 2–3 Werktagen. Mit Express am selben Tag – meist innerhalb von 4–5 Stunden. Sie erhalten die Übersetzung als PDF per E-Mail und auf Wunsch zusätzlich per Post.'];
+const publishedDocumentPages = documentPagesDe
+  .filter((page) => !['standesamt-dolmetscher', 'notardolmetscher'].includes(page.slug))
+  .map((page) => {
+    const isInterpreting = page.slug === 'gerichtsdolmetscher';
+    return {
+      ...page,
+      serviceGroup: 'document',
+      parent: isInterpreting
+        ? { href: '/de/dolmetschen/', label: 'Dolmetschen' }
+        : { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen' },
+      sections: isInterpreting ? page.sections : [...page.sections, DOCUMENT_DELIVERY],
+    };
+  });
+
+export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages].map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
 export function getSeoPage(path) {

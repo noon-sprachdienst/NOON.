@@ -178,11 +178,13 @@ function siteLinksMarkup(lang) {
   ];
   const languages = Object.entries(SEO_LANGUAGES).map(([code, meta]) => ({ href: homePath(code), label: meta.label }));
   const languagePages = SEO_PAGES.filter((item) => item.lang === lang && item.serviceGroup === 'language');
+  const documentPages = SEO_PAGES.filter((item) => item.lang === lang && item.serviceGroup === 'document');
   return `<footer>`
     + `<h2>${escapeHtml(labels.services)}</h2>${linkList(general)}`
     + `<h2>${escapeHtml(labels.interpreting)}</h2>${linkList(interpreting.map((item) => ({ href: item.path, label: item.eyebrow || item.title })))}`
     + `<h2>${escapeHtml(labels.specialist)}</h2>${linkList(specialist.map((item) => ({ href: item.path, label: item.eyebrow || item.title })))}`
     + `<h2>${escapeHtml(labels.cities)}</h2>${linkList(cities.map((item) => ({ href: item.path, label: item.location?.city || item.eyebrow })))}`
+    + (documentPages.length ? `<h2>Dokumente übersetzen</h2>${linkList(documentPages.map((item) => ({ href: item.path, label: item.eyebrow })))}` : '')
     + (languagePages.length ? `<h2>Übersetzer nach Sprache</h2>${linkList(languagePages.map((item) => ({ href: item.path, label: item.title })))}` : '')
     + `<h2>${escapeHtml(labels.languages)}</h2>${linkList(languages)}`
     + `</footer>`;
