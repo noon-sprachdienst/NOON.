@@ -112,8 +112,10 @@ function BranchCard({ branch, t, index, externalMapsAllowed, officeLabel }) {
         keyboard: false,
       });
       leafletRef.current = map;
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        maxZoom: 20,
+      // CARTO basemaps now require an API key ("API KEY REQUIRED" tiles), so use
+      // the standard OpenStreetMap tiles; attribution is shown via .map-attribution.
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
       }).addTo(map);
       const icon = L.divIcon({
         className: '',
