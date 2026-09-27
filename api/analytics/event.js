@@ -2,6 +2,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { getDatabase } from '../_lib/firebase.js';
 import { cleanPath, cleanReferrer, cleanText, readJson, sendJson } from '../_lib/http.js';
 import { getClientIp, rateLimit } from '../_lib/rateLimit.js';
+import { recordDaily } from '../_lib/analyticsDaily.js';
 
 const ALLOWED_EVENTS = new Set(['page_view', 'page_leave', 'cta_click', 'consent_withdrawn']);
 const ALLOWED_DEVICES = new Set(['desktop', 'tablet', 'mobile']);
@@ -54,7 +55,14 @@ export default async function handler(req, res) {
 
     if (!record.sessionId) return sendJson(res, 400, { error: 'Missing anonymous session.' });
 
-    await getDatabase().collection('analyticsEvents').add(record);
+    const db = getDatabase();
+    await db.collection('analyticsEvents').add(record);
+    try {
+      await recordDaily(db, record);
+    } catch (error) {
+      // The raw event is stored; a missed counter can be fixed with the admin rebuild.
+      console.error('analytics daily counter error', error);
+    }
     return sendJson(res, 202, { ok: true });
   } catch (error) {
     console.error('analytics event error', error);

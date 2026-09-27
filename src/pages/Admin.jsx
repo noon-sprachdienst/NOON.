@@ -128,6 +128,16 @@ function groupBy(arr, fn) {
 function topN(obj, n = 5) {
   return Object.entries(obj).sort((a,b) => b[1]-a[1]).slice(0,n);
 }
+// Daily counter documents ({ day, pageViews, byPath: {...}, ... }) → one summed map.
+function sumMaps(docs, field, rename = (k) => k) {
+  return docs.reduce((acc, doc) => {
+    Object.entries(doc[field] || {}).forEach(([k, v]) => { const key = rename(k); acc[key] = (acc[key] || 0) + v; });
+    return acc;
+  }, {});
+}
+function sumField(docs, field) {
+  return docs.reduce((total, doc) => total + (doc[field] || 0), 0);
+}
 
 /* ─── Sub-components ────────────────────────────────────── */
 function StatCard({ icon, value, label, sub, accent }) {
@@ -254,10 +264,23 @@ function LoginScreen({ onLogin, lang, setLang }) {
 }
 
 /* ─── Settings ──────────────────────────────────────────── */
-function SettingsTab({ t }) {
+function SettingsTab({ t, meta, onRebuilt }) {
+  const [rebuild, setRebuild] = useState('');
   const logout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' }).catch(() => {});
     window.location.reload();
+  };
+  const runRebuild = async () => {
+    setRebuild('Rebuilding…');
+    try {
+      const response = await fetch('/api/admin/analytics-rebuild', { method: 'POST' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'failed');
+      setRebuild(`✓ Rebuilt ${data.days} days from ${data.events.toLocaleString()} events.`);
+      onRebuilt();
+    } catch {
+      setRebuild('Rebuild failed. Please try again later.');
+    }
   };
   return (
     <div className="adm-settings">
@@ -270,6 +293,19 @@ function SettingsTab({ t }) {
         <strong>Retention</strong>
         <span>Analytics events expire after 90 days through the Firestore TTL field <code>expireAt</code>.</span>
       </div>
+      <div className="adm-analytics-card">
+        <strong>Daily counters</strong>
+        <span>
+          The dashboard reads one summary per day, so there is no 5,000-entry limit.
+          “Rebuild statistics” recalculates the summaries from the raw events of the last 90 days.
+          Run it once after this update; it reads every stored event once.
+          {meta?.rebuiltAt ? ` Last rebuild: ${new Date(meta.rebuiltAt).toLocaleString()}.` : ' Not rebuilt yet.'}
+        </span>
+        <div style={{ marginTop: 10 }}>
+          <button type="button" className="adm-btn-secondary" onClick={runRebuild}>Rebuild statistics</button>
+          {rebuild && <span style={{ marginInlineStart: 10, fontSize: 13 }}>{rebuild}</span>}
+        </div>
+      </div>
       <hr className="adm-divider"/>
       <h3>{t.dataSession}</h3>
       <div className="adm-danger-zone">
@@ -280,35 +316,31 @@ function SettingsTab({ t }) {
 }
 
 /* ─── Dashboard ─────────────────────────────────────────── */
-function DashboardTab({ visits, t, lang }) {
+function DashboardTab({ daily, visits: events, meta, t, lang }) {
   const [range, setRange] = useState(30);
-  const cutoff   = Date.now() - range * 86400000;
-  const events = visits.filter(v => v.ts >= cutoff);
-  const filtered = events.filter(v => !v.type || v.type === 'page_view');
-  const today    = filtered.filter(v => dayKey(v.ts) === todayKey());
-  const yest     = filtered.filter(v => {
-    const d = new Date(); d.setDate(d.getDate()-1);
-    return dayKey(v.ts) === dayKey(d.getTime());
-  });
+  const cutoffKey = dayKey(Date.now() - (range - 1) * 86400000);
+  const docs     = daily.filter(doc => doc.day >= cutoffKey);
+  const byDay    = Object.fromEntries(daily.map(doc => [doc.day, doc.pageViews || 0]));
+  const yestKey  = (() => { const d = new Date(); d.setDate(d.getDate()-1); return dayKey(d.getTime()); })();
+  const totalViews = sumField(docs, 'pageViews');
+  const allViews   = sumField(daily, 'pageViews');
   const days30    = last30Days();
-  const byDay     = groupBy(filtered, v => dayKey(v.ts));
   const chartData = days30.map(d => ({ label:d, shortLabel:d.slice(8), value: byDay[d]||0 }));
-  const topPages  = topN(groupBy(filtered, v => v.path || '/'));
-  const topRefs   = topN(groupBy(filtered, v => getDomain(v.referrer || v.ref)));
-  const topLangs  = topN(groupBy(filtered, v => (v.siteLanguage || v.browserLanguage || v.lang || 'de').slice(0,2).toUpperCase()), 5);
-  const topCountries = topN(groupBy(filtered, v => v.country || 'XX'), 8);
-  const devices   = groupBy(filtered, v => v.screen || v.device || 'desktop');
-  const uniqueCountries = new Set(filtered.map(v => v.country).filter(Boolean)).size;
-  const hasData   = filtered.length > 0;
-  const hasCountryData = filtered.some(v => v.country);
-  const durationEvents = events.filter(v => v.type === 'page_leave' && v.durationSeconds > 0);
-  const averageDuration = durationEvents.length
-    ? Math.round(durationEvents.reduce((sum, event) => sum + event.durationSeconds, 0) / durationEvents.length)
-    : 0;
-  const conversions = events.filter(v => v.type === 'cta_click');
-  const topActions = topN(groupBy(conversions, v => v.action || 'other'), 5);
-  const topBrowsers = topN(groupBy(filtered, v => v.browser || t.unknown), 5);
-  const topCities = topN(groupBy(filtered.filter(v => v.city), v => v.city), 6);
+  const topPages  = topN(sumMaps(docs, 'byPath'));
+  const topRefs   = topN(sumMaps(docs, 'byReferrer', getDomain));
+  const topLangs  = topN(sumMaps(docs, 'byLanguage'), 5);
+  const countries = sumMaps(docs, 'byCountry');
+  const topCountries = topN(countries, 8);
+  const devices   = sumMaps(docs, 'byDevice');
+  const uniqueCountries = Object.keys(countries).filter(code => code !== 'XX').length;
+  const hasData   = totalViews > 0;
+  const hasCountryData = uniqueCountries > 0;
+  const durationCount = sumField(docs, 'durationCount');
+  const averageDuration = durationCount ? Math.round(sumField(docs, 'durationSum') / durationCount) : 0;
+  const conversionCount = sumField(docs, 'ctaClicks');
+  const topActions = topN(sumMaps(docs, 'byAction'), 5);
+  const topBrowsers = topN(sumMaps(docs, 'byBrowser'), 5);
+  const topCities = topN(sumMaps(docs, 'byCity'), 6);
   const fmtDuration = (seconds) => seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
   const sessions = Object.values(events.reduce((acc, event) => {
     const key = event.sessionId || event.id;
@@ -341,22 +373,27 @@ function DashboardTab({ visits, t, lang }) {
       {/* Notice */}
       <div className="adm-notice">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Anonymous consent-based analytics &nbsp;·&nbsp; {visits.length} {t.totalEntries}
+        Anonymous consent-based analytics &nbsp;·&nbsp; {allViews.toLocaleString()} {t.totalEntries}
       </div>
+      {!meta?.rebuiltAt && (
+        <div className="adm-notice">
+          Daily counters are active. To include visits from before this update, open Settings and run “Rebuild statistics” once.
+        </div>
+      )}
 
       {/* Stat Cards */}
       <div className="adm-stat-grid">
         <StatCard
           accent="#A4192C"
           icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>}
-          value={filtered.length.toLocaleString()}
+          value={totalViews.toLocaleString()}
           label={`${t.visits} (${range} ${t.days})`}
-          sub={`${today.length} ${t.today} · ${yest.length} ${t.yesterday}`}
+          sub={`${byDay[todayKey()] || 0} ${t.today} · ${byDay[yestKey] || 0} ${t.yesterday}`}
         />
         <StatCard
           accent="#1F4E79"
           icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}
-          value={Object.keys(byDay).length}
+          value={docs.filter(doc => doc.pageViews > 0).length}
           label={t.activeDays}
           sub={`${range} ${t.days} ${t.period.replace(':','')}`}
         />
@@ -379,12 +416,12 @@ function DashboardTab({ visits, t, lang }) {
           icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>}
           value={fmtDuration(averageDuration)}
           label="Average page time"
-          sub={`${durationEvents.length} measured exits`}
+          sub={`${durationCount} measured exits`}
         />
         <StatCard
           accent="#C2410C"
           icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>}
-          value={conversions.length}
+          value={conversionCount}
           label="CTA conversions"
           sub={topActions[0]?.[0] || 'No CTA clicks yet'}
         />
@@ -496,6 +533,9 @@ export default function Admin() {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [tab,    setTab]    = useState('dashboard');
   const [visits, setVisits] = useState([]);
+  const [daily, setDaily] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const [lang,   setLang]   = useState(() => localStorage.getItem(LANG_KEY) || 'en');
   const [navOpen, setNavOpen] = useState(false);
 
@@ -524,9 +564,13 @@ export default function Admin() {
         if (!response.ok) throw new Error('analytics unavailable');
         return response.json();
       })
-      .then((data) => setVisits(data.events || []))
-      .catch(() => setVisits([]));
-  }, [authed]);
+      .then((data) => {
+        setVisits(data.events || []);
+        setDaily(data.daily || []);
+        setMeta(data.meta || null);
+      })
+      .catch(() => { setVisits([]); setDaily([]); });
+  }, [authed, reloadKey]);
 
   if (checkingAuth) return <div className="adm-login"><div className="adm-login-box"><p>Checking secure session...</p></div></div>;
   if (!authed) return <LoginScreen onLogin={() => setAuthed(true)} lang={lang} setLang={changeLang} />;
@@ -591,12 +635,12 @@ export default function Admin() {
           <h1 className="adm-page-title">{tab === 'dashboard' ? t.dashboard : t.settings}</h1>
           <div className="adm-topbar-right">
             <span className="adm-live-dot" />
-            <span style={{ fontSize:13, color:'#888' }}>{visits.length} {t.totalEntries}</span>
+            <span style={{ fontSize:13, color:'#888' }}>{sumField(daily, 'pageViews').toLocaleString()} {t.totalEntries}</span>
           </div>
         </div>
         <div className="adm-content">
-          {tab === 'dashboard' && <DashboardTab visits={visits} t={t} lang={lang} />}
-          {tab === 'settings'  && <SettingsTab t={t} lang={lang} />}
+          {tab === 'dashboard' && <DashboardTab visits={visits} daily={daily} meta={meta} t={t} lang={lang} />}
+          {tab === 'settings'  && <SettingsTab t={t} lang={lang} meta={meta} onRebuilt={() => setReloadKey((k) => k + 1)} />}
         </div>
       </main>
     </div>
