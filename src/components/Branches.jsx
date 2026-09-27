@@ -3,7 +3,7 @@ import { useI18n } from '../hooks/useI18n';
 import { useAutoCarousel } from '../hooks/useAutoCarousel';
 import 'leaflet/dist/leaflet.css';
 
-const BRANCHES = [
+export const BRANCHES = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Rosenplatz 17, 49074 Osnabrück', lat: 52.2656, lng: 8.0517, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Rosenplatz+17,+49074+Osnabrück' },
   { id: 'stuttgart',  tag: '02',       city: 'Stuttgart',  addr: 'Friedrichstraße 15, 70174 Stuttgart', lat: 48.7827, lng: 9.1766, hoursKey: 'branches.hours.stuttgart',  maps: 'https://maps.google.com/?q=Friedrichstraße+15,+70174+Stuttgart' },
   { id: 'berlin',     tag: '03',       city: 'Berlin',     addr: 'Potsdamer Str. 63, 10785 Berlin', lat: 52.5031, lng: 13.3658, hoursKey: 'branches.hours.berlin',   maps: 'https://maps.google.com/?q=Potsdamer+Str.+63,+10785+Berlin' },
@@ -22,16 +22,11 @@ const BRANCH_ARIA = {
   uk: { carousel: 'Прокрутити філії', prev: 'Попередні філії', next: 'Наступні філії', office: 'Офіс' },
 };
 
-export default function Branches() {
-  const { t, lang } = useI18n();
-  const aria = BRANCH_ARIA[lang] || BRANCH_ARIA.de;
-  const [externalMapsAllowed, setExternalMapsAllowed] = useState(() => (
-    localStorage.getItem('noon_cookie') === 'all'
-  ));
-  const { interactionProps, scrollerRef, scrollCards } = useAutoCarousel({
-    cardSelector: '.map-card',
-    gap: 16,
-    speed: 21,
+// Live (Leaflet) maps load third-party tiles, so they only switch on after the
+// visitor accepted all cookies; until then the static preview image is shown.
+export function useExternalMapsConsent() {
+  const [externalMapsAllowed, setExternalMapsAllowed] = useState(() => {
+    try { return localStorage.getItem('noon_cookie') === 'all'; } catch { return false; }
   });
 
   useEffect(() => {
@@ -39,6 +34,19 @@ export default function Branches() {
     window.addEventListener('noonConsentChanged', updateConsent);
     return () => window.removeEventListener('noonConsentChanged', updateConsent);
   }, []);
+
+  return externalMapsAllowed;
+}
+
+export default function Branches() {
+  const { t, lang } = useI18n();
+  const aria = BRANCH_ARIA[lang] || BRANCH_ARIA.de;
+  const externalMapsAllowed = useExternalMapsConsent();
+  const { interactionProps, scrollerRef, scrollCards } = useAutoCarousel({
+    cardSelector: '.map-card',
+    gap: 16,
+    speed: 21,
+  });
 
   return (
     <section className="branches" id="branches" aria-labelledby="branches-heading">
@@ -73,7 +81,7 @@ export default function Branches() {
   );
 }
 
-function BranchCard({ branch, t, index, externalMapsAllowed, officeLabel }) {
+export function BranchCard({ branch, t, index = 0, externalMapsAllowed, officeLabel, standalone = false }) {
   const cardRef = useRef(null);
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
@@ -137,7 +145,13 @@ function BranchCard({ branch, t, index, externalMapsAllowed, officeLabel }) {
   }, [mapEnabled, branch.lat, branch.lng]);
 
   return (
-    <article className="map-card" data-reveal="" style={{ '--ri': index % 3 }} aria-label={`${officeLabel} ${branch.city}`} ref={cardRef}>
+    <article
+      className={standalone ? 'map-card map-card--standalone' : 'map-card'}
+      data-reveal={standalone ? undefined : ''}
+      style={standalone ? undefined : { '--ri': index % 3 }}
+      aria-label={`${officeLabel} ${branch.city}`}
+      ref={cardRef}
+    >
       <div className="map-canvas">
         <img
           className="map-preview"

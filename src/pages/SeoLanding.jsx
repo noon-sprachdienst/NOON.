@@ -1,4 +1,6 @@
 import HowContact from '../components/HowContact.jsx';
+import { BRANCHES, BranchCard, useExternalMapsConsent } from '../components/Branches.jsx';
+import { useI18n } from '../hooks/useI18n';
 import { CONTACT } from '../config/contact.js';
 import { LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
 import { getServiceNavigation } from '../data/serviceContent.js';
@@ -87,6 +89,9 @@ const UI = {
 export default function SeoLanding({ page }) {
   const isLocation = page.kind === 'location';
   const copy = UI[page.lang] || UI.de;
+  const { t } = useI18n();
+  const externalMapsAllowed = useExternalMapsConsent();
+  const branch = isLocation && !page.serviceArea ? BRANCHES.find((item) => item.id === page.location.slug) : null;
   const relatedServices = getServiceNavigation(page.lang)
     .map((service) => SEO_PAGES.find((item) => (
       item.kind === 'service'
@@ -199,12 +204,14 @@ export default function SeoLanding({ page }) {
             )}
           </article>
           <aside className="seo-related">
-            {isLocation && !page.serviceArea && (
-              <>
-                <img src={`/assets/maps/${page.location.image}`} alt={`${copy.mapAlt} ${page.location.city}`} loading="lazy" decoding="async" />
-                <h3>{page.location.street}</h3>
-                <p>{page.location.postalCode} {page.location.city}</p>
-              </>
+            {branch && (
+              <BranchCard
+                branch={branch}
+                t={t}
+                externalMapsAllowed={externalMapsAllowed}
+                officeLabel={copy.mapAlt}
+                standalone
+              />
             )}
             <h3>{isLocation ? copy.services : copy.locations}</h3>
             <div className="seo-link-list">
