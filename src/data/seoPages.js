@@ -1307,10 +1307,12 @@ export function getPricingPathForLanguage(lang) {
 }
 
 // Standesamt- and Notardolmetscher already exist under /de/dolmetschen/, so only
-// the pages without a duplicate are published.
+// the pages without a duplicate are published. Gerichtsdolmetscher is held back
+// until the client confirms allgemein beeidigte Dolmetscher for court work.
+const HELD_DOCUMENT_PAGES = ['standesamt-dolmetscher', 'notardolmetscher', 'gerichtsdolmetscher'];
 const DOCUMENT_DELIVERY = ['Wie schnell ist die Übersetzung fertig?', 'In der Regel in 2–3 Werktagen. Mit Express am selben Tag – meist innerhalb von 4–5 Stunden. Sie erhalten die Übersetzung als PDF per E-Mail und auf Wunsch zusätzlich per Post.'];
 const publishedDocumentPages = documentPagesDe
-  .filter((page) => !['standesamt-dolmetscher', 'notardolmetscher'].includes(page.slug))
+  .filter((page) => !HELD_DOCUMENT_PAGES.includes(page.slug))
   .map((page) => {
     const isInterpreting = page.slug === 'gerichtsdolmetscher';
     return {
