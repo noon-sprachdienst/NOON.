@@ -149,7 +149,7 @@ def doc_00():
     h1(d, "Business details on record")
     table(d, ["Field", "Value"], [
         ["Company", "NOON. Sprachdienst"],
-        ["Headquarters", "Paul-Oeser-Straße 1, 49074 Osnabrück"],
+        ["Headquarters", "Rosenplatz 17, 49074 Osnabrück"],
         ["Email", "info@noon-sprachdienst.de"],
         ["Phone", "+49 160 95627666"],
         ["Founded", "2019"],

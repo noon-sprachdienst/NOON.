@@ -3,9 +3,9 @@ import { Clock3, Lock, MapPin, Phone, Send, User } from 'lucide-react';
 import { useI18n } from '../hooks/useI18n';
 
 const LOCATIONS = [
-  { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', zip: 'Paul-Oeser-Straße 1 · 49074 Osnabrück', maps: 'https://maps.google.com/?q=Paul-Oeser-Straße+1,+49074+Osnabrück' },
+  { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', zip: 'Rosenplatz 17 · 49074 Osnabrück', maps: 'https://maps.google.com/?q=Rosenplatz+17,+49074+Osnabrück' },
   { id: 'stuttgart', tag: '02', city: 'Stuttgart', zip: 'Friedrichstraße 15 · 70174 Stuttgart', maps: 'https://maps.google.com/?q=Friedrichstraße+15,+70174+Stuttgart' },
-  { id: 'berlin', tag: '03', city: 'Berlin', zip: 'Potsdamerstr. 63 · App. 908 · 10785 Berlin', maps: 'https://maps.google.com/?q=Potsdamerstr.+63,+App.+908,+10785+Berlin' },
+  { id: 'berlin', tag: '03', city: 'Berlin', zip: 'Potsdamer Str. 63 · 10785 Berlin', maps: 'https://maps.google.com/?q=Potsdamer+Str.+63,+10785+Berlin' },
   { id: 'bielefeld', tag: '04', city: 'Bielefeld', zip: 'Teichstraße 24 · 33615 Bielefeld', maps: 'https://maps.google.com/?q=Teichstraße+24,+33615+Bielefeld' },
   { id: 'mainz', tag: '05', city: 'Mainz', zip: 'Richard-Wagner-Straße 13 · 55118 Mainz', maps: 'https://maps.google.com/?q=Richard-Wagner-Straße+13,+55118+Mainz' },
   { id: 'kiel', tag: '06', city: 'Kiel', zip: 'Bothwellstraße 25 · 24143 Kiel', maps: 'https://maps.google.com/?q=Bothwellstraße+25,+24143+Kiel' },

@@ -475,7 +475,7 @@ export default function Application() {
             </a>
             <div>
               <MapPin size={18} strokeWidth={1.8} />
-              <span>Paul-Oeser-Straße 1 · Osnabrück</span>
+              <span>Rosenplatz 17 · Osnabrück</span>
             </div>
             <div>
               <Clock3 size={18} strokeWidth={1.8} />

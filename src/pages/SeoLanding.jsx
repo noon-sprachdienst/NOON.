@@ -162,7 +162,7 @@ export default function SeoLanding({ page }) {
           <aside className="seo-quick-card">
             <span>NOON. Sprachdienst</span>
             <h2>{copy.reachable}</h2>
-            <a href={CONTACT.phones[0].href}>{CONTACT.phones[0].label}</a>
+            <a href={(page.location?.phone || CONTACT.phones[0]).href}>{(page.location?.phone || CONTACT.phones[0]).label}</a>
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             <small>{copy.hours}</small>
           </aside>

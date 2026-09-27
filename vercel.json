@@ -4,9 +4,13 @@
     { "source": "/home(/)?", "destination": "/", "permanent": true },
     { "source": "/sprachen(/)?", "destination": "/", "permanent": true },
     { "source": "/kontakt(/)?", "destination": "/", "permanent": true },
-    { "source": "/service(/)?", "destination": "/leistungen", "permanent": true },
-    { "source": "/ubersetzung-beauftragen(/)?", "destination": "/angebot", "permanent": true },
-    { "source": "/dolmetscherbuchen(/)?", "destination": "/termin", "permanent": true },
+    { "source": "/service(/)?", "destination": "/leistungen/", "permanent": true },
+    { "source": "/ubersetzung-beauftragen(/)?", "destination": "/angebot/", "permanent": true },
+    { "source": "/dolmetscherbuchen(/)?", "destination": "/termin/", "permanent": true },
+    { "source": "/neue-seite(/)?", "destination": "/", "permanent": true },
+    { "source": "/neue-seite-1(/)?", "destination": "/", "permanent": true },
+    { "source": "/neue-seite-2(/)?", "destination": "/", "permanent": true },
+    { "source": "/cart(/)?", "destination": "/", "permanent": true },
 
     { "source": "/stuttgart(/)?", "destination": "/de/standorte/stuttgart/", "permanent": true },
     { "source": "/osnabrueck(/)?", "destination": "/de/standorte/osnabrueck/", "permanent": true },
@@ -76,6 +80,6 @@
 
   ],
   "rewrites": [
-    { "source": "/admin(/)?", "destination": "/index.html" }
+    { "source": "/admin(/)?", "destination": "/app-shell.html" }
   ]
 }

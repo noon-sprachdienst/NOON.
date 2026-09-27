@@ -286,7 +286,7 @@ export default function HowContact() {
                 </div>
                 <div>
                   <div className="info-lbl">{t('contact.hq')}</div>
-                  <div className="info-val">Paul-Oeser-Straße 1 · Osnabrück</div>
+                  <div className="info-val">Rosenplatz 17 · Osnabrück</div>
                 </div>
               </div>
             </div>

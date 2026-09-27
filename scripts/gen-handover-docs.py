@@ -380,7 +380,7 @@ def doc_07():
     h1(d, "Business facts referenced in legal text")
     table(d, ["Field", "Value"], [
         ["Company", "NOON. Sprachdienst"],
-        ["Headquarters", "Paul-Oeser-Straße 1, 49074 Osnabrück"],
+        ["Headquarters", "Rosenplatz 17, 49074 Osnabrück"],
         ["Email", "info@noon-sprachdienst.de"],
         ["Phone", "+49 160 95627666"],
         ["Founded", "2019"],
@@ -575,7 +575,86 @@ def doc_12():
     save(d, "NOON_12_Ownership_Handover_Letter.docx")
 
 
+# ---------------------------------------------------------------------------
+# 13 — Email Delivery via Resend
+# ---------------------------------------------------------------------------
+def doc_13():
+    d = new_doc("Email Delivery via Resend",
+                "How contact-form emails are sent, and where to check them")
+    para(d, "The contact / quote / appointment / application forms send their emails through "
+            "Resend (resend.com), a transactional email service, instead of directly through the "
+            "Google Workspace mailbox. This keeps form delivery reliable and separate from your "
+            "everyday Gmail inbox.")
+    h1(d, "Why Resend instead of plain Gmail")
+    bullets(d, [
+        "Gmail SMTP worked, but since the form sent mail from the same mailbox that received it "
+        "(info@noon-sprachdienst.de), incoming form emails showed up labelled \"me\" instead of a "
+        "proper sender name.",
+        "Resend sends as its own verified sender for your domain, so the \"me\" labelling goes away "
+        "and delivery no longer depends on a personal Gmail app password.",
+        "Free tier is generous for a contact form: 3,000 emails / month, 100 / day, no time limit.",
+    ])
+    h1(d, "Domain setup (already completed)")
+    para(d, "The domain noon-sprachdienst.de is added and verified in Resend, region eu-west-1 "
+            "(Ireland). Verification required four DNS records, added at the Squarespace DNS settings "
+            "for the domain:")
+    table(d, ["Type", "Name", "Purpose"], [
+        ["TXT", "resend._domainkey", "DKIM — proves emails really come from this domain"],
+        ["MX", "send", "Receives delivery/bounce feedback (feedback-smtp.eu-west-1.amazonses.com)"],
+        ["TXT", "send", "SPF — authorises Resend/Amazon SES to send for this domain"],
+        ["TXT", "_dmarc", "DMARC policy (optional, enables bounce/report handling)"],
+    ])
+    note(d, "These records only apply to the send / resend._domainkey / _dmarc subdomains — they do "
+            "not touch or affect the existing Google Workspace mail (MX) records on the root domain.")
+    h1(d, "Where the emails actually come from")
+    table(d, ["Setting", "Value"], [
+        ["Sending address", "noreply@noon-sprachdienst.de"],
+        ["Delivered to (recipient)", "info@noon-sprachdienst.de (unchanged)"],
+        ["Reply-To", "The customer's own email address from the form — replying goes straight to them"],
+    ])
+    h1(d, "Where these values live (Vercel)")
+    para(d, "Configured under Vercel → Project Settings → Environment Variables:")
+    table(d, ["Variable", "Value"], [
+        ["SMTP_HOST", "smtp.resend.com"],
+        ["SMTP_PORT", "465"],
+        ["SMTP_SECURE", "true"],
+        ["SMTP_USER", "resend  (literal word — this is Resend's fixed SMTP username)"],
+        ["SMTP_PASSWORD", "Your Resend API key (sending access is enough — full access not required)"],
+        ["SMTP_FROM", "noreply@noon-sprachdienst.de"],
+        ["CONTACT_EMAIL", "info@noon-sprachdienst.de"],
+    ])
+    h1(d, "Checking sent emails")
+    para(d, "Every email the site sends can be reviewed at:")
+    bullets(d, ["https://resend.com/emails"])
+    para(d, "This page lists each message with its status — delivered, bounced, complained, or "
+            "failed — plus the exact recipient and timestamp. Use it to check whether a customer's "
+            "form submission actually went out if they report not receiving a reply.")
+    h1(d, "Monitoring & limits")
+    bullets(d, [
+        "Free plan: 3,000 emails / month, 100 / day. A contact form realistically never comes close.",
+        "Usage is visible on the Resend dashboard home page / Settings → Usage.",
+        "If the daily or monthly limit is ever hit, new form emails will fail until it resets — "
+        "the site shows the visitor a generic \"delivery unavailable\" message in that case.",
+    ])
+    h1(d, "Rotating the API key")
+    numbered(d, [
+        "In Resend, go to API Keys → create a new key with Sending access.",
+        "Update SMTP_PASSWORD in Vercel with the new key.",
+        "Redeploy the project.",
+        "Delete the old API key in Resend.",
+    ])
+    note(d, "Treat the Resend API key like a password — anyone with it can send email as your "
+            "domain. Only store it in Vercel's environment variables, never in chat, code, or a "
+            "shared document.")
+    h1(d, "Account ownership")
+    para(d, "Add the Resend account to the Credentials & Access Transfer Checklist (see document 01): "
+            "the client should ultimately be the owner/billing contact of the Resend account, the same "
+            "way they own the domain, Vercel project, and Google Workspace.")
+    save(d, "NOON_13_Email_Delivery_Resend.docx")
+
+
 if __name__ == "__main__":
     doc_01(); doc_02(); doc_03(); doc_04(); doc_05(); doc_06()
     doc_07(); doc_08(); doc_09(); doc_10(); doc_11(); doc_12()
+    doc_13()
     print("\nAll handover documents generated.")

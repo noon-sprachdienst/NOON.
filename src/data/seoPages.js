@@ -3,7 +3,7 @@ import { getServiceNavigation, serviceUi } from './serviceContent.js';
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
 export const COMPANY = {
-  name: 'NOON. Sprachdienst',
+  name: 'Noon Dolmetscher & Übersetzungsbüro',
   email: 'info@noon-sprachdienst.de',
   telephone: '+4916095627666',
   hours: 'Montag bis Samstag, telefonisch 24/7 erreichbar',
@@ -66,12 +66,12 @@ export const LANGUAGE_HOME_META = {
 };
 
 export const LOCATIONS = [
-  { slug: 'osnabrueck', city: 'Osnabrück', street: 'Paul-Oeser-Straße 1', postalCode: '49074', image: 'osnabrueck.jpg', hq: true },
+  { slug: 'osnabrueck', city: 'Osnabrück', street: 'Rosenplatz 17', postalCode: '49074', image: 'osnabrueck.jpg', hq: true },
   { slug: 'stuttgart', city: 'Stuttgart', street: 'Friedrichstraße 15', postalCode: '70174', image: 'stuttgart.jpg' },
-  { slug: 'berlin', city: 'Berlin', street: 'Potsdamerstr. 63, App. 908', postalCode: '10785', image: 'berlin.jpg' },
+  { slug: 'berlin', city: 'Berlin', street: 'Potsdamer Str. 63', postalCode: '10785', image: 'berlin.jpg' },
   { slug: 'bielefeld', city: 'Bielefeld', street: 'Teichstraße 24', postalCode: '33615', image: 'bielefeld.jpg' },
   { slug: 'mainz', city: 'Mainz', street: 'Richard-Wagner-Straße 13', postalCode: '55118', image: 'mainz.jpg' },
-  { slug: 'kiel', city: 'Kiel', street: 'Bothwellstraße 25', postalCode: '24143', image: 'kiel.jpg' },
+  { slug: 'kiel', city: 'Kiel', street: 'Bothwellstraße 25', postalCode: '24143', image: 'kiel.jpg', phone: { href: 'tel:+4915567478943', label: '+49 15567 478943', e164: '+4915567478943' } },
 ];
 
 const deFaqs = {
@@ -1434,7 +1434,8 @@ export function getPageSchema(page) {
       name: `${COMPANY.name} ${page.location.city}`,
       url: getCanonicalUrl(page.path),
       email: COMPANY.email,
-      telephone: COMPANY.telephone,
+      // Branch-specific number (must match that branch's Google Business Profile).
+      telephone: page.location.phone?.e164 || COMPANY.telephone,
       address: {
         '@type': 'PostalAddress',
         streetAddress: page.location.street,

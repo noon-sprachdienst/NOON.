@@ -3,7 +3,6 @@ import { dirname, join } from 'node:path';
 import {
   COMPANY,
   getCanonicalUrl,
-  getLanguageAlternates,
   getOrganizationSchema,
   getPageSchema,
   getWebsiteSchema,
@@ -14,6 +13,7 @@ import {
   SITE_URL,
 } from '../src/data/seoPages.js';
 import { getServiceNavigation } from '../src/data/serviceContent.js';
+import { SIMPLE_PAGE_CTA, SIMPLE_PAGE_META } from '../src/data/simplePages.js';
 
 function isListHeadingText(text = '') {
   return /^(wir übersetzen|typische|dazu gehören|dazu gehoren|häufig|haufig|so läuft|so lauft|these|typical|we translate|nous traduisons|nous proposons|نترجم|تشمل|نموذجية|типичные|ми перекладаємо|çevirdiğimiz)/i.test(text.trim());
@@ -73,7 +73,7 @@ function specialistFallbackMarkup(page, activeService) {
     item !== intro && item !== competence && item !== ctaAnswer && item !== ctaParagraph
   ));
   const nationwide = nationwideCandidate || '';
-  const servicesHref = page.lang === 'de' ? '/leistungen' : `/${page.lang}/leistungen`;
+  const servicesHref = page.lang === 'de' ? '/leistungen/' : `/${page.lang}/leistungen/`;
   const hubLinkLabel = SPECIALIST_HUB_LINK[page.lang] || SPECIALIST_HUB_LINK.de;
 
   const groupsHtml = groups
@@ -88,7 +88,7 @@ function specialistFallbackMarkup(page, activeService) {
     ${groupsHtml}
     ${nationwide ? `<p>${escapeHtml(nationwide)}</p>` : ''}
     ${ctaParagraph ? `<p>${escapeHtml(ctaParagraph)}</p>` : ''}
-    <p><a href="/angebot#contact">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p>
+    <p><a href="${quoteHref(page.lang)}">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p>
     <p><a href="${servicesHref}">${escapeHtml(hubLinkLabel)}</a></p>
   </article></main>`;
 }
@@ -108,6 +108,88 @@ function setTag(html, matcher, replacement) {
   return matcher.test(html) ? html.replace(matcher, replacement) : html.replace('</head>', `  ${replacement}\n</head>`);
 }
 
+const ALL_PAGES = [...SEO_PAGES, ...PRICE_PAGES];
+
+function localPath(lang, path) {
+  return lang === 'de' ? path : `/${lang}${path}`;
+}
+
+function linkPath(path) {
+  return path === '/' ? '/' : `${path.replace(/\/+$/, '')}/`;
+}
+
+function quoteHref(lang) {
+  return `${linkPath(localPath(lang, '/angebot'))}#contact`;
+}
+
+function homePath(lang) {
+  return lang === 'de' ? '/' : `/${lang}/`;
+}
+
+function pageAlternates(page) {
+  if (!page?.group) return [];
+  return ALL_PAGES
+    .filter((item) => item.group === page.group)
+    .map((item) => ({ lang: SEO_LANGUAGES[item.lang]?.html || item.lang, href: getCanonicalUrl(item.path) }));
+}
+
+// x-default = the German version of the same page (not one fixed page for the whole site).
+function xDefaultFor(page) {
+  const german = page?.group ? ALL_PAGES.find((item) => item.group === page.group && item.lang === 'de') : null;
+  return getCanonicalUrl(german?.path || page.path);
+}
+
+const FOOTER_LABELS = {
+  de: { home: 'Startseite', services: 'Leistungen', interpreting: 'Dolmetschen', specialist: 'Fachübersetzungen', cities: 'Standorte', languages: 'Sprachen' },
+  en: { home: 'Home', services: 'Services', interpreting: 'Interpreting', specialist: 'Specialist translations', cities: 'Locations', languages: 'Languages' },
+  ar: { home: 'الرئيسية', services: 'الخدمات', interpreting: 'الترجمة الفورية', specialist: 'الترجمات المتخصصة', cities: 'الفروع', languages: 'اللغات' },
+  tr: { home: 'Ana sayfa', services: 'Hizmetler', interpreting: 'Tercümanlık', specialist: 'Uzmanlık çevirileri', cities: 'Şubeler', languages: 'Diller' },
+  ru: { home: 'Главная', services: 'Услуги', interpreting: 'Устный перевод', specialist: 'Специализированные переводы', cities: 'Филиалы', languages: 'Языки' },
+  fr: { home: 'Accueil', services: 'Services', interpreting: 'Interprétariat', specialist: 'Traductions spécialisées', cities: 'Agences', languages: 'Langues' },
+  uk: { home: 'Головна', services: 'Послуги', interpreting: 'Усний переклад', specialist: 'Фахові переклади', cities: 'Філії', languages: 'Мови' },
+};
+
+function cleanLabel(text = '') {
+  return String(text).replace(/\.$/, '');
+}
+
+function linkList(items) {
+  return `<ul>${items.map(({ href, label }) => `<li><a href="${linkPath(href)}">${escapeHtml(cleanLabel(label))}</a></li>`).join('')}</ul>`;
+}
+
+// Plain crawlable link block appended to every prerendered page (inside #root,
+// so React replaces it on mount). Uses <footer>, never <nav>: the loader in
+// index.html waits for React's <nav> before hiding.
+function siteLinksMarkup(lang) {
+  const labels = FOOTER_LABELS[lang] || FOOTER_LABELS.de;
+  const services = SEO_PAGES.filter((item) => item.lang === lang && item.kind === 'service');
+  const translation = services.filter((item) => item.serviceGroup === 'translation');
+  const interpreting = services.filter((item) => item.serviceGroup === 'interpreting');
+  const specialist = services.filter((item) => item.serviceGroup === 'specialist');
+  const pricing = PRICE_PAGES.find((item) => item.lang === lang);
+  const cities = SEO_PAGES.filter((item) => item.lang === lang && item.kind === 'location');
+  const quote = SIMPLE_PAGE_META['/angebot'][lang] || SIMPLE_PAGE_META['/angebot'].de;
+  const general = [
+    { href: homePath(lang), label: labels.home },
+    ...translation.map((item) => ({ href: item.path, label: item.title })),
+    ...(pricing ? [{ href: pricing.path, label: pricing.eyebrow || pricing.title }] : []),
+    { href: localPath(lang, '/leistungen'), label: labels.services },
+    { href: localPath(lang, '/angebot'), label: quote.heading },
+  ];
+  const languages = Object.entries(SEO_LANGUAGES).map(([code, meta]) => ({ href: homePath(code), label: meta.label }));
+  return `<footer>`
+    + `<h2>${escapeHtml(labels.services)}</h2>${linkList(general)}`
+    + `<h2>${escapeHtml(labels.interpreting)}</h2>${linkList(interpreting.map((item) => ({ href: item.path, label: item.eyebrow || item.title })))}`
+    + `<h2>${escapeHtml(labels.specialist)}</h2>${linkList(specialist.map((item) => ({ href: item.path, label: item.eyebrow || item.title })))}`
+    + `<h2>${escapeHtml(labels.cities)}</h2>${linkList(cities.map((item) => ({ href: item.path, label: item.location?.city || item.eyebrow })))}`
+    + `<h2>${escapeHtml(labels.languages)}</h2>${linkList(languages)}`
+    + `</footer>`;
+}
+
+function fillRoot(html, markup, lang) {
+  return html.replace('<div id="root"></div>', `<div id="root">${markup}${siteLinksMarkup(lang)}</div>`);
+}
+
 function fallbackMarkup(page) {
   const sections = page.sections
     .map(([title, text]) => `<section><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p></section>`)
@@ -115,13 +197,17 @@ function fallbackMarkup(page) {
   const faqs = page.faqs?.length
     ? `<section><h2>${page.lang === 'de' ? 'Häufige Fragen' : 'FAQ'}</h2>${page.faqs.map(([question, answer]) => `<h3>${escapeHtml(question)}</h3><p>${escapeHtml(answer)}</p>`).join('')}</section>`
     : '';
-  return `<main><article><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.title)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${faqs}<p><a href="/angebot#contact">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p></article></main>`;
+  const branch = page.kind === 'location' && page.location?.street ? page.location : null;
+  const branchInfo = branch
+    ? `<p>${escapeHtml(`${COMPANY.name}, ${branch.street}, ${branch.postalCode} ${branch.city}`)} · Tel. <a href="${(branch.phone?.href) || `tel:${COMPANY.telephone}`}">${escapeHtml(branch.phone?.label || '+49 160 956 27 666')}</a></p>`
+    : '';
+  return `<main><article><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.title)}</h1><p>${escapeHtml(page.intro)}</p>${branchInfo}${sections}${faqs}<p><a href="${quoteHref(page.lang)}">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p></article></main>`;
 }
 
 function renderPage(page) {
   const canonical = getCanonicalUrl(page.path);
   const schemas = [getOrganizationSchema(), getWebsiteSchema(), ...getPageSchema(page)];
-  const alternates = getLanguageAlternates(page);
+  const alternates = pageAlternates(page);
   const htmlLang = SEO_LANGUAGES[page.lang]?.html || 'de-DE';
   const htmlDir = page.lang === 'ar' ? 'rtl' : 'ltr';
   let html = template;
@@ -135,14 +221,14 @@ function renderPage(page) {
   html = setTag(html, /<meta property="og:description" content="[^"]*"\s*\/?>/, `<meta property="og:description" content="${escapeHtml(page.description)}" />`);
   html = html.replace(/\s*<link rel="alternate" hrefLang="[^"]*" href="[^"]*"\s*\/?>/g, '');
   html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
-  html = html.replace('</head>', `${alternates.map((item) => `  <link rel="alternate" hreflang="${item.lang}" href="${item.href}" />`).join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${getCanonicalUrl('/de/beglaubigte-uebersetzungen')}" />\n</head>`);
+  html = html.replace('</head>', `${alternates.map((item) => `  <link rel="alternate" hreflang="${item.lang}" href="${item.href}" />`).join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${xDefaultFor(page)}" />\n</head>`);
   html = html.replace(/\s*<!-- JSON-LD: LocalBusiness -->\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/, '');
   html = html.replace('</head>', `${schemas.map((schema) => `  <script type="application/ld+json">${JSON.stringify(schema)}</script>`).join('\n')}\n</head>`);
   const activeService = page.kind === 'service' && page.serviceGroup === 'specialist'
     ? getServiceNavigation(page.lang).find((item) => item.id === page.serviceNavId)
     : null;
   const markup = activeService ? specialistFallbackMarkup(page, activeService) : fallbackMarkup(page);
-  html = html.replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
+  html = fillRoot(html, markup, page.lang);
   return html;
 }
 
@@ -152,44 +238,11 @@ const languageHomePages = Object.entries(SEO_LANGUAGES)
   .map(([code, meta]) => ({ code, path: `/${code}`, meta }));
 const pricingPages = PRICE_PAGES;
 
-const SIMPLE_PAGE_META = {
-  '/angebot': {
-    title: 'Kostenloses Angebot anfordern | NOON. Sprachdienst',
-    description: 'Senden Sie Ihre Anfrage für Übersetzung oder Dolmetschen. NOON. Sprachdienst prüft Ihre Angaben und erstellt ein kostenloses Angebot.',
-    heading: 'Kostenloses Angebot anfordern',
-    text: 'Senden Sie uns Ihre Unterlagen und Angaben zu Ihrem Übersetzungs- oder Dolmetschauftrag. Wir melden uns mit einem passenden Angebot bei Ihnen.',
-  },
-  '/termin': {
-    title: 'Termin anfragen | NOON. Sprachdienst',
-    description: 'Fragen Sie einen Termin für Dolmetschen, Übersetzung oder eine Beratung bei NOON. Sprachdienst an.',
-    heading: 'Termin anfragen',
-    text: 'Teilen Sie uns Ihren Wunschtermin und die Anforderungen Ihres Auftrags mit. Wir prüfen die Verfügbarkeit und melden uns zeitnah.',
-  },
-  '/bewerbung': {
-    title: 'Bewerbung einreichen | NOON. Sprachdienst',
-    description: 'Bewerben Sie sich als Dolmetscher, Übersetzer oder Sprachmittler im Netzwerk von NOON. Sprachdienst.',
-    heading: 'Bewerbung einreichen',
-    text: 'Werden Sie Teil unseres Netzwerks für Übersetzung und Dolmetschen. Reichen Sie Ihre Angaben und Unterlagen über das Bewerbungsformular ein.',
-  },
-  '/leistungen': {
-    title: 'Leistungen für Übersetzung und Dolmetschen | NOON. Sprachdienst',
-    description: 'Entdecken Sie die Leistungen von NOON. Sprachdienst: beglaubigte Übersetzungen, Fachübersetzungen und Dolmetschen in über 190 Sprachen.',
-    heading: 'Unsere Leistungen',
-    text: 'NOON. Sprachdienst unterstützt Sie mit beglaubigten Übersetzungen, Fachübersetzungen und professionellen Dolmetschleistungen.',
-  },
-  '/fachuebersetzungen': {
-    title: 'Fachübersetzungen | NOON. Sprachdienst',
-    description: 'Fachübersetzungen für Recht, Medizin, Technik, Wirtschaft und weitere Bereiche durch qualifizierte Sprachprofis.',
-    heading: 'Fachübersetzungen',
-    text: 'Wir vermitteln qualifizierte Fachübersetzer für anspruchsvolle Inhalte aus Recht, Medizin, Technik, Wirtschaft und weiteren Fachgebieten.',
-  },
-};
-
 const simplePages = Object.entries(SEO_LANGUAGES).flatMap(([lang]) => (
-  Object.entries(SIMPLE_PAGE_META).map(([path, meta]) => ({
+  Object.entries(SIMPLE_PAGE_META).map(([path, metaByLang]) => ({
     lang,
     path: lang === 'de' ? path : `/${lang}${path}`,
-    ...meta,
+    ...(metaByLang[lang] || metaByLang.de),
   }))
 ));
 
@@ -224,8 +277,8 @@ function renderSimplePage(page) {
   html = setTag(html, /<meta property="og:description" content="[^"]*"\s*\/?>/, `<meta property="og:description" content="${escapeHtml(page.description)}" />`);
   html = html.replace(/\s*<link rel="alternate" hrefLang="[^"]*" href="[^"]*"\s*\/?>/g, '');
   html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
-  html = html.replace('</head>', `${alternates.join('\n')}\n</head>`);
-  html = html.replace('<div id="root"></div>', `<div id="root"><main><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.text)}</p><p><a href="${page.lang === 'de' ? '/angebot#contact' : `/${page.lang}/angebot#contact`}">Kontakt aufnehmen</a></p></article></main></div>`);
+  html = html.replace('</head>', `${alternates.join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${getCanonicalUrl(basePath)}" />\n</head>`);
+  html = fillRoot(html, `<main><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.text)}</p><p><a href="${quoteHref(page.lang)}">${escapeHtml(SIMPLE_PAGE_CTA[page.lang] || SIMPLE_PAGE_CTA.de)}</a></p></article></main>`, page.lang);
   return html;
 }
 
@@ -236,9 +289,15 @@ for (const page of simplePages) {
 }
 
 function languageHomeMarkup(meta, lang) {
-  const label = lang === 'ar' ? 'الترجمات المتخصصة' : lang === 'de' ? 'Leistungen' : 'Services';
-  const servicesHref = lang === 'de' ? '/leistungen' : `/${lang}/leistungen`;
-  return `<main><article><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.description)}</p><p><a href="${servicesHref}">${escapeHtml(label)}</a></p><p><a href="/angebot#contact">${escapeHtml(meta.cta)}</a></p></article></main>`;
+  const services = SEO_PAGES.filter((item) => item.lang === lang && item.kind === 'service');
+  const hubs = ['translation', 'specialist', 'interpreting']
+    .map((group) => services.find((item) => item.serviceGroup === group && item.path.split('/').length === 3))
+    .filter(Boolean);
+  const pricing = PRICE_PAGES.find((item) => item.lang === lang);
+  const sections = [...hubs, ...(pricing ? [pricing] : [])]
+    .map((item) => `<section><h2><a href="${linkPath(item.path)}">${escapeHtml(cleanLabel(item.title))}</a></h2><p>${escapeHtml(item.description)}</p></section>`)
+    .join('');
+  return `<main><article><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.description)}</p>${sections}<p><a href="${quoteHref(lang)}">${escapeHtml(meta.cta)}</a></p></article></main>`;
 }
 
 function renderLanguageHome(page) {
@@ -259,7 +318,7 @@ function renderLanguageHome(page) {
     `  <link rel="alternate" hreflang="${meta.html}" href="${getCanonicalUrl(code === 'de' ? '/' : `/${code}`)}" />`
   ));
   html = html.replace('</head>', `${alternates.join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${getCanonicalUrl('/')}" />\n</head>`);
-  html = html.replace('<div id="root"></div>', `<div id="root">${languageHomeMarkup(meta, page.code)}</div>`);
+  html = fillRoot(html, languageHomeMarkup(meta, page.code), page.code);
   return html;
 }
 
@@ -268,6 +327,10 @@ for (const page of languageHomePages) {
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, renderLanguageHome(page), 'utf8');
 }
+
+// /admin is rewritten to this untouched shell so it never shows homepage fallback text.
+await writeFile(join(distDir, 'app-shell.html'), template, 'utf8');
+await writeFile(join(distDir, 'index.html'), renderLanguageHome({ code: 'de', path: '/', meta: SEO_LANGUAGES.de }), 'utf8');
 
 const sitemapPaths = ['/', ...languageHomePages.map((page) => page.path), ...simplePages.map((page) => page.path), ...pricingPages.map((page) => page.path), ...SEO_PAGES.map((page) => page.path)];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
