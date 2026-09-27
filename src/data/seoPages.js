@@ -189,7 +189,7 @@ const documentPagesDe = [
     sections: [
       ['Typische Verwendungszwecke', 'Die Übersetzung wird oft für Standesamt, Ausländerbehörde, Einbürgerung, Familienzusammenführung, Gerichte oder internationale Behörden benötigt.'],
       ['Was wir benötigen', 'Senden Sie eine gut lesbare Kopie oder ein Foto der gesamten Urkunde inklusive Stempel, Randvermerken und Rückseite, falls vorhanden.'],
-      ['Klare Lieferung', 'Sie erhalten vorab ein Angebot mit Preis und Lieferzeit. Die fertige Übersetzung kann digital, per Post oder zur Abholung bereitgestellt werden.'],
+      ['Klare Lieferung', 'Sie erhalten vorab ein Angebot mit Preis und Lieferzeit. Die fertige Übersetzung kann digital, per Post oder – nach Terminvereinbarung – zur Abholung an einem Standort bereitgestellt werden.'],
     ],
     faqs: [
       ['Muss die Heiratsurkunde vollständig übersetzt werden?', 'Ja, für offizielle Zwecke werden in der Regel alle sichtbaren Angaben, Stempel und Vermerke übersetzt.'],
@@ -212,7 +212,7 @@ const documentPagesDe = [
     ],
     faqs: [
       ['Welche Sprachen übersetzen Sie?', 'Wir bearbeiten Geburtsurkunden in über 190 Sprachen, darunter Arabisch, Türkisch, Ukrainisch, Russisch, Englisch und Französisch.'],
-      ['Wie bekomme ich die fertige Übersetzung?', 'Je nach Bedarf digital, per Post oder zur Abholung an einem Standort.'],
+      ['Wie bekomme ich die fertige Übersetzung?', 'Je nach Bedarf digital, per Post oder nach Terminvereinbarung zur Abholung an einem Standort.'],
     ],
     serviceType: 'Geburtsurkunde Übersetzung',
   },
