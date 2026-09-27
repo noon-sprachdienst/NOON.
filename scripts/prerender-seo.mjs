@@ -177,11 +177,13 @@ function siteLinksMarkup(lang) {
     { href: localPath(lang, '/angebot'), label: quote.heading },
   ];
   const languages = Object.entries(SEO_LANGUAGES).map(([code, meta]) => ({ href: homePath(code), label: meta.label }));
+  const languagePages = SEO_PAGES.filter((item) => item.lang === lang && item.serviceGroup === 'language');
   return `<footer>`
     + `<h2>${escapeHtml(labels.services)}</h2>${linkList(general)}`
     + `<h2>${escapeHtml(labels.interpreting)}</h2>${linkList(interpreting.map((item) => ({ href: item.path, label: item.eyebrow || item.title })))}`
     + `<h2>${escapeHtml(labels.specialist)}</h2>${linkList(specialist.map((item) => ({ href: item.path, label: item.eyebrow || item.title })))}`
     + `<h2>${escapeHtml(labels.cities)}</h2>${linkList(cities.map((item) => ({ href: item.path, label: item.location?.city || item.eyebrow })))}`
+    + (languagePages.length ? `<h2>Übersetzer nach Sprache</h2>${linkList(languagePages.map((item) => ({ href: item.path, label: item.title })))}` : '')
     + `<h2>${escapeHtml(labels.languages)}</h2>${linkList(languages)}`
     + `</footer>`;
 }
@@ -192,7 +194,7 @@ function fillRoot(html, markup, lang) {
 
 function fallbackMarkup(page) {
   const sections = page.sections
-    .map(([title, text]) => `<section><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p></section>`)
+    .map(([title, text, links]) => `<section><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text).replaceAll('\n', '<br>')}</p>${links?.length ? linkList(links) : ''}</section>`)
     .join('');
   const faqs = page.faqs?.length
     ? `<section><h2>${page.lang === 'de' ? 'Häufige Fragen' : 'FAQ'}</h2>${page.faqs.map(([question, answer]) => `<h3>${escapeHtml(question)}</h3><p>${escapeHtml(answer)}</p>`).join('')}</section>`
@@ -290,7 +292,7 @@ for (const page of simplePages) {
 
 function languageHomeMarkup(meta, lang) {
   const services = SEO_PAGES.filter((item) => item.lang === lang && item.kind === 'service');
-  const hubs = ['translation', 'specialist', 'interpreting']
+  const hubs = ['translation', 'specialist', 'interpreting', 'language']
     .map((group) => services.find((item) => item.serviceGroup === group && item.path.split('/').length === 3))
     .filter(Boolean);
   const pricing = PRICE_PAGES.find((item) => item.lang === lang);

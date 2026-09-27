@@ -1,5 +1,7 @@
 import { getServiceNavigation, serviceUi } from './serviceContent.js';
 
+import { LANGUAGE_PAGES } from './languagePages.js';
+
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
 export const COMPANY = {
@@ -1303,7 +1305,7 @@ export function getPricingPathForLanguage(lang) {
   return PRICE_PAGES.find((page) => page.lang === lang)?.path || '/preise';
 }
 
-export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages];
+export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES];
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
 export function getSeoPage(path) {
@@ -1390,7 +1392,9 @@ export function getPageSchema(page) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: page.lang === 'de' ? 'Startseite' : 'Home', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: page.kind === 'location' ? 'Standorte' : 'Leistungen', item: page.kind === 'location' ? `${SITE_URL}/#branches` : `${SITE_URL}/leistungen` },
+      page.parent
+        ? { '@type': 'ListItem', position: 2, name: page.parent.label, item: `${SITE_URL}${page.parent.href}` }
+        : { '@type': 'ListItem', position: 2, name: page.kind === 'location' ? 'Standorte' : 'Leistungen', item: page.kind === 'location' ? `${SITE_URL}/#branches` : `${SITE_URL}/leistungen` },
       { '@type': 'ListItem', position: 3, name: page.eyebrow, item: getCanonicalUrl(page.path) },
     ],
   };

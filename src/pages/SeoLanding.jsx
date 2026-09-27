@@ -152,7 +152,7 @@ export default function SeoLanding({ page }) {
             <nav className="seo-breadcrumbs" aria-label="Breadcrumb">
               <a href="/">{copy.home}</a>
               <span>/</span>
-              <a href={isLocation ? '/#branches' : servicesHref}>{isLocation ? copy.locations : copy.services}</a>
+              <a href={page.parent?.href || (isLocation ? '/#branches' : servicesHref)}>{page.parent?.label || (isLocation ? copy.locations : copy.services)}</a>
               <span>/</span>
               <strong>{page.eyebrow}</strong>
             </nav>
@@ -183,10 +183,15 @@ export default function SeoLanding({ page }) {
       <section className="seo-content">
         <div className="container seo-content-grid">
           <article>
-            {page.sections.map(([title, text]) => (
+            {page.sections.map(([title, text, links]) => (
               <section className="seo-copy-block" key={title}>
                 <h2>{title}</h2>
                 <p>{text}</p>
+                {!!links?.length && (
+                  <div className="seo-link-list seo-link-list--inline">
+                    {links.map((link) => <a key={link.href} href={link.href}>{link.label}<span>›</span></a>)}
+                  </div>
+                )}
               </section>
             ))}
             {!!page.faqs?.length && (

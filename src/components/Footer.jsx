@@ -1,11 +1,24 @@
 import { useI18n } from '../hooks/useI18n';
 import { CONTACT } from '../config/contact.js';
+import { LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
+import { LANGUAGE_HUB_PATH } from '../data/languagePages.js';
+
+const withSlash = (path) => `${path.replace(/\/+$/, '')}/`;
+
+function findPath(lang, match, fallback) {
+  const page = SEO_PAGES.find((item) => item.lang === lang && match(item))
+    || SEO_PAGES.find((item) => item.lang === 'de' && match(item));
+  return page ? withSlash(page.path) : fallback;
+}
 
 const openLegal = (page) =>
   window.dispatchEvent(new CustomEvent('openLegal', { detail: page }));
 
 export default function Footer() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const servicesHref = lang === 'de' ? '/leistungen/' : `/${lang}/leistungen/`;
+  const hubHref = (group) => findPath(lang, (item) => item.kind === 'service' && item.serviceGroup === group && item.path.split('/').length === 3, servicesHref);
+  const cityHref = (slug) => findPath(lang, (item) => item.kind === 'location' && item.location?.slug === slug, '/#branches');
   const careerMail = `mailto:${CONTACT.email}?subject=Karriere%20bei%20NOON`;
 
   return (
@@ -43,11 +56,12 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.services')}</h5>
             <ul>
-              <li><a href="/leistungen">{t('pricing.card1.name')}</a></li>
-              <li><a href="/leistungen">{t('foot.fach')}</a></li>
-              <li><a href="/leistungen">{t('foot.dolm')}</a></li>
-              <li><a href="/leistungen">{t('foot.job')}</a></li>
-              <li><a href="/leistungen">{t('foot.lang')}</a></li>
+              <li><a href={hubHref('translation')}>{t('pricing.card1.name')}</a></li>
+              <li><a href={hubHref('specialist')}>{t('foot.fach')}</a></li>
+              <li><a href={hubHref('interpreting')}>{t('foot.dolm')}</a></li>
+              {lang === 'de' && <li><a href={`${LANGUAGE_HUB_PATH}/`}>Übersetzer nach Sprache</a></li>}
+              <li><a href={servicesHref}>{t('foot.job')}</a></li>
+              <li><a href={servicesHref}>{t('foot.lang')}</a></li>
             </ul>
           </div>
 
@@ -55,12 +69,9 @@ export default function Footer() {
           <div className="foot-col">
             <h5>{t('foot.locations')}</h5>
             <ul>
-              <li><a href="/#branches">Osnabrück</a></li>
-              <li><a href="/#branches">Stuttgart</a></li>
-              <li><a href="/#branches">Berlin</a></li>
-              <li><a href="/#branches">Bielefeld</a></li>
-              <li><a href="/#branches">Mainz</a></li>
-              <li><a href="/#branches">Kiel</a></li>
+              {LOCATIONS.map((location) => (
+                <li key={location.slug}><a href={cityHref(location.slug)}>{location.city}</a></li>
+              ))}
             </ul>
           </div>
 

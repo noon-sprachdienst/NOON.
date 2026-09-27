@@ -2,7 +2,7 @@
   "redirects": [
     { "source": "/about(/)?", "destination": "/", "permanent": true },
     { "source": "/home(/)?", "destination": "/", "permanent": true },
-    { "source": "/sprachen(/)?", "destination": "/", "permanent": true },
+    { "source": "/sprachen(/)?", "destination": "/de/sprachen/", "permanent": true },
     { "source": "/kontakt(/)?", "destination": "/", "permanent": true },
     { "source": "/service(/)?", "destination": "/leistungen/", "permanent": true },
     { "source": "/ubersetzung-beauftragen(/)?", "destination": "/angebot/", "permanent": true },
