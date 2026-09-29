@@ -167,8 +167,14 @@ function readFileAsBase64(file) {
   });
 }
 
-export default function HowContact() {
+const BRANCH_LABEL = { de: 'Standort', en: 'Office', ar: 'الفرع', tr: 'Şube', ru: 'Филиал', fr: 'Agence', uk: 'Філія' };
+
+// `branch` (optional) is set on an office page: its own phone, address and WhatsApp
+// replace the head-office details so calls from e.g. the Kiel page reach Kiel.
+export default function HowContact({ branch = null }) {
   const { t, lang } = useI18n();
+  const phones = branch?.phone ? [branch.phone] : CONTACT.phones;
+  const whatsappUrl = branch?.whatsappUrl || CONTACT.whatsappUrl;
   const [status, setStatus] = useState('idle');
   const [serviceType, setServiceType] = useState('translation');
   const [startedAt] = useState(() => Date.now());
@@ -259,7 +265,7 @@ export default function HowContact() {
                 <div>
                   <div className="info-lbl">{t('contact.phone')}</div>
                   <div className="info-val info-val-stack">
-                    {CONTACT.phones.map((phone) => <a key={phone.href} href={phone.href}>{phone.label}</a>)}
+                    {phones.map((phone) => <a key={phone.href} href={phone.href}>{phone.label}</a>)}
                   </div>
                 </div>
               </div>
@@ -285,8 +291,8 @@ export default function HowContact() {
                   </svg>
                 </div>
                 <div>
-                  <div className="info-lbl">{t('contact.hq')}</div>
-                  <div className="info-val">Rosenplatz 17 · Osnabrück</div>
+                  <div className="info-lbl">{branch ? `${BRANCH_LABEL[lang] || BRANCH_LABEL.de} ${branch.city}` : t('contact.hq')}</div>
+                  <div className="info-val">{branch ? `${branch.street} · ${branch.postalCode} ${branch.city}` : 'Rosenplatz 17 · Osnabrück'}</div>
                 </div>
               </div>
             </div>
@@ -294,7 +300,7 @@ export default function HowContact() {
             <div className="contact-hours">{t('foot.hours')}</div>
 
             <a
-              href={CONTACT.whatsappUrl}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn wa-btn"

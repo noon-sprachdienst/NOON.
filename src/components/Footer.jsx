@@ -31,7 +31,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="foot-col foot-about">
             <div className="foot-brand">
-              <img src="/assets/logo2.webp" alt="Noon Sprachdienst" width="300" height="204" />
+              <img src="/assets/logo2.webp" alt="Noon Dolmetscher & Übersetzungsbüro" width="300" height="204" />
             </div>
             <p>{t('foot.about')}</p>
             <div className="foot-contact-col">
@@ -139,7 +139,7 @@ export default function Footer() {
         </div>
 
         <div className="foot-bottom">
-          <div>© {new Date().getFullYear()} Noon Sprachdienst</div>
+          <div>© {new Date().getFullYear()} Noon Dolmetscher &amp; Übersetzungsbüro</div>
           <a href="https://3assem0.github.io/MyPortflio/" target="_blank" rel="noopener noreferrer" className="foot-legal-link foot-legal-link--sm foot-credit-center">Built by 3A</a>
           <div className="foot-bottom-links">
             <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('impressum')}>{t('foot.imprint')}</button>

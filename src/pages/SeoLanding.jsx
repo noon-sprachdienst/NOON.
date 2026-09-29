@@ -161,7 +161,7 @@ export default function SeoLanding({ page }) {
             <p>{page.intro}</p>
             <div className="seo-actions">
               <a href="#contact" className="btn btn-primary">{page.cta || copy.quote} <span className="arrow">→</span></a>
-              <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">WhatsApp</a>
+              <a href={page.location?.whatsappUrl || CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">WhatsApp</a>
             </div>
           </div>
           <aside className="seo-quick-card">
@@ -230,7 +230,7 @@ export default function SeoLanding({ page }) {
         </div>
       </section>
 
-      <HowContact />
+      <HowContact branch={isLocation && !page.serviceArea ? page.location : null} />
     </div>
   );
 }
