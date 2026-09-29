@@ -74,8 +74,8 @@ export const LOCATIONS = [
   { slug: 'berlin', city: 'Berlin', street: 'Potsdamer Str. 63', postalCode: '10785', image: 'berlin.jpg' },
   { slug: 'bielefeld', city: 'Bielefeld', street: 'Teichstraße 24', postalCode: '33615', image: 'bielefeld.jpg' },
   { slug: 'mainz', city: 'Mainz', street: 'Richard-Wagner-Straße 13', postalCode: '55118', image: 'mainz.jpg' },
-  { slug: 'kiel', city: 'Kiel', street: 'Bothwellstraße 25', postalCode: '24143', image: 'kiel.jpg', phone: { href: 'tel:+4915567478943', label: '+49 15567 478943', e164: '+4915567478943' } },
-  // Add `whatsappUrl: 'https://wa.me/49…'` to a branch once its own number is confirmed on WhatsApp.
+  { slug: 'kiel', city: 'Kiel', street: 'Bothwellstraße 25', postalCode: '24143', image: 'kiel.jpg', phone: { href: 'tel:+4915567478943', label: '+49 15567 478943', e164: '+4915567478943' }, whatsappUrl: 'https://wa.me/4915567478943' },
+  // Optional per branch: `whatsappUrl` sends WhatsApp buttons on that office page to the branch number.
 ];
 
 const deFaqs = {
