@@ -271,7 +271,7 @@ export default function App() {
       <Footer />
 
       {/* Floating buttons */}
-      <FloatingButtons />
+      <FloatingButtons branch={seoPage?.kind === 'location' && !seoPage.serviceArea ? seoPage.location : null} />
 
       {/* Cookie consent banner */}
       <CookieConsent />
@@ -282,10 +282,11 @@ export default function App() {
   );
 }
 
-function FloatingButtons() {
+// On an office page the floating buttons use that branch's phone/WhatsApp when set.
+function FloatingButtons({ branch = null }) {
   const [phoneMenuOpen, setPhoneMenuOpen] = useState(false);
   const phoneMenuRef = useRef(null);
-  const floatingPhoneNumbers = CONTACT.phones;
+  const floatingPhoneNumbers = branch?.phone ? [branch.phone] : CONTACT.phones;
 
   useEffect(() => {
     if (!phoneMenuOpen) return undefined;
@@ -303,7 +304,7 @@ function FloatingButtons() {
     <>
       {/* WhatsApp */}
       <a
-        href={CONTACT.whatsappUrl}
+        href={branch?.whatsappUrl || CONTACT.whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="fab-wa"
