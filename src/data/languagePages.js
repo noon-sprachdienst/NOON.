@@ -23,6 +23,14 @@ const PROCESS = [
 const LOCATIONS_SECTION = [
   'Unsere Standorte',
   'Osnabrück, Stuttgart, Berlin, Bielefeld, Mainz und Kiel – Termine vor Ort nach Vereinbarung. Unabhängig vom Wohnort können Sie Ihren Auftrag deutschlandweit komplett digital abwickeln.',
+  [
+    { href: '/de/standorte/osnabrueck/', label: 'Übersetzungsbüro Osnabrück' },
+    { href: '/de/standorte/stuttgart/', label: 'Übersetzungsbüro Stuttgart' },
+    { href: '/de/standorte/berlin/', label: 'Übersetzungsbüro Berlin' },
+    { href: '/de/standorte/bielefeld/', label: 'Übersetzungsbüro Bielefeld' },
+    { href: '/de/standorte/mainz/', label: 'Übersetzungsbüro Mainz' },
+    { href: '/de/standorte/kiel/', label: 'Übersetzungsbüro Kiel' },
+  ],
 ];
 
 const faqAccepted = (language) => [

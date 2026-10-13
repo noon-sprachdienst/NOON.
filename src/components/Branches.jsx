@@ -5,11 +5,11 @@ import 'leaflet/dist/leaflet.css';
 
 export const BRANCHES = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Rosenplatz 17, 49074 Osnabrück', lat: 52.2656, lng: 8.0517, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Rosenplatz+17,+49074+Osnabrück' },
-  { id: 'stuttgart',  tag: '02',       city: 'Stuttgart',  addr: 'Friedrichstraße 15, 70174 Stuttgart', lat: 48.7827, lng: 9.1766, hoursKey: 'branches.hours.stuttgart',  maps: 'https://maps.google.com/?q=Friedrichstraße+15,+70174+Stuttgart' },
-  { id: 'berlin',     tag: '03',       city: 'Berlin',     addr: 'Potsdamer Str. 63, 10785 Berlin', lat: 52.5031, lng: 13.3658, hoursKey: 'branches.hours.berlin',   maps: 'https://maps.google.com/?q=Potsdamer+Str.+63,+10785+Berlin' },
-  { id: 'bielefeld',  tag: '04',       city: 'Bielefeld',  addr: 'Teichstraße 24, 33615 Bielefeld',      lat: 52.0324, lng: 8.5227, hoursKey: 'branches.hours.bielefeld', maps: 'https://maps.google.com/?q=Teichstraße+24,+33615+Bielefeld' },
-  { id: 'mainz',      tag: '05',       city: 'Mainz',      addr: 'Richard-Wagner-Straße 13, 55118 Mainz', lat: 50.0099, lng: 8.2604, hoursKey: 'branches.hours.mainz',     maps: 'https://maps.google.com/?q=Richard-Wagner-Straße+13,+55118+Mainz' },
-  { id: 'kiel',       tag: '06',       city: 'Kiel',       addr: 'Bothwellstraße 25, 24143 Kiel',       lat: 54.3110, lng: 10.1474, hoursKey: 'branches.hours.kiel',     maps: 'https://maps.google.com/?q=Bothwellstraße+25,+24143+Kiel' },
+  { id: 'stuttgart',  tag: '02',       city: 'Stuttgart',  addr: 'Friedrichstraße 15, 70174 Stuttgart', lat: 48.7819, lng: 9.1776, hoursKey: 'branches.hours.stuttgart',  maps: 'https://maps.google.com/?q=Friedrichstraße+15,+70174+Stuttgart' },
+  { id: 'berlin',     tag: '03',       city: 'Berlin',     addr: 'Potsdamer Str. 63, 10785 Berlin', lat: 52.5038, lng: 13.3667, hoursKey: 'branches.hours.berlin',   maps: 'https://maps.google.com/?q=Potsdamer+Str.+63,+10785+Berlin' },
+  { id: 'bielefeld',  tag: '04',       city: 'Bielefeld',  addr: 'Teichstraße 24, 33615 Bielefeld',      lat: 52.0288, lng: 8.5283, hoursKey: 'branches.hours.bielefeld', maps: 'https://maps.google.com/?q=Teichstraße+24,+33615+Bielefeld' },
+  { id: 'mainz',      tag: '05',       city: 'Mainz',      addr: 'Richard-Wagner-Straße 13, 55118 Mainz', lat: 50.0131, lng: 8.2504, hoursKey: 'branches.hours.mainz',     maps: 'https://maps.google.com/?q=Richard-Wagner-Straße+13,+55118+Mainz' },
+  { id: 'kiel',       tag: '06',       city: 'Kiel',       addr: 'Bothwellstraße 25, 24143 Kiel',       lat: 54.3104, lng: 10.1547, hoursKey: 'branches.hours.kiel',     maps: 'https://maps.google.com/?q=Bothwellstraße+25,+24143+Kiel' },
 ];
 
 const BRANCH_ARIA = {

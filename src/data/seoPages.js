@@ -286,6 +286,14 @@ const documentPagesDe = [
       ['Für gerichtliche und rechtliche Termine', 'Wir unterstützen bei der Organisation geeigneter Dolmetscher für Gerichte, Kanzleien, Behörden und vorbereitende Gespräche.'],
       ['Was wir benötigen', 'Bitte senden Sie Datum, Uhrzeit, Ort, Akten- oder Themenhinweis, Sprachkombination und ob eine Beeidigung erforderlich ist.'],
       ['Auch juristische Übersetzungen', 'Wenn Urteile, Beschlüsse, Verträge oder anwaltliche Schreiben übersetzt werden müssen, können wir dies separat anbieten.'],
+      ['Gerichtsdolmetscher an unseren Standorten', 'Wir organisieren Dolmetscher für Gerichtstermine in Berlin, Stuttgart, Osnabrück, Bielefeld, Mainz und Kiel sowie deutschlandweit – vor Ort oder per Video.', [
+        { href: '/de/standorte/berlin/', label: 'Dolmetscher Berlin' },
+        { href: '/de/standorte/stuttgart/', label: 'Dolmetscher Stuttgart' },
+        { href: '/de/standorte/osnabrueck/', label: 'Dolmetscher Osnabrück' },
+        { href: '/de/standorte/bielefeld/', label: 'Dolmetscher Bielefeld' },
+        { href: '/de/standorte/mainz/', label: 'Dolmetscher Mainz' },
+        { href: '/de/standorte/kiel/', label: 'Dolmetscher Kiel' },
+      ]],
     ],
     faqs: [
       ['Organisieren Sie beeidigte Dolmetscher?', 'Ja, wenn für den Termin eine beeidigte Person erforderlich ist, prüfen wir passende Verfügbarkeit.'],
@@ -496,6 +504,85 @@ const locationIntros = {
   kiel: 'Unser Standort in Kiel unterstützt Sie zuverlässig bei amtlich anerkannten Übersetzungen, Fachtexten und der Organisation von Dolmetschern.',
 };
 
+// Own copy for offices whose page should not share the generic location text.
+// Only client-confirmed facts (ermächtigte Übersetzer, 2–3 Werktage, Express 4–5 Stunden,
+// Termine vor Ort nach Vereinbarung) plus publicly known authorities of the city.
+const DOCUMENT_LINKS = [
+  { href: '/de/geburtsurkunde-uebersetzung/', label: 'Geburtsurkunde übersetzen' },
+  { href: '/de/heiratsurkunde-uebersetzung/', label: 'Heiratsurkunde übersetzen' },
+  { href: '/de/fuehrerschein-uebersetzung/', label: 'Führerschein übersetzen' },
+  { href: '/de/zeugnis-uebersetzung/', label: 'Zeugnisse übersetzen' },
+];
+const LANGUAGE_LINKS = [
+  { href: '/de/sprachen/arabisch/', label: 'Arabisch' },
+  { href: '/de/sprachen/tuerkisch/', label: 'Türkisch' },
+  { href: '/de/sprachen/ukrainisch/', label: 'Ukrainisch' },
+  { href: '/de/sprachen/persisch/', label: 'Persisch' },
+  { href: '/de/sprachen/englisch/', label: 'Englisch' },
+  { href: '/de/sprachen/franzoesisch/', label: 'Französisch' },
+  { href: '/de/sprachen/rumaenisch/', label: 'Rumänisch' },
+  { href: '/de/sprachen/', label: 'Alle Sprachen' },
+];
+const INTERPRETER_LINKS = [
+  { href: '/de/gerichtsdolmetscher/', label: 'Gerichtsdolmetscher' },
+  { href: '/de/dolmetschen/', label: 'Dolmetschdienste im Überblick' },
+];
+const DELIVERY_SECTION = [
+  'Bearbeitungszeit und Ablauf',
+  'Standard: 2–3 Werktage.\nExpress: am selben Tag, in der Regel innerhalb von 4–5 Stunden.\n\n1. Dokument senden – Foto oder Scan per WhatsApp, E-Mail oder Webformular.\n2. Festpreis erhalten – Sie bekommen vorab ein kostenloses Angebot.\n3. Übersetzung erhalten – als PDF per E-Mail und auf Wunsch zusätzlich per Post.',
+  [{ href: '/preise/', label: 'Preise ansehen' }],
+];
+const LANGUAGES_TEXT = 'Unsere ermächtigten Übersetzer und Dolmetscher arbeiten unter anderem in Arabisch (auch syrischer, sudanesischer, libyscher, marokkanischer, algerischer und ägyptischer Dialekt), Türkisch, Ukrainisch, Persisch (Farsi und Dari), Englisch, Französisch und Rumänisch – jeweils ins Deutsche und aus dem Deutschen.';
+
+const locationDetails = {
+  berlin: {
+    description: 'Übersetzungsbüro in Berlin: beglaubigte Übersetzungen für Landesamt für Einwanderung, Standesamt und Gericht sowie beeidigte Dolmetscher. Potsdamer Str. 63, 10785 Berlin – Termine nach Vereinbarung.',
+    intro: 'Noon Dolmetscher & Übersetzungsbüro in Berlin: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine beim Landesamt für Einwanderung, beim Standesamt, vor Gericht und beim Notar – in der Potsdamer Straße 63 nach Terminvereinbarung oder komplett digital.',
+    highlights: ['Ermächtigte Übersetzer', 'Express am selben Tag', 'Termine nach Vereinbarung'],
+    sections: [
+      ['Übersetzungsbüro in Berlin-Tiergarten', 'Sie finden uns in der Potsdamer Straße 63, 10785 Berlin. Termine vor Ort bieten wir nach vorheriger Vereinbarung an, damit Ihre Unterlagen und Ihre Sprachkombination vorbereitet sind. Die meisten Berliner Kundinnen und Kunden senden ihre Dokumente einfach digital per WhatsApp, E-Mail oder Webformular und erhalten die beglaubigte Übersetzung als PDF und auf Wunsch per Post.'],
+      ['Beglaubigte Übersetzungen für Berliner Behörden', 'Wir übersetzen Ihre Unterlagen so, wie Berliner Stellen sie üblicherweise verlangen:\n• Landesamt für Einwanderung (LEA): Urkunden und Nachweise für Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesämter der Berliner Bezirke: Geburts- und Heiratsurkunden, Ledigkeitsbescheinigungen und Scheidungsurteile für die Anmeldung der Eheschließung oder die Geburtsbeurkundung\n• Fahrerlaubnisbehörde: Übersetzung ausländischer Führerscheine für die Umschreibung\n• Hochschulen und Anerkennungsstellen: Schulzeugnisse, Diplome und Fächer- und Notenübersichten für Studium und Berufsanerkennung\n• Gerichte und Notare: Urteile, Beschlüsse, Verträge und Vollmachten\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Behörde fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.',
+        [...DOCUMENT_LINKS, { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen im Überblick' }]],
+      ['Dolmetscher in Berlin: Behörde, Standesamt, Gericht und Notar', 'Wir organisieren Dolmetscher für Ihren Termin in Berlin:\n• Vorsprache beim Landesamt für Einwanderung oder beim Jobcenter\n• Anmeldung der Eheschließung und Trauung im Standesamt\n• Verhandlungen und Anhörungen an Berliner Gerichten – auf Wunsch mit beeidigten Dolmetschern\n• Beurkundungen beim Notar, etwa Kaufverträge und Vollmachten\n• Arzt- und Kliniktermine sowie Geschäftsgespräche\n\nBitte nennen Sie uns Datum, Uhrzeit, Ort, Sprache und Anlass. Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.',
+        INTERPRETER_LINKS],
+      ['Sprachen, die in Berlin besonders gefragt sind', LANGUAGES_TEXT, LANGUAGE_LINKS],
+      DELIVERY_SECTION,
+      ['Das sagen Kundinnen und Kunden aus Berlin', 'Unser Berliner Standort ist bei Google mit 5,0 von 5 Sternen bewertet (20 Bewertungen, Stand Oktober 2026). In den Rezensionen werden vor allem die schnelle Bearbeitung, die freundliche und zuverlässige Kommunikation und die zügige Lieferung der beglaubigten Übersetzung hervorgehoben.'],
+    ],
+    faqs: [
+      ['Werden Ihre Übersetzungen vom Landesamt für Einwanderung und von Berliner Standesämtern anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von in Deutschland ermächtigten Übersetzern angefertigt und sind für Behörden, Standesämter, Gerichte und Hochschulen in Berlin und bundesweit geeignet.'],
+      ['Kann ich in Berlin persönlich vorbeikommen?', 'Ja, nach vorheriger Terminvereinbarung in der Potsdamer Straße 63, 10785 Berlin. Bitte kommen Sie nicht ohne Termin, da das Büro nicht durchgehend besetzt ist.'],
+      ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Berlin?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
+      ['Brauche ich für die Eheschließung im Standesamt einen Dolmetscher?', 'Wenn eine der beteiligten Personen nicht ausreichend Deutsch versteht, verlangt das Standesamt in der Regel einen Dolmetscher. Welche Anforderungen gelten, erfahren Sie bei Ihrem Standesamt – wir organisieren den passenden Dolmetscher für Anmeldung und Trauung.'],
+      ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
+    ],
+  },
+  stuttgart: {
+    description: 'Übersetzungsbüro in Stuttgart: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt, Regierungspräsidium und Gericht sowie Dolmetscher. Friedrichstraße 15, 70174 Stuttgart – Termine nach Vereinbarung.',
+    intro: 'Noon Dolmetscher & Übersetzungsbüro in Stuttgart: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Friedrichstraße 15 nach Terminvereinbarung oder komplett digital.',
+    highlights: ['Ermächtigte Übersetzer', 'Express am selben Tag', 'Termine nach Vereinbarung'],
+    sections: [
+      ['Übersetzungsbüro in Stuttgart-Mitte', 'Sie finden uns in der Friedrichstraße 15, 70174 Stuttgart. Termine vor Ort bieten wir nach vorheriger Vereinbarung an, damit Ihre Unterlagen und Ihre Sprachkombination vorbereitet sind. Kundinnen und Kunden aus Stuttgart und der Region – etwa Esslingen, Ludwigsburg, Böblingen, Sindelfingen und Waiblingen – senden ihre Dokumente meist digital per WhatsApp, E-Mail oder Webformular.'],
+      ['Beglaubigte Übersetzungen für Stuttgarter Behörden', 'Wir übersetzen Ihre Unterlagen so, wie Stuttgarter Stellen sie üblicherweise verlangen:\n• Ausländerbehörde: Urkunden und Nachweise für Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt: Geburts- und Heiratsurkunden, Ledigkeitsbescheinigungen und Scheidungsurteile für die Anmeldung der Eheschließung oder die Geburtsbeurkundung\n• Regierungspräsidium Stuttgart und weitere Anerkennungsstellen: Schul- und Hochschulzeugnisse, Diplome und Berufsnachweise für die Anerkennung ausländischer Abschlüsse\n• Führerscheinstelle: Übersetzung ausländischer Führerscheine für die Umschreibung\n• Gerichte und Notare: Urteile, Beschlüsse, Verträge und Vollmachten\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Behörde fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.',
+        [...DOCUMENT_LINKS, { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen im Überblick' }]],
+      ['Übersetzungen für Beruf und Unternehmen', 'Für Bewerbungen und Arbeitgeber in der Region Stuttgart übersetzen wir Arbeitszeugnisse, Referenzschreiben, Arbeitsverträge und Qualifikationsnachweise – auf Wunsch beglaubigt. Unternehmen unterstützen wir mit Fachübersetzungen von Verträgen, technischen Unterlagen und Geschäftskorrespondenz.',
+        [{ href: '/de/fachuebersetzungen/', label: 'Fachübersetzungen im Überblick' }]],
+      ['Dolmetscher in Stuttgart: Behörde, Standesamt, Gericht und Notar', 'Wir organisieren Dolmetscher für Ihren Termin in Stuttgart und Umgebung:\n• Vorsprache bei der Ausländerbehörde oder beim Jobcenter\n• Anmeldung der Eheschließung und Trauung im Standesamt\n• Verhandlungen und Anhörungen an Stuttgarter Gerichten – auf Wunsch mit beeidigten Dolmetschern\n• Beurkundungen beim Notar, etwa Kaufverträge und Vollmachten\n• Arzt- und Kliniktermine sowie Geschäftsgespräche\n\nBitte nennen Sie uns Datum, Uhrzeit, Ort, Sprache und Anlass. Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.',
+        INTERPRETER_LINKS],
+      ['Sprachen, die in Stuttgart besonders gefragt sind', LANGUAGES_TEXT, LANGUAGE_LINKS],
+      DELIVERY_SECTION,
+      ['Das sagen Kundinnen und Kunden aus Stuttgart', 'Unser Stuttgarter Standort ist bei Google mit 5,0 von 5 Sternen bewertet (28 Bewertungen, Stand Oktober 2026). In den Rezensionen werden vor allem die schnelle Bearbeitung innerhalb weniger Tage, die freundliche Kommunikation und die unkomplizierte Abwicklung per WhatsApp hervorgehoben – zum Beispiel bei der beglaubigten Übersetzung eines englischen Arbeitszeugnisses ins Deutsche.'],
+    ],
+    faqs: [
+      ['Werden Ihre Übersetzungen von Stuttgarter Behörden anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von in Deutschland ermächtigten Übersetzern angefertigt und sind für Ausländerbehörde, Standesamt, Regierungspräsidium, Gerichte und Hochschulen in Stuttgart und bundesweit geeignet.'],
+      ['Kann ich in Stuttgart persönlich vorbeikommen?', 'Ja, nach vorheriger Terminvereinbarung in der Friedrichstraße 15, 70174 Stuttgart. Bitte kommen Sie nicht ohne Termin, da das Büro nicht durchgehend besetzt ist.'],
+      ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Stuttgart?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
+      ['Übersetzen Sie auch Zeugnisse für die Anerkennung ausländischer Abschlüsse?', 'Ja. Wir übersetzen Schul- und Hochschulzeugnisse, Diplome und Berufsnachweise beglaubigt. Welche Unterlagen die Anerkennungsstelle verlangt, steht in deren Merkblatt – senden Sie es uns gern mit.'],
+      ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
+    ],
+  },
+};
+
 const locationPages = LOCATIONS.map((location) => ({
   path: `/de/standorte/${location.slug}`,
   kind: 'location',
@@ -517,6 +604,7 @@ const locationPages = LOCATIONS.map((location) => ({
     ['Kann ich Dokumente auch digital senden?', 'Ja, Sie können Dokumente per WhatsApp, E-Mail oder Formular senden und erhalten vorab ein Angebot.'],
   ],
   cta: 'Kostenloses Angebot anfordern',
+  ...locationDetails[location.slug],
 }));
 
 // Service-area cities: places we serve digitally/deutschlandweit but do NOT
