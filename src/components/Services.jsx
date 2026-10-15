@@ -399,7 +399,7 @@ function getVisualContent(active, copy) {
 }
 
 function getOfferHref(lang) {
-  return lang === 'de' ? '/angebot' : `/${lang}/angebot`;
+  return lang === 'de' ? '/angebot/' : `/${lang}/angebot/`;
 }
 
 function getServiceImage(active) {

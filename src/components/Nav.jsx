@@ -31,7 +31,7 @@ export default function Nav() {
   const languageHomePaths = Object.keys(LANG_META).map((code) => `/${code}`);
   const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
   const isHome = currentPath === '/' || languageHomePaths.includes(currentPath);
-  const localizedHome = lang === 'de' ? '/' : `/${lang}`;
+  const localizedHome = lang === 'de' ? '/' : `/${lang}/`;
   const localizePath = (path, code = lang) => (code === 'de' ? path : `/${code}${path}`);
   const stripLanguagePrefix = (value) => {
     const clean = value.replace(/\/+$/, '') || '/';
@@ -40,12 +40,12 @@ export default function Nav() {
   };
   const simpleRoutePaths = ['/angebot', '/quote', '/termin', '/termin-anfragen', '/appointment', '/bewerbung', '/leistungen', '/services', '/fachuebersetzungen', '/specialties'];
   const homeHref = (hash) => `${localizedHome}${hash}`;
-  const servicesHref = localizePath('/leistungen');
-  const pricesHref = getPricingPathForLanguage(lang);
-  const applicationHref = localizePath('/bewerbung');
+  const servicesHref = `${localizePath('/leistungen')}/`;
+  const pricesHref = `${getPricingPathForLanguage(lang)}/`;
+  const applicationHref = `${localizePath('/bewerbung')}/`;
   const applicationLabel = APPLICATION_LABEL[lang] || APPLICATION_LABEL.de;
   const aria = NAV_ARIA[lang] || NAV_ARIA.de;
-  const quoteHref = localizePath('/angebot');
+  const quoteHref = `${localizePath('/angebot')}/`;
   const switchLanguage = (code) => {
     setLang(code);
     setLangOpen(false);

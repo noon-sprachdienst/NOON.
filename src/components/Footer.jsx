@@ -106,7 +106,7 @@ export default function Footer() {
                   {t('foot.cookies')}
                 </button>
               </li>
-              <li><a href="/angebot#contact">{t('foot.contact')}</a></li>
+              <li><a href="/angebot/#contact">{t('foot.contact')}</a></li>
             </ul>
           </div>
 

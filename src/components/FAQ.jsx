@@ -50,7 +50,7 @@ const FAQ_CTA = {
   uk: { title: 'Залишилися питання?', action: 'Поставити питання' },
 };
 
-const getQuoteHref = (lang) => (lang === 'de' ? '/angebot' : `/${lang}/angebot`);
+const getQuoteHref = (lang) => (lang === 'de' ? '/angebot/' : `/${lang}/angebot/`);
 
 export default function FAQ() {
   const { lang } = useI18n();

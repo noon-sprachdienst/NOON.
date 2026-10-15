@@ -103,7 +103,7 @@ export default function SeoLanding({ page }) {
     SEO_PAGES.find((item) => item.kind === 'location' && item.lang === page.lang && item.location?.slug === slug)?.path
     || `/de/standorte/${slug}`
   );
-  const servicesHref = page.lang === 'de' ? '/leistungen' : `/${page.lang}/leistungen`;
+  const servicesHref = page.lang === 'de' ? '/leistungen/' : `/${page.lang}/leistungen/`;
   const activeService = !isLocation
     ? getServiceNavigation(page.lang).find((item) => item.id === page.serviceNavId)
     : null;
@@ -221,7 +221,7 @@ export default function SeoLanding({ page }) {
             <h3>{isLocation ? copy.services : copy.locations}</h3>
             <div className="seo-link-list">
               {(isLocation ? relatedServices : LOCATIONS).map((item) => {
-                const href = isLocation ? item.path : getLocationHref(item.slug);
+                const href = `${(isLocation ? item.path : getLocationHref(item.slug)).replace(/\/+$/, '')}/`;
                 const label = isLocation ? (item.serviceType || item.eyebrow) : item.city;
                 return <a key={href} href={href}>{label}<span>›</span></a>;
               })}

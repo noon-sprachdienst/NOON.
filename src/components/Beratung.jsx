@@ -13,7 +13,7 @@ import { CONTACT } from '../config/contact.js';
 
 export default function Beratung() {
   const { t, lang } = useI18n();
-  const appointmentPath = lang && lang !== 'de' ? `/${lang}/termin` : '/termin';
+  const appointmentPath = lang && lang !== 'de' ? `/${lang}/termin/` : '/termin/';
 
   return (
     <section className="beratung" id="beratung" aria-labelledby="beratung-heading">

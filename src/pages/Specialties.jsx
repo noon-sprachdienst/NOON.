@@ -889,7 +889,7 @@ export default function Specialties() {
                 <strong>0,09€</strong>
                 <small>{copy.unit}</small>
               </div>
-              <a href="/angebot" className="btn btn-primary">
+              <a href="/angebot/" className="btn btn-primary">
                 {active.cta} <span className="arrow">→</span>
               </a>
             </div>
