@@ -29,6 +29,7 @@ const DE_TITLES = {
   '/de/geburtsurkunde-uebersetzung': 'Geburtsurkunde übersetzen lassen – beglaubigt',
   '/de/zeugnis-uebersetzung': 'Zeugnis übersetzen lassen – beglaubigt',
   '/de/gerichtsdolmetscher': 'Gerichtsdolmetscher – beeidigte Dolmetscher für Gericht',
+  '/de/standorte/frankfurt-am-main': 'Übersetzungsbüro Frankfurt – beglaubigt & Dolmetscher',
 };
 
 function cleanTitle(text = '') {
@@ -43,17 +44,27 @@ function baseTitle(page) {
   if (DE_TITLES[page.path]) return DE_TITLES[page.path];
   if (page.kind === 'location' && page.location?.city) {
     const { city } = page.location;
-    if (page.lang === 'de') return `Übersetzungsbüro ${city} – Dolmetscher und beglaubigte Übersetzungen`;
-    if (page.lang === 'en') return `Translation Office ${city} – Certified Translations and Interpreters`;
+    if (page.lang === 'de') return `Übersetzungsbüro ${city} – beglaubigt & Dolmetscher`;
+    if (page.lang === 'en') return `Translation Office ${city} – Certified & Interpreters`;
   }
   return cleanTitle(page.title || page.metaTitle);
+}
+
+// Google shows roughly 60–65 characters of a title; longer titles fall back to the short brand.
+const MAX_TITLE = 65;
+const SHORT_SUFFIX = 'Noon';
+
+function fitTitle(title) {
+  const longSuffix = ` | ${TITLE_SUFFIX}`;
+  if (title.length <= MAX_TITLE || !title.endsWith(longSuffix)) return title;
+  return `${title.slice(0, -longSuffix.length)} | ${SHORT_SUFFIX}`;
 }
 
 export function applyPageSeo(page) {
   const hasOwnTitle = page.metaTitle && !page.metaTitle.includes('NOON. Sprachdienst') && page.metaTitle.includes('| ');
   return {
     ...page,
-    metaTitle: hasOwnTitle ? page.metaTitle : `${baseTitle(page)} | ${TITLE_SUFFIX}`,
+    metaTitle: fitTitle(hasOwnTitle ? page.metaTitle : `${baseTitle(page)} | ${TITLE_SUFFIX}`),
     description: renameBrand(page.description),
     intro: renameBrand(page.intro),
     sections: page.sections?.map(([heading, text, ...rest]) => [heading, renameBrand(text), ...rest]),

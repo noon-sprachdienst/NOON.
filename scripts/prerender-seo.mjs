@@ -13,6 +13,8 @@ import {
   SITE_URL,
 } from '../src/data/seoPages.js';
 import { getServiceNavigation } from '../src/data/serviceContent.js';
+import { CONTENT_UPDATED } from '../src/data/pageUpgrades.js';
+import { homeExtraMarkup, simpleExtraMarkup } from './staticMain.mjs';
 import { SIMPLE_PAGE_CTA, SIMPLE_PAGE_META } from '../src/data/simplePages.js';
 
 function isListHeadingText(text = '') {
@@ -88,6 +90,7 @@ function specialistFallbackMarkup(page, activeService) {
     ${groupsHtml}
     ${nationwide ? `<p>${escapeHtml(nationwide)}</p>` : ''}
     ${ctaParagraph ? `<p>${escapeHtml(ctaParagraph)}</p>` : ''}
+    ${page.sectionsBelowPanel ? sectionsMarkup(page) : ''}
     <p><a href="${quoteHref(page.lang)}">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p>
     <p><a href="${servicesHref}">${escapeHtml(hubLinkLabel)}</a></p>
   </article></main>`;
@@ -194,18 +197,22 @@ function fillRoot(html, markup, lang) {
   return html.replace('<div id="root"></div>', `<div id="root">${markup}${siteLinksMarkup(lang)}</div>`);
 }
 
-function fallbackMarkup(page) {
+function sectionsMarkup(page) {
   const sections = page.sections
     .map(([title, text, links]) => `<section><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text).replaceAll('\n', '<br>')}</p>${links?.length ? linkList(links) : ''}</section>`)
     .join('');
   const faqs = page.faqs?.length
     ? `<section><h2>${page.lang === 'de' ? 'Häufige Fragen' : 'FAQ'}</h2>${page.faqs.map(([question, answer]) => `<h3>${escapeHtml(question)}</h3><p>${escapeHtml(answer)}</p>`).join('')}</section>`
     : '';
+  return `${sections}${faqs}`;
+}
+
+function fallbackMarkup(page) {
   const branch = page.kind === 'location' && page.location?.street ? page.location : null;
   const branchInfo = branch
     ? `<p>${escapeHtml(`${COMPANY.name}, ${branch.street}, ${branch.postalCode} ${branch.city}`)} · Tel. <a href="${(branch.phone?.href) || `tel:${COMPANY.telephone}`}">${escapeHtml(branch.phone?.label || '+49 160 956 27 666')}</a></p>`
     : '';
-  return `<main><article><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.title)}</h1><p>${escapeHtml(page.intro)}</p>${branchInfo}${sections}${faqs}<p><a href="${quoteHref(page.lang)}">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p></article></main>`;
+  return `<main><article><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.title)}</h1><p>${escapeHtml(page.intro)}</p>${branchInfo}${sectionsMarkup(page)}<p><a href="${quoteHref(page.lang)}">${escapeHtml(page.cta || 'Kostenloses Angebot anfordern')}</a></p></article></main>`;
 }
 
 function renderPage(page) {
@@ -282,7 +289,7 @@ function renderSimplePage(page) {
   html = html.replace(/\s*<link rel="alternate" hrefLang="[^"]*" href="[^"]*"\s*\/?>/g, '');
   html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
   html = html.replace('</head>', `${alternates.join('\n')}\n  <link rel="alternate" hreflang="x-default" href="${getCanonicalUrl(basePath)}" />\n</head>`);
-  html = fillRoot(html, `<main><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.text)}</p><p><a href="${quoteHref(page.lang)}">${escapeHtml(SIMPLE_PAGE_CTA[page.lang] || SIMPLE_PAGE_CTA.de)}</a></p></article></main>`, page.lang);
+  html = fillRoot(html, `<main><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.text)}</p>${simpleExtraMarkup(basePath, page.lang)}<p><a href="${quoteHref(page.lang)}">${escapeHtml(SIMPLE_PAGE_CTA[page.lang] || SIMPLE_PAGE_CTA.de)}</a></p></article></main>`, page.lang);
   return html;
 }
 
@@ -301,7 +308,7 @@ function languageHomeMarkup(meta, lang) {
   const sections = [...hubs, ...(pricing ? [pricing] : [])]
     .map((item) => `<section><h2><a href="${linkPath(item.path)}">${escapeHtml(cleanLabel(item.title))}</a></h2><p>${escapeHtml(item.description)}</p></section>`)
     .join('');
-  return `<main><article><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.description)}</p>${sections}<p><a href="${quoteHref(lang)}">${escapeHtml(meta.cta)}</a></p></article></main>`;
+  return `<main><article><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.description)}</p>${sections}${lang === 'de' ? homeExtraMarkup() : ''}<p><a href="${quoteHref(lang)}">${escapeHtml(meta.cta)}</a></p></article></main>`;
 }
 
 function renderLanguageHome(page) {
@@ -339,14 +346,17 @@ await writeFile(join(distDir, 'index.html'), renderLanguageHome({ code: 'de', pa
 const sitemapPaths = ['/', ...languageHomePages.map((page) => page.path), ...simplePages.map((page) => page.path), ...pricingPages.map((page) => page.path), ...SEO_PAGES.map((page) => page.path)];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapPaths.map((path) => `  <url><loc>${getCanonicalUrl(path)}</loc></url>`).join('\n')}
+${sitemapPaths.map((path) => {
+  const updated = SEO_PAGES.find((page) => page.path === path)?.updated || CONTENT_UPDATED[path];
+  return `  <url><loc>${getCanonicalUrl(path)}</loc>${updated ? `<lastmod>${updated}</lastmod>` : ''}</url>`;
+}).join('\n')}
 </urlset>
 `;
 await writeFile(join(distDir, 'sitemap.xml'), sitemap, 'utf8');
 
 let notFoundHtml = template;
 notFoundHtml = notFoundHtml.replace(/<html[^>]*>/, '<html lang="de-DE" dir="ltr">');
-notFoundHtml = setTag(notFoundHtml, /<title>[\s\S]*?<\/title>/, '<title>Seite nicht gefunden (404) | NOON. Sprachdienst</title>');
+notFoundHtml = setTag(notFoundHtml, /<title>[\s\S]*?<\/title>/, '<title>Seite nicht gefunden (404) | Noon Übersetzungsbüro</title>');
 notFoundHtml = setTag(notFoundHtml, /<meta name="description" content="[^"]*"\s*\/?>/, '<meta name="description" content="Die angeforderte Seite existiert nicht oder wurde verschoben." />');
 notFoundHtml = setTag(notFoundHtml, /<meta name="robots" content="[^"]*"\s*\/?>/, '<meta name="robots" content="noindex, follow" />');
 notFoundHtml = notFoundHtml.replace(/\s*<link rel="canonical" href="[^"]*"\s*\/?>/, '');

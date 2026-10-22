@@ -12,28 +12,28 @@ const STEPS = [
 ];
 
 const FORM_STATUS = {
-  de: { sending: 'Wird gesendet ...', sent: 'Anfrage gesendet', error: 'Senden fehlgeschlagen. Bitte versuchen Sie es erneut.' },
-  en: { sending: 'Sending ...', sent: 'Request sent', error: 'Could not send. Please try again.' },
-  ar: { sending: 'جارٍ الإرسال ...', sent: 'تم إرسال الطلب', error: 'تعذر الإرسال. يرجى المحاولة مرة أخرى.' },
-  tr: { sending: 'Gönderiliyor ...', sent: 'Talep gönderildi', error: 'Gönderilemedi. Lütfen tekrar deneyin.' },
-  ru: { sending: 'Отправка ...', sent: 'Запрос отправлен', error: 'Не удалось отправить. Попробуйте еще раз.' },
-  fr: { sending: 'Envoi ...', sent: 'Demande envoyée', error: 'Envoi impossible. Veuillez réessayer.' },
-  uk: { sending: 'Надсилання ...', sent: 'Запит надіслано', error: 'Не вдалося надіслати. Спробуйте ще раз.' },
+  de: { sending: 'Wird gesendet ...', sent: 'Anfrage gesendet', error: 'Senden fehlgeschlagen. Bitte versuchen Sie es erneut oder senden Sie uns Ihr Dokument per WhatsApp.' },
+  en: { sending: 'Sending ...', sent: 'Request sent', error: 'Could not send. Please try again or send us your document via WhatsApp.' },
+  ar: { sending: 'جارٍ الإرسال ...', sent: 'تم إرسال الطلب', error: 'تعذر الإرسال. يرجى المحاولة مرة أخرى أو إرسال المستند عبر واتساب.' },
+  tr: { sending: 'Gönderiliyor ...', sent: 'Talep gönderildi', error: 'Gönderilemedi. Lütfen tekrar deneyin veya belgenizi WhatsApp ile gönderin.' },
+  ru: { sending: 'Отправка ...', sent: 'Запрос отправлен', error: 'Не удалось отправить. Попробуйте еще раз или отправьте документ через WhatsApp.' },
+  fr: { sending: 'Envoi ...', sent: 'Demande envoyée', error: 'Envoi impossible. Veuillez réessayer ou nous envoyer votre document par WhatsApp.' },
+  uk: { sending: 'Надсилання ...', sent: 'Запит надіслано', error: 'Не вдалося надіслати. Спробуйте ще раз або надішліть документ через WhatsApp.' },
 };
 
 const FORM_UPLOAD_HINT = {
-  de: 'PDF, Word oder Bilder | bis zu 6 Dateien | insgesamt max. 3,5 MB',
-  en: 'PDF, Word or images | up to 6 files | 3.5 MB total',
-  ar: '\u0645\u0644\u0641\u0627\u062a PDF \u0623\u0648 Word \u0623\u0648 \u0635\u0648\u0631 | \u062d\u062a\u0649 6 \u0645\u0644\u0641\u0627\u062a | 3.5 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a \u0625\u062c\u0645\u0627\u0644\u0627',
-  tr: 'PDF, Word veya gorsel | en fazla 6 dosya | toplam 3,5 MB',
-  ru: 'PDF, Word \u0438\u043b\u0438 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u043e\u0432 | \u0432\u0441\u0435\u0433\u043e 3,5 \u041c\u0411',
-  fr: "PDF, Word ou images | jusqu'a 6 fichiers | 3,5 Mo au total",
-  uk: 'PDF, Word \u0430\u0431\u043e \u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u043d\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u0456\u0432 | \u0437\u0430\u0433\u0430\u043b\u043e\u043c 3,5 \u041c\u0411',
+  de: 'PDF, Word oder Bilder | bis zu 6 Dateien | insgesamt max. 3 MB',
+  en: 'PDF, Word or images | up to 6 files | 3 MB total',
+  ar: '\u0645\u0644\u0641\u0627\u062a PDF \u0623\u0648 Word \u0623\u0648 \u0635\u0648\u0631 | \u062d\u062a\u0649 6 \u0645\u0644\u0641\u0627\u062a | 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a \u0625\u062c\u0645\u0627\u0644\u0627',
+  tr: 'PDF, Word veya gorsel | en fazla 6 dosya | toplam 3 MB',
+  ru: 'PDF, Word \u0438\u043b\u0438 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u043e\u0432 | \u0432\u0441\u0435\u0433\u043e 3 \u041c\u0411',
+  fr: "PDF, Word ou images | jusqu'a 6 fichiers | 3 Mo au total",
+  uk: 'PDF, Word \u0430\u0431\u043e \u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u043d\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u0456\u0432 | \u0437\u0430\u0433\u0430\u043b\u043e\u043c 3 \u041c\u0411',
 };
 
 const FORM_UPLOAD_ERROR = {
   de: {
-    size: 'Die ausgewählten Dateien sind größer als 3,5 MB.',
+    size: 'Die ausgewählten Dateien sind größer als 3 MB.',
     count: 'Bitte wählen Sie höchstens 6 Dateien aus.',
     mail: 'Für größere Anhänge senden Sie uns bitte direkt eine E-Mail.',
     action: 'Per E-Mail senden',
@@ -43,7 +43,7 @@ const FORM_UPLOAD_ERROR = {
     driveStep3: 'Kopieren Sie den Link und fügen Sie ihn oben im Feld „Link zu großen Dateien“ ein.',
   },
   en: {
-    size: 'The selected files exceed the 3.5 MB limit.',
+    size: 'The selected files exceed the 3 MB limit.',
     count: 'Please select no more than 6 files.',
     mail: 'For larger attachments, please send us an email directly.',
     action: 'Send by email',
@@ -53,7 +53,7 @@ const FORM_UPLOAD_ERROR = {
     driveStep3: 'Copy the link and paste it into the “Link to large files” field above.',
   },
   ar: {
-    size: '\u062d\u062c\u0645 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629 \u064a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0648\u0647\u0648 3.5 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a.',
+    size: '\u062d\u062c\u0645 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629 \u064a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0648\u0647\u0648 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a.',
     count: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 6 \u0645\u0644\u0641\u0627\u062a \u0643\u062d\u062f \u0623\u0642\u0635\u0649.',
     mail: '\u0644\u0625\u0631\u0633\u0627\u0644 \u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631\u060c \u064a\u0631\u062c\u0649 \u0645\u0631\u0627\u0633\u0644\u062a\u0646\u0627 \u0645\u0628\u0627\u0634\u0631\u0629 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a.',
     action: '\u0625\u0631\u0633\u0627\u0644 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f',
@@ -63,7 +63,7 @@ const FORM_UPLOAD_ERROR = {
     driveStep3: '\u0627\u0646\u0633\u062e \u0627\u0644\u0631\u0627\u0628\u0637 \u0648\u0627\u0644\u0635\u0642\u0647 \u0641\u064a \u0627\u0644\u062d\u0642\u0644 \u00ab\u0631\u0627\u0628\u0637 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629\u00bb \u0628\u0627\u0644\u0623\u0639\u0644\u0649.',
   },
   tr: {
-    size: 'Secilen dosyalar 3,5 MB sinirini asiyor.',
+    size: 'Secilen dosyalar 3 MB sinirini asiyor.',
     count: 'Lutfen en fazla 6 dosya secin.',
     mail: 'Daha buyuk ekler icin bize dogrudan e-posta gonderin.',
     action: 'E-posta ile gonder',
@@ -73,7 +73,7 @@ const FORM_UPLOAD_ERROR = {
     driveStep3: 'Baglantiyi kopyalayip yukaridaki “Buyuk dosya baglantisi” alanina yapistirin.',
   },
   ru: {
-    size: '\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0444\u0430\u0439\u043b\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u043b\u0438\u043c\u0438\u0442 3,5 \u041c\u0411.',
+    size: '\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0444\u0430\u0439\u043b\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u043b\u0438\u043c\u0438\u0442 3 \u041c\u0411.',
     count: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 6 \u0444\u0430\u0439\u043b\u043e\u0432.',
     mail: '\u0414\u043b\u044f \u0431\u043e\u043b\u0435\u0435 \u043a\u0440\u0443\u043f\u043d\u044b\u0445 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u0439 \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043d\u0430\u043c \u043d\u0430\u043f\u0440\u044f\u043c\u0443\u044e.',
     action: '\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u043f\u043e e-mail',
@@ -83,7 +83,7 @@ const FORM_UPLOAD_ERROR = {
     driveStep3: '\u0421\u043a\u043e\u043f\u0438\u0440\u0443\u0439\u0442\u0435 \u0441\u0441\u044b\u043b\u043a\u0443 \u0438 \u0432\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0435\u0451 \u0432 \u043f\u043e\u043b\u0435 \u00ab\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0431\u043e\u043b\u044c\u0448\u0438\u0435 \u0444\u0430\u0439\u043b\u044b\u00bb \u0432\u044b\u0448\u0435.',
   },
   fr: {
-    size: 'Les fichiers sélectionnés dépassent la limite de 3,5 Mo.',
+    size: 'Les fichiers sélectionnés dépassent la limite de 3 Mo.',
     count: 'Veuillez sélectionner au maximum 6 fichiers.',
     mail: 'Pour les pièces jointes plus volumineuses, envoyez-nous directement un e-mail.',
     action: 'Envoyer par e-mail',
@@ -93,7 +93,7 @@ const FORM_UPLOAD_ERROR = {
     driveStep3: 'Copiez le lien et collez-le dans le champ « Lien vers les fichiers volumineux » ci-dessus.',
   },
   uk: {
-    size: '\u0412\u0438\u0431\u0440\u0430\u043d\u0456 \u0444\u0430\u0439\u043b\u0438 \u043f\u0435\u0440\u0435\u0432\u0438\u0449\u0443\u044e\u0442\u044c \u043b\u0456\u043c\u0456\u0442 3,5 \u041c\u0411.',
+    size: '\u0412\u0438\u0431\u0440\u0430\u043d\u0456 \u0444\u0430\u0439\u043b\u0438 \u043f\u0435\u0440\u0435\u0432\u0438\u0449\u0443\u044e\u0442\u044c \u043b\u0456\u043c\u0456\u0442 3 \u041c\u0411.',
     count: '\u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u043d\u0435 \u0431\u0456\u043b\u044c\u0448\u0435 6 \u0444\u0430\u0439\u043b\u0456\u0432.',
     mail: '\u0414\u043b\u044f \u0431\u0456\u043b\u044c\u0448\u0438\u0445 \u0432\u043a\u043b\u0430\u0434\u0435\u043d\u044c \u043d\u0430\u0434\u0456\u0448\u043b\u0456\u0442\u044c \u043d\u0430\u043c e-mail.',
     action: '\u041d\u0430\u0434\u0456\u0441\u043b\u0430\u0442\u0438 e-mail',
@@ -104,14 +104,27 @@ const FORM_UPLOAD_ERROR = {
   },
 };
 
+// Shown when the photo/file is still too large after shrinking: the real size and WhatsApp as the quick way out.
+const FORM_UPLOAD_TOO_BIG = {
+  de: { size: 'Ihr Foto bzw. Ihre Datei ist zu groß ({mb} MB, erlaubt sind maximal 3 MB).', whatsapp: 'Am schnellsten: Senden Sie das Foto direkt per WhatsApp.', whatsappAction: 'WhatsApp öffnen' },
+  en: { size: 'Your photo or file is too large ({mb} MB, the maximum is 3 MB).', whatsapp: 'Fastest option: send the photo directly via WhatsApp.', whatsappAction: 'Open WhatsApp' },
+  ar: { size: 'الصورة أو الملف كبير جدًا ({mb} ميغابايت، والحد الأقصى 3 ميغابايت).', whatsapp: 'الأسرع: أرسل الصورة مباشرة عبر واتساب.', whatsappAction: 'فتح واتساب' },
+  tr: { size: 'Fotoğrafınız veya dosyanız çok büyük ({mb} MB, en fazla 3 MB).', whatsapp: 'En hızlısı: Fotoğrafı doğrudan WhatsApp ile gönderin.', whatsappAction: 'WhatsApp’ı aç' },
+  ru: { size: 'Ваше фото или файл слишком велики ({mb} МБ, максимум 3 МБ).', whatsapp: 'Быстрее всего: отправьте фото прямо в WhatsApp.', whatsappAction: 'Открыть WhatsApp' },
+  fr: { size: 'Votre photo ou fichier est trop volumineux ({mb} Mo, maximum 3 Mo).', whatsapp: 'Le plus rapide : envoyez la photo directement par WhatsApp.', whatsappAction: 'Ouvrir WhatsApp' },
+  uk: { size: 'Ваше фото або файл завеликі ({mb} МБ, максимум 3 МБ).', whatsapp: 'Найшвидше: надішліть фото прямо у WhatsApp.', whatsappAction: 'Відкрити WhatsApp' },
+};
+
+const formatMb = (bytes, lang) => (bytes / (1024 * 1024)).toFixed(1).replace('.', lang === 'en' || lang === 'ar' ? '.' : ',');
+
 const FORM_DRIVE = {
-  de: { label: 'Link zu gro\u00dfen Dateien (optional)', placeholder: 'https://drive.google.com/...', hint: 'Dateien \u00fcber 3,5 MB? \u00dcber Google Drive teilen und den Link hier einf\u00fcgen.' },
-  en: { label: 'Link to large files (optional)', placeholder: 'https://drive.google.com/...', hint: 'Files over 3.5 MB? Share them via Google Drive and paste the link here.' },
-  ar: { label: '\u0631\u0627\u0628\u0637 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)', placeholder: 'https://drive.google.com/...', hint: '\u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631 \u0645\u0646 3.5 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a\u061f \u0634\u0627\u0631\u0643\u0647\u0627 \u0639\u0628\u0631 Google Drive \u0648\u0623\u0644\u0635\u0642 \u0627\u0644\u0631\u0627\u0628\u0637 \u0647\u0646\u0627.' },
-  tr: { label: 'Buyuk dosya baglantisi (istege bagli)', placeholder: 'https://drive.google.com/...', hint: '3,5 MB\u2019den buyuk dosyalar? Google Drive ile paylasin ve baglantiyi buraya yapistirin.' },
-  ru: { label: '\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0431\u043e\u043b\u044c\u0448\u0438\u0435 \u0444\u0430\u0439\u043b\u044b (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u044b \u0431\u043e\u043b\u044c\u0448\u0435 3,5 \u041c\u0411? \u041f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0447\u0435\u0440\u0435\u0437 Google Drive \u0438 \u0432\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0441\u0441\u044b\u043b\u043a\u0443 \u0441\u044e\u0434\u0430.' },
-  fr: { label: 'Lien vers les fichiers volumineux (facultatif)', placeholder: 'https://drive.google.com/...', hint: 'Fichiers de plus de 3,5 Mo ? Partagez-les via Google Drive et collez le lien ici.' },
-  uk: { label: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0432\u0435\u043b\u0438\u043a\u0456 \u0444\u0430\u0439\u043b\u0438 (\u043d\u0435\u043e\u0431\u043e\u0432\u02bc\u044f\u0437\u043a\u043e\u0432\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u0438 \u043f\u043e\u043d\u0430\u0434 3,5 \u041c\u0411? \u041f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0447\u0435\u0440\u0435\u0437 Google Drive \u0456 \u0432\u0441\u0442\u0430\u0432\u0442\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0441\u044e\u0434\u0438.' },
+  de: { label: 'Link zu gro\u00dfen Dateien (optional)', placeholder: 'https://drive.google.com/...', hint: 'Dateien \u00fcber 3 MB? \u00dcber Google Drive teilen und den Link hier einf\u00fcgen.' },
+  en: { label: 'Link to large files (optional)', placeholder: 'https://drive.google.com/...', hint: 'Files over 3 MB? Share them via Google Drive and paste the link here.' },
+  ar: { label: '\u0631\u0627\u0628\u0637 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)', placeholder: 'https://drive.google.com/...', hint: '\u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631 \u0645\u0646 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a\u061f \u0634\u0627\u0631\u0643\u0647\u0627 \u0639\u0628\u0631 Google Drive \u0648\u0623\u0644\u0635\u0642 \u0627\u0644\u0631\u0627\u0628\u0637 \u0647\u0646\u0627.' },
+  tr: { label: 'Buyuk dosya baglantisi (istege bagli)', placeholder: 'https://drive.google.com/...', hint: '3 MB\u2019tan buyuk dosyalar? Google Drive ile paylasin ve baglantiyi buraya yapistirin.' },
+  ru: { label: '\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0431\u043e\u043b\u044c\u0448\u0438\u0435 \u0444\u0430\u0439\u043b\u044b (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u044b \u0431\u043e\u043b\u044c\u0448\u0435 3 \u041c\u0411? \u041f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0447\u0435\u0440\u0435\u0437 Google Drive \u0438 \u0432\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0441\u0441\u044b\u043b\u043a\u0443 \u0441\u044e\u0434\u0430.' },
+  fr: { label: 'Lien vers les fichiers volumineux (facultatif)', placeholder: 'https://drive.google.com/...', hint: 'Fichiers de plus de 3 Mo ? Partagez-les via Google Drive et collez le lien ici.' },
+  uk: { label: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0432\u0435\u043b\u0438\u043a\u0456 \u0444\u0430\u0439\u043b\u0438 (\u043d\u0435\u043e\u0431\u043e\u0432\u02bc\u044f\u0437\u043a\u043e\u0432\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u0438 \u043f\u043e\u043d\u0430\u0434 3 \u041c\u0411? \u041f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0447\u0435\u0440\u0435\u0437 Google Drive \u0456 \u0432\u0441\u0442\u0430\u0432\u0442\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0441\u044e\u0434\u0438.' },
 };
 
 const FORM_LANGUAGE_OPTIONS = {
@@ -152,10 +165,36 @@ const FORM_LANGUAGE_OPTIONS = {
   },
 };
 
+const MAX_UPLOAD_BYTES = 3 * 1024 * 1024;
+
 function getUploadError(files) {
   if (files.length > 6) return 'upload-count';
-  if (files.reduce((total, file) => total + file.size, 0) > 3.5 * 1024 * 1024) return 'upload-size';
+  if (files.reduce((total, file) => total + file.size, 0) > MAX_UPLOAD_BYTES) return 'upload-size';
   return '';
+}
+
+// Phone photos are often 3–5 MB. Scale them down to a readable size before sending,
+// so they stay under the upload limit. Anything that cannot be decoded is sent as is.
+const COMPRESSIBLE = /^image\/(jpeg|png|webp|heic|heif)$/i;
+const MAX_IMAGE_SIDE = 2400;
+
+async function shrinkImage(file) {
+  if (!COMPRESSIBLE.test(file.type || '') || file.size < 600 * 1024) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_IMAGE_SIDE / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close?.();
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+    if (!blob || blob.size >= file.size) return file;
+    const name = file.name.replace(/\.[^.]+$/, '') + '.jpg';
+    return new File([blob], name, { type: 'image/jpeg' });
+  } catch {
+    return file;
+  }
 }
 
 function readFileAsBase64(file) {
@@ -176,25 +215,33 @@ export default function HowContact({ branch = null }) {
   const phones = branch?.phone ? [branch.phone] : CONTACT.phones;
   const whatsappUrl = branch?.whatsappUrl || CONTACT.whatsappUrl;
   const [status, setStatus] = useState('idle');
+  const [uploadBytes, setUploadBytes] = useState(0);
   const [serviceType, setServiceType] = useState('translation');
   const [startedAt] = useState(() => Date.now());
   const statusCopy = FORM_STATUS[lang] || FORM_STATUS.de;
   const formOptions = FORM_LANGUAGE_OPTIONS[lang] || FORM_LANGUAGE_OPTIONS.de;
   const driveCopy = FORM_DRIVE[lang] || FORM_DRIVE.de;
   const uploadErrorCopy = FORM_UPLOAD_ERROR[lang] || FORM_UPLOAD_ERROR.de;
+  const tooBigCopy = FORM_UPLOAD_TOO_BIG[lang] || FORM_UPLOAD_TOO_BIG.de;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (status === 'sending') return;
     const form = e.currentTarget;
     const data = new FormData(form);
-    const files = data.getAll('files').filter((file) => file?.size);
+    const picked = data.getAll('files').filter((file) => file?.size);
+    if (picked.length > 6) {
+      setStatus('upload-count');
+      return;
+    }
+    setStatus('sending');
+    const files = await Promise.all(picked.map(shrinkImage));
     const uploadError = getUploadError(files);
+    setUploadBytes(files.reduce((total, file) => total + file.size, 0));
     if (uploadError) {
       setStatus(uploadError);
       return;
     }
-    setStatus('sending');
     trackEvent('cta_click', { action: 'quote_form_submit' });
 
     try {
@@ -222,6 +269,10 @@ export default function HowContact({ branch = null }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      if (response.status === 413) {
+        setStatus('upload-size');
+        return;
+      }
       if (!response.ok) throw new Error('Delivery failed.');
       form.reset();
       setStatus('sent');
@@ -431,7 +482,12 @@ export default function HowContact({ branch = null }) {
             {status === 'error' && <p className="form-feedback form-feedback--error" role="alert">{statusCopy.error}</p>}
             {status === 'upload-size' && (
               <div className="form-feedback form-feedback--error" role="alert">
-                <p style={{ margin: 0 }}>{uploadErrorCopy.size}</p>
+                <p style={{ margin: 0 }}>{uploadBytes ? tooBigCopy.size.replace('{mb}', formatMb(uploadBytes, lang)) : uploadErrorCopy.size}</p>
+                <p style={{ margin: '8px 0 0' }}>
+                  {tooBigCopy.whatsapp}
+                  {' '}
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">{tooBigCopy.whatsappAction}</a>
+                </p>
                 <p style={{ margin: '8px 0 4px', fontWeight: 600 }}>{uploadErrorCopy.driveTitle}</p>
                 <ol style={{ margin: 0, paddingInlineStart: 18, lineHeight: 1.55 }}>
                   <li>{uploadErrorCopy.driveStep1}</li>

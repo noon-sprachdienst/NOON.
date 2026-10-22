@@ -167,6 +167,7 @@ export default function Testimonials() {
       <div className="container">
         <div className="section-head">
           <h2 id="test-heading" data-reveal="">{t('test.title')}</h2>
+          <p className="test-google-summary">{t('test.google')}</p>
         </div>
         <div className="carousel-actions" aria-label="Feedback scrollen">
           <button type="button" className="scroll-btn" onClick={() => scrollCards(-1)} aria-label="Vorherige Feedbacks">

@@ -2220,7 +2220,7 @@ export const serviceUi = {
 const faqByLang = {
   de: [
     ['cost', 'Was kostet eine Übersetzung?', 'Der Preis richtet sich nach Sprache, Fachgebiet, Textumfang und gewünschter Lieferzeit. Senden Sie uns das Dokument zu – Sie erhalten ein verbindliches Festpreisangebot innerhalb weniger Minuten.'],
-    ['duration', 'Wie lange dauert eine Übersetzung?', 'Kleinere Standarddokumente (z.B. Urkunden, Zeugnisse) sind oft innerhalb von 4–6 Werktagen fertig. Bei größeren Fachübersetzungen stimmen wir den Liefertermin individuell mit Ihnen ab. Auf Wunsch bieten wir auch einen Express-Service in 24 Stunden an.'],
+    ['duration', 'Wie lange dauert eine Übersetzung?', 'Kleinere Standarddokumente (z.B. Urkunden, Zeugnisse) sind oft innerhalb von 2–6 Werktagen fertig. Bei größeren Fachübersetzungen stimmen wir den Liefertermin individuell mit Ihnen ab. Auf Wunsch bieten wir auch einen Express-Service in 24 Stunden an.'],
     ['iso', 'Arbeiten Sie nach dem ISO-17100-Standard?', 'Unsere Übersetzungsprozesse orientieren sich am ISO-17100-Standard für Übersetzungsdienstleistungen. Eine ISO-Zertifizierung besteht derzeit nicht – wir arbeiten aber nach diesem Standard, mit CAT-Tools (z.B. SDL Trados, memoQ) und kundenspezifischen Terminologiedatenbanken für gleichbleibend hohe Qualität.'],
     ['accepted', 'Werden Ihre beglaubigten Übersetzungen von Behörden anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von allgemein beeidigten Übersetzerinnen und Übersetzern erstellt und von Gerichten, Standesämtern, Ausländerbehörden, Hochschulen und Notariaten in ganz Deutschland anerkannt.'],
     ['original', 'Benötigen Sie das Originaldokument?', 'In den meisten Fällen reicht ein gut lesbares Foto oder ein Scan. Ob das Original benötigt wird, hängt vom Verwendungszweck ab – das prüfen wir individuell für Sie.'],
@@ -2234,7 +2234,7 @@ const faqByLang = {
   ],
   en: [
     ['cost', 'How much does a translation cost?', 'The price depends on the language, subject area, text volume and requested delivery time. Send us the document and you will receive a binding fixed-price quote within a few minutes.'],
-    ['duration', 'How long does a translation take?', 'Smaller standard documents such as certificates or diplomas are often ready within 4-6 working days. For larger specialist translations, we agree the delivery date individually. Express service within 24 hours is available on request.'],
+    ['duration', 'How long does a translation take?', 'Smaller standard documents such as certificates or diplomas are often ready within 2-6 working days. For larger specialist translations, we agree the delivery date individually. Express service within 24 hours is available on request.'],
     ['iso', 'Do you work according to the ISO 17100 standard?', 'Our translation processes are aligned with the ISO 17100 standard for translation services. We are not ISO-certified, but we work to this standard, using CAT tools and client-specific terminology databases for consistent quality.'],
     ['accepted', 'Are certified translations accepted by authorities?', 'Yes. Our certified translations are prepared by sworn translators and accepted by courts, registry offices, immigration authorities, universities and notaries throughout Germany.'],
     ['original', 'Do you need the original document?', 'In most cases, a clear photo or scan is enough. Whether the original is required depends on the intended use, and we check that individually for you.'],
@@ -2250,7 +2250,7 @@ const faqByLang = {
 
 faqByLang.ar = [
   ['cost', 'كم تكلفة الترجمة؟', 'يعتمد السعر على اللغة والمجال وحجم النص وموعد التسليم المطلوب. أرسل لنا المستند وسنرسل لك سعرا ثابتا ملزما خلال دقائق.'],
-  ['duration', 'كم تستغرق الترجمة؟', 'غالبا ما تكون المستندات القياسية الصغيرة جاهزة خلال 4 إلى 6 أيام عمل. أما الترجمات المتخصصة الكبيرة فنحدد موعد التسليم لها بشكل فردي. خدمة 24 ساعة متاحة عند الطلب.'],
+  ['duration', 'كم تستغرق الترجمة؟', 'غالبا ما تكون المستندات القياسية الصغيرة جاهزة خلال 2 إلى 6 أيام عمل. أما الترجمات المتخصصة الكبيرة فنحدد موعد التسليم لها بشكل فردي. خدمة 24 ساعة متاحة عند الطلب.'],
   ['iso', 'هل تعملون وفق معيار ISO 17100؟', 'تستند عملياتنا إلى معيار ISO 17100 لخدمات الترجمة. نحن غير حاصلين على شهادة ISO، لكننا نعمل وفق هذا المعيار، ونستخدم أدوات CAT وقواعد مصطلحات خاصة بالعملاء لضمان جودة ثابتة.'],
   ['accepted', 'هل تقبل الجهات الرسمية الترجمات المعتمدة؟', 'نعم. يتم إعداد الترجمات المعتمدة من مترجمين محلفين وتقبلها المحاكم ومكاتب السجل والجامعات والموثقون والجهات الرسمية في ألمانيا.'],
   ['original', 'هل تحتاجون إلى المستند الأصلي؟', 'في معظم الحالات تكفي صورة واضحة أو مسح ضوئي. نتحقق بشكل فردي مما إذا كان الأصل مطلوبا حسب الغرض من الاستخدام.'],
@@ -2265,7 +2265,7 @@ faqByLang.ar = [
 
 faqByLang.tr = [
   ['cost', 'Bir çeviri ne kadar tutar?', 'Fiyat dile, uzmanlık alanına, metin hacmine ve istenen teslim süresine bağlıdır. Belgeyi gönderin, birkaç dakika içinde bağlayıcı sabit fiyat teklifi alın.'],
-  ['duration', 'Bir çeviri ne kadar sürer?', 'Sertifika veya diploma gibi küçük standart belgeler çoğu zaman 4-6 iş günü içinde hazır olur. Büyük uzman çevirilerde teslim tarihini sizinle özel olarak belirleriz. 24 saat ekspres hizmet mümkündür.'],
+  ['duration', 'Bir çeviri ne kadar sürer?', 'Sertifika veya diploma gibi küçük standart belgeler çoğu zaman 2-6 iş günü içinde hazır olur. Büyük uzman çevirilerde teslim tarihini sizinle özel olarak belirleriz. 24 saat ekspres hizmet mümkündür.'],
   ['iso', 'ISO 17100 standardına göre mi çalışıyorsunuz?', 'Çeviri süreçlerimiz ISO 17100 çeviri hizmetleri standardına göre yapılandırılmıştır. ISO sertifikamız yoktur, ancak bu standarda göre çalışırız; tutarlı kalite için CAT araçları ve müşteriye özel terminoloji veritabanları kullanıyoruz.'],
   ['accepted', 'Onaylı çeviriler resmi kurumlarca kabul edilir mi?', 'Evet. Onaylı çevirilerimiz yeminli çevirmenler tarafından hazırlanır ve Almanya genelinde mahkemeler, nüfus müdürlükleri, göçmenlik makamları, üniversiteler ve noterler tarafından kabul edilir.'],
   ['original', 'Orijinal belge gerekli mi?', 'Çoğu durumda okunaklı bir fotoğraf veya tarama yeterlidir. Orijinalin gerekip gerekmediği kullanım amacına bağlıdır ve bunu sizin için ayrıca kontrol ederiz.'],
@@ -2280,7 +2280,7 @@ faqByLang.tr = [
 
 faqByLang.ru = [
   ['cost', 'Сколько стоит перевод?', 'Цена зависит от языка, тематики, объема текста и желаемого срока. Отправьте документ, и в течение нескольких минут вы получите фиксированное предложение.'],
-  ['duration', 'Сколько занимает перевод?', 'Небольшие стандартные документы часто готовы за 4-6 рабочих дней. Для крупных профильных переводов срок согласуется индивидуально. По запросу возможен экспресс-сервис за 24 часа.'],
+  ['duration', 'Сколько занимает перевод?', 'Небольшие стандартные документы часто готовы за 2-6 рабочих дней. Для крупных профильных переводов срок согласуется индивидуально. По запросу возможен экспресс-сервис за 24 часа.'],
   ['iso', 'Вы работаете по стандарту ISO 17100?', 'Наши процессы ориентированы на стандарт ISO 17100 для переводческих услуг. Мы не сертифицированы по ISO, но работаем по этому стандарту и используем CAT-инструменты и клиентские базы терминов для стабильного качества.'],
   ['accepted', 'Принимаются ли заверенные переводы ведомствами?', 'Да. Заверенные переводы выполняются присяжными переводчиками и принимаются судами, ЗАГСами, миграционными ведомствами, вузами и нотариусами по всей Германии.'],
   ['original', 'Нужен ли оригинал документа?', 'В большинстве случаев достаточно четкой фотографии или скана. Нужен ли оригинал, зависит от цели использования; мы проверяем это индивидуально.'],
@@ -2295,7 +2295,7 @@ faqByLang.ru = [
 
 faqByLang.fr = [
   ['cost', 'Combien coûte une traduction ?', 'Le prix dépend de la langue, du domaine, du volume et du délai souhaité. Envoyez-nous le document et vous recevrez un prix fixe en quelques minutes.'],
-  ['duration', 'Combien de temps dure une traduction ?', 'Les petits documents standards sont souvent prêts en 4 à 6 jours ouvrés. Pour les traductions spécialisées plus importantes, nous convenons du délai individuellement. Un service express en 24 heures est possible.'],
+  ['duration', 'Combien de temps dure une traduction ?', 'Les petits documents standards sont souvent prêts en 2 à 6 jours ouvrés. Pour les traductions spécialisées plus importantes, nous convenons du délai individuellement. Un service express en 24 heures est possible.'],
   ['iso', 'Travaillez-vous selon la norme ISO 17100 ?', 'Nos processus s’orientent sur la norme ISO 17100 pour les services de traduction. Nous ne sommes pas certifiés ISO, mais nous travaillons selon cette norme, avec des outils CAT et des bases terminologiques client pour une qualité constante.'],
   ['accepted', 'Les traductions certifiées sont-elles acceptées par les autorités ?', 'Oui. Elles sont réalisées par des traducteurs assermentés et acceptées par tribunaux, mairies, services d’immigration, universités et notaires dans toute l’Allemagne.'],
   ['original', 'Avez-vous besoin du document original ?', 'Dans la plupart des cas, une photo ou un scan lisible suffit. La nécessité de l’original dépend de l’usage prévu ; nous le vérifions individuellement.'],
@@ -2310,7 +2310,7 @@ faqByLang.fr = [
 
 faqByLang.uk = [
   ['cost', 'Скільки коштує переклад?', 'Ціна залежить від мови, тематики, обсягу тексту та бажаного строку. Надішліть документ, і за кілька хвилин ви отримаєте фіксовану пропозицію.'],
-  ['duration', 'Скільки триває переклад?', 'Невеликі стандартні документи часто готові за 4-6 робочих днів. Для більших фахових перекладів строк узгоджується індивідуально. За запитом можливий експрес-сервіс за 24 години.'],
+  ['duration', 'Скільки триває переклад?', 'Невеликі стандартні документи часто готові за 2-6 робочих днів. Для більших фахових перекладів строк узгоджується індивідуально. За запитом можливий експрес-сервіс за 24 години.'],
   ['iso', 'Чи працюєте ви за стандартом ISO 17100?', 'Наші процеси орієнтуються на стандарт ISO 17100 для перекладацьких послуг. Ми не сертифіковані за ISO, але працюємо за цим стандартом і використовуємо CAT-інструменти та клієнтські бази термінології для стабільної якості.'],
   ['accepted', 'Чи приймають завірені переклади органи влади?', 'Так. Завірені переклади виконуються присяжними перекладачами та приймаються судами, РАЦСами, міграційними органами, університетами й нотаріусами по всій Німеччині.'],
   ['original', 'Чи потрібен оригінал документа?', 'У більшості випадків достатньо чіткої фотографії або скану. Чи потрібен оригінал, залежить від мети використання; ми перевіряємо це індивідуально.'],

@@ -886,7 +886,7 @@ export default function Specialties() {
             <div className="specialty-page-quote">
               <div className="specialty-page-price">
                 <span>{copy.price}</span>
-                <strong>0,09€</strong>
+                <strong>0,12€</strong>
                 <small>{copy.unit}</small>
               </div>
               <a href="/angebot/" className="btn btn-primary">

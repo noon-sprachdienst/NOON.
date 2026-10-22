@@ -1,6 +1,6 @@
 {
   "redirects": [
-    { "source": "/about(/)?", "destination": "/", "permanent": true },
+    { "source": "/about(/)?", "destination": "/de/ueber-uns/", "permanent": true },
     { "source": "/home(/)?", "destination": "/", "permanent": true },
     { "source": "/sprachen(/)?", "destination": "/de/sprachen/", "permanent": true },
     { "source": "/kontakt(/)?", "destination": "/", "permanent": true },

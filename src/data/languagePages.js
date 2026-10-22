@@ -182,6 +182,23 @@ const LANGUAGE_PAGES_BASE = [
     highlights: ['Farsi und Dari', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
   }),
   languagePage({
+    slug: 'russisch',
+    language: 'Russisch',
+    adjective: 'Russische',
+    description: 'Beglaubigte Russisch-Übersetzungen und Russisch-Dolmetscher – für Dokumente aus Russland, der Ukraine, Kasachstan und weiteren Ländern. Express möglich.',
+    intro: 'Sie brauchen eine beglaubigte Übersetzung aus dem Russischen oder einen Russisch-Dolmetscher für einen Behördentermin? Wir übersetzen Ihre Dokumente durch ermächtigte Übersetzer – anerkannt von Behörden, Gerichten und Hochschulen in ganz Deutschland.',
+    documents: 'Wir übersetzen russischsprachige Dokumente, zum Beispiel:\n• Geburtsurkunde, Heiratsurkunde und Scheidungsurkunde\n• Zeugnisse, Diplome und Notenübersichten für die Anerkennung in Deutschland\n• Arbeitsbuch und Arbeitsnachweise\n• Führerschein\n• Vollmachten, Verträge und Gerichtsdokumente',
+    reverse: 'Auch Übersetzungen vom Deutschen ins Russische sind möglich – etwa für Unterlagen, die Sie in Russland, Kasachstan oder einem anderen russischsprachigen Land vorlegen möchten.',
+    special: [
+      'Dokumente aus vielen Ländern und Namen aus dem Kyrillischen',
+      'Russischsprachige Urkunden stammen nicht nur aus Russland, sondern auch aus der Ukraine, Belarus, Kasachstan, Usbekistan, Kirgisistan, der Republik Moldau und weiteren Ländern. Wir übersetzen sie alle. Namen übertragen wir aus der kyrillischen Schrift so, wie sie in Ihrem Reisepass stehen – schicken Sie uns dafür einfach eine Kopie mit.',
+      [{ href: '/de/sprachen/ukrainisch/', label: 'Ukrainisch Übersetzer' }],
+    ],
+    faqs: [
+      ['Übersetzen Sie auch Dokumente aus Kasachstan und der Ukraine?', 'Ja. Russischsprachige Dokumente aus Kasachstan, der Ukraine, Belarus und anderen Ländern übersetzen wir beglaubigt.'],
+    ],
+  }),
+  languagePage({
     slug: 'rumaenisch',
     language: 'Rumänisch',
     adjective: 'Rumänische',

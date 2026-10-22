@@ -21,7 +21,8 @@ const FILE_TYPES_BY_EXTENSION = {
   '.heic': 'image/heic',
 };
 const MAX_FILES = 6;
-const MAX_TOTAL_FILE_BYTES = 3.5 * 1024 * 1024;
+// Vercel accepts request bodies up to 4.5 MB and base64 adds a third: 3 MB of files fit.
+const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
 function validateOrigin(req) {
   if (!req.headers.origin) return true;
   try {

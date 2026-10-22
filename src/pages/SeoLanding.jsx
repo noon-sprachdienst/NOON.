@@ -86,6 +86,37 @@ const UI = {
   },
 };
 
+function CopyBlocks({ sections, faqs, faqLabel }) {
+  return (
+    <>
+      {sections.map(([title, text, links]) => (
+        <section className="seo-copy-block" key={title}>
+          <h2>{title}</h2>
+          <p>{text}</p>
+          {!!links?.length && (
+            <div className="seo-link-list seo-link-list--inline">
+              {links.map((link) => <a key={link.href} href={link.href}>{link.label}<span>›</span></a>)}
+            </div>
+          )}
+        </section>
+      ))}
+      {!!faqs?.length && (
+        <section className="seo-copy-block">
+          <h2>{faqLabel}</h2>
+          <div className="seo-faq-list">
+            {faqs.map(([question, answer]) => (
+              <details key={question}>
+                <summary>{question}</summary>
+                <p>{answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
 export default function SeoLanding({ page }) {
   const isLocation = page.kind === 'location';
   const copy = UI[page.lang] || UI.de;
@@ -140,6 +171,15 @@ export default function SeoLanding({ page }) {
             </div>
           </div>
         </section>
+        {page.sectionsBelowPanel && (
+          <section className="seo-content">
+            <div className="container">
+              <article>
+                <CopyBlocks sections={page.sections} faqs={page.faqs} faqLabel={copy.faq} />
+              </article>
+            </div>
+          </section>
+        )}
       </div>
     );
   }
@@ -183,30 +223,7 @@ export default function SeoLanding({ page }) {
       <section className="seo-content">
         <div className="container seo-content-grid">
           <article>
-            {page.sections.map(([title, text, links]) => (
-              <section className="seo-copy-block" key={title}>
-                <h2>{title}</h2>
-                <p>{text}</p>
-                {!!links?.length && (
-                  <div className="seo-link-list seo-link-list--inline">
-                    {links.map((link) => <a key={link.href} href={link.href}>{link.label}<span>›</span></a>)}
-                  </div>
-                )}
-              </section>
-            ))}
-            {!!page.faqs?.length && (
-              <section className="seo-copy-block">
-                <h2>{copy.faq}</h2>
-                <div className="seo-faq-list">
-                  {page.faqs.map(([question, answer]) => (
-                    <details key={question}>
-                      <summary>{question}</summary>
-                      <p>{answer}</p>
-                    </details>
-                  ))}
-                </div>
-              </section>
-            )}
+            <CopyBlocks sections={page.sections} faqs={page.faqs} faqLabel={copy.faq} />
           </article>
           <aside className="seo-related">
             {branch && (

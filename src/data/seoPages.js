@@ -2,6 +2,8 @@ import { getServiceNavigation, serviceUi } from './serviceContent.js';
 
 import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
+import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
+import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -25,7 +27,7 @@ export const SEO_LANGUAGES = {
 
 export const LANGUAGE_HOME_META = {
   de: {
-    title: 'Noon Dolmetscher & Übersetzungsbüro – Beglaubigte Übersetzungen in 190+ Sprachen',
+    title: 'Übersetzungsbüro & Dolmetscher – beglaubigt, 190+ Sprachen | Noon',
     description: 'Beglaubigte Übersetzungen, Dolmetschdienste und Sprachförderung in 190+ Sprachen — von beeidigten Profis, deutschlandweit seit 2019.',
     heading: 'Beglaubigte Übersetzungen & Dolmetschen in 190+ Sprachen',
     cta: 'Kostenloses Angebot anfordern',
@@ -279,7 +281,7 @@ const documentPagesDe = [
     group: 'court-interpreter',
     eyebrow: 'Gerichtsdolmetscher',
     title: 'Dolmetscher für Gerichtstermine anfragen.',
-    description: 'Beeidigte Gerichtsdolmetscher für alle Sprachen: Strafverfahren, Familiengericht, Zivil-, Arbeits- und Verwaltungsgericht sowie Anwalts- und Notartermine – vor Ort oder per Video, deutschlandweit.',
+    description: 'Beeidigte Gerichtsdolmetscher für alle Sprachen: Strafverfahren, Familien-, Zivil- und Verwaltungsgericht sowie Anwaltstermine – vor Ort oder per Video.',
     intro: 'Vor Gericht zählt jedes Wort. Noon Dolmetscher & Übersetzungsbüro stellt beeidigte Dolmetscher für alle Sprachen – für Verhandlungen, Anhörungen und Vernehmungen ebenso wie für die Vorbereitung mit Ihrer Anwältin oder Ihrem Anwalt. Gerichte, Kanzleien, Behörden und Privatpersonen können uns direkt anfragen.',
     highlights: ['Beeidigte Dolmetscher', 'Alle Sprachen', 'Vor Ort oder per Video'],
     sections: [
@@ -523,36 +525,9 @@ const locationIntros = {
 // Own copy for offices whose page should not share the generic location text.
 // Only client-confirmed facts (ermächtigte Übersetzer, 2–3 Werktage, Express 4–5 Stunden,
 // Termine vor Ort nach Vereinbarung) plus publicly known authorities of the city.
-const DOCUMENT_LINKS = [
-  { href: '/de/geburtsurkunde-uebersetzung/', label: 'Geburtsurkunde übersetzen' },
-  { href: '/de/heiratsurkunde-uebersetzung/', label: 'Heiratsurkunde übersetzen' },
-  { href: '/de/fuehrerschein-uebersetzung/', label: 'Führerschein übersetzen' },
-  { href: '/de/zeugnis-uebersetzung/', label: 'Zeugnisse übersetzen' },
-];
-const LANGUAGE_LINKS = [
-  { href: '/de/sprachen/arabisch/', label: 'Arabisch' },
-  { href: '/de/sprachen/tuerkisch/', label: 'Türkisch' },
-  { href: '/de/sprachen/ukrainisch/', label: 'Ukrainisch' },
-  { href: '/de/sprachen/persisch/', label: 'Persisch' },
-  { href: '/de/sprachen/englisch/', label: 'Englisch' },
-  { href: '/de/sprachen/franzoesisch/', label: 'Französisch' },
-  { href: '/de/sprachen/rumaenisch/', label: 'Rumänisch' },
-  { href: '/de/sprachen/', label: 'Alle Sprachen' },
-];
-const INTERPRETER_LINKS = [
-  { href: '/de/gerichtsdolmetscher/', label: 'Gerichtsdolmetscher' },
-  { href: '/de/dolmetschen/', label: 'Dolmetschdienste im Überblick' },
-];
-const DELIVERY_SECTION = [
-  'Bearbeitungszeit und Ablauf',
-  'Standard: 2–3 Werktage.\nExpress: am selben Tag, in der Regel innerhalb von 4–5 Stunden.\n\n1. Dokument senden – Foto oder Scan per WhatsApp, E-Mail oder Webformular.\n2. Festpreis erhalten – Sie bekommen vorab ein kostenloses Angebot.\n3. Übersetzung erhalten – als PDF per E-Mail und auf Wunsch zusätzlich per Post.',
-  [{ href: '/preise/', label: 'Preise ansehen' }],
-];
-const LANGUAGES_TEXT = 'Unsere ermächtigten Übersetzer und Dolmetscher arbeiten unter anderem in Arabisch (auch syrischer, sudanesischer, libyscher, marokkanischer, algerischer und ägyptischer Dialekt), Türkisch, Ukrainisch, Persisch (Farsi und Dari), Englisch, Französisch und Rumänisch – jeweils ins Deutsche und aus dem Deutschen.';
-
 const locationDetails = {
   berlin: {
-    description: 'Übersetzungsbüro in Berlin: beglaubigte Übersetzungen für Landesamt für Einwanderung, Standesamt und Gericht sowie beeidigte Dolmetscher. Potsdamer Str. 63, 10785 Berlin – Termine nach Vereinbarung.',
+    description: 'Übersetzungsbüro Berlin: beglaubigte Übersetzungen für LEA, Standesamt und Gericht sowie beeidigte Dolmetscher – Potsdamer Str. 63, nach Vereinbarung.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in Berlin: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine beim Landesamt für Einwanderung, beim Standesamt, vor Gericht und beim Notar – in der Potsdamer Straße 63 nach Terminvereinbarung oder komplett digital.',
     highlights: ['Ermächtigte Übersetzer', 'Express am selben Tag', 'Termine nach Vereinbarung'],
     sections: [
@@ -574,7 +549,7 @@ const locationDetails = {
     ],
   },
   stuttgart: {
-    description: 'Übersetzungsbüro in Stuttgart: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt, Regierungspräsidium und Gericht sowie Dolmetscher. Friedrichstraße 15, 70174 Stuttgart – Termine nach Vereinbarung.',
+    description: 'Übersetzungsbüro Stuttgart: beglaubigte Übersetzungen für Behörden, Standesamt und Gericht sowie Dolmetscher – Friedrichstraße 15, nach Vereinbarung.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in Stuttgart: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Friedrichstraße 15 nach Terminvereinbarung oder komplett digital.',
     highlights: ['Ermächtigte Übersetzer', 'Express am selben Tag', 'Termine nach Vereinbarung'],
     sections: [
@@ -594,6 +569,112 @@ const locationDetails = {
       ['Kann ich in Stuttgart persönlich vorbeikommen?', 'Ja, nach vorheriger Terminvereinbarung in der Friedrichstraße 15, 70174 Stuttgart. Bitte kommen Sie nicht ohne Termin, da das Büro nicht durchgehend besetzt ist.'],
       ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Stuttgart?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
       ['Übersetzen Sie auch Zeugnisse für die Anerkennung ausländischer Abschlüsse?', 'Ja. Wir übersetzen Schul- und Hochschulzeugnisse, Diplome und Berufsnachweise beglaubigt. Welche Unterlagen die Anerkennungsstelle verlangt, steht in deren Merkblatt – senden Sie es uns gern mit.'],
+      ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
+    ],
+  },
+  osnabrueck: {
+    description: 'Übersetzungsbüro Osnabrück – Hauptsitz am Rosenplatz 17: beglaubigte Übersetzungen für Behörden und Gericht sowie Dolmetscher. Express am selben Tag.',
+    intro: 'Am Rosenplatz 17 in Osnabrück hat Noon Dolmetscher & Übersetzungsbüro seinen Hauptsitz. Von hier aus betreuen wir Kundinnen und Kunden aus Osnabrück, dem Landkreis und dem Münsterland mit beglaubigten Übersetzungen durch ermächtigte Übersetzer und mit Dolmetschern für Behörde, Standesamt, Gericht und Notar.',
+    highlights: ['Hauptsitz Osnabrück', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
+    sections: [
+      ['Unser Hauptsitz am Rosenplatz', 'Sie finden uns am Rosenplatz 17, 49074 Osnabrück. Damit Ihre Unterlagen und Ihre Sprachkombination vorbereitet sind, vereinbaren Sie bitte vorab einen Termin oder rufen Sie kurz an. Sie können Ihre Dokumente aber auch einfach digital per WhatsApp, E-Mail oder Webformular senden und erhalten die beglaubigte Übersetzung als PDF und auf Wunsch per Post.'],
+      ['Beglaubigte Übersetzungen für Osnabrücker Behörden', 'Wir übersetzen Ihre Unterlagen so, wie Stellen in Osnabrück und im Landkreis sie üblicherweise verlangen:\n• Ausländerbehörde der Stadt oder des Landkreises Osnabrück: Urkunden und Nachweise für Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt: Geburts- und Heiratsurkunden, Ledigkeitsbescheinigungen und Scheidungsurteile für die Anmeldung der Eheschließung oder die Geburtsbeurkundung\n• Führerscheinstelle: Übersetzung ausländischer Führerscheine für die Umschreibung\n• Universität und Hochschule Osnabrück sowie Anerkennungsstellen: Schulzeugnisse, Diplome und Fächer- und Notenübersichten\n• Amtsgericht und Landgericht Osnabrück sowie Notare: Urteile, Beschlüsse, Verträge und Vollmachten\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Behörde fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.',
+        [...DOCUMENT_LINKS, { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen im Überblick' }]],
+      ['Dolmetscher in Osnabrück und Umgebung', 'Wir organisieren Dolmetscher für Ihren Termin in Osnabrück und der Region:\n• Vorsprache bei der Ausländerbehörde oder beim Jobcenter\n• Anmeldung der Eheschließung und Trauung im Standesamt\n• Verhandlungen am Amts- oder Landgericht – auf Wunsch mit beeidigten Dolmetschern\n• Beurkundungen beim Notar, etwa Kaufverträge und Vollmachten\n• Arzt- und Kliniktermine sowie Geschäftsgespräche\n\nBitte nennen Sie uns Datum, Uhrzeit, Ort, Sprache und Anlass. Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.',
+        INTERPRETER_LINKS],
+      ['Für die ganze Region', 'Vom Hauptsitz in Osnabrück betreuen wir auch Georgsmarienhütte, Melle, Bramsche, Bad Iburg und das Tecklenburger Land sowie das Emsland und das Münsterland. Für diese Orte läuft der Auftrag bequem digital – ein Besuch in Osnabrück ist nicht nötig.',
+        [
+          { href: '/de/standorte/ibbenbueren/', label: 'Übersetzungsbüro Ibbenbüren' },
+          { href: '/de/standorte/rheine/', label: 'Übersetzungsbüro Rheine' },
+          { href: '/de/standorte/lingen/', label: 'Übersetzungsbüro Lingen' },
+          { href: '/de/standorte/bielefeld/', label: 'Übersetzungsbüro Bielefeld' },
+        ]],
+      ['Sprachen, die in Osnabrück besonders gefragt sind', LANGUAGES_TEXT, LANGUAGE_LINKS],
+      DELIVERY_SECTION,
+      ['Das sagen Kundinnen und Kunden aus Osnabrück', 'Unser Hauptsitz in Osnabrück ist bei Google mit 5,0 von 5 Sternen bewertet (92 Bewertungen, Stand Oktober 2026). Damit ist Osnabrück unser am häufigsten bewerteter Standort.'],
+    ],
+    faqs: [
+      ['Werden Ihre Übersetzungen von Osnabrücker Behörden anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von in Deutschland ermächtigten Übersetzern angefertigt und sind für Ausländerbehörden, Standesämter, Gerichte und Hochschulen in Osnabrück und bundesweit geeignet.'],
+      ['Kann ich am Rosenplatz persönlich vorbeikommen?', 'Ja. Bitte vereinbaren Sie vorab einen Termin oder rufen Sie kurz an, damit wir Ihre Unterlagen vorbereiten können.'],
+      ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Osnabrück?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
+      ['Betreuen Sie auch Kunden aus dem Landkreis Osnabrück und dem Emsland?', 'Ja. Kundinnen und Kunden aus dem Landkreis, dem Emsland und dem Münsterland senden ihre Dokumente digital und erhalten die Übersetzung per E-Mail und auf Wunsch per Post.'],
+      ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
+    ],
+  },
+  kiel: {
+    description: 'Übersetzungsbüro Kiel, Bothwellstraße 25: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht sowie Dolmetscher – eigene Kieler Nummer.',
+    intro: 'Noon Dolmetscher & Übersetzungsbüro in Kiel: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Bothwellstraße 25 in Kiel-Gaarden, mit eigener Kieler Telefon- und WhatsApp-Nummer.',
+    highlights: ['Eigene Kieler Nummer', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
+    sections: [
+      ['Unser Büro in Kiel-Gaarden', 'Sie finden uns in der Bothwellstraße 25, 24143 Kiel. Damit Ihre Unterlagen und Ihre Sprachkombination vorbereitet sind, vereinbaren Sie bitte vorab einen Termin – am schnellsten über unsere Kieler Nummer +49 15567 478943, telefonisch oder per WhatsApp. Ihre Dokumente können Sie auch digital per WhatsApp, E-Mail oder Webformular senden.'],
+      ['Beglaubigte Übersetzungen für Kieler Behörden', 'Wir übersetzen Ihre Unterlagen so, wie Kieler Stellen sie üblicherweise verlangen:\n• Ausländerbehörde der Landeshauptstadt Kiel: Urkunden und Nachweise für Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Kiel: Geburts- und Heiratsurkunden, Ledigkeitsbescheinigungen und Scheidungsurteile für die Anmeldung der Eheschließung oder die Geburtsbeurkundung\n• Führerscheinstelle: Übersetzung ausländischer Führerscheine für die Umschreibung\n• Christian-Albrechts-Universität, Fachhochschule Kiel und Anerkennungsstellen: Schulzeugnisse, Diplome und Fächer- und Notenübersichten\n• Amtsgericht und Landgericht Kiel sowie Notare: Urteile, Beschlüsse, Verträge und Vollmachten\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Behörde fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.',
+        [...DOCUMENT_LINKS, { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen im Überblick' }]],
+      ['Dolmetscher in Kiel und Schleswig-Holstein', 'Wir organisieren Dolmetscher für Ihren Termin in Kiel und Umgebung:\n• Vorsprache bei der Ausländerbehörde oder beim Jobcenter\n• Anmeldung der Eheschließung und Trauung im Standesamt\n• Verhandlungen am Amts- oder Landgericht – auf Wunsch mit beeidigten Dolmetschern\n• Beurkundungen beim Notar, etwa Kaufverträge und Vollmachten\n• Arzt- und Kliniktermine sowie Geschäftsgespräche\n\nAuch für Neumünster, Rendsburg, Eckernförde und Plön sind wir da. Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir per Video oder Telefon.',
+        INTERPRETER_LINKS],
+      ['Sprachen, die in Kiel besonders gefragt sind', LANGUAGES_TEXT, LANGUAGE_LINKS],
+      DELIVERY_SECTION,
+      ['Das sagen Kundinnen und Kunden aus Kiel', 'Unser Kieler Standort ist bei Google mit 4,8 von 5 Sternen bewertet (40 Bewertungen, Stand Oktober 2026). In den Rezensionen werden vor allem der freundliche Kundenservice, die unkomplizierte Beratung und die schnelle, zuverlässige Übersetzung hervorgehoben.'],
+    ],
+    faqs: [
+      ['Werden Ihre Übersetzungen von Kieler Behörden anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von in Deutschland ermächtigten Übersetzern angefertigt und sind für Ausländerbehörde, Standesamt, Gerichte und Hochschulen in Kiel und bundesweit geeignet.'],
+      ['Wie erreiche ich das Kieler Büro?', 'Über unsere Kieler Nummer +49 15567 478943 – telefonisch oder per WhatsApp. Für einen Besuch in der Bothwellstraße 25 vereinbaren Sie bitte vorab einen Termin.'],
+      ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Kiel?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
+      ['Betreuen Sie auch Kunden außerhalb von Kiel?', 'Ja. Kundinnen und Kunden aus ganz Schleswig-Holstein, etwa aus Neumünster, Rendsburg, Eckernförde und Plön, senden ihre Dokumente digital und erhalten die Übersetzung per E-Mail und auf Wunsch per Post.'],
+      ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
+    ],
+  },
+  bielefeld: {
+    description: 'Übersetzungsbüro Bielefeld, Teichstraße 24: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht sowie Dolmetscher. Express möglich.',
+    intro: 'Noon Dolmetscher & Übersetzungsbüro in Bielefeld: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Teichstraße 24 nach Terminvereinbarung oder komplett digital, für Bielefeld und ganz Ostwestfalen-Lippe.',
+    highlights: ['Büro in Bielefeld-Mitte', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
+    sections: [
+      ['Unser Büro in Bielefeld', 'Sie finden uns in der Teichstraße 24, 33615 Bielefeld. Damit Ihre Unterlagen und Ihre Sprachkombination vorbereitet sind, vereinbaren Sie bitte vorab einen Termin oder rufen Sie kurz an. Ihre Dokumente können Sie auch digital per WhatsApp, E-Mail oder Webformular senden und erhalten die beglaubigte Übersetzung als PDF und auf Wunsch per Post.'],
+      ['Beglaubigte Übersetzungen für Bielefelder Behörden', 'Wir übersetzen Ihre Unterlagen so, wie Stellen in Bielefeld und der Region sie üblicherweise verlangen:\n• Ausländerbehörde der Stadt Bielefeld: Urkunden und Nachweise für Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Bielefeld: Geburts- und Heiratsurkunden, Ledigkeitsbescheinigungen und Scheidungsurteile für die Anmeldung der Eheschließung oder die Geburtsbeurkundung\n• Führerscheinstelle: Übersetzung ausländischer Führerscheine für die Umschreibung\n• Universität Bielefeld, Hochschule Bielefeld und Anerkennungsstellen: Schulzeugnisse, Diplome und Fächer- und Notenübersichten\n• Amtsgericht und Landgericht Bielefeld sowie Notare: Urteile, Beschlüsse, Verträge und Vollmachten\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Behörde fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.',
+        [...DOCUMENT_LINKS, { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen im Überblick' }]],
+      ['Dolmetscher in Bielefeld und Ostwestfalen-Lippe', 'Wir organisieren Dolmetscher für Ihren Termin in Bielefeld und der Region:\n• Vorsprache bei der Ausländerbehörde oder beim Jobcenter\n• Anmeldung der Eheschließung und Trauung im Standesamt\n• Verhandlungen am Amts- oder Landgericht – auf Wunsch mit beeidigten Dolmetschern\n• Beurkundungen beim Notar, etwa Kaufverträge und Vollmachten\n• Arzt- und Kliniktermine sowie Geschäftsgespräche\n\nBitte nennen Sie uns Datum, Uhrzeit, Ort, Sprache und Anlass. Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.',
+        INTERPRETER_LINKS],
+      ['Für ganz Ostwestfalen-Lippe', 'Von Bielefeld aus betreuen wir auch Gütersloh, Herford, Bad Salzuflen, Detmold, Bünde und Paderborn. Für diese Orte läuft der Auftrag bequem digital – ein Besuch in Bielefeld ist nicht nötig.',
+        [
+          { href: '/de/standorte/osnabrueck/', label: 'Übersetzungsbüro Osnabrück' },
+          { href: '/de/standorte/dortmund/', label: 'Übersetzungen Dortmund' },
+          { href: '/de/standorte/hannover/', label: 'Übersetzungsbüro Hannover' },
+        ]],
+      ['Sprachen, die in Bielefeld besonders gefragt sind', LANGUAGES_TEXT, LANGUAGE_LINKS],
+      DELIVERY_SECTION,
+      ['Das sagen Kundinnen und Kunden aus Bielefeld', 'Unser Bielefelder Standort ist bei Google mit 5,0 von 5 Sternen bewertet (36 Bewertungen, Stand Oktober 2026).'],
+    ],
+    faqs: [
+      ['Werden Ihre Übersetzungen von Bielefelder Behörden anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von in Deutschland ermächtigten Übersetzern angefertigt und sind für Ausländerbehörde, Standesamt, Gerichte und Hochschulen in Bielefeld und bundesweit geeignet.'],
+      ['Kann ich in der Teichstraße persönlich vorbeikommen?', 'Ja. Bitte vereinbaren Sie vorab einen Termin oder rufen Sie kurz an, damit wir Ihre Unterlagen vorbereiten können.'],
+      ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Bielefeld?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
+      ['Betreuen Sie auch Gütersloh, Herford und Paderborn?', 'Ja. Kundinnen und Kunden aus ganz Ostwestfalen-Lippe senden ihre Dokumente digital und erhalten die Übersetzung per E-Mail und auf Wunsch per Post.'],
+      ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
+    ],
+  },
+  mainz: {
+    description: 'Übersetzungsbüro Mainz: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht, Dolmetscher für Mainz und Wiesbaden – Express möglich.',
+    intro: 'Noon Dolmetscher & Übersetzungsbüro in der Landeshauptstadt Mainz: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Richard-Wagner-Straße 13 nach Terminvereinbarung oder komplett digital, für Mainz, Wiesbaden und das Rhein-Main-Gebiet.',
+    highlights: ['Büro in Mainz', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
+    sections: [
+      ['Unser Büro in Mainz', 'Sie finden uns in der Richard-Wagner-Straße 13, 55118 Mainz. Damit Ihre Unterlagen und Ihre Sprachkombination vorbereitet sind, vereinbaren Sie bitte vorab einen Termin oder rufen Sie kurz an. Ihre Dokumente können Sie auch digital per WhatsApp, E-Mail oder Webformular senden und erhalten die beglaubigte Übersetzung als PDF und auf Wunsch per Post.'],
+      ['Beglaubigte Übersetzungen für Mainzer Behörden', 'Wir übersetzen Ihre Unterlagen so, wie Stellen in Mainz und Rheinland-Pfalz sie üblicherweise verlangen:\n• Ausländerbehörde der Stadt Mainz: Urkunden und Nachweise für Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Mainz: Geburts- und Heiratsurkunden, Ledigkeitsbescheinigungen und Scheidungsurteile für die Anmeldung der Eheschließung oder die Geburtsbeurkundung\n• Führerscheinstelle: Übersetzung ausländischer Führerscheine für die Umschreibung\n• Johannes Gutenberg-Universität, Hochschule Mainz und Anerkennungsstellen: Schulzeugnisse, Diplome und Fächer- und Notenübersichten\n• Amtsgericht und Landgericht Mainz sowie Notare: Urteile, Beschlüsse, Verträge und Vollmachten\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Behörde fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.',
+        [...DOCUMENT_LINKS, { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen im Überblick' }]],
+      ['Dolmetscher in Mainz und dem Rhein-Main-Gebiet', 'Wir organisieren Dolmetscher für Ihren Termin in Mainz und Umgebung:\n• Vorsprache bei der Ausländerbehörde oder beim Jobcenter\n• Anmeldung der Eheschließung und Trauung im Standesamt\n• Verhandlungen am Amts- oder Landgericht – auf Wunsch mit beeidigten Dolmetschern\n• Beurkundungen beim Notar, etwa Kaufverträge und Vollmachten\n• Arzt- und Kliniktermine sowie Geschäftsgespräche\n\nBitte nennen Sie uns Datum, Uhrzeit, Ort, Sprache und Anlass. Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.',
+        INTERPRETER_LINKS],
+      ['Für Mainz, Wiesbaden und Rheinhessen', 'Von Mainz aus betreuen wir auch Wiesbaden, Rüsselsheim, Ingelheim, Bingen, Bad Kreuznach und Alzey sowie Frankfurt am Main. Für diese Orte läuft der Auftrag bequem digital – ein Besuch in Mainz ist nicht nötig.',
+        [
+          { href: '/de/standorte/frankfurt-am-main/', label: 'Übersetzungsbüro Frankfurt' },
+          { href: '/de/standorte/stuttgart/', label: 'Übersetzungsbüro Stuttgart' },
+        ]],
+      ['Sprachen, die in Mainz besonders gefragt sind', LANGUAGES_TEXT, LANGUAGE_LINKS],
+      DELIVERY_SECTION,
+      ['Das sagen Kundinnen und Kunden aus Mainz', 'Unser Mainzer Standort ist bei Google mit 4,7 von 5 Sternen bewertet (27 Bewertungen, Stand Oktober 2026).'],
+    ],
+    faqs: [
+      ['Werden Ihre Übersetzungen von Mainzer Behörden anerkannt?', 'Ja. Unsere beglaubigten Übersetzungen werden von in Deutschland ermächtigten Übersetzern angefertigt und sind für Ausländerbehörde, Standesamt, Gerichte und Hochschulen in Mainz und bundesweit geeignet.'],
+      ['Kann ich in der Richard-Wagner-Straße persönlich vorbeikommen?', 'Ja. Bitte vereinbaren Sie vorab einen Termin oder rufen Sie kurz an, damit wir Ihre Unterlagen vorbereiten können.'],
+      ['Wie schnell erhalte ich meine beglaubigte Übersetzung in Mainz?', 'In der Regel innerhalb von 2–3 Werktagen. Im Express-Service ist die Übersetzung am selben Tag fertig, meist innerhalb von 4–5 Stunden.'],
+      ['Betreuen Sie auch Wiesbaden und Frankfurt?', 'Ja. Kundinnen und Kunden aus dem gesamten Rhein-Main-Gebiet senden ihre Dokumente digital und erhalten die Übersetzung per E-Mail und auf Wunsch per Post.'],
       ['Kann ich Dokumente auch digital senden?', 'Ja. Ein gut lesbares Foto oder ein Scan per WhatsApp, E-Mail oder Formular reicht für das Angebot und meist auch für die Übersetzung.'],
     ],
   },
@@ -1430,7 +1511,9 @@ const publishedDocumentPages = documentPagesDe
     };
   });
 
-export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages].map(applyPageSeo);
+export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE]
+  .map((page) => (PAGE_UPGRADES[page.path] ? { ...page, ...PAGE_UPGRADES[page.path] } : page))
+  .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
 export function getSeoPage(path) {

@@ -7221,6 +7221,7 @@ html[dir="rtl"] .appointment-location-card {
 /* TESTIMONIALS */
 .testimonials { padding: 72px 0; }
 .testimonials .section-head { margin-bottom: 36px; }
+.test-google-summary { margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
 .testimonials .columns {
   display: flex;
   gap: 12px;

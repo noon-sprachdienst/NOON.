@@ -58,13 +58,13 @@ const getSimpleAlternates = (simplePath) => Object.keys(SEO_LANGUAGES).map((code
 const META_BY_LANG = LANGUAGE_HOME_META;
 
 const NOT_FOUND_META = {
-  de: { title: 'Seite nicht gefunden (404) | NOON. Sprachdienst', description: 'Die angeforderte Seite existiert nicht oder wurde verschoben.' },
-  en: { title: 'Page not found (404) | NOON. Sprachdienst', description: 'The page you requested does not exist or has been moved.' },
-  ar: { title: 'الصفحة غير موجودة (404) | NOON. Sprachdienst', description: 'الصفحة المطلوبة غير موجودة أو تم نقلها.' },
-  tr: { title: 'Sayfa bulunamadı (404) | NOON. Sprachdienst', description: 'İstediğiniz sayfa mevcut değil veya taşınmış.' },
-  ru: { title: 'Страница не найдена (404) | NOON. Sprachdienst', description: 'Запрошенная страница не существует или была перемещена.' },
-  fr: { title: 'Page introuvable (404) | NOON. Sprachdienst', description: 'La page demandée n’existe pas ou a été déplacée.' },
-  uk: { title: 'Сторінку не знайдено (404) | NOON. Sprachdienst', description: 'Запитувана сторінка не існує або була переміщена.' },
+  de: { title: 'Seite nicht gefunden (404) | Noon Übersetzungsbüro', description: 'Die angeforderte Seite existiert nicht oder wurde verschoben.' },
+  en: { title: 'Page not found (404) | Noon Übersetzungsbüro', description: 'The page you requested does not exist or has been moved.' },
+  ar: { title: 'الصفحة غير موجودة (404) | Noon Übersetzungsbüro', description: 'الصفحة المطلوبة غير موجودة أو تم نقلها.' },
+  tr: { title: 'Sayfa bulunamadı (404) | Noon Übersetzungsbüro', description: 'İstediğiniz sayfa mevcut değil veya taşınmış.' },
+  ru: { title: 'Страница не найдена (404) | Noon Übersetzungsbüro', description: 'Запрошенная страница не существует или была перемещена.' },
+  fr: { title: 'Page introuvable (404) | Noon Übersetzungsbüro', description: 'La page demandée n’existe pas ou a été déplacée.' },
+  uk: { title: 'Сторінку не знайдено (404) | Noon Übersetzungsbüro', description: 'Запитувана сторінка не існує або була переміщена.' },
 };
 
 export default function App() {
