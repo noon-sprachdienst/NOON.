@@ -11,3 +11,6 @@ test/
 .claude/
 outputs/
 ~$*.docx
+
+# Internal notes stay local, not in the repo
+*.md
