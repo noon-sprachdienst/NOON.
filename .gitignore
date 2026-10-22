@@ -14,3 +14,4 @@ outputs/
 
 # Internal notes stay local, not in the repo
 *.md
+!README.md
