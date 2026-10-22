@@ -26,6 +26,8 @@ const COUNTERS = [
   { target: 1600, key: 'hero.counter.more' },
 ];
 
+export { NUMBER_LOCALE };
+
 export default function Hero() {
   const { t, lang } = useI18n();
   const [reelIndex, setReelIndex] = useState(0);
@@ -61,7 +63,7 @@ export default function Hero() {
             {t('hero.trust')}
           </div>
 
-          <div className="lang-reel heroLangSwap" aria-hidden="true">
+          <div className="lang-reel heroLangSwap notranslate" translate="no" aria-hidden="true">
             {REEL_WORDS.map((w, i) => (
               <span
                 key={w.lang}
@@ -146,7 +148,7 @@ function TabletHero({ t, isRTL, reelIndex }) {
             {t('hero.trust')}
           </div>
 
-          <div className="tablet-lang-reel" aria-hidden="true">
+          <div className="tablet-lang-reel notranslate" translate="no" aria-hidden="true">
             {REEL_WORDS.map((word, index) => (
               <span
                 key={word.lang}
@@ -236,9 +238,13 @@ function useTabletHero() {
   return matches;
 }
 
+// Thousands separator per page language (10.000 / 10,000 / 10 000); Arabic keeps Latin digits.
+const NUMBER_LOCALE = { de: 'de-DE', en: 'en-GB', ar: 'en-GB', tr: 'tr-TR', ru: 'ru-RU', fr: 'fr-FR', uk: 'uk-UA' };
+
 function Counter({ target, label, classPrefix = 'counter' }) {
+  const { lang } = useI18n();
   const ref = useRef(null);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(target);
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -269,7 +275,7 @@ function Counter({ target, label, classPrefix = 'counter' }) {
 
   return (
     <div className={`${classPrefix}-item`} ref={ref}>
-      <div className={`${classPrefix}-num`}>+{value.toLocaleString('de-DE')}</div>
+      <div className={`${classPrefix}-num`}>+{value.toLocaleString(NUMBER_LOCALE[lang] || 'de-DE')}</div>
       <div className={`${classPrefix}-name`}>{label}</div>
     </div>
   );

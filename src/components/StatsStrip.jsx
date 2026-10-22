@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
+import { NUMBER_LOCALE } from './Hero.jsx';
 
 const STATS_BASE = [
   { num: 190,   suffix: '+', labelKey: 'stats.languages' },
@@ -24,8 +25,10 @@ export default function StatsStrip() {
 }
 
 function StatItem({ num, suffix, label, pad, locale, index }) {
+  const { lang } = useI18n();
   const ref = useRef(null);
-  const [value, setValue] = useState(num > 999 ? Math.floor(num * 0.75) : 0);
+  // Start at the final number so it is never shown as 0 if the count-up does not run.
+  const [value, setValue] = useState(num);
   const started = useRef(false);
 
   useEffect(() => {
@@ -54,7 +57,7 @@ function StatItem({ num, suffix, label, pad, locale, index }) {
   }, [num]);
 
   const display = locale
-    ? value.toLocaleString('de-DE')
+    ? value.toLocaleString(NUMBER_LOCALE[lang] || 'de-DE')
     : pad
       ? String(value).padStart(pad, '0')
       : value;
