@@ -501,7 +501,18 @@ export default function HowContact({ branch = null }) {
                   type="file"
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.heic,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp,image/heic"
                   multiple
-                  onChange={(e) => setStatus(getUploadError([...e.currentTarget.files]))}
+                  onChange={(e) => {
+                    // Checked against the Firebase upload limits; the 3 MB fallback is only checked on submit.
+                    const chosen = [...e.currentTarget.files];
+                    const biggest = chosen.reduce((max, file) => Math.max(max, file.size), 0);
+                    if (chosen.length > STORAGE_LIMITS.files) return setStatus('upload-count');
+                    if (biggest > STORAGE_LIMITS.perFile) {
+                      setUploadBytes(biggest);
+                      setUploadMax(STORAGE_LIMITS.perFile);
+                      return setStatus('upload-size');
+                    }
+                    return setStatus('idle');
+                  }}
                 />
                 <p className="form-hint">{FORM_UPLOAD_HINT[lang] || FORM_UPLOAD_HINT.de}</p>
               </div>
