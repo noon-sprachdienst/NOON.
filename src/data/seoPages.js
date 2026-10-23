@@ -33,7 +33,7 @@ export const LANGUAGE_HOME_META = {
     cta: 'Kostenloses Angebot anfordern',
   },
   en: {
-    title: 'Noon Translation Office – Certified Translations & Interpreting in 190+ Languages',
+    title: 'Translation Office – Certified Translations, 190+ Languages | Noon',
     description: 'Certified translations, interpreting and language support in 190+ languages — by sworn professionals, across Germany since 2019.',
     heading: 'Certified translations & interpreting in 190+ languages',
     cta: 'Request a free quote',
@@ -51,19 +51,19 @@ export const LANGUAGE_HOME_META = {
     cta: 'Ücretsiz teklif alın',
   },
   ru: {
-    title: 'Noon Übersetzungsbüro – Заверенные переводы и устный перевод на 190+ языках',
+    title: 'Бюро переводов – заверенные переводы, 190+ языков | Noon',
     description: 'Заверенные переводы, услуги устных переводчиков и языковая поддержка на 190+ языках — от присяжных профессионалов, по всей Германии с 2019 года.',
     heading: 'Заверенные переводы и устный перевод на 190+ языках',
     cta: 'Запросить бесплатное предложение',
   },
   fr: {
-    title: 'Noon Übersetzungsbüro – Traductions certifiées et interprétation en 190+ langues',
-    description: 'Traductions certifiées, services d’interprétation et accompagnement linguistique en 190+ langues — par des professionnels assermentés, partout en Allemagne depuis 2019.',
+    title: 'Bureau de traduction – traductions certifiées, 190+ langues | Noon',
+    description: 'Traductions certifiées et interprétation en 190+ langues — par des professionnels assermentés, partout en Allemagne depuis 2019.',
     heading: 'Traductions certifiées et interprétation en 190+ langues',
     cta: 'Demander un devis gratuit',
   },
   uk: {
-    title: 'Noon Übersetzungsbüro – Завірені переклади та усний переклад 190+ мовами',
+    title: 'Бюро перекладів – засвідчені переклади, 190+ мов | Noon',
     description: 'Завірені переклади, послуги усного перекладу та мовна підтримка 190+ мовами — від присяжних фахівців, по всій Німеччині з 2019 року.',
     heading: 'Завірені переклади та усний переклад 190+ мовами',
     cta: 'Замовити безкоштовну пропозицію',
@@ -797,7 +797,7 @@ const serviceAreaI18n = {
     prefix: '/en/locations',
     label: 'Translation service',
     title: 'Certified translations and interpreting for {city}.',
-    desc: 'NOON language service for {city}: certified translations, specialist translations and interpreter arrangement in {region} — online, fast and across Germany.',
+    desc: 'Translation office for {city}: certified translations, specialist translations and interpreters in {region} – online and across Germany.',
     intro: 'NOON supports private clients, companies and authorities in {city} ({region}) with certified translations, specialist translations and interpreter arrangements — handled fully online and reliably across Germany.',
     highlights: ['Certified translations', 'Fully online process', 'Interpreter arrangement'],
     sections: [
@@ -1309,6 +1309,19 @@ function buildServiceSections(lang, item, paragraphs) {
   ].filter(([, text]) => text);
 }
 
+// Search snippets show about 155 characters: end at the last full sentence or clause
+// that fits instead of cutting a word in half.
+function metaDescription(text, max = 155) {
+  const clean = String(text).replace(/\s+/g, ' ').replace(/\.\s*\./g, '.').trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const sentence = cut.lastIndexOf('. ');
+  if (sentence > 80) return cut.slice(0, sentence + 1);
+  const clause = Math.max(cut.lastIndexOf(', '), cut.lastIndexOf(' – '), cut.lastIndexOf('، '));
+  if (clause > 80) return `${cut.slice(0, clause)}.`;
+  return `${cut.slice(0, cut.lastIndexOf(' '))} …`;
+}
+
 function toServiceSeoPage(lang, item) {
   const paragraphs = item.paragraphs?.length ? item.paragraphs : [item.text].filter(Boolean);
   return {
@@ -1321,7 +1334,7 @@ function toServiceSeoPage(lang, item) {
     eyebrow: item.label,
     title: item.title,
     metaTitle: `${item.label} | NOON. Sprachdienst`,
-    description: `${item.title}. ${paragraphs[0] || ''} Kostenlose Anfrage bei NOON. Sprachdienst in Deutschland.`.replace(/\s+/g, ' ').slice(0, 230),
+    description: metaDescription(`${item.title}. ${paragraphs[0] || ''}`),
     intro: paragraphs[0] || item.title,
     highlights: (item.examples?.length ? item.examples : serviceFallbackHighlights[lang] || serviceFallbackHighlights.de).slice(0, 3),
     sections: buildServiceSections(lang, item, paragraphs),
