@@ -106,14 +106,37 @@ const FORM_UPLOAD_ERROR = {
 
 // Shown when the photo/file is still too large after shrinking: the real size and WhatsApp as the quick way out.
 const FORM_UPLOAD_TOO_BIG = {
-  de: { size: 'Ihr Foto bzw. Ihre Datei ist zu groß ({mb} MB, erlaubt sind maximal 3 MB).', whatsapp: 'Am schnellsten: Senden Sie das Foto direkt per WhatsApp.', whatsappAction: 'WhatsApp öffnen' },
-  en: { size: 'Your photo or file is too large ({mb} MB, the maximum is 3 MB).', whatsapp: 'Fastest option: send the photo directly via WhatsApp.', whatsappAction: 'Open WhatsApp' },
-  ar: { size: 'الصورة أو الملف كبير جدًا ({mb} ميغابايت، والحد الأقصى 3 ميغابايت).', whatsapp: 'الأسرع: أرسل الصورة مباشرة عبر واتساب.', whatsappAction: 'فتح واتساب' },
-  tr: { size: 'Fotoğrafınız veya dosyanız çok büyük ({mb} MB, en fazla 3 MB).', whatsapp: 'En hızlısı: Fotoğrafı doğrudan WhatsApp ile gönderin.', whatsappAction: 'WhatsApp’ı aç' },
-  ru: { size: 'Ваше фото или файл слишком велики ({mb} МБ, максимум 3 МБ).', whatsapp: 'Быстрее всего: отправьте фото прямо в WhatsApp.', whatsappAction: 'Открыть WhatsApp' },
-  fr: { size: 'Votre photo ou fichier est trop volumineux ({mb} Mo, maximum 3 Mo).', whatsapp: 'Le plus rapide : envoyez la photo directement par WhatsApp.', whatsappAction: 'Ouvrir WhatsApp' },
-  uk: { size: 'Ваше фото або файл завеликі ({mb} МБ, максимум 3 МБ).', whatsapp: 'Найшвидше: надішліть фото прямо у WhatsApp.', whatsappAction: 'Відкрити WhatsApp' },
+  de: { size: 'Ihr Foto bzw. Ihre Datei ist zu groß ({mb} MB, erlaubt sind maximal {max}).', whatsapp: 'Am schnellsten: Senden Sie das Foto direkt per WhatsApp.', whatsappAction: 'WhatsApp öffnen' },
+  en: { size: 'Your photo or file is too large ({mb} MB, the maximum is {max}).', whatsapp: 'Fastest option: send the photo directly via WhatsApp.', whatsappAction: 'Open WhatsApp' },
+  ar: { size: 'الصورة أو الملف كبير جدًا ({mb} ميغابايت، والحد الأقصى {max}).', whatsapp: 'الأسرع: أرسل الصورة مباشرة عبر واتساب.', whatsappAction: 'فتح واتساب' },
+  tr: { size: 'Fotoğrafınız veya dosyanız çok büyük ({mb} MB, en fazla {max}).', whatsapp: 'En hızlısı: Fotoğrafı doğrudan WhatsApp ile gönderin.', whatsappAction: 'WhatsApp’ı aç' },
+  ru: { size: 'Ваше фото или файл слишком велики ({mb} МБ, максимум {max}).', whatsapp: 'Быстрее всего: отправьте фото прямо в WhatsApp.', whatsappAction: 'Открыть WhatsApp' },
+  fr: { size: 'Votre photo ou fichier est trop volumineux ({mb} Mo, maximum {max}).', whatsapp: 'Le plus rapide : envoyez la photo directement par WhatsApp.', whatsappAction: 'Ouvrir WhatsApp' },
+  uk: { size: 'Ваше фото або файл завеликі ({mb} МБ, максимум {max}).', whatsapp: 'Найшвидше: надішліть фото прямо у WhatsApp.', whatsappAction: 'Відкрити WhatsApp' },
 };
+
+// Upload limits: direct upload to Firebase Storage, or the old e-mail attachment fallback.
+const STORAGE_LIMITS = { files: 10, perFile: 50 * 1024 * 1024 };
+
+// Uploads the files with signed URLs from /api/contact/upload-url. Returns the stored
+// paths, null when storage is not available (the caller then attaches the files to the
+// request as before), or throws { status: 413 } when a file is too large.
+async function uploadToStorage(files) {
+  const response = await fetch('/api/contact/upload-url', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ files: files.map((file) => ({ name: file.name, type: file.type, size: file.size })) }),
+  }).catch(() => null);
+  if (!response || response.status === 404 || response.status === 503) return null;
+  if (response.status === 413) throw Object.assign(new Error('Too large'), { status: 413 });
+  if (!response.ok) throw new Error('Upload not possible.');
+  const { uploads } = await response.json();
+  await Promise.all(uploads.map(async (upload, index) => {
+    const put = await fetch(upload.url, { method: 'PUT', headers: { 'Content-Type': upload.type }, body: files[index] });
+    if (!put.ok) throw new Error('Upload failed.');
+  }));
+  return uploads.map(({ path, name }) => ({ path, name }));
+}
 
 const formatMb = (bytes, lang) => (bytes / (1024 * 1024)).toFixed(1).replace('.', lang === 'en' || lang === 'ar' ? '.' : ',');
 
@@ -216,6 +239,7 @@ export default function HowContact({ branch = null }) {
   const whatsappUrl = branch?.whatsappUrl || CONTACT.whatsappUrl;
   const [status, setStatus] = useState('idle');
   const [uploadBytes, setUploadBytes] = useState(0);
+  const [uploadMax, setUploadMax] = useState(MAX_UPLOAD_BYTES);
   const [serviceType, setServiceType] = useState('translation');
   const [startedAt] = useState(() => Date.now());
   const statusCopy = FORM_STATUS[lang] || FORM_STATUS.de;
@@ -230,21 +254,46 @@ export default function HowContact({ branch = null }) {
     const form = e.currentTarget;
     const data = new FormData(form);
     const picked = data.getAll('files').filter((file) => file?.size);
-    if (picked.length > 6) {
+    if (picked.length > STORAGE_LIMITS.files) {
       setStatus('upload-count');
       return;
     }
     setStatus('sending');
     const files = await Promise.all(picked.map(shrinkImage));
-    const uploadError = getUploadError(files);
-    setUploadBytes(files.reduce((total, file) => total + file.size, 0));
-    if (uploadError) {
-      setStatus(uploadError);
+    const biggest = files.reduce((max, file) => Math.max(max, file.size), 0);
+    if (biggest > STORAGE_LIMITS.perFile) {
+      setUploadBytes(biggest);
+      setUploadMax(STORAGE_LIMITS.perFile);
+      setStatus('upload-size');
       return;
     }
     trackEvent('cta_click', { action: 'quote_form_submit' });
 
     try {
+      let uploads = null;
+      if (files.length) {
+        try {
+          uploads = await uploadToStorage(files);
+        } catch (error) {
+          if (error.status === 413) {
+            setUploadBytes(biggest);
+            setUploadMax(STORAGE_LIMITS.perFile);
+            setStatus('upload-size');
+            return;
+          }
+          throw error;
+        }
+      }
+      if (!uploads) {
+        // Storage not available: attach the files to the request (3 MB, 6 files).
+        const uploadError = getUploadError(files);
+        setUploadBytes(files.reduce((total, file) => total + file.size, 0));
+        setUploadMax(MAX_UPLOAD_BYTES);
+        if (uploadError) {
+          setStatus(uploadError);
+          return;
+        }
+      }
       const payload = {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
@@ -258,7 +307,8 @@ export default function HowContact({ branch = null }) {
         service: serviceType,
         language: lang,
         startedAt,
-        files: await Promise.all(files.map(async (file) => ({
+        uploads: uploads || [],
+        files: uploads ? [] : await Promise.all(files.map(async (file) => ({
           name: file.name,
           type: file.type,
           content: await readFileAsBase64(file),
@@ -270,6 +320,7 @@ export default function HowContact({ branch = null }) {
         body: JSON.stringify(payload),
       });
       if (response.status === 413) {
+        setUploadMax(uploads ? STORAGE_LIMITS.perFile : MAX_UPLOAD_BYTES);
         setStatus('upload-size');
         return;
       }
@@ -482,7 +533,7 @@ export default function HowContact({ branch = null }) {
             {status === 'error' && <p className="form-feedback form-feedback--error" role="alert">{statusCopy.error}</p>}
             {status === 'upload-size' && (
               <div className="form-feedback form-feedback--error" role="alert">
-                <p style={{ margin: 0 }}>{uploadBytes ? tooBigCopy.size.replace('{mb}', formatMb(uploadBytes, lang)) : uploadErrorCopy.size}</p>
+                <p style={{ margin: 0 }}>{uploadBytes ? tooBigCopy.size.replace('{mb}', formatMb(uploadBytes, lang)).replace('{max}', `${Math.round(uploadMax / (1024 * 1024))} ${lang === 'ar' ? 'ميغابايت' : lang === 'fr' ? 'Mo' : lang === 'ru' || lang === 'uk' ? 'МБ' : 'MB'}`) : uploadErrorCopy.size}</p>
                 <p style={{ margin: '8px 0 0' }}>
                   {tooBigCopy.whatsapp}
                   {' '}

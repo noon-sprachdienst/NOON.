@@ -1,5 +1,6 @@
 ﻿import nodemailer from 'nodemailer';
 import { cleanText, readJson, sendJson } from '../_lib/http.js';
+import { getBucket, isUploadPath, MAX_TOTAL_BYTES, MAX_UPLOAD_FILES, signPath, storageConfigured } from '../_lib/storage.js';
 
 const ALLOWED_FILE_TYPES = new Set([
   'application/pdf',
@@ -81,6 +82,34 @@ function getAttachments(files) {
   });
 }
 
+// Files uploaded to Firebase Storage by the browser: the e-mail gets a download link for
+// each file and, while they stay small, the files themselves as attachments.
+const MAX_ATTACH_FROM_STORAGE = 10 * 1024 * 1024;
+
+async function getStoredUploads(uploads, siteUrl) {
+  if (!Array.isArray(uploads) || !uploads.length) return { links: [], attachments: [] };
+  if (!storageConfigured()) throw Object.assign(new Error('Uploads unavailable.'), { statusCode: 400 });
+  if (uploads.length > MAX_UPLOAD_FILES) throw Object.assign(new Error('Too many attachments.'), { statusCode: 400 });
+  const bucket = getBucket();
+  const files = await Promise.all(uploads.map(async (upload) => {
+    const path = cleanText(upload?.path, 220);
+    if (!isUploadPath(path)) throw Object.assign(new Error('Unsupported attachment.'), { statusCode: 400 });
+    const file = bucket.file(path);
+    const [metadata] = await file.getMetadata().catch(() => [null]);
+    if (!metadata) throw Object.assign(new Error('Attachment missing.'), { statusCode: 400 });
+    return { file, path, size: Number(metadata.size) || 0, type: metadata.contentType, name: cleanText(upload?.name, 120) || path.split('/').pop() };
+  }));
+  const total = files.reduce((sum, f) => sum + f.size, 0);
+  if (total > MAX_TOTAL_BYTES) throw Object.assign(new Error('Attachments are too large.'), { statusCode: 413 });
+  const links = files.map((f) => ({ name: f.name, size: f.size, url: `${siteUrl}/api/contact/file?p=${encodeURIComponent(f.path)}&s=${signPath(f.path)}` }));
+  const attachments = total <= MAX_ATTACH_FROM_STORAGE
+    ? await Promise.all(files.map(async (f) => ({ filename: f.name, content: (await f.file.download())[0], contentType: f.type })))
+    : [];
+  return { links, attachments };
+}
+
+const formatMb = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1).replace('.', ',')} MB`;
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return sendJson(res, 405, { error: 'Method not allowed.' });
   if (!validateOrigin(req)) return sendJson(res, 403, { error: 'Invalid request origin.' });
@@ -119,7 +148,15 @@ export default async function handler(req, res) {
       appointmentLocation: cleanText(body.appointmentLocation, 120) || '-',
       appointmentTime: cleanText(body.appointmentTime, 80) || '-',
     };
-    const attachments = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
+    const siteUrl = process.env.SITE_URL || `https://${req.headers.host}`;
+    const stored = await getStoredUploads(body.uploads, siteUrl);
+    const attachments = [...getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []), ...stored.attachments];
+    const fileLinksText = stored.links.length
+      ? ['', 'Dateien (Download-Link, 30 Tage verfügbar):', ...stored.links.map((l) => `- ${l.name} (${formatMb(l.size)}): ${l.url}`)]
+      : [];
+    const fileLinksHtml = stored.links.length
+      ? `<p><strong>Dateien</strong> (Download-Link, 30 Tage verfügbar):<br>${stored.links.map((l) => `<a href="${escapeHtml(l.url)}">${escapeHtml(l.name)}</a> (${formatMb(l.size)})`).join('<br>')}</p>`
+      : '';
     const recipient = service === 'translation'
       ? (process.env.CONTACT_EMAIL_TRANSLATION || 'uebersetzung@noon-sprachdienst.de')
       : (process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de');
@@ -156,6 +193,7 @@ export default async function handler(req, res) {
         `Zielsprache: ${fields.targetLanguage}`,
         `Website-Sprache: ${fields.language}`,
         ...(fields.driveLink ? [`Datei-Link (Google Drive): ${fields.driveLink}`] : []),
+        ...fileLinksText,
         '',
         'Nachricht:',
         fields.message,
@@ -175,6 +213,7 @@ export default async function handler(req, res) {
             <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}${fields.driveLink ? `<br>
             <strong>Datei-Link (Google Drive):</strong> <a href="${escapeHtml(fields.driveLink)}">${escapeHtml(fields.driveLink)}</a>` : ''}
           </p>
+          ${fileLinksHtml}
           <p><strong>Nachricht:</strong><br>${escapeHtml(fields.message).replace(/\n/g, '<br>')}</p>
         </div>
       `,
