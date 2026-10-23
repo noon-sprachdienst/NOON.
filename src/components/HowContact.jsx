@@ -22,19 +22,19 @@ const FORM_STATUS = {
 };
 
 const FORM_UPLOAD_HINT = {
-  de: 'PDF, Word oder Bilder | bis zu 6 Dateien | insgesamt max. 3 MB',
-  en: 'PDF, Word or images | up to 6 files | 3 MB total',
-  ar: '\u0645\u0644\u0641\u0627\u062a PDF \u0623\u0648 Word \u0623\u0648 \u0635\u0648\u0631 | \u062d\u062a\u0649 6 \u0645\u0644\u0641\u0627\u062a | 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a \u0625\u062c\u0645\u0627\u0644\u0627',
-  tr: 'PDF, Word veya gorsel | en fazla 6 dosya | toplam 3 MB',
-  ru: 'PDF, Word \u0438\u043b\u0438 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u043e\u0432 | \u0432\u0441\u0435\u0433\u043e 3 \u041c\u0411',
-  fr: "PDF, Word ou images | jusqu'a 6 fichiers | 3 Mo au total",
-  uk: 'PDF, Word \u0430\u0431\u043e \u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u043d\u044f | \u0434\u043e 6 \u0444\u0430\u0439\u043b\u0456\u0432 | \u0437\u0430\u0433\u0430\u043b\u043e\u043c 3 \u041c\u0411',
+  de: 'PDF, Word oder Bilder | bis zu 10 Dateien | max. 50 MB pro Datei',
+  en: 'PDF, Word or images | up to 10 files | max. 50 MB per file',
+  ar: 'ملفات PDF أو Word أو صور | حتى 10 ملفات | 50 ميغابايت كحد أقصى لكل ملف',
+  tr: 'PDF, Word veya görsel | en fazla 10 dosya | dosya başına en fazla 50 MB',
+  ru: 'PDF, Word или изображения | до 10 файлов | до 50 МБ на файл',
+  fr: "PDF, Word ou images | jusqu'à 10 fichiers | 50 Mo max. par fichier",
+  uk: 'PDF, Word або зображення | до 10 файлів | до 50 МБ на файл',
 };
 
 const FORM_UPLOAD_ERROR = {
   de: {
     size: 'Die ausgewählten Dateien sind größer als 3 MB.',
-    count: 'Bitte wählen Sie höchstens 6 Dateien aus.',
+    count: 'Bitte wählen Sie höchstens 10 Dateien aus.',
     mail: 'Für größere Anhänge senden Sie uns bitte direkt eine E-Mail.',
     action: 'Per E-Mail senden',
     driveTitle: 'Kein Problem – teilen Sie große Dateien einfach über Google Drive:',
@@ -44,7 +44,7 @@ const FORM_UPLOAD_ERROR = {
   },
   en: {
     size: 'The selected files exceed the 3 MB limit.',
-    count: 'Please select no more than 6 files.',
+    count: 'Please select no more than 10 files.',
     mail: 'For larger attachments, please send us an email directly.',
     action: 'Send by email',
     driveTitle: 'No problem — simply share large files via Google Drive:',
@@ -54,7 +54,7 @@ const FORM_UPLOAD_ERROR = {
   },
   ar: {
     size: '\u062d\u062c\u0645 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629 \u064a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0648\u0647\u0648 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a.',
-    count: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 6 \u0645\u0644\u0641\u0627\u062a \u0643\u062d\u062f \u0623\u0642\u0635\u0649.',
+    count: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 10 \u0645\u0644\u0641\u0627\u062a \u0643\u062d\u062f \u0623\u0642\u0635\u0649.',
     mail: '\u0644\u0625\u0631\u0633\u0627\u0644 \u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631\u060c \u064a\u0631\u062c\u0649 \u0645\u0631\u0627\u0633\u0644\u062a\u0646\u0627 \u0645\u0628\u0627\u0634\u0631\u0629 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a.',
     action: '\u0625\u0631\u0633\u0627\u0644 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f',
     driveTitle: '\u0644\u0627 \u0645\u0634\u0643\u0644\u0629 \u2014 \u0634\u0627\u0631\u0643 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 \u0628\u0633\u0647\u0648\u0644\u0629 \u0639\u0628\u0631 Google Drive:',
@@ -64,7 +64,7 @@ const FORM_UPLOAD_ERROR = {
   },
   tr: {
     size: 'Secilen dosyalar 3 MB sinirini asiyor.',
-    count: 'Lutfen en fazla 6 dosya secin.',
+    count: 'Lutfen en fazla 10 dosya secin.',
     mail: 'Daha buyuk ekler icin bize dogrudan e-posta gonderin.',
     action: 'E-posta ile gonder',
     driveTitle: 'Sorun degil — buyuk dosyalari Google Drive ile kolayca paylasin:',
@@ -74,7 +74,7 @@ const FORM_UPLOAD_ERROR = {
   },
   ru: {
     size: '\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0444\u0430\u0439\u043b\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u043b\u0438\u043c\u0438\u0442 3 \u041c\u0411.',
-    count: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 6 \u0444\u0430\u0439\u043b\u043e\u0432.',
+    count: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 10 \u0444\u0430\u0439\u043b\u043e\u0432.',
     mail: '\u0414\u043b\u044f \u0431\u043e\u043b\u0435\u0435 \u043a\u0440\u0443\u043f\u043d\u044b\u0445 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u0439 \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043d\u0430\u043c \u043d\u0430\u043f\u0440\u044f\u043c\u0443\u044e.',
     action: '\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u043f\u043e e-mail',
     driveTitle: '\u041d\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430 \u2014 \u043f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0431\u043e\u043b\u044c\u0448\u0438\u043c\u0438 \u0444\u0430\u0439\u043b\u0430\u043c\u0438 \u0447\u0435\u0440\u0435\u0437 Google Drive:',
@@ -84,7 +84,7 @@ const FORM_UPLOAD_ERROR = {
   },
   fr: {
     size: 'Les fichiers sélectionnés dépassent la limite de 3 Mo.',
-    count: 'Veuillez sélectionner au maximum 6 fichiers.',
+    count: 'Veuillez sélectionner au maximum 10 fichiers.',
     mail: 'Pour les pièces jointes plus volumineuses, envoyez-nous directement un e-mail.',
     action: 'Envoyer par e-mail',
     driveTitle: 'Pas de problème — partagez vos fichiers volumineux via Google Drive :',
@@ -94,7 +94,7 @@ const FORM_UPLOAD_ERROR = {
   },
   uk: {
     size: '\u0412\u0438\u0431\u0440\u0430\u043d\u0456 \u0444\u0430\u0439\u043b\u0438 \u043f\u0435\u0440\u0435\u0432\u0438\u0449\u0443\u044e\u0442\u044c \u043b\u0456\u043c\u0456\u0442 3 \u041c\u0411.',
-    count: '\u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u043d\u0435 \u0431\u0456\u043b\u044c\u0448\u0435 6 \u0444\u0430\u0439\u043b\u0456\u0432.',
+    count: '\u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u043d\u0435 \u0431\u0456\u043b\u044c\u0448\u0435 10 \u0444\u0430\u0439\u043b\u0456\u0432.',
     mail: '\u0414\u043b\u044f \u0431\u0456\u043b\u044c\u0448\u0438\u0445 \u0432\u043a\u043b\u0430\u0434\u0435\u043d\u044c \u043d\u0430\u0434\u0456\u0448\u043b\u0456\u0442\u044c \u043d\u0430\u043c e-mail.',
     action: '\u041d\u0430\u0434\u0456\u0441\u043b\u0430\u0442\u0438 e-mail',
     driveTitle: '\u041d\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430 \u2014 \u043f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0432\u0435\u043b\u0438\u043a\u0438\u043c\u0438 \u0444\u0430\u0439\u043b\u0430\u043c\u0438 \u0447\u0435\u0440\u0435\u0437 Google Drive:',
@@ -141,13 +141,13 @@ async function uploadToStorage(files) {
 const formatMb = (bytes, lang) => (bytes / (1024 * 1024)).toFixed(1).replace('.', lang === 'en' || lang === 'ar' ? '.' : ',');
 
 const FORM_DRIVE = {
-  de: { label: 'Link zu gro\u00dfen Dateien (optional)', placeholder: 'https://drive.google.com/...', hint: 'Dateien \u00fcber 3 MB? \u00dcber Google Drive teilen und den Link hier einf\u00fcgen.' },
-  en: { label: 'Link to large files (optional)', placeholder: 'https://drive.google.com/...', hint: 'Files over 3 MB? Share them via Google Drive and paste the link here.' },
-  ar: { label: '\u0631\u0627\u0628\u0637 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)', placeholder: 'https://drive.google.com/...', hint: '\u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631 \u0645\u0646 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a\u061f \u0634\u0627\u0631\u0643\u0647\u0627 \u0639\u0628\u0631 Google Drive \u0648\u0623\u0644\u0635\u0642 \u0627\u0644\u0631\u0627\u0628\u0637 \u0647\u0646\u0627.' },
-  tr: { label: 'Buyuk dosya baglantisi (istege bagli)', placeholder: 'https://drive.google.com/...', hint: '3 MB\u2019tan buyuk dosyalar? Google Drive ile paylasin ve baglantiyi buraya yapistirin.' },
-  ru: { label: '\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0431\u043e\u043b\u044c\u0448\u0438\u0435 \u0444\u0430\u0439\u043b\u044b (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u044b \u0431\u043e\u043b\u044c\u0448\u0435 3 \u041c\u0411? \u041f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0447\u0435\u0440\u0435\u0437 Google Drive \u0438 \u0432\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0441\u0441\u044b\u043b\u043a\u0443 \u0441\u044e\u0434\u0430.' },
-  fr: { label: 'Lien vers les fichiers volumineux (facultatif)', placeholder: 'https://drive.google.com/...', hint: 'Fichiers de plus de 3 Mo ? Partagez-les via Google Drive et collez le lien ici.' },
-  uk: { label: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0432\u0435\u043b\u0438\u043a\u0456 \u0444\u0430\u0439\u043b\u0438 (\u043d\u0435\u043e\u0431\u043e\u0432\u02bc\u044f\u0437\u043a\u043e\u0432\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u0438 \u043f\u043e\u043d\u0430\u0434 3 \u041c\u0411? \u041f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0447\u0435\u0440\u0435\u0437 Google Drive \u0456 \u0432\u0441\u0442\u0430\u0432\u0442\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0441\u044e\u0434\u0438.' },
+  de: { label: 'Link zu gro\u00dfen Dateien (optional)', placeholder: 'https://drive.google.com/...', hint: 'Dateien \u00fcber 50 MB? \u00dcber Google Drive teilen und den Link hier einf\u00fcgen.' },
+  en: { label: 'Link to large files (optional)', placeholder: 'https://drive.google.com/...', hint: 'Files over 50 MB? Share them via Google Drive and paste the link here.' },
+  ar: { label: '\u0631\u0627\u0628\u0637 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)', placeholder: 'https://drive.google.com/...', hint: '\u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631 \u0645\u0646 50 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a\u061f \u0634\u0627\u0631\u0643\u0647\u0627 \u0639\u0628\u0631 Google Drive \u0648\u0623\u0644\u0635\u0642 \u0627\u0644\u0631\u0627\u0628\u0637 \u0647\u0646\u0627.' },
+  tr: { label: 'Buyuk dosya baglantisi (istege bagli)', placeholder: 'https://drive.google.com/...', hint: '50 MB\u2019tan buyuk dosyalar? Google Drive ile paylasin ve baglantiyi buraya yapistirin.' },
+  ru: { label: '\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0431\u043e\u043b\u044c\u0448\u0438\u0435 \u0444\u0430\u0439\u043b\u044b (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u044b \u0431\u043e\u043b\u044c\u0448\u0435 50 \u041c\u0411? \u041f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0447\u0435\u0440\u0435\u0437 Google Drive \u0438 \u0432\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0441\u0441\u044b\u043b\u043a\u0443 \u0441\u044e\u0434\u0430.' },
+  fr: { label: 'Lien vers les fichiers volumineux (facultatif)', placeholder: 'https://drive.google.com/...', hint: 'Fichiers de plus de 50 Mo ? Partagez-les via Google Drive et collez le lien ici.' },
+  uk: { label: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0432\u0435\u043b\u0438\u043a\u0456 \u0444\u0430\u0439\u043b\u0438 (\u043d\u0435\u043e\u0431\u043e\u0432\u02bc\u044f\u0437\u043a\u043e\u0432\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u0438 \u043f\u043e\u043d\u0430\u0434 50 \u041c\u0411? \u041f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0447\u0435\u0440\u0435\u0437 Google Drive \u0456 \u0432\u0441\u0442\u0430\u0432\u0442\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0441\u044e\u0434\u0438.' },
 };
 
 const FORM_LANGUAGE_OPTIONS = {
