@@ -122,11 +122,14 @@ const STORAGE_LIMITS = { files: 10, perFile: 50 * 1024 * 1024 };
 // paths, null when storage is not available (the caller then attaches the files to the
 // request as before), or throws { status: 413 } when a file is too large.
 async function uploadToStorage(files) {
-  const response = await fetch('/api/contact/upload-url', {
+  const request = () => fetch('/api/contact/upload-url', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ files: files.map((file) => ({ name: file.name, type: file.type, size: file.size })) }),
   }).catch(() => null);
+  // A cold start or network hiccup can fail the first call: try once more before falling back.
+  let response = await request();
+  if (!response || response.status === 503) response = await request();
   if (!response || response.status === 404 || response.status === 503) return null;
   if (response.status === 413) throw Object.assign(new Error('Too large'), { status: 413 });
   if (!response.ok) throw new Error('Upload not possible.');
