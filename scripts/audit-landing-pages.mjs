@@ -6,13 +6,14 @@ import { join } from 'node:path';
 import { SEO_PAGES, PRICE_PAGES } from '../src/data/seoPages.js';
 import { LANDING_PAGES } from '../src/data/landing/index.js';
 import { NEW_LANGUAGE_PATHS } from '../src/data/languagePages.js';
+import { FOREIGN_UPGRADES } from '../src/data/landing/foreign.js';
 
 const root = process.cwd();
 const failures = [];
 const warnings = [];
 const fail = (msg) => failures.push(msg);
 
-const NEW = new Set([...LANDING_PAGES.map((page) => page.path), ...NEW_LANGUAGE_PATHS]);
+const NEW = new Set([...LANDING_PAGES.map((page) => page.path), ...NEW_LANGUAGE_PATHS, ...Object.keys(FOREIGN_UPGRADES), '/de/standorte/wiesbaden']);
 const pages = [...SEO_PAGES, ...PRICE_PAGES];
 const newPages = SEO_PAGES.filter((page) => NEW.has(page.path));
 const norm = (href) => (href.split('#')[0].replace(/\/+$/, '') || '/');
@@ -37,7 +38,8 @@ for (const page of newPages) {
   if (page.description.length < 80) warnings.push(`Description kurz (${page.description.length}): ${page.path}`);
   const count = words(text(page)).length;
   page._words = count;
-  if (count < 400) fail(`Zu wenig Text (${count} Wörter): ${page.path}`);
+  // Russian/Ukrainian need fewer words than German for the same content (no articles).
+  if (count < (page.lang === 'de' ? 400 : 280) && !page.hub) fail(`Zu wenig Text (${count} Wörter): ${page.path}`);
 }
 
 // 3. Near-duplicate text: Jaccard similarity of 5-word shingles against every German page.
@@ -55,6 +57,7 @@ const similarity = (a, b) => {
 };
 // Language pages share a fixed template (delivery, steps, offices) with the live language
 // pages, which already overlap up to ~41 % with each other; they get a 40 % limit.
+// The same applies to service-area city pages (live ones overlap 55–61 %).
 const LIMIT = 0.3;
 const LANGUAGE_LIMIT = 0.4;
 for (const page of newPages) {
@@ -66,11 +69,11 @@ for (const page of newPages) {
     if (value > best[0]) best = [value, path];
   }
   page._sim = best;
-  if (best[0] > (page.serviceGroup === 'language' ? LANGUAGE_LIMIT : LIMIT)) fail(`Zu ähnlich (${(best[0] * 100).toFixed(0)} %): ${page.path} ~ ${best[1]}`);
+  if (best[0] > (page.serviceGroup === 'language' || page.serviceArea ? LANGUAGE_LIMIT : LIMIT)) fail(`Zu ähnlich (${(best[0] * 100).toFixed(0)} %): ${page.path} ~ ${best[1]}`);
 }
 
 // 4. Internal links of new pages must exist; every new page needs at least one inbound link.
-const known = new Set([...pages.map((p) => p.path), '/', '/angebot', '/termin', '/leistungen', '/fachuebersetzungen', '/preise']);
+const known = new Set([...pages.map((p) => p.path), '/', '/angebot', '/termin', '/leistungen', '/fachuebersetzungen', '/preise', '/en', '/ar', '/tr', '/ru', '/fr', '/uk']);
 const inbound = new Map([...NEW].map((path) => [path, 0]));
 for (const page of SEO_PAGES) {
   for (const section of page.sections || []) {

@@ -300,7 +300,7 @@ export const STUTTGART_PAGES = [
       ['Russisch-Dolmetscher in Stuttgart', 'Für Notar, Gericht, Standesamt, Ärzte und Behörden stellen wir Russisch-Dolmetscher – auf Wunsch allgemein beeidigt, für kurze Gespräche auch per Telefon.',
         [L('beeidigter-dolmetscher', 'Beeidigter Dolmetscher Stuttgart'), L('telefondolmetscher', 'Telefondolmetscher Stuttgart')]],
       ['Присяжный переводчик в Штутгарте', 'Ищете присяжного переводчика в Штутгарте? Мы делаем заверенные переводы с русского и украинского на немецкий – свидетельства, дипломы, трудовые книжки, водительские права – и организуем устных переводчиков для нотариуса, суда и ЗАГСа. Пришлите фото документа через WhatsApp или по электронной почте и бесплатно получите фиксированную цену.',
-        [{ href: '/de/sprachen/russisch/', label: 'Russisch bundesweit' }]],
+        [{ href: '/de/sprachen/russisch/', label: 'Russisch bundesweit' }, { href: '/ru/filialy/stuttgart/', label: 'Присяжный переводчик в Штутгарте (RU)' }]],
       translationPriceSection('Stuttgart'),
       officeSection(C),
     ],

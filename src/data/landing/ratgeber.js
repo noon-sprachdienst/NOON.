@@ -1,0 +1,201 @@
+// Guide articles for our customer groups (plan v4, wave 3) and the Ratgeber hub.
+// The four planned country pages on driving licences are merged into one guide:
+// rules per country change and would otherwise produce near-duplicate pages.
+// Facts stay general; the responsible office always decides in the individual case.
+import { APOSTILLE_LINK, DURATION_LINK, FAQ_DIGITAL, NOTARY_GUIDE_LINK, PRICE_LINK, QUOTE_LINK } from './shared.js';
+
+const D = (slug, label) => ({ href: `/de/${slug}/`, label });
+const R = (slug, label) => ({ href: `/de/ratgeber/${slug}/`, label });
+
+export const RATGEBER_LINKS = [
+  R('fuehrerschein-umschreiben', 'Ausländischen Führerschein umschreiben'),
+  R('familiennachzug-dokumente', 'Familiennachzug: welche Dokumente?'),
+  R('einbuergerung-dokumente', 'Einbürgerung: welche Dokumente?'),
+  R('anerkennung-auslaendischer-abschluesse', 'Anerkennung ausländischer Abschlüsse'),
+  R('heiraten-in-deutschland-als-auslaender', 'Heiraten in Deutschland als Ausländer'),
+  R('arabische-geburtsurkunde-uebersetzen', 'Arabische Geburtsurkunde übersetzen'),
+];
+
+const TRANSLATION_HELP = (topic) => ['So helfen wir Ihnen', `Wir übersetzen alle Unterlagen für ${topic} beglaubigt – mit einheitlicher Schreibweise der Namen, Festpreis vorab und Lieferung in 2–3 Werktagen oder im Express am selben Tag. Senden Sie uns die Liste der Stelle und Fotos oder Scans Ihrer Dokumente per WhatsApp, E-Mail oder Formular.`, [QUOTE_LINK, PRICE_LINK, DURATION_LINK, { href: '/de/ratgeber/', label: 'Alle Ratgeber' }]];
+
+export const RATGEBER_PAGES = [
+  {
+    slug: 'fuehrerschein-umschreiben',
+    eyebrow: 'Ausländischen Führerschein umschreiben',
+    title: 'Ausländischen Führerschein umschreiben – Fristen, Ablauf, Übersetzung.',
+    metaTitle: 'Ausländischen Führerschein umschreiben – Ablauf | Noon',
+    description: 'Ausländischen Führerschein in Deutschland umschreiben: wie lange er gilt, welche Unterlagen nötig sind, wann Prüfungen anfallen und wer die Übersetzung macht.',
+    intro: 'Wer mit einem Führerschein aus Syrien, der Türkei, der Ukraine, Afghanistan, dem Iran oder einem anderen Nicht-EU-Staat nach Deutschland zieht, darf damit nur eine begrenzte Zeit fahren. Danach muss der Führerschein umgeschrieben werden. Hier erfahren Sie, wie das abläuft, welche Unterlagen die Führerscheinstelle verlangt und wofür Sie eine Übersetzung brauchen.',
+    highlights: ['Fristen im Blick', 'Unterlagen-Checkliste', 'Übersetzung im Express'],
+    sections: [
+      ['Wie lange gilt mein ausländischer Führerschein?', 'Ein gültiger Führerschein aus einem Staat außerhalb von EU und EWR berechtigt in der Regel bis zu sechs Monate nach Begründung des ordentlichen Wohnsitzes in Deutschland zum Fahren. In dieser Zeit muss er meist zusammen mit einer Übersetzung oder einem internationalen Führerschein mitgeführt werden. Danach brauchen Sie einen deutschen Führerschein. Für Führerscheine aus der Ukraine gelten wegen des vorübergehenden Schutzes besondere EU-Regeln. Was im Einzelfall gilt, erfahren Sie bei Ihrer Führerscheinstelle – stellen Sie den Antrag frühzeitig.'],
+      ['Mit oder ohne Prüfung?', 'Ob Sie für die Umschreibung eine theoretische und praktische Prüfung ablegen müssen, hängt davon ab, aus welchem Staat und für welche Klasse Ihr Führerschein ausgestellt wurde. Für Führerscheine aus einigen Staaten entfallen eine oder beide Prüfungen; für viele Staaten – darunter häufig Syrien, Afghanistan und der Iran – sind beide Prüfungen nötig. Fahrstunden sind dann nicht vorgeschrieben, aber meist sinnvoll, um die Prüfung zu bestehen. Die Liste der Staaten ändert sich gelegentlich; verbindlich ist die Auskunft der Führerscheinstelle.'],
+      ['Diese Unterlagen verlangt die Führerscheinstelle meist', '• Antrag auf Umschreibung (bei der Führerscheinstelle Ihres Wohnorts)\n• Reisepass oder Ausweis und Aufenthaltstitel\n• Meldebescheinigung\n• biometrisches Passfoto\n• Sehtest und Nachweis über einen Erste-Hilfe-Kurs\n• Original des ausländischen Führerscheins\n• Übersetzung des Führerscheins\n• gegebenenfalls ein Nachweis, dass der Führerschein echt und gültig ist\n\nDer ausländische Führerschein wird bei Aushändigung des deutschen Führerscheins in der Regel einbehalten.',
+        [D('fuehrerschein-uebersetzung', 'Führerschein übersetzen'), D('meldebescheinigung-uebersetzung', 'Meldebescheinigung übersetzen')]],
+      ['Wer darf den Führerschein übersetzen?', 'Führerscheinstellen akzeptieren in der Regel Übersetzungen von gerichtlich ermächtigten bzw. vereidigten Übersetzern; manche erkennen zusätzlich Übersetzungen bestimmter Automobilclubs oder Konsulate an. Mit einer beglaubigten Übersetzung eines ermächtigten Übersetzers sind Sie auf der sicheren Seite. Wir übersetzen den Führerschein vollständig – Vorder- und Rückseite, Klassen, Beschränkungen und Stempel.'],
+      ['Häufige Fälle', '• Syrischer oder irakischer Führerschein in arabischer Schrift: Übersetzung ist praktisch immer nötig.\n• Türkischer Führerschein: enthält oft lateinische Angaben, die Behörde verlangt trotzdem häufig eine Übersetzung.\n• Ukrainischer Führerschein: während des vorübergehenden Schutzes gelten Erleichterungen; für die spätere Umschreibung wird meist eine Übersetzung verlangt.\n• Afghanischer oder iranischer Führerschein: Übersetzung aus Dari oder Farsi, oft zusammen mit Pass und Tazkira.',
+        [{ href: '/de/sprachen/arabisch/', label: 'Arabisch Übersetzer' }, { href: '/de/sprachen/tuerkisch/', label: 'Türkisch Übersetzer' }, { href: '/de/sprachen/persisch/', label: 'Persisch Übersetzer' }, { href: '/de/sprachen/ukrainisch/', label: 'Ukrainisch Übersetzer' }]],
+      TRANSLATION_HELP('die Umschreibung'),
+    ],
+    faqs: [
+      ['Kann ich mit meinem ausländischen Führerschein sofort fahren?', 'Meist ja, für eine begrenzte Zeit nach dem Zuzug und mit Übersetzung oder internationalem Führerschein. Die genaue Frist nennt Ihnen die Führerscheinstelle.'],
+      ['Was kostet die Übersetzung eines Führerscheins?', 'Bei uns ab 39 €; den Festpreis nennen wir vorab.'],
+      ['Muss ich den Original-Führerschein abgeben?', 'In der Regel wird er bei Aushändigung des deutschen Führerscheins einbehalten.'],
+      ['Wie schnell bekomme ich die Übersetzung?', 'Im Express am selben Tag, sonst in 2–3 Werktagen.'],
+    ],
+    serviceType: 'Führerschein Übersetzung',
+  },
+  {
+    slug: 'familiennachzug-dokumente',
+    eyebrow: 'Familiennachzug Dokumente',
+    title: 'Familiennachzug: Welche Dokumente brauchen Sie – und welche müssen übersetzt werden?',
+    metaTitle: 'Familiennachzug Dokumente – Übersetzung & Ablauf | Noon',
+    description: 'Familiennachzug nach Deutschland: welche Dokumente Ehepartner und Kinder meist brauchen und wann Übersetzung, Apostille oder Legalisation nötig sind.',
+    intro: 'Ob Ehepartnerin, Ehepartner oder Kinder: Für den Familiennachzug prüfen deutsche Auslandsvertretung und Ausländerbehörde, ob die Familie wirklich besteht und die Voraussetzungen erfüllt sind. Fast immer werden dafür Personenstandsurkunden aus dem Herkunftsland gebraucht – und die meisten davon auf Deutsch. Hier finden Sie einen Überblick.',
+    highlights: ['Checkliste', 'Urkunden einheitlich übersetzt', 'Für Botschaft und Ausländerbehörde'],
+    sections: [
+      ['Wer beteiligt ist', 'Den Visumantrag stellen die nachziehenden Familienmitglieder bei der deutschen Botschaft oder dem Generalkonsulat im Ausland. Die Ausländerbehörde am Wohnort der Person in Deutschland wird beteiligt und prüft unter anderem Wohnraum und Lebensunterhalt. Welche Unterlagen genau verlangt werden, steht in den Merkblättern der jeweiligen Auslandsvertretung – diese unterscheiden sich von Land zu Land.'],
+      ['Dokumente, die häufig verlangt werden', '• Reisepässe aller Familienmitglieder\n• Heiratsurkunde (beim Ehegattennachzug)\n• Geburtsurkunden der Kinder, oft mit Angaben zu beiden Eltern\n• Familienregisterauszug oder vergleichbare Nachweise\n• bei Kindern mit nur einem Elternteil: Sorgerechtsnachweis oder Zustimmung des anderen Elternteils\n• Nachweis einfacher Deutschkenntnisse beim Ehegattennachzug (mit Ausnahmen)\n• in Deutschland: Aufenthaltstitel, Mietvertrag bzw. Wohnraumnachweis, Einkommensnachweise',
+        [D('heiratsurkunde-uebersetzung', 'Heiratsurkunde übersetzen'), D('geburtsurkunde-uebersetzung', 'Geburtsurkunde übersetzen'), D('reisepass-uebersetzung', 'Reisepass übersetzen')]],
+      ['Übersetzung, Apostille oder Legalisation', 'Fremdsprachige Urkunden müssen in der Regel ins Deutsche übersetzt werden. Ob zusätzlich eine Apostille oder Legalisation nötig ist, hängt vom Ausstellungsland ab; für einige Staaten ist eine Legalisation derzeit nicht möglich, dann prüft die Auslandsvertretung die Urkunden auf anderem Weg. Manche Botschaften verlangen Übersetzungen von bestimmten Übersetzern – lesen Sie dazu das Merkblatt. Für Unterlagen, die in Deutschland bei der Ausländerbehörde vorgelegt werden, sind Übersetzungen ermächtigter Übersetzer üblich.',
+        [APOSTILLE_LINK, D('beglaubigte-uebersetzung-auslaenderbehoerde', 'Übersetzungen für die Ausländerbehörde')]],
+      ['Tipps, damit nichts hängen bleibt', '• Namen in allen Urkunden gleich schreiben lassen – Abweichungen führen zu Rückfragen.\n• Alle Seiten übersetzen lassen, auch Rückseiten mit Stempeln.\n• Kopien aller Unterlagen behalten.\n• Fristen der Botschaft im Blick behalten: Termine sind oft knapp.\n• Bei Unklarheiten eine Beratungsstelle oder einen Anwalt für Aufenthaltsrecht fragen.'],
+      TRANSLATION_HELP('den Familiennachzug'),
+    ],
+    faqs: [
+      ['Wer übersetzt die Urkunden für den Familiennachzug?', 'Üblich sind beglaubigte Übersetzungen ermächtigter Übersetzer. Manche Botschaften haben eigene Vorgaben – das Merkblatt der Auslandsvertretung ist maßgeblich.'],
+      ['Kann ich die Urkunden aus Deutschland übersetzen lassen?', 'Ja. Senden Sie uns Fotos oder Scans; die Übersetzung erhalten Sie als PDF und per Post und können sie an Ihre Familie weiterleiten.'],
+      ['Übersetzen Sie syrische und afghanische Urkunden?', 'Ja, regelmäßig – aus dem Arabischen, Dari und Farsi, auch handschriftliche Einträge.'],
+      FAQ_DIGITAL,
+    ],
+    serviceType: 'Beglaubigte Übersetzung',
+  },
+  {
+    slug: 'einbuergerung-dokumente',
+    eyebrow: 'Einbürgerung Dokumente',
+    title: 'Einbürgerung: Welche Dokumente brauchen Sie – und was muss übersetzt werden?',
+    metaTitle: 'Einbürgerung Dokumente – was übersetzt werden muss | Noon',
+    description: 'Einbürgerung in Deutschland: welche Unterlagen meist verlangt werden, welche Urkunden beglaubigt übersetzt werden müssen und wie Sie Rückfragen vermeiden.',
+    intro: 'Seit der Reform des Staatsangehörigkeitsrechts 2024 ist die Einbürgerung für viele früher möglich, und die bisherige Staatsangehörigkeit muss in der Regel nicht mehr aufgegeben werden. Die Unterlagen bleiben trotzdem umfangreich – und Urkunden aus dem Ausland müssen meist beglaubigt übersetzt werden. Hier finden Sie einen Überblick.',
+    highlights: ['Checkliste', 'Namen einheitlich', 'Für die Einbürgerungsbehörde'],
+    sections: [
+      ['Typische Voraussetzungen', '• in der Regel mehrere Jahre rechtmäßiger, gewöhnlicher Aufenthalt in Deutschland\n• Sicherung des Lebensunterhalts ohne bestimmte Sozialleistungen (mit Ausnahmen)\n• Deutschkenntnisse in der Regel auf Niveau B1\n• bestandener Einbürgerungstest\n• Bekenntnis zur freiheitlichen demokratischen Grundordnung\n\nWelche Fristen und Ausnahmen in Ihrem Fall gelten, sagt Ihnen die Einbürgerungsbehörde Ihrer Stadt oder Ihres Kreises.'],
+      ['Diese Urkunden werden oft verlangt', '• Reisepass und Aufenthaltstitel\n• Geburtsurkunde\n• Heiratsurkunde, bei früheren Ehen Scheidungsurteil oder Sterbeurkunde\n• Geburtsurkunden der Kinder, wenn sie miteingebürgert werden\n• Nachweise über Namensführung, Namensänderungen\n• Schul-, Berufs- oder Hochschulabschlüsse\n• Sprachzertifikat und Einbürgerungstest\n\nFremdsprachige Urkunden werden in der Regel als beglaubigte Übersetzung verlangt; manche Behörden verlangen zusätzlich Apostille oder Legalisation.',
+        [D('geburtsurkunde-uebersetzung', 'Geburtsurkunde übersetzen'), D('heiratsurkunde-uebersetzung', 'Heiratsurkunde übersetzen'), D('scheidungsurteil-uebersetzung', 'Scheidungsurteil übersetzen')]],
+      ['Der häufigste Stolperstein: Namen', 'Namen aus arabischer, kyrillischer oder persischer Schrift werden in Pass, Aufenthaltstitel und Urkunden oft unterschiedlich geschrieben. Für die Einbürgerungsurkunde muss die Behörde Ihren Namen eindeutig festlegen. Lassen Sie deshalb alle Urkunden zusammen übersetzen und geben Sie die Schreibweise aus Ihrem Pass vor – wir halten sie in allen Übersetzungen ein und vermerken Abweichungen im Original.',
+        [D('reisepass-uebersetzung', 'Reisepass übersetzen')]],
+      ['Nach der Einbürgerung', 'Nach der Einbürgerung brauchen Sie unter Umständen Unterlagen für Behörden des Herkunftslandes – etwa die Einbürgerungsurkunde oder eine neue Heiratsurkunde. Auch diese übersetzen wir beglaubigt in die gewünschte Sprache.',
+        [APOSTILLE_LINK]],
+      TRANSLATION_HELP('die Einbürgerung'),
+    ],
+    faqs: [
+      ['Muss ich meine alte Staatsangehörigkeit aufgeben?', 'Seit der Reform 2024 in der Regel nicht mehr nach deutschem Recht. Ob Ihr Herkunftsland die doppelte Staatsangehörigkeit erlaubt, ist eine andere Frage.'],
+      ['Welche Urkunden muss ich übersetzen lassen?', 'Alle fremdsprachigen Urkunden, die die Behörde verlangt – meist Geburts- und Heiratsurkunde sowie Nachweise zur Namensführung.'],
+      ['Wie lange dauert die Übersetzung?', 'In der Regel 2–3 Werktage, im Express am selben Tag.'],
+      ['Muss ich die Einbürgerungsurkunde für mein Herkunftsland übersetzen lassen?', 'Wenn Behörden Ihres Herkunftslandes sie verlangen – etwa zur Registrierung –, übersetzen wir sie beglaubigt; oft wird zusätzlich eine Apostille verlangt.'],
+      FAQ_DIGITAL,
+    ],
+    serviceType: 'Beglaubigte Übersetzung',
+  },
+  {
+    slug: 'anerkennung-auslaendischer-abschluesse',
+    eyebrow: 'Anerkennung ausländischer Abschlüsse',
+    title: 'Anerkennung ausländischer Abschlüsse – Ablauf und Übersetzungen.',
+    metaTitle: 'Anerkennung ausländischer Abschlüsse – Ablauf | Noon',
+    description: 'Ausländischen Abschluss anerkennen lassen: reglementierte und freie Berufe, zuständige Stellen, Unterlagen und beglaubigte Übersetzungen.',
+    intro: 'Pflegekräfte, Ärztinnen, Ingenieure, Lehrkräfte oder Handwerker: Wer in Deutschland im erlernten Beruf arbeiten möchte, braucht oft eine Anerkennung des ausländischen Abschlusses – bei manchen Berufen ist sie Pflicht. Hier erklären wir, welche Stelle zuständig ist, welche Unterlagen typischerweise verlangt werden und wie die Übersetzungen aussehen müssen.',
+    highlights: ['Für Fachkräfte', 'Diplom mit Anlagen', 'Einheitliche Fachbegriffe'],
+    sections: [
+      ['Reglementiert oder nicht?', 'Für reglementierte Berufe – etwa Ärztin, Pflegefachkraft, Apotheker, Lehrkraft, Rechtsanwalt oder bestimmte Ingenieurberufe – ist die Anerkennung Voraussetzung, um den Beruf auszuüben. Zuständig sind meist Landesbehörden oder Kammern. Für nicht reglementierte Berufe ist eine Anerkennung freiwillig, hilft aber bei Bewerbung und Visum; für akademische Abschlüsse stellt die Zentralstelle für ausländisches Bildungswesen (ZAB) eine Zeugnisbewertung aus, für Ausbildungsberufe sind häufig IHK oder Handwerkskammer zuständig. Welche Stelle für Sie zuständig ist, zeigt das Portal „Anerkennung in Deutschland“.'],
+      ['Typische Unterlagen', '• Abschlusszeugnis oder Diplom\n• Fächer- und Notenübersicht bzw. Transcript\n• Nachweise über Ausbildungs- oder Studieninhalte und -dauer\n• Nachweise über Berufserfahrung, z. B. Arbeitszeugnisse oder Arbeitsbücher\n• Identitätsnachweis und Lebenslauf\n• gegebenenfalls Nachweis der Berufserlaubnis im Herkunftsland\n\nFremdsprachige Unterlagen werden in der Regel als Übersetzung eines ermächtigten Übersetzers verlangt; manche Stellen akzeptieren englische Dokumente ohne Übersetzung.',
+        [D('diplom-uebersetzung', 'Diplom übersetzen'), D('zeugnis-uebersetzung', 'Zeugnis übersetzen'), D('arbeitszeugnis-uebersetzung', 'Arbeitszeugnis übersetzen')]],
+      ['Worauf es bei der Übersetzung ankommt', 'Anerkennungsstellen vergleichen Fächer, Stunden und Inhalte mit der deutschen Ausbildung. Deshalb übersetzen wir Fächerbezeichnungen und Abschlüsse einheitlich und nachvollziehbar, übernehmen Noten und Stundenzahlen genau wie im Original und rechnen nichts um. Bezeichnungen ohne deutsches Gegenstück erläutern wir, statt sie zu „übersetzen“, was es nicht gibt.'],
+      ['Häufige Herkunftssprachen', 'Besonders oft übersetzen wir für die Anerkennung aus dem Arabischen, Ukrainischen, Russischen, Türkischen, Persischen, Spanischen und Englischen – zum Beispiel für Pflegekräfte aus Lateinamerika, Ärztinnen aus Syrien oder Ingenieure aus der Ukraine.',
+        [{ href: '/de/sprachen/', label: 'Alle Sprachen' }]],
+      TRANSLATION_HELP('die Anerkennung'),
+    ],
+    faqs: [
+      ['Muss ich Modulbeschreibungen übersetzen lassen?', 'Nur wenn die zuständige Stelle sie verlangt. Fragen Sie vorher nach – das spart Kosten.'],
+      ['Akzeptiert die Anerkennungsstelle englische Dokumente?', 'Manche ja. Das steht in den Hinweisen der zuständigen Stelle.'],
+      ['Übersetzen Sie Arbeitsbücher als Nachweis der Berufserfahrung?', 'Ja, vollständig oder in den verlangten Auszügen.'],
+      ['Wie lange dauert das Anerkennungsverfahren?', 'Das hängt von Beruf und Stelle ab – oft einige Monate. Vollständige, sauber übersetzte Unterlagen vermeiden Rückfragen und Verzögerungen.'],
+      FAQ_DIGITAL,
+    ],
+    serviceType: 'Beglaubigte Übersetzung',
+  },
+  {
+    slug: 'heiraten-in-deutschland-als-auslaender',
+    eyebrow: 'Heiraten in Deutschland als Ausländer',
+    title: 'Heiraten in Deutschland als Ausländer – Schritt für Schritt.',
+    metaTitle: 'Heiraten in Deutschland als Ausländer – Ablauf | Noon',
+    description: 'Heiraten in Deutschland mit ausländischem Partner: Standesamt, Ehefähigkeitszeugnis, Befreiung, Übersetzungen, Dolmetscher und Anerkennung.',
+    intro: 'Eine Hochzeit mit Partnerin oder Partner aus einem anderen Land braucht etwas mehr Vorbereitung: Das Standesamt prüft Urkunden aus beiden Ländern, und oft ist ein Dolmetscher dabei. Dieser Ratgeber zeigt den Weg von der ersten Anfrage bis zur Anerkennung der Ehe im Herkunftsland – damit Sie rechtzeitig planen können.',
+    highlights: ['Schritt für Schritt', 'Zeitplanung', 'Urkunden und Dolmetscher'],
+    sections: [
+      ['1. Zuständiges Standesamt und Urkundenliste', 'Zuständig ist das Standesamt am Wohnsitz einer der beiden Personen. Dort erhalten Sie die Liste der Urkunden, die für Ihre Staatsangehörigkeiten gelten. Diese Liste ist die Grundlage für alles Weitere – sie unterscheidet sich je nach Herkunftsland und Familienstand erheblich.',
+        [D('beglaubigte-uebersetzung-standesamt', 'Übersetzungen fürs Standesamt')]],
+      ['2. Urkunden beschaffen', 'Typisch sind Geburtsurkunde, Nachweis des Familienstands (Ledigkeitsbescheinigung), bei früherer Ehe das Scheidungsurteil mit Rechtskraftvermerk oder die Sterbeurkunde sowie das Ehefähigkeitszeugnis des Heimatstaates. Stellt der Heimatstaat kein Ehefähigkeitszeugnis aus, beantragt das Standesamt eine Befreiung beim Oberlandesgericht – das kann einige Wochen dauern. Je nach Land brauchen die Urkunden eine Apostille oder Legalisation.',
+        [D('ehefaehigkeitszeugnis-uebersetzung', 'Ehefähigkeitszeugnis übersetzen'), D('ledigkeitsbescheinigung-uebersetzung', 'Ledigkeitsbescheinigung übersetzen'), APOSTILLE_LINK]],
+      ['3. Übersetzen lassen', 'Fremdsprachige Urkunden verlangt das Standesamt in der Regel als beglaubigte Übersetzung. Lassen Sie alle zusammen übersetzen, damit Namen, Geburtsorte und Daten überall gleich geschrieben sind. Achten Sie auf die Gültigkeit: Manche Urkunden – etwa Ehefähigkeitszeugnisse – dürfen bei der Anmeldung nicht älter als einige Monate sein.'],
+      ['4. Anmeldung und Trauung mit Dolmetscher', 'Versteht eine Person nicht ausreichend Deutsch, ist bei Anmeldung und Trauung ein Dolmetscher nötig; manche Standesämter verlangen eine beeidigte Person. Nach der Anmeldung vereinbaren Sie den Trautermin – oft innerhalb von sechs Monaten.',
+        [{ href: '/de/dolmetschen/dolmetscher-hochzeit/', label: 'Dolmetscher für die Hochzeit' }]],
+      ['5. Nach der Hochzeit', 'Damit die Ehe auch im Herkunftsland gilt, muss sie dort häufig registriert werden – über Konsulat oder Heimatbehörde. Dafür wird die deutsche Heiratsurkunde oft mit Apostille oder Legalisation und beglaubigter Übersetzung verlangt. Innerhalb der EU helfen mehrsprachige Formulare.',
+        [D('heiratsurkunde-uebersetzung', 'Heiratsurkunde übersetzen')]],
+      TRANSLATION_HELP('Ihre Heirat'),
+    ],
+    faqs: [
+      ['Wie lange vorher sollten wir anfangen?', 'Planen Sie mehrere Monate ein – vor allem, wenn Urkunden aus dem Ausland beschafft oder eine Befreiung vom Ehefähigkeitszeugnis beantragt werden muss.'],
+      ['Können wir in Deutschland heiraten, wenn ein Partner nur ein Besuchsvisum hat?', 'Das hängt vom Einzelfall und vom Aufenthaltsrecht ab. Klären Sie das mit Standesamt und Ausländerbehörde, bevor Sie Termine planen.'],
+      ['Übersetzen Sie auch die deutsche Heiratsurkunde für das Konsulat?', 'Ja, in alle gängigen Sprachen – beglaubigt.'],
+      FAQ_DIGITAL,
+    ],
+    serviceType: 'Beglaubigte Übersetzung',
+  },
+  {
+    slug: 'arabische-geburtsurkunde-uebersetzen',
+    eyebrow: 'Arabische Geburtsurkunde übersetzen',
+    title: 'Arabische Geburtsurkunde übersetzen lassen – was Sie wissen sollten.',
+    metaTitle: 'Arabische Geburtsurkunde übersetzen – beglaubigt | Noon',
+    description: 'Arabische Geburtsurkunde übersetzen: Urkunden aus Syrien, Irak, Ägypten, Marokko und mehr – Namensschreibweise, Daten und beglaubigte Übersetzung.',
+    intro: 'Geburtsurkunden aus arabischsprachigen Ländern sehen sehr unterschiedlich aus: mal ein handschriftlicher Registerauszug, mal ein Computerausdruck, mal ein zweisprachiges Formular. Für Standesamt, Ausländerbehörde, Einbürgerung oder Hochschule brauchen Sie sie als beglaubigte Übersetzung. Hier erklären wir, worauf es ankommt.',
+    highlights: ['Alle arabischen Länder', 'Namen nach Pass', 'Ab 39 €'],
+    sections: [
+      ['Typische Formen nach Land', '• Syrien: Auszug aus dem Personenstandsregister bzw. Familienbuch, häufig mit Angaben zu beiden Eltern\n• Irak: Geburtsurkunde und oft zusätzlich Personalausweis- oder Staatsangehörigkeitsnachweise\n• Ägypten: computergedruckte Geburtsurkunde mit nationaler ID-Nummer\n• Marokko, Algerien, Tunesien: Auszüge aus dem Personenstandsregister, oft zweisprachig Arabisch–Französisch\n• Sudan, Libyen, Jemen, Libanon, Jordanien und Palästina: Geburtsurkunden in jeweils eigener Form\n\nWir übersetzen alle Formen – auch handschriftliche Einträge, Randvermerke und Stempel.',
+        [{ href: '/de/sprachen/arabisch/', label: 'Arabisch Übersetzer' }, { href: '/de/standorte/berlin/arabisch/', label: 'Arabisch Übersetzer Berlin' }, { href: '/de/standorte/stuttgart/arabisch/', label: 'Arabisch Übersetzer Stuttgart' }]],
+      ['Namen: der wichtigste Punkt', 'Arabische Namen lassen sich auf viele Arten in lateinische Schrift übertragen – Mohammed, Muhammad oder Mohamad. Deutsche Behörden brauchen die Schreibweise, die in Ihrem Reisepass steht. Senden Sie uns daher eine Passkopie mit; wir verwenden die Schreibweise in allen Urkunden der Familie einheitlich. Namen von Eltern ohne Pass übertragen wir nach einer gängigen Umschrift und gleichbleibend.',
+        [D('reisepass-uebersetzung', 'Reisepass übersetzen')]],
+      ['Daten und Orte', 'Manche Urkunden enthalten Daten nach dem islamischen Kalender oder nur das Geburtsjahr. Wir übernehmen die Angaben genau wie im Original und ergänzen bei Bedarf das gregorianische Datum. Ortsnamen schreiben wir in der üblichen deutschen Form, wenn es eine gibt, sonst in gängiger Umschrift.'],
+      ['Apostille, Legalisation, Echtheit', 'Ob Ihre Urkunde eine Apostille oder Legalisation braucht, hängt vom Ausstellungsland und von der Stelle ab, die sie verlangt. Für Urkunden aus einigen Staaten ist eine Legalisation derzeit nicht möglich – deutsche Behörden prüfen sie dann auf anderem Weg. Unabhängig davon brauchen Sie die beglaubigte Übersetzung.',
+        [APOSTILLE_LINK, NOTARY_GUIDE_LINK]],
+      TRANSLATION_HELP('Ihre Geburtsurkunde'),
+    ],
+    faqs: [
+      ['Was kostet die Übersetzung einer arabischen Geburtsurkunde?', 'Ab 39 € pro Dokument; den Festpreis nennen wir nach einem Blick auf Foto oder Scan.'],
+      ['Wird die Übersetzung vom Standesamt akzeptiert?', 'Ja, beglaubigte Übersetzungen ermächtigter Übersetzer werden von Standesämtern bundesweit anerkannt.'],
+      ['Übersetzen Sie auch handschriftliche Urkunden?', 'Ja. Unleserliche Stellen kennzeichnen wir in der Übersetzung.'],
+      ['Übersetzen Sie auch die Geburtsurkunden meiner Kinder zusammen mit meiner?', 'Ja – am besten alle Urkunden der Familie zusammen, dann sind Namen und Daten überall gleich geschrieben.'],
+      FAQ_DIGITAL,
+    ],
+    serviceType: 'Arabisch Übersetzung',
+  },
+];
+
+export const RATGEBER_HUB = {
+  slug: 'ratgeber',
+  eyebrow: 'Ratgeber',
+  title: 'Ratgeber: Übersetzungen für Behörden, Heirat, Arbeit und Führerschein.',
+  metaTitle: 'Ratgeber beglaubigte Übersetzung – Kosten, Apostille | Noon',
+  description: 'Ratgeber: Kosten und Dauer beglaubigter Übersetzungen, Apostille, Notar, Führerschein, Familiennachzug, Einbürgerung, Anerkennung und Heirat.',
+  intro: 'Behörden, Fristen, Urkunden aus dem Ausland: Hier erklären wir verständlich, welche Unterlagen Sie in typischen Situationen brauchen und wann eine beglaubigte Übersetzung, eine Apostille oder ein Dolmetscher nötig ist.',
+  highlights: ['Verständlich erklärt', 'Mit Checklisten', 'Aus der Praxis'],
+  sections: [
+    ['Rund um die beglaubigte Übersetzung', 'Was kostet sie, wie lange dauert sie, wann brauche ich einen Notar und was ist eine Apostille?', [
+      PRICE_LINK, DURATION_LINK, NOTARY_GUIDE_LINK, APOSTILLE_LINK]],
+    ['Für Ihre Situation', 'Schritt-für-Schritt-Ratgeber für die Anlässe, zu denen uns am häufigsten Anfragen erreichen:', RATGEBER_LINKS],
+    ['Persönliche Beratung zur Übersetzung', 'Ihr Fall ist nicht dabei? Senden Sie uns die Liste der Stelle, die Unterlagen verlangt, und Fotos Ihrer Dokumente. Wir sagen Ihnen, was übersetzt werden muss, und nennen den Festpreis – kostenlos und unverbindlich. Rechtliche Beratung ersetzt das nicht; dafür sind Beratungsstellen und Anwälte da.', [QUOTE_LINK]],
+  ],
+  faqs: [
+    ['Ersetzen die Ratgeber eine rechtliche Beratung?', 'Nein. Sie geben einen Überblick. Verbindlich ist immer die Auskunft der zuständigen Stelle; für rechtliche Fragen wenden Sie sich an Beratungsstellen oder Anwälte.'],
+  ],
+  serviceType: 'Ratgeber',
+};

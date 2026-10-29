@@ -472,7 +472,32 @@ const SPECIALIST = {
 };
 
 // ---------------------------------------------------------------- more service-area cities
+// Adds city-specific sections (before the office block) and FAQs to a cityPage().
+function withOwnSections(page, sections, faqs) {
+  return { ...page, sections: [...page.sections.slice(0, -1), ...sections, page.sections.at(-1)], faqs: [...faqs, ...page.faqs] };
+}
+
 const MORE_CITIES = {
+  // Added 29.10.2026 (plan v4): served from the Mainz office across the Rhine.
+  '/de/standorte/wiesbaden': withOwnSections(cityPage({
+    city: 'Wiesbaden',
+    region: 'Hessen',
+    description: 'Übersetzungsbüro für Wiesbaden: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht sowie Dolmetscher – Büro in Mainz, Express am selben Tag.',
+    intro: 'Beglaubigte Übersetzungen und Dolmetscher für Wiesbaden: Urkunden, Zeugnisse und Führerscheine übersetzen unsere ermächtigten Übersetzer komplett digital – und unser Büro in Mainz liegt nur wenige Minuten entfernt auf der anderen Rheinseite.',
+    authorities: '• Ausländerbehörde der Landeshauptstadt Wiesbaden: Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Wiesbaden: Anmeldung der Eheschließung, Geburtsbeurkundung, Namenserklärungen\n• Amtsgericht und Landgericht Wiesbaden: Urteile, Beschlüsse und Vollmachten\n• Hochschule RheinMain und weitere Hochschulen: Zeugnisse und Diplome\n• Landesbehörden der hessischen Landeshauptstadt: Anerkennung und Genehmigungen',
+    focus: ['Landeshauptstadt mit vielen Behörden', 'Als hessische Landeshauptstadt ist Wiesbaden Sitz von Ministerien und Landesbehörden; zudem haben dort Bundeseinrichtungen ihren Sitz. Für Anerkennungsverfahren, Genehmigungen und Gerichtsverfahren übersetzen wir Unterlagen beglaubigt und stellen Dolmetscher für Termine vor Ort.',
+      [{ href: '/de/ratgeber/anerkennung-auslaendischer-abschluesse/', label: 'Anerkennung ausländischer Abschlüsse' }, { href: '/de/gerichtsdolmetscher/', label: 'Gerichtsdolmetscher' }]],
+    nearby: 'Unser nächstgelegenes Büro ist Mainz in der Richard-Wagner-Straße 13 – direkt gegenüber auf der anderen Rheinseite.',
+    faqs: [['Kann ich Unterlagen in Mainz abgeben, wenn ich in Wiesbaden wohne?', 'Ja, nach Terminvereinbarung in der Richard-Wagner-Straße 13. Die meisten Kundinnen und Kunden aus Wiesbaden bestellen aber digital.']],
+  }), [
+    ['Typische Anfragen aus Wiesbaden', '• Familiennachzug und Einbürgerung: Geburts- und Heiratsurkunden aus Syrien, Afghanistan, der Türkei oder Marokko\n• Heirat im Standesamt Wiesbaden mit Partner aus dem Ausland, inklusive Dolmetscher bei der Trauung\n• Fachkräfte im Gesundheitswesen: Diplome und Arbeitsnachweise für die Anerkennung bei hessischen Stellen\n• Unternehmen im Rhein-Main-Gebiet: Verträge, Handelsregisterauszüge und Zertifikate für Partner im Ausland\n• Pendler zwischen Wiesbaden, Mainz und Frankfurt: Führerscheine für die Umschreibung',
+      [{ href: '/de/ratgeber/familiennachzug-dokumente/', label: 'Familiennachzug: Dokumente' }, { href: '/de/ratgeber/heiraten-in-deutschland-als-auslaender/', label: 'Heiraten in Deutschland' }, { href: '/de/handelsregisterauszug-uebersetzung/', label: 'Handelsregisterauszug übersetzen' }]],
+    ['Von Wiesbaden zu unserem Büro in Mainz', 'Unser Büro in der Richard-Wagner-Straße 13 in Mainz erreichen Sie von Wiesbaden aus in kurzer Zeit über die Rheinbrücken oder mit der S-Bahn. Für eine persönliche Besprechung oder die Abholung des Originals vereinbaren Sie bitte vorab einen Termin. Wer nicht kommen möchte, bestellt einfach digital – die Übersetzung kommt als PDF und per Post nach Wiesbaden.',
+      [{ href: '/de/standorte/mainz/', label: 'Übersetzungsbüro Mainz' }]],
+  ], [
+    ['Gilt eine in Mainz angefertigte Übersetzung auch in Wiesbaden?', 'Ja. Beglaubigte Übersetzungen ermächtigter Übersetzer gelten bundesweit – egal, in welchem Bundesland das Büro liegt.'],
+    ['Stellen Sie Dolmetscher für Termine in Wiesbaden?', 'Ja, zum Beispiel für Ausländerbehörde, Standesamt, Amtsgericht, Landgericht und Notare in Wiesbaden.'],
+  ]),
   '/de/standorte/hamburg': cityPage({
     city: 'Hamburg',
     region: 'Hamburg',

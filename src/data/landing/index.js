@@ -7,15 +7,19 @@ import { KIEL_PAGES } from './kiel.js';
 import { GUIDE_PAGES } from './guides.js';
 import { DOCUMENT_PAGES } from './documents.js';
 import { INTERPRETING_PAGES } from './interpreting.js';
+import { RATGEBER_HUB, RATGEBER_PAGES } from './ratgeber.js';
 import { OFFICE_EXTRA_SECTIONS } from './offices.js';
 import { CITY, UPDATED } from './shared.js';
 import { DESCRIPTIONS, EXTRA } from './extras.js';
 import { DESCRIPTIONS_2, EXTRA_2 } from './extras2.js';
+import { PAGE_REVIEWS, REVIEW_QUOTES } from './reviews.js';
 
 // Extra sections go before the closing block (office / quote), extra FAQs at the end.
 function withExtras(page) {
   const extra = EXTRA[page.path] || EXTRA_2[page.path] || {};
-  const sections = extra.sections ? [...page.sections.slice(0, -1), ...extra.sections, page.sections.at(-1)] : page.sections;
+  const reviews = PAGE_REVIEWS[page.path] ? [['Das sagen unsere Kundinnen und Kunden', PAGE_REVIEWS[page.path].join('\n\n')]] : [];
+  const own = [...(extra.sections || []), ...reviews];
+  const sections = own.length ? [...page.sections.slice(0, -1), ...own, page.sections.at(-1)] : page.sections;
   return {
     ...page,
     description: DESCRIPTIONS[page.path] || DESCRIPTIONS_2[page.path] || page.description,
@@ -66,10 +70,15 @@ export const LANDING_PAGES = [
   ...KIEL_PAGES.map((page) => cityPage('kiel', page, 2)),
   ...DOCUMENT_PAGES.map((page) => nationalPage(page, { prefix: '/de', serviceGroup: 'document', parent: CERTIFIED_PARENT, phase: 2 })),
   ...INTERPRETING_PAGES.map((page) => nationalPage(page, { prefix: '/de/dolmetschen', serviceGroup: 'interpreting', parent: { href: '/de/dolmetschen/', label: 'Dolmetschen' }, phase: 2 })),
+  ...RATGEBER_PAGES.map((page) => nationalPage(page, { prefix: '/de/ratgeber', serviceGroup: 'guide', parent: { href: '/de/ratgeber/', label: 'Ratgeber' }, phase: 3 })),
+  { ...nationalPage(RATGEBER_HUB, { prefix: '/de', serviceGroup: 'guide', parent: { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen' }, phase: 3 }), hub: true },
 ].map(withExtras);
 
 // Extra sections for office pages, inserted right after the intro section:
 // "Alle Leistungen in <Stadt>" (hub → every sub-page) and phase-2 upgrades.
+// Google review quotes per office: appended to the office page's review section.
+export { REVIEW_QUOTES };
+
 export const OFFICE_SECTIONS = {
   berlin: [['Alle Leistungen in Berlin', 'Für jede Leistung und die in Berlin am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', BERLIN_LINKS]],
   stuttgart: [['Alle Leistungen in Stuttgart', 'Für jede Leistung und die in Stuttgart am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', STUTTGART_LINKS]],

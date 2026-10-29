@@ -4,7 +4,8 @@ import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
-import { LANDING_PAGES, OFFICE_SECTIONS } from './landing/index.js';
+import { LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
+import { FOREIGN_UPGRADES } from './landing/foreign.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -706,7 +707,15 @@ const locationPages = LOCATIONS.map((location) => ({
 })).map((page) => {
   // Plan v4: links to the office's sub-pages and extra sections, right after the intro section.
   const extra = OFFICE_SECTIONS[page.location.slug];
-  return extra ? { ...page, updated: '2026-10-29', sections: [page.sections[0], ...extra, ...page.sections.slice(1)] } : page;
+  const quotes = REVIEW_QUOTES[page.location.slug];
+  let sections = extra ? [page.sections[0], ...extra, ...page.sections.slice(1)] : page.sections;
+  if (quotes) {
+    const at = sections.findIndex(([heading]) => heading.startsWith('Das sagen Kundinnen und Kunden'));
+    sections = at >= 0
+      ? sections.map((section, i) => (i === at ? [section[0], `${section[1]}\n\n${quotes.join('\n\n')}`, ...section.slice(2)] : section))
+      : [...sections, [`Das sagen Kundinnen und Kunden aus ${page.location.city}`, quotes.join('\n\n')]];
+  }
+  return extra || quotes ? { ...page, updated: '2026-10-29', sections } : page;
 });
 
 // Service-area cities: places we serve digitally/deutschlandweit but do NOT
@@ -733,6 +742,7 @@ export const SERVICE_AREAS = [
   { slug: 'rheine', city: 'Rheine', region: 'Nordrhein-Westfalen' },
   { slug: 'lingen', city: 'Lingen', region: 'Niedersachsen' },
   { slug: 'ibbenbueren', city: 'Ibbenbüren', region: 'Nordrhein-Westfalen' },
+  { slug: 'wiesbaden', city: 'Wiesbaden', region: 'Hessen' },
 ];
 
 const serviceAreaPages = SERVICE_AREAS.map(({ slug, city, region }) => ({
@@ -1531,6 +1541,7 @@ const publishedDocumentPages = documentPagesDe
 
 export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE, ...LANDING_PAGES]
   .map((page) => (PAGE_UPGRADES[page.path] ? { ...page, ...PAGE_UPGRADES[page.path] } : page))
+  .map((page) => (FOREIGN_UPGRADES[page.path] ? { ...page, ...FOREIGN_UPGRADES[page.path], updated: '2026-10-29' } : page))
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
