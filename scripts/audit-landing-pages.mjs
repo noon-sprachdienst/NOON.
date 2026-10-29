@@ -52,7 +52,7 @@ const shingles = (value) => {
   for (let i = 0; i + 5 <= w.length; i += 1) set.add(w.slice(i, i + 5).join(' '));
   return set;
 };
-const deSets = pages.filter((p) => p.lang === 'de' && p.intro).map((p) => [p.path, shingles(text(p))]);
+const allSets = pages.filter((p) => p.intro).map((p) => [p.path, p.lang, shingles(text(p))]);
 const similarity = (a, b) => {
   let inter = 0;
   for (const s of a) if (b.has(s)) inter += 1;
@@ -65,8 +65,8 @@ const LANGUAGE_LIMIT = 0.4;
 for (const page of newPages) {
   const own = shingles(text(page));
   let best = [0, ''];
-  for (const [path, set] of deSets) {
-    if (path === page.path) continue;
+  for (const [path, lang, set] of allSets) {
+    if (path === page.path || lang !== page.lang) continue;
     const value = similarity(own, set);
     if (value > best[0]) best = [value, path];
   }
@@ -75,7 +75,7 @@ for (const page of newPages) {
 }
 
 // 4. Internal links of new pages must exist; every new page needs at least one inbound link.
-const known = new Set([...pages.map((p) => p.path), '/', '/angebot', '/termin', '/leistungen', '/fachuebersetzungen', '/preise', '/en', '/ar', '/tr', '/ru', '/fr', '/uk']);
+const known = new Set([...pages.map((p) => p.path), '/', '/angebot', '/termin', '/leistungen', '/fachuebersetzungen', '/preise', '/en', '/ar', '/tr', '/ru', '/fr', '/uk', '/en/angebot', '/tr/angebot']);
 const inbound = new Map([...NEW].map((path) => [path, 0]));
 for (const page of SEO_PAGES) {
   for (const section of page.sections || []) {

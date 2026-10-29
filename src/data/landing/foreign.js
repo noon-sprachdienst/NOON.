@@ -7,7 +7,10 @@ const RU_LINKS = (city) => [
   { href: '/angebot/', label: 'Запросить цену / Angebot' },
 ];
 
+import { FOREIGN_UPGRADES_2 } from './foreign2.js';
+
 export const FOREIGN_UPGRADES = {
+  ...FOREIGN_UPGRADES_2,
   '/ru/filialy/berlin': {
     eyebrow: 'Присяжный переводчик в Берлине',
     title: 'Присяжный переводчик в Берлине – заверенные переводы и устный перевод.',

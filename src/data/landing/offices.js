@@ -33,10 +33,10 @@ export const OFFICE_EXTRA_SECTIONS = {
     ['Beglaubigte Übersetzung in Mainz – Preise und Ablauf', 'Für Ausländerbehörde, Standesamt, Gerichte und die Johannes Gutenberg-Universität übersetzen unsere ermächtigten Übersetzer Ihre Dokumente beglaubigt – Standarddokumente ab 39 €, Festpreis vorab, Lieferung in 2–3 Werktagen oder im Express am selben Tag.',
       [PRICE_LINK, DURATION_LINK, ...DOCUMENT_LINKS.slice(0, 3)]],
     ['Auch für Wiesbaden und Rheinhessen', 'Von unserem Büro in der Richard-Wagner-Straße betreuen wir auch Kundinnen und Kunden aus Wiesbaden, Ingelheim, Bingen, Rüsselsheim und Alzey. Für Termine bei Wiesbadener Behörden, Gerichten und Notaren organisieren wir Dolmetscher; Übersetzungen laufen bequem digital – als PDF und per Post.',
-      [{ href: '/de/standorte/wiesbaden/', label: 'Übersetzungen für Wiesbaden' }, ...INTERPRETING_SITUATIONS.slice(0, 2)]],
+      [{ href: '/de/standorte/wiesbaden/', label: 'Übersetzungen für Wiesbaden' }, ...INTERPRETING_SITUATIONS.slice(0, 2), { href: '/en/locations/mainz/', label: 'English: Translation Office Mainz' }]],
   ],
   kiel: [
-    ['Alle Leistungen in Kiel', 'Für die in Kiel am häufigsten gefragten Leistungen und Sprachen haben wir eigene Seiten mit Details, Preisen und typischen Terminen:', KIEL_LINKS],
+    ['Alle Leistungen in Kiel', 'Für die in Kiel am häufigsten gefragten Leistungen und Sprachen haben wir eigene Seiten mit Details, Preisen und typischen Terminen:', [...KIEL_LINKS, { href: '/en/locations/kiel/', label: 'English: Translation Office Kiel' }]],
     ['Dolmetscher für soziale Dienste und Asylverfahren in Kiel', 'Für Beratungsstellen, soziale Dienste, Jobcenter und Gespräche im Asylverfahren stellen wir Dolmetscher – besonders für Persisch (Farsi und Dari), Arabisch, Kurdisch, Ukrainisch und Polnisch. Kurze Gespräche dolmetschen wir per Telefon oder Video, auch kurzfristig.',
       INTERPRETING_SITUATIONS.slice(0, 3)],
   ],

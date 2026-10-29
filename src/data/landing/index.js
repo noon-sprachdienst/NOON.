@@ -80,7 +80,7 @@ export const LANDING_PAGES = [
 export { REVIEW_QUOTES };
 
 export const OFFICE_SECTIONS = {
-  berlin: [['Alle Leistungen in Berlin', 'Für jede Leistung und die in Berlin am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', BERLIN_LINKS]],
-  stuttgart: [['Alle Leistungen in Stuttgart', 'Für jede Leistung und die in Stuttgart am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', STUTTGART_LINKS]],
+  berlin: [['Alle Leistungen in Berlin', 'Für jede Leistung und die in Berlin am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', [...BERLIN_LINKS, { href: '/en/locations/berlin/', label: 'English: Translation Office Berlin' }, { href: '/tr/subeler/berlin/', label: 'Türkçe: Yeminli tercüman Berlin' }]]],
+  stuttgart: [['Alle Leistungen in Stuttgart', 'Für jede Leistung und die in Stuttgart am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', [...STUTTGART_LINKS, { href: '/en/locations/stuttgart/', label: 'English: Translation Office Stuttgart' }, { href: '/tr/subeler/stuttgart/', label: 'Türkçe: Yeminli tercüman Stuttgart' }]]],
   ...OFFICE_EXTRA_SECTIONS,
 };
