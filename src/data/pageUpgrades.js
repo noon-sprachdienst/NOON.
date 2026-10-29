@@ -3,6 +3,7 @@
 // that had no page of their own (NEW_PAGES_DE). Keywords come from Search Console
 // (6 months to 08.10.2026). Facts: see contentLinks.js; authorities are named in
 // general terms only, the requirements are always set by the receiving office.
+import { CITY_FAQ, CITY_LOCAL } from './landing/cityLocal.js';
 import {
   DELIVERY_SECTION, DOCUMENT_LINKS, FAQ_DIGITAL, FAQ_PRICE, FAQ_SPEED,
   INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT, OFFICE_LINKS,
@@ -26,27 +27,28 @@ const MORE_DOCUMENT_LINKS = [
 // No office in these cities: no address, no opening hours – digital handling and
 // interpreters arranged on site, by video or by phone.
 function cityPage({ city, region, intro, description, authorities, focus, nearby, faqs }) {
+  // Shared blocks are kept short on purpose (plan v4): most of each page is the city's
+  // own text – authorities, focus, the local section from CITY_LOCAL and city FAQs.
+  const local = CITY_LOCAL[city];
   return {
-    updated: UPDATED,
+    updated: '2026-10-29',
     description,
     intro,
     highlights: ['Ermächtigte Übersetzer', 'Komplett digital', 'Express am selben Tag'],
     sections: [
-      [`Beglaubigte Übersetzungen für ${city}`, `Für ${city} arbeiten wir vollständig digital: Sie senden uns Ihr Dokument als Foto oder Scan per WhatsApp, E-Mail oder Webformular, erhalten vorab einen Festpreis und bekommen die beglaubigte Übersetzung als PDF und auf Wunsch per Post. Ein Besuch in einem unserer Büros ist nicht nötig. Die Übersetzungen fertigen in Deutschland ermächtigte Übersetzer an – sie werden von Behörden, Gerichten und Hochschulen in ${city}, in ${region} und bundesweit akzeptiert.`,
+      [`Beglaubigte Übersetzungen für ${city}`, `Dokument als Foto oder Scan senden, Festpreis erhalten, beglaubigte Übersetzung als PDF und per Post bekommen – ohne Bürobesuch. Unsere ermächtigten Übersetzer werden in ${city}, in ${region} und bundesweit anerkannt.`,
         [...DOCUMENT_LINKS, CERTIFIED_LINK]],
-      [`Für diese Stellen in ${city} übersetzen wir häufig`, `${authorities}\n\nWelche Dokumente im Einzelfall nötig sind, legt die jeweilige Stelle fest. Senden Sie uns gern deren Liste – wir nennen Ihnen vorab einen Festpreis.`],
+      [`Für diese Stellen in ${city} übersetzen wir häufig`, `${authorities}\n\nWelche Dokumente nötig sind, legt die jeweilige Stelle fest – senden Sie uns gern deren Liste.`],
       focus,
-      [`Dolmetscher für Termine in ${city}`, `Für Termine bei Behörde, Standesamt, Notar oder Gericht in ${city} organisieren wir passende Dolmetscher – vor Ort oder, wenn es schnell gehen muss, per Video oder Telefon. Für Gerichtstermine setzen wir auf Wunsch beeidigte Dolmetscher ein. Bitte nennen Sie uns Datum, Uhrzeit, Ort, Sprache und Anlass.`,
+      ...(local ? [local] : []),
+      [`Dolmetscher in ${city}`, `Für Behörde, Standesamt, Notar oder Gericht in ${city} organisieren wir Dolmetscher – vor Ort, per Video oder Telefon, auf Wunsch beeidigt.`,
         INTERPRETER_LINKS],
-      ['Sprachen', LANGUAGES_TEXT, LANGUAGE_LINKS],
-      DELIVERY_SECTION,
-      ['Unsere Büros', `Persönliche Termine bieten wir nach Vereinbarung in unseren Büros an. ${nearby}`, OFFICE_LINKS],
+      ['Unsere Büros', `Persönliche Termine nach Vereinbarung. ${nearby}`, [...OFFICE_LINKS, { href: '/de/sprachen/', label: 'Alle Sprachen' }]],
     ],
     faqs: [
-      [`Werden Ihre Übersetzungen von Behörden in ${city} anerkannt?`, `Ja. Beglaubigte Übersetzungen von in Deutschland ermächtigten Übersetzern werden von Behörden, Standesämtern, Gerichten und Hochschulen in ${city} und bundesweit akzeptiert.`],
-      [`Muss ich für die Übersetzung in ein Büro kommen?`, 'Nein. Der gesamte Ablauf – Anfrage, Angebot, Übersetzung und Versand – funktioniert online. Die Übersetzung erhalten Sie als PDF und auf Wunsch per Post.'],
+      [`Werden Ihre Übersetzungen von Behörden in ${city} anerkannt?`, `Ja. Beglaubigte Übersetzungen ermächtigter Übersetzer werden in ${city} und bundesweit akzeptiert.`],
       ...faqs,
-      FAQ_SPEED,
+      ...(CITY_FAQ[city] ? [CITY_FAQ[city]] : []),
       FAQ_PRICE,
     ],
   };
@@ -602,7 +604,7 @@ const MORE_CITIES = {
     region: 'Nordrhein-Westfalen',
     description: 'Übersetzungsbüro Rheine: beglaubigte Übersetzungen von Urkunden, Zeugnissen und Führerscheinen sowie Dolmetscher im Kreis Steinfurt – nah an Osnabrück.',
     intro: 'Beglaubigte Übersetzungen und Dolmetscher für Rheine und den Kreis Steinfurt: Urkunden, Zeugnisse und Führerscheine übersetzen unsere ermächtigten Übersetzer komplett digital – und unser Hauptsitz in Osnabrück ist nicht weit.',
-    authorities: '• Ausländerbehörde: Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Rheine: Anmeldung der Eheschließung, Geburtsbeurkundung\n• Führerscheinstelle: Umschreibung ausländischer Führerscheine\n• Amtsgericht Rheine: Urteile, Beschlüsse und Vollmachten',
+    authorities: '• Standesamt Rheine: Anmeldung der Eheschließung, Geburtsbeurkundung und Namenserklärungen\n• zuständige Ausländerbehörde: Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Amtsgericht Rheine: Urteile, Beschlüsse und Vollmachten\n• Arbeitgeber und Familienkasse: Arbeitsnachweise und Unterlagen für das Kindergeld',
     focus: ['Nah an unserem Hauptsitz', 'Rheine liegt nah an unserem Hauptsitz in Osnabrück. Wenn Sie lieber persönlich vorbeikommen, vereinbaren Sie einen Termin am Rosenplatz 17 – ansonsten erledigen Sie alles bequem digital.',
       [{ href: '/de/standorte/osnabrueck/', label: 'Übersetzungsbüro Osnabrück' }, { href: '/de/standorte/ibbenbueren/', label: 'Übersetzungen Ibbenbüren' }, { href: '/de/standorte/lingen/', label: 'Übersetzungen Lingen' }]],
     nearby: 'Unser nächstgelegenes Büro ist unser Hauptsitz in Osnabrück am Rosenplatz 17.',
@@ -624,8 +626,8 @@ const MORE_CITIES = {
     region: 'Nordrhein-Westfalen',
     description: 'Übersetzungsbüro Ibbenbüren: beglaubigte Übersetzungen von Urkunden, Zeugnissen und Führerscheinen sowie Dolmetscher – nah an unserem Büro Osnabrück.',
     intro: 'Beglaubigte Übersetzungen und Dolmetscher für Ibbenbüren und das Tecklenburger Land: Urkunden, Zeugnisse und Führerscheine übersetzen unsere ermächtigten Übersetzer komplett digital – und unser Hauptsitz in Osnabrück ist nur wenige Kilometer entfernt.',
-    authorities: '• Ausländerbehörde: Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Ibbenbüren: Anmeldung der Eheschließung, Geburtsbeurkundung\n• Führerscheinstelle: Umschreibung ausländischer Führerscheine\n• Amtsgericht Ibbenbüren: Urteile, Beschlüsse und Vollmachten',
-    focus: ['Nah an unserem Hauptsitz', 'Ibbenbüren liegt direkt vor den Toren Osnabrücks. Wenn Sie lieber persönlich vorbeikommen, vereinbaren Sie einen Termin am Rosenplatz 17 – ansonsten erledigen Sie alles bequem digital.',
+    authorities: '• Ausländerbehörde des Kreises Steinfurt: Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesamt Ibbenbüren: Eheschließung und Geburtsbeurkundung\n• Amtsgericht Ibbenbüren: Urteile, Beschlüsse, Vollmachten und Nachlasssachen\n• Schulen und Berufskollegs: Zeugnisse für Schulwechsel und Ausbildung',
+    focus: ['Persönlich in Osnabrück oder ganz digital', 'Von Ibbenbüren aus erreichen Sie unseren Hauptsitz am Rosenplatz 17 schnell über die A30. Für die Abgabe von Originalen oder eine Beratung vereinbaren Sie einen Termin; Übersetzungen von Urkunden und Zeugnissen erledigen die meisten Familien aus dem Tecklenburger Land per WhatsApp oder E-Mail.',
       [{ href: '/de/standorte/osnabrueck/', label: 'Übersetzungsbüro Osnabrück' }, { href: '/de/standorte/rheine/', label: 'Übersetzungen Rheine' }]],
     nearby: 'Unser nächstgelegenes Büro ist unser Hauptsitz in Osnabrück am Rosenplatz 17.',
     faqs: [['Kann ich in Osnabrück persönlich vorbeikommen?', 'Ja, nach Terminvereinbarung am Rosenplatz 17 in Osnabrück.']],
