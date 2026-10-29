@@ -8,7 +8,7 @@
     "build": "vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "smoke:services": "node scripts/smoke-services.mjs",
-    "test:seo": "npm run build && node scripts/audit-seo-build.mjs && node scripts/audit-landing-pages.mjs"
+    "test:seo": "npm run build && node scripts/audit-seo-build.mjs && node scripts/audit-landing-pages.mjs && node scripts/review-built-site.mjs"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^7.2.0",

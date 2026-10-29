@@ -45,7 +45,8 @@ function baseTitle(page) {
   if (page.kind === 'location' && page.location?.city) {
     const { city } = page.location;
     if (page.lang === 'de') return `Übersetzungsbüro ${city} – beglaubigt & Dolmetscher`;
-    if (page.lang === 'en') return `Translation Office ${city} – Certified & Interpreters`;
+    // Long city names (e.g. "Frankfurt am Main") drop the second half to stay within ~65 characters.
+    if (page.lang === 'en') return city.length > 12 ? `Translation Office ${city} – Certified` : `Translation Office ${city} – Certified & Interpreters`;
   }
   return cleanTitle(page.title || page.metaTitle);
 }
