@@ -8,9 +8,13 @@ const RU_LINKS = (city) => [
 ];
 
 import { FOREIGN_UPGRADES_2 } from './foreign2.js';
+import { FOREIGN_UPGRADES_3 } from './foreign3.js';
+import { EN_AREA_UPGRADES } from './enAreas.js';
 
 export const FOREIGN_UPGRADES = {
   ...FOREIGN_UPGRADES_2,
+  ...FOREIGN_UPGRADES_3,
+  ...EN_AREA_UPGRADES,
   '/ru/filialy/berlin': {
     eyebrow: 'Присяжный переводчик в Берлине',
     title: 'Присяжный переводчик в Берлине – заверенные переводы и устный перевод.',

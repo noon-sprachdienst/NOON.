@@ -247,7 +247,7 @@ export default function SeoLanding({ page }) {
         </div>
       </section>
 
-      <HowContact branch={isLocation && !page.serviceArea ? page.location : null} />
+      <HowContact branch={(isLocation && !page.serviceArea) || page.location?.phone ? page.location : null} />
     </div>
   );
 }

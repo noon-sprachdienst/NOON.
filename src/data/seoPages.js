@@ -6,6 +6,7 @@ import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LA
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
 import { LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
 import { FOREIGN_UPGRADES } from './landing/foreign.js';
+import { DEEP_SECTIONS } from './landing/deepSections.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -1542,6 +1543,7 @@ const publishedDocumentPages = documentPagesDe
 export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE, ...LANDING_PAGES]
   .map((page) => (PAGE_UPGRADES[page.path] ? { ...page, ...PAGE_UPGRADES[page.path] } : page))
   .map((page) => (FOREIGN_UPGRADES[page.path] ? { ...page, ...FOREIGN_UPGRADES[page.path], updated: '2026-10-29' } : page))
+  .map((page) => (DEEP_SECTIONS[page.path] ? { ...page, sections: [...page.sections, DEEP_SECTIONS[page.path]], updated: '2026-10-30' } : page))
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 

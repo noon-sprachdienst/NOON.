@@ -271,7 +271,7 @@ export default function App() {
       <Footer />
 
       {/* Floating buttons */}
-      <FloatingButtons branch={seoPage?.kind === 'location' && !seoPage.serviceArea ? seoPage.location : null} />
+      <FloatingButtons branch={(seoPage?.kind === 'location' && !seoPage.serviceArea) || seoPage?.location?.phone ? seoPage.location : null} />
 
       {/* Cookie consent banner */}
       <CookieConsent />
@@ -282,7 +282,8 @@ export default function App() {
   );
 }
 
-// On an office page the floating buttons use that branch's phone/WhatsApp when set.
+// On an office page – or a sub-page that carries the office contact (e.g. Kiel) – the
+// floating buttons use that branch's phone/WhatsApp when set.
 function FloatingButtons({ branch = null }) {
   const [phoneMenuOpen, setPhoneMenuOpen] = useState(false);
   const phoneMenuRef = useRef(null);
