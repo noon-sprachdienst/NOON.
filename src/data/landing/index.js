@@ -1,60 +1,77 @@
-// Landing pages of plan v4, phase 1: "Leistung/Sprache + Stadt" for Berlin and
-// Stuttgart (nested under the office page) plus Germany-wide guides.
+// Landing pages of plan v4. Phase 1: "Leistung/Sprache + Stadt" for Berlin and
+// Stuttgart plus Germany-wide guides. Phase 2: Kiel, document pages, interpreting
+// situations and office-page upgrades (new language pages live in languagePages.js).
 import { BERLIN_LINKS, BERLIN_PAGES } from './berlin.js';
 import { STUTTGART_LINKS, STUTTGART_PAGES } from './stuttgart.js';
+import { KIEL_PAGES } from './kiel.js';
 import { GUIDE_PAGES } from './guides.js';
+import { DOCUMENT_PAGES } from './documents.js';
+import { INTERPRETING_PAGES } from './interpreting.js';
+import { OFFICE_EXTRA_SECTIONS } from './offices.js';
 import { CITY, UPDATED } from './shared.js';
 import { DESCRIPTIONS, EXTRA } from './extras.js';
+import { DESCRIPTIONS_2, EXTRA_2 } from './extras2.js';
 
 // Extra sections go before the closing block (office / quote), extra FAQs at the end.
 function withExtras(page) {
-  const extra = EXTRA[page.path] || {};
+  const extra = EXTRA[page.path] || EXTRA_2[page.path] || {};
   const sections = extra.sections ? [...page.sections.slice(0, -1), ...extra.sections, page.sections.at(-1)] : page.sections;
   return {
     ...page,
-    description: DESCRIPTIONS[page.path] || page.description,
+    description: DESCRIPTIONS[page.path] || DESCRIPTIONS_2[page.path] || page.description,
     sections,
     faqs: [...page.faqs, ...(extra.faqs || [])],
   };
 }
 
-function cityPage(city, page) {
+function cityPage(city, page, phase) {
   const c = CITY[city];
   return {
     kind: 'service',
     lang: 'de',
     serviceGroup: 'city-service',
     updated: UPDATED,
+    phase,
     ...page,
     path: `/de/standorte/${c.slug}/${page.slug}`,
     group: `city-${c.slug}-${page.slug}`,
     parent: c.hub,
     areaCity: c.name,
     branchSlug: c.slug,
+    // Branch phone/WhatsApp (only Kiel has its own) for the contact card and buttons.
+    ...(c.contact ? { location: c.contact } : {}),
   };
 }
 
-function guidePage(page) {
+function nationalPage(page, { prefix, serviceGroup, parent, phase }) {
   return {
     kind: 'service',
     lang: 'de',
-    serviceGroup: 'guide',
+    serviceGroup,
     updated: UPDATED,
+    phase,
     ...page,
-    path: `/de/${page.slug}`,
-    group: `guide-${page.slug}`,
-    parent: { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen' },
+    path: `${prefix}/${page.slug}`,
+    group: `${serviceGroup}-${page.slug}`,
+    parent,
   };
 }
 
+const CERTIFIED_PARENT = { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen' };
+
 export const LANDING_PAGES = [
-  ...BERLIN_PAGES.map((page) => cityPage('berlin', page)),
-  ...STUTTGART_PAGES.map((page) => cityPage('stuttgart', page)),
-  ...GUIDE_PAGES.map(guidePage),
+  ...BERLIN_PAGES.map((page) => cityPage('berlin', page, 1)),
+  ...STUTTGART_PAGES.map((page) => cityPage('stuttgart', page, 1)),
+  ...GUIDE_PAGES.map((page) => nationalPage(page, { prefix: '/de', serviceGroup: 'guide', parent: CERTIFIED_PARENT, phase: 1 })),
+  ...KIEL_PAGES.map((page) => cityPage('kiel', page, 2)),
+  ...DOCUMENT_PAGES.map((page) => nationalPage(page, { prefix: '/de', serviceGroup: 'document', parent: CERTIFIED_PARENT, phase: 2 })),
+  ...INTERPRETING_PAGES.map((page) => nationalPage(page, { prefix: '/de/dolmetschen', serviceGroup: 'interpreting', parent: { href: '/de/dolmetschen/', label: 'Dolmetschen' }, phase: 2 })),
 ].map(withExtras);
 
-// Block "Alle Leistungen in <Stadt>" on the office page (hub → every sub-page).
-export const CITY_HUB_SECTIONS = {
-  berlin: ['Alle Leistungen in Berlin', 'Für jede Leistung und die in Berlin am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', BERLIN_LINKS],
-  stuttgart: ['Alle Leistungen in Stuttgart', 'Für jede Leistung und die in Stuttgart am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', STUTTGART_LINKS],
+// Extra sections for office pages, inserted right after the intro section:
+// "Alle Leistungen in <Stadt>" (hub → every sub-page) and phase-2 upgrades.
+export const OFFICE_SECTIONS = {
+  berlin: [['Alle Leistungen in Berlin', 'Für jede Leistung und die in Berlin am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', BERLIN_LINKS]],
+  stuttgart: [['Alle Leistungen in Stuttgart', 'Für jede Leistung und die in Stuttgart am häufigsten gefragten Sprachen haben wir eine eigene Seite mit Details, Preisen und typischen Terminen:', STUTTGART_LINKS]],
+  ...OFFICE_EXTRA_SECTIONS,
 };

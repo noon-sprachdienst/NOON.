@@ -5,13 +5,14 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { SEO_PAGES, PRICE_PAGES } from '../src/data/seoPages.js';
 import { LANDING_PAGES } from '../src/data/landing/index.js';
+import { NEW_LANGUAGE_PATHS } from '../src/data/languagePages.js';
 
 const root = process.cwd();
 const failures = [];
 const warnings = [];
 const fail = (msg) => failures.push(msg);
 
-const NEW = new Set(LANDING_PAGES.map((page) => page.path));
+const NEW = new Set([...LANDING_PAGES.map((page) => page.path), ...NEW_LANGUAGE_PATHS]);
 const pages = [...SEO_PAGES, ...PRICE_PAGES];
 const newPages = SEO_PAGES.filter((page) => NEW.has(page.path));
 const norm = (href) => (href.split('#')[0].replace(/\/+$/, '') || '/');
@@ -52,7 +53,10 @@ const similarity = (a, b) => {
   for (const s of a) if (b.has(s)) inter += 1;
   return inter / (a.size + b.size - inter || 1);
 };
+// Language pages share a fixed template (delivery, steps, offices) with the live language
+// pages, which already overlap up to ~41 % with each other; they get a 40 % limit.
 const LIMIT = 0.3;
+const LANGUAGE_LIMIT = 0.4;
 for (const page of newPages) {
   const own = shingles(text(page));
   let best = [0, ''];
@@ -62,7 +66,7 @@ for (const page of newPages) {
     if (value > best[0]) best = [value, path];
   }
   page._sim = best;
-  if (best[0] > LIMIT) fail(`Zu ähnlich (${(best[0] * 100).toFixed(0)} %): ${page.path} ~ ${best[1]}`);
+  if (best[0] > (page.serviceGroup === 'language' ? LANGUAGE_LIMIT : LIMIT)) fail(`Zu ähnlich (${(best[0] * 100).toFixed(0)} %): ${page.path} ~ ${best[1]}`);
 }
 
 // 4. Internal links of new pages must exist; every new page needs at least one inbound link.

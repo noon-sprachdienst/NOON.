@@ -18,6 +18,14 @@ export const CITY = {
     hub: { href: '/de/standorte/stuttgart/', label: 'Übersetzungsbüro Stuttgart' },
     office: 'Friedrichstraße 15, 70174 Stuttgart (Mitte)',
   },
+  kiel: {
+    slug: 'kiel',
+    name: 'Kiel',
+    hub: { href: '/de/standorte/kiel/', label: 'Übersetzungsbüro Kiel' },
+    office: 'Bothwellstraße 25, 24143 Kiel (Gaarden)',
+    // Same values as LOCATIONS in seoPages.js: Kiel pages show the Kiel number and WhatsApp.
+    contact: { phone: { href: 'tel:+4915567478943', label: '+49 15567 478943', e164: '+4915567478943' }, whatsappUrl: 'https://wa.me/4915567478943' },
+  },
 };
 
 export const PRICE_LINK = { href: '/de/beglaubigte-uebersetzung-kosten/', label: 'Was kostet eine beglaubigte Übersetzung?' };

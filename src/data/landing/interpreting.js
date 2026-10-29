@@ -1,0 +1,115 @@
+// "Dolmetscher für …" pages (plan v4, wave 2): Google suggests "dolmetscher für
+// arztbesuch / behördengänge / elterngespräche / hochzeit". Germany-wide pages.
+import { INTERPRETING_STEPS, LANGUAGE_LINKS, QUOTE_LINK } from './shared.js';
+
+const PRICE = ['Preise', 'Dolmetscheinsätze beginnen ab 85 € pro Stunde. Kurze Gespräche lassen sich oft günstiger per Telefon oder Video dolmetschen, weil keine Anfahrt anfällt. Den Festpreis nennen wir vorab, sobald wir Datum, Ort, Dauer und Sprache kennen.', [QUOTE_LINK]];
+const OFFICES = ['Deutschlandweit – mit sechs Büros', 'Dolmetscher organisieren wir in ganz Deutschland, vor Ort oder digital. Unsere Büros: Osnabrück, Stuttgart, Berlin, Bielefeld, Mainz und Kiel.', [
+  { href: '/de/standorte/berlin/dolmetscher/', label: 'Dolmetscher Berlin' },
+  { href: '/de/standorte/stuttgart/dolmetscher/', label: 'Dolmetscher Stuttgart' },
+  { href: '/de/dolmetschen/', label: 'Dolmetschen im Überblick' },
+]];
+
+export const INTERPRETING_PAGES = [
+  {
+    slug: 'dolmetscher-arzt',
+    eyebrow: 'Dolmetscher für Arztbesuch',
+    title: 'Dolmetscher für Arztbesuch und Krankenhaus.',
+    metaTitle: 'Dolmetscher für Arztbesuch & Krankenhaus | Noon',
+    description: 'Dolmetscher für Arztbesuch, Krankenhaus und Therapie: Arabisch, Türkisch, Ukrainisch, Persisch und mehr – vor Ort, per Video oder Telefon, vertraulich.',
+    intro: 'Beim Arzt zählt jedes Detail: Beschwerden, Vorerkrankungen, Medikamente, Risiken einer Behandlung. Wenn die Sprache fehlt, hilft ein neutraler Dolmetscher, der medizinische Begriffe kennt und vertraulich arbeitet. Wir stellen Dolmetscher für Arztpraxen, Kliniken, Reha und Therapie – vor Ort, per Video oder Telefon.',
+    highlights: ['Medizinisch erfahren', 'Video & Telefon', 'Schweigepflicht'],
+    sections: [
+      ['Typische Termine', '• Erstgespräch und Anamnese beim Hausarzt oder Facharzt\n• Aufklärung vor Operationen, Narkose oder Untersuchungen\n• Diagnosegespräche und Besprechung von Befunden\n• Schwangerschaft, Geburt und Kinderarzt\n• Psychotherapie, Psychiatrie und Beratung\n• Reha, Entlassgespräch und Medikamentenplan'],
+      ['Warum nicht Familie oder Kinder?', 'Angehörige übersetzen oft aus Liebe ungenau – sie lassen Belastendes weg oder verstehen Fachbegriffe nicht. Kinder sollten keine Diagnosen ihrer Eltern übersetzen müssen. Ein professioneller Dolmetscher überträgt neutral und vollständig, und die Ärztin oder der Arzt kann sicher sein, dass die Aufklärung verstanden wurde.'],
+      ['Vor Ort, Video oder Telefon?', 'Für Aufklärungsgespräche, lange Termine und Therapie empfehlen wir einen Dolmetscher vor Ort. Für kurze Rückfragen, Befundbesprechungen oder Terminabsprachen genügt oft ein Video- oder Telefoneinsatz – schneller verfügbar und günstiger.',
+        [{ href: '/de/standorte/stuttgart/telefondolmetscher/', label: 'Telefondolmetscher' }, { href: '/de/standorte/kiel/medizinischer-dolmetscher/', label: 'Medizinischer Dolmetscher Kiel' }]],
+      ['Wer zahlt den Dolmetscher?', 'Das ist im Gesundheitswesen nicht einheitlich geregelt. Manche Kliniken, Sozialämter oder Kostenträger übernehmen die Kosten im Einzelfall, oft zahlen Patientinnen und Patienten selbst. Fragen Sie vorab bei Praxis, Klinik oder Kostenträger nach – wir nennen Ihnen den Festpreis für die Entscheidung.'],
+      PRICE,
+      INTERPRETING_STEPS,
+      OFFICES,
+    ],
+    faqs: [
+      ['Kann ich einen Dolmetscher für eine Operation buchen?', 'Ja, für das Aufklärungsgespräch vor der Operation und für Nachgespräche. Bei der Operation selbst ist in der Regel kein Dolmetscher nötig.'],
+      ['Übersetzen Sie auch Arztbriefe?', 'Ja, Arztbriefe, Befunde und Impfnachweise übersetzen wir schriftlich – auf Wunsch beglaubigt.'],
+      ['Welche Sprachen sind möglich?', 'Unter anderem Arabisch, Türkisch, Ukrainisch, Russisch, Persisch, Kurdisch, Polnisch, Rumänisch und Englisch.'],
+      ['Sind Gesundheitsdaten geschützt?', 'Ja. Alle Dolmetscher arbeiten vertraulich; Unterlagen behandeln wir nach Datenschutzrecht.'],
+    ],
+    serviceType: 'Dolmetschen beim Arzt',
+  },
+  {
+    slug: 'dolmetscher-behoerde',
+    eyebrow: 'Dolmetscher für Behördengänge',
+    title: 'Dolmetscher für Behördengänge – Ausländerbehörde, Jobcenter und Amt.',
+    metaTitle: 'Dolmetscher für Behördengänge & Jobcenter | Noon',
+    description: 'Dolmetscher für Behördengänge: Ausländerbehörde, Jobcenter, Sozialamt, Familienkasse und Bürgeramt – vor Ort, per Video oder Telefon, ab 85 € pro Stunde.',
+    intro: 'Termine bei Ausländerbehörde, Jobcenter oder Sozialamt entscheiden oft über Aufenthalt, Leistungen und Fristen. Missverständnisse können teuer werden. Wir stellen Dolmetscher, die die Abläufe deutscher Behörden kennen – und übersetzen vorher die Dokumente, die Sie mitbringen müssen.',
+    highlights: ['Behördenerfahren', 'Neutral und vertraulich', 'Dokumente vorab übersetzt'],
+    sections: [
+      ['Für diese Behörden dolmetschen wir', '• Ausländerbehörde: Aufenthaltstitel, Verlängerung, Familiennachzug, Einbürgerung\n• Jobcenter und Arbeitsagentur: Beratungsgespräche, Eingliederungsvereinbarung\n• Sozialamt, Jugendamt und Familienkasse\n• Bürgeramt, Standesamt und Führerscheinstelle\n• Beratungsstellen und Wohlfahrtsverbände\n• Polizei bei Anzeigen und Vernehmungen'],
+      ['Gut vorbereitet zum Termin', '• Einladung oder Terminbestätigung bereithalten und uns vorab senden\n• Ausländische Dokumente rechtzeitig beglaubigt übersetzen lassen\n• Fragen, die Sie stellen möchten, aufschreiben\n• Mit dem Dolmetscher kurz vor dem Termin treffen, um den Ablauf zu besprechen\n\nSo nutzen Sie die oft knappe Termindauer optimal.',
+        [{ href: '/de/beglaubigte-uebersetzung-auslaenderbehoerde/', label: 'Übersetzungen für die Ausländerbehörde' }]],
+      ['Wer bezahlt den Dolmetscher beim Amt?', 'Das ist unterschiedlich: Manche Behörden bestellen und bezahlen Dolmetscher selbst, etwa in bestimmten Verfahren; in vielen Fällen bringen Antragstellerinnen und Antragsteller den Dolmetscher mit und tragen die Kosten. Fragen Sie bei der einladenden Stelle nach – und nennen Sie uns das Ergebnis, dann richten wir die Rechnung passend aus.'],
+      PRICE,
+      INTERPRETING_STEPS,
+      OFFICES,
+    ],
+    faqs: [
+      ['Darf ich einen eigenen Dolmetscher zur Ausländerbehörde mitbringen?', 'In der Regel ja. Manche Behörden verlangen für bestimmte Termine einen professionellen oder beeidigten Dolmetscher.'],
+      ['Geht das auch per Telefon?', 'Wenn die Behörde zustimmt, ja – besonders für kurze Termine und Rückfragen.'],
+      ['Welche Sprachen?', 'Unter anderem Arabisch, Persisch, Dari, Paschtu auf Anfrage, Türkisch, Ukrainisch, Russisch, Kurdisch und Tigrinya auf Anfrage.'],
+      ['Wie kurzfristig?', 'Je nach Sprache oft innerhalb weniger Tage, per Video oder Telefon häufig schneller.'],
+    ],
+    serviceType: 'Dolmetschen bei Behörden',
+  },
+  {
+    slug: 'dolmetscher-schule',
+    eyebrow: 'Dolmetscher für Elterngespräche',
+    title: 'Dolmetscher für Elterngespräche in Schule und Kita.',
+    metaTitle: 'Dolmetscher für Elterngespräche, Schule & Kita | Noon',
+    description: 'Dolmetscher für Elterngespräche in Schule und Kita: Elternabend, Lernentwicklung, Förderbedarf und Übergänge – vor Ort, per Video oder Telefon.',
+    intro: 'Eltern, die wenig Deutsch sprechen, sollen trotzdem genau verstehen, wie es ihrem Kind in Schule oder Kita geht. Wir stellen Dolmetscher für Elterngespräche, Elternabende und Beratungen – damit Schulen, Kitas und Familien sich auf Augenhöhe verständigen. Kinder müssen dann nicht für ihre Eltern übersetzen.',
+    highlights: ['Für Schulen und Kitas', 'Kurzfristig per Video', 'Vertraulich'],
+    sections: [
+      ['Typische Anlässe', '• Elterngespräch zur Lernentwicklung und zum Zeugnis\n• Gespräche über Förderbedarf, Sprachförderung oder Schulwechsel\n• Aufnahmegespräch in Kita oder Schule\n• Elternabende und Informationsveranstaltungen\n• Gespräche mit Schulsozialarbeit, Schulpsychologie oder Jugendamt'],
+      ['Warum Kinder nicht dolmetschen sollten', 'Wenn Kinder für ihre Eltern übersetzen, geraten sie in eine schwierige Rolle – besonders, wenn es um ihre eigenen Leistungen oder Probleme geht. Ein neutraler Dolmetscher sorgt dafür, dass Eltern alle Informationen erhalten und Lehrkräfte die Sicht der Familie verstehen.'],
+      ['Für Schulen, Kitas und Träger', 'Schulen und Kitas buchen Dolmetscher bei uns für einzelne Gespräche oder für wiederkehrende Termine, etwa an Elternsprechtagen. Für kurze Gespräche bieten wir Video- und Telefondolmetschen an – ohne Anfahrt und meist kurzfristig. Zeugnisse und Elternbriefe übersetzen wir auf Wunsch schriftlich.',
+        [{ href: '/de/zeugnis-uebersetzung/', label: 'Zeugnis übersetzen' }]],
+      ['Wer zahlt?', 'Das regeln Schulträger, Kommunen und Länder unterschiedlich: Teilweise gibt es Budgets für Sprachmittlung, teilweise zahlen Schule oder Träger direkt. Wir stellen die Rechnung an die Stelle, die den Einsatz bestellt.'],
+      PRICE,
+      OFFICES,
+    ],
+    faqs: [
+      ['Können Lehrkräfte direkt bei Ihnen buchen?', 'Ja, Schulen, Kitas und Träger können direkt bei uns buchen – die Rechnung geht an die bestellende Stelle.'],
+      ['Geht ein Elterngespräch per Video?', 'Ja, sehr gut. Der Dolmetscher wird per Link oder Telefon zugeschaltet.'],
+      ['Welche Sprachen sind gefragt?', 'Oft Arabisch, Türkisch, Ukrainisch, Persisch, Dari, Kurdisch, Rumänisch, Bulgarisch und Polnisch.'],
+      ['Wie lange dauert ein Einsatz?', 'Meist 30 bis 60 Minuten. Wir rechnen nach Zeit ab und nennen den Preis vorab.'],
+    ],
+    serviceType: 'Dolmetschen in Schule und Kita',
+  },
+  {
+    slug: 'dolmetscher-hochzeit',
+    eyebrow: 'Dolmetscher für Hochzeit',
+    title: 'Dolmetscher für Hochzeit und Trauung im Standesamt.',
+    metaTitle: 'Dolmetscher für Hochzeit & Trauung | Noon',
+    description: 'Dolmetscher für die Hochzeit: Anmeldung der Eheschließung und Trauung im Standesamt – auf Wunsch beeidigt, dazu beglaubigte Übersetzung aller Urkunden.',
+    intro: 'Sie heiraten in Deutschland und eine Person spricht nicht ausreichend Deutsch? Dann verlangt das Standesamt für die Anmeldung der Eheschließung und für die Trauung in der Regel einen Dolmetscher. Wir stellen Dolmetscher für Standesämter in ganz Deutschland – und übersetzen vorher alle Urkunden, die Sie für die Heirat brauchen.',
+    highlights: ['Anmeldung und Trauung', 'Auf Wunsch beeidigt', 'Urkunden aus einer Hand'],
+    sections: [
+      ['Was der Dolmetscher bei der Trauung macht', 'Die Standesbeamtin oder der Standesbeamte stellt die Fragen auf Deutsch, der Dolmetscher überträgt sie und Ihre Antworten – auch die rechtlichen Hinweise zur Namensführung. Seine Anwesenheit wird in der Niederschrift vermerkt. Wir besprechen den Ablauf vorher mit Ihnen, damit der Tag ruhig und feierlich bleibt.'],
+      ['Beeidigt oder nicht?', 'Viele Standesämter verlangen einen allgemein beeidigten Dolmetscher, andere akzeptieren eine sprachkundige Person, die nicht zur Familie gehört. Fragen Sie bei Ihrem Standesamt nach – wir stellen auf Wunsch beeidigte Dolmetscher und können Anmeldung und Trauung mit derselben Person abdecken.',
+        [{ href: '/de/dolmetschen/standesamt-dolmetscher/', label: 'Standesamt-Dolmetscher' }, { href: '/de/standorte/berlin/dolmetscher-standesamt/', label: 'Dolmetscher Standesamt Berlin' }]],
+      ['Die Urkunden für die Heirat', 'Für die Anmeldung brauchen ausländische Verlobte meist Geburtsurkunde, Ledigkeitsbescheinigung oder Ehefähigkeitszeugnis und – bei früherer Ehe – Scheidungsurteil oder Sterbeurkunde, jeweils beglaubigt übersetzt. Wir übersetzen alle Urkunden zusammen, mit einheitlicher Namensschreibweise und Festpreis.',
+        [{ href: '/de/ehefaehigkeitszeugnis-uebersetzung/', label: 'Ehefähigkeitszeugnis übersetzen' }, { href: '/de/beglaubigte-uebersetzung-standesamt/', label: 'Übersetzungen fürs Standesamt' }]],
+      ['Sprachen', 'Häufig dolmetschen wir bei Trauungen Arabisch, Türkisch, Ukrainisch, Russisch, Persisch, Polnisch, Rumänisch, Englisch, Französisch und Italienisch.', LANGUAGE_LINKS],
+      PRICE,
+      OFFICES,
+    ],
+    faqs: [
+      ['Kann ein Freund bei der Trauung dolmetschen?', 'Das entscheidet das Standesamt. Viele verlangen eine unabhängige, oft beeidigte Person.'],
+      ['Wie lange dauert der Einsatz bei der Trauung?', 'Die Trauung selbst meist 20–40 Minuten; wir planen etwas Zeit davor ein.'],
+      ['Dolmetschen Sie auch bei Trauungen am Samstag?', 'Ja, nach Absprache – sagen Sie uns das Datum möglichst früh.'],
+      ['Übersetzen Sie auch die Heiratsurkunde danach?', 'Ja, zum Beispiel für die Anerkennung der Ehe im Herkunftsland – beglaubigt und auf Wunsch mit Apostille-Hinweis.'],
+    ],
+    serviceType: 'Dolmetschen bei der Hochzeit',
+  },
+];

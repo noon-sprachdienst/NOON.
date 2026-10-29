@@ -4,7 +4,7 @@ import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
-import { CITY_HUB_SECTIONS, LANDING_PAGES } from './landing/index.js';
+import { LANDING_PAGES, OFFICE_SECTIONS } from './landing/index.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -704,9 +704,9 @@ const locationPages = LOCATIONS.map((location) => ({
   cta: 'Kostenloses Angebot anfordern',
   ...locationDetails[location.slug],
 })).map((page) => {
-  // Offices with "Leistung + Stadt" sub-pages link to all of them right after the intro section.
-  const hub = CITY_HUB_SECTIONS[page.location.slug];
-  return hub ? { ...page, updated: '2026-10-29', sections: [page.sections[0], hub, ...page.sections.slice(1)] } : page;
+  // Plan v4: links to the office's sub-pages and extra sections, right after the intro section.
+  const extra = OFFICE_SECTIONS[page.location.slug];
+  return extra ? { ...page, updated: '2026-10-29', sections: [page.sections[0], ...extra, ...page.sections.slice(1)] } : page;
 });
 
 // Service-area cities: places we serve digitally/deutschlandweit but do NOT

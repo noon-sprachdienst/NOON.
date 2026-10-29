@@ -5,6 +5,8 @@
 // directions (into and out of German), Farsi and Dari, the Arabic dialects listed.
 // Sections are [heading, text, links?]; text lines starting with "• " render as a list.
 
+import { LANGUAGE_EXTRA } from './landing/extras2.js';
+
 const HUB_PATH = '/de/sprachen';
 const PARENT = { href: `${HUB_PATH}/`, label: 'Sprachen' };
 const CTA = 'Kostenloses Angebot anfordern';
@@ -214,7 +216,122 @@ const LANGUAGE_PAGES_BASE = [
       ['Übersetzen Sie auch Dokumente aus der Republik Moldau?', 'Ja. Rumänischsprachige Dokumente aus der Republik Moldau übersetzen wir ebenfalls beglaubigt.'],
     ],
   }),
+  // Added 29.10.2026 (plan v4, wave 2): languages Google suggests often next to
+  // "beglaubigte übersetzung" / "übersetzer" and that had no page yet.
+  languagePage({
+    slug: 'polnisch',
+    language: 'Polnisch',
+    adjective: 'Polnische',
+    description: 'Beglaubigte Polnisch-Übersetzungen und Polnisch-Dolmetscher: Urkunden, Zeugnisse, Arbeits- und Kindergeldunterlagen – Polnisch–Deutsch in beide Richtungen.',
+    intro: 'Polnisch gehört zu den meistgesprochenen Sprachen in Deutschland. Wir übersetzen polnische Urkunden, Zeugnisse und Arbeitsunterlagen beglaubigt ins Deutsche und deutsche Dokumente ins Polnische – durch ermächtigte Übersetzer, anerkannt von Behörden in Deutschland und Polen.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunde (akt urodzenia, akt małżeństwa)\n• Scheidungsurteile und Gerichtsentscheidungen\n• Zeugnisse, Diplome und Berufsabschlüsse – etwa für Pflege und Handwerk\n• Arbeitsverträge, Arbeitsbescheinigungen und Unterlagen für das Kindergeld\n• Rentenbescheide (ZUS), Führerscheine und Fahrzeugpapiere',
+    reverse: 'Auch vom Deutschen ins Polnische: zum Beispiel deutsche Urkunden, Arbeitszeugnisse, Rentenbescheide und Urteile für Behörden, Gerichte oder Arbeitgeber in Polen.',
+    special: [
+      'Mehrsprachige EU-Formulare',
+      'Für Geburts-, Heirats- und Sterbeurkunden aus Polen gibt es mehrsprachige EU-Formulare, die eine Übersetzung in manchen Fällen ersetzen. Ob Ihre Stelle das Formular akzeptiert, entscheidet sie selbst. Eine Apostille ist innerhalb der EU für viele öffentliche Urkunden nicht mehr nötig.',
+      [{ href: '/de/standorte/kiel/polnisch/', label: 'Polnisch Übersetzer Kiel' }, { href: '/de/apostille/', label: 'Apostille und Legalisation' }],
+    ],
+    faqs: [
+      ['Übersetzen Sie Unterlagen für die Familienkasse?', 'Ja, polnische Bescheinigungen und Urkunden für Kindergeld und Familienleistungen übersetzen wir beglaubigt.'],
+    ],
+  }),
+  languagePage({
+    slug: 'spanisch',
+    language: 'Spanisch',
+    adjective: 'Spanische',
+    description: 'Beglaubigte Spanisch-Übersetzungen und Spanisch-Dolmetscher: Urkunden aus Spanien und Lateinamerika, Diplome, Verträge – Spanisch–Deutsch in beide Richtungen.',
+    intro: 'Ob Geburtsurkunde aus Kolumbien, Heiratsurkunde aus Spanien oder Diplom aus Mexiko: Wir übersetzen spanische Dokumente beglaubigt ins Deutsche und deutsche Dokumente ins Spanische – durch ermächtigte Übersetzer, für Behörden, Hochschulen und Gerichte.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden (partida/acta de nacimiento, certificado de matrimonio) aus Spanien und Lateinamerika\n• Diplome, Títulos und Notenübersichten für Anerkennung und Studium\n• Polizeiliche Führungszeugnisse (antecedentes penales) und Scheidungsurteile\n• Arbeitsverträge, Vollmachten und Firmendokumente\n• Führerscheine',
+    reverse: 'Auch vom Deutschen ins Spanische: etwa Zeugnisse, Führungszeugnisse und Urkunden für Spanien, Mexiko, Argentinien, Kolumbien und andere Länder.',
+    special: [
+      'Spanien oder Lateinamerika?',
+      'Spanische Urkunden aus der EU brauchen meist keine Apostille; für Dokumente aus Lateinamerika ist häufig eine Apostille des Ausstellungslandes nötig – wir übersetzen sie mit. Für Übersetzungen ins Spanische sagen Sie uns das Zielland, damit Begriffe und Schreibweisen passen.',
+      [{ href: '/de/apostille/', label: 'Apostille und Legalisation' }, { href: '/de/diplom-uebersetzung/', label: 'Diplom übersetzen' }],
+    ],
+    faqs: [
+      ['Übersetzen Sie Urkunden aus Lateinamerika?', 'Ja, aus allen spanischsprachigen Ländern – zum Beispiel Mexiko, Kolumbien, Argentinien, Peru, Venezuela und Kuba.'],
+    ],
+  }),
+  languagePage({
+    slug: 'italienisch',
+    language: 'Italienisch',
+    adjective: 'Italienische',
+    description: 'Beglaubigte Italienisch-Übersetzungen und Italienisch-Dolmetscher: Urkunden, Vollmachten, Verträge und Diplome – Italienisch–Deutsch in beide Richtungen.',
+    intro: 'Für Hochzeit, Erbschaft, Immobilienkauf, Studium oder Arbeit übersetzen wir italienische Dokumente beglaubigt ins Deutsche und deutsche Dokumente ins Italienische. Dazu stellen wir Italienisch-Dolmetscher für Notar, Standesamt, Gericht und Geschäftstermine.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden (estratto dell’atto di nascita, certificato di matrimonio)\n• Vollmachten (procura) für Erbschaft und Immobilien in Italien\n• Diplome (diploma di laurea) und Zeugnisse\n• Testamente, Erbscheine und Gerichtsentscheidungen\n• Verträge und Handelsregisterauszüge (visura camerale)',
+    reverse: 'Auch vom Deutschen ins Italienische: zum Beispiel Vollmachten, Erbscheine, Urkunden und Firmendokumente für Notare, Gemeinden und Behörden in Italien.',
+    special: [
+      'Erbschaft und Immobilien in Italien',
+      'Bei Erbschaften und Immobiliengeschäften in Italien werden deutsche Vollmachten, Erbscheine oder das Europäische Nachlasszeugnis häufig in beglaubigter Übersetzung verlangt. Wir übersetzen alle Unterlagen einheitlich und stellen für den Notartermin in Deutschland einen Italienisch-Dolmetscher.',
+      [{ href: '/de/testament-uebersetzung/', label: 'Testament und Erbschein übersetzen' }, { href: '/de/standorte/berlin/italienisch/', label: 'Italienisch Dolmetscher Berlin' }],
+    ],
+    faqs: [
+      ['Übersetzen Sie Vollmachten für einen Notar in Italien?', 'Ja, beglaubigt ins Italienische – häufig für Erbschaften und Immobilienverkäufe.'],
+    ],
+  }),
+  languagePage({
+    slug: 'griechisch',
+    language: 'Griechisch',
+    adjective: 'Griechische',
+    description: 'Beglaubigte Griechisch-Übersetzungen und Griechisch-Dolmetscher: Urkunden, Familienregister, Diplome und Verträge – Griechisch–Deutsch in beide Richtungen.',
+    intro: 'Viele griechische Familien leben seit Generationen in Deutschland und haben Behördenangelegenheiten in beiden Ländern. Wir übersetzen griechische Urkunden beglaubigt ins Deutsche und deutsche Dokumente ins Griechische – mit korrekter Übertragung der Namen aus dem griechischen Alphabet.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden, Familienregisterauszüge (πιστοποιητικό οικογενειακής κατάστασης)\n• Diplome und Zeugnisse (Ptychio) für Anerkennung und Bewerbung\n• Scheidungsurteile, Vollmachten und Testamente\n• Rentenunterlagen und Bescheinigungen\n• Führerscheine',
+    reverse: 'Auch vom Deutschen ins Griechische: etwa Urkunden, Erbscheine, Vollmachten und Rentenbescheide für Behörden, Notare und Gemeinden in Griechenland oder Zypern.',
+    special: [
+      'Namen aus dem griechischen Alphabet',
+      'Griechische Namen können unterschiedlich in lateinische Schrift übertragen werden. Wir übernehmen die Schreibweise aus Ihrem Pass oder Personalausweis und verwenden sie in allen Dokumenten einheitlich. Für Urkunden aus Griechenland und Zypern entfällt als EU-Staat für viele öffentliche Urkunden die Apostille.',
+    ],
+    faqs: [
+      ['Übersetzen Sie auch Dokumente aus Zypern?', 'Ja, griechischsprachige Dokumente aus Zypern übersetzen wir ebenfalls beglaubigt.'],
+    ],
+  }),
+  {
+    ...languagePage({
+    slug: 'serbisch-kroatisch-bosnisch',
+    language: 'Serbisch, Kroatisch und Bosnisch',
+    adjective: 'Serbische, kroatische und bosnische',
+    description: 'Beglaubigte Übersetzungen Serbisch, Kroatisch und Bosnisch und Dolmetscher: Urkunden, Zeugnisse, Führerscheine – in lateinischer und kyrillischer Schrift.',
+    intro: 'Serbisch, Kroatisch, Bosnisch und Montenegrinisch sind eng verwandt, haben aber eigene Standards – und Serbisch wird in kyrillischer und lateinischer Schrift geschrieben. Wir übersetzen Urkunden und Zeugnisse aus Serbien, Kroatien, Bosnien und Herzegowina und Montenegro beglaubigt ins Deutsche und deutsche Dokumente in die jeweilige Sprache.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden (izvod iz matične knjige rođenih/venčanih), auch internationale Auszüge\n• Staatsangehörigkeitsnachweise und Meldebescheinigungen\n• Zeugnisse, Diplome und Berufsabschlüsse für die Anerkennung\n• Führerscheine für die Umschreibung\n• Scheidungsurteile, Vollmachten und Rentenunterlagen',
+    reverse: 'Auch vom Deutschen ins Serbische, Kroatische oder Bosnische – sagen Sie uns, in welchem Land das Dokument verwendet wird, damit Sprache und Schrift passen.',
+    special: [
+      'Welche Sprache für welches Land?',
+      'Für Behörden in Kroatien übersetzen wir ins Kroatische, für Serbien ins Serbische (auf Wunsch in kyrillischer Schrift), für Bosnien und Herzegowina ins Bosnische, Kroatische oder Serbische – je nach Stelle. Urkunden aus Kroatien als EU-Staat brauchen meist keine Apostille, Urkunden aus Serbien und Bosnien und Herzegowina häufig schon.',
+      [{ href: '/de/apostille/', label: 'Apostille und Legalisation' }],
+    ],
+    faqs: [
+      ['Übersetzen Sie Dokumente in kyrillischer Schrift?', 'Ja, serbische Dokumente in kyrillischer und lateinischer Schrift.'],
+    ],
+    }),
+    metaTitle: 'Serbisch, Kroatisch, Bosnisch Übersetzer – beglaubigt | Noon',
+  },
+  languagePage({
+    slug: 'albanisch',
+    language: 'Albanisch',
+    adjective: 'Albanische',
+    description: 'Beglaubigte Albanisch-Übersetzungen und Albanisch-Dolmetscher: Urkunden aus Albanien, Kosovo und Nordmazedonien, Zeugnisse und Führerscheine.',
+    intro: 'Wir übersetzen albanische Dokumente aus Albanien, dem Kosovo und Nordmazedonien beglaubigt ins Deutsche und deutsche Dokumente ins Albanische – für Standesamt, Ausländerbehörde, Führerscheinstelle und Anerkennung. Dazu stellen wir Albanisch-Dolmetscher.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden (certifikatë lindjeje, certifikatë martese) und Familienzertifikate\n• Ledigkeitsbescheinigungen für die Heirat in Deutschland\n• Zeugnisse und Diplome für die Anerkennung\n• Führerscheine für die Umschreibung\n• Gerichtsentscheidungen und Vollmachten',
+    reverse: 'Auch vom Deutschen ins Albanische: etwa Urkunden, Zeugnisse und Vollmachten für Behörden in Albanien, im Kosovo oder in Nordmazedonien.',
+    special: [
+      'Albanien, Kosovo oder Nordmazedonien',
+      'Urkunden aus diesen Ländern sehen unterschiedlich aus und tragen oft zweisprachige Angaben. Ob eine Apostille oder eine andere Form der Echtheitsbestätigung nötig ist, hängt vom Ausstellungsland und von der Stelle ab, die das Dokument verlangt – wir übersetzen alle Vermerke mit.',
+      [{ href: '/de/apostille/', label: 'Apostille und Legalisation' }],
+    ],
+    faqs: [
+      ['Übersetzen Sie Dokumente aus dem Kosovo?', 'Ja, albanischsprachige Urkunden aus dem Kosovo – auch zweisprachige Albanisch/Serbisch.'],
+    ],
+  }),
 ];
+
+// Plan v4 language pages get one more own section (before "So einfach geht’s") and FAQs.
+for (const page of LANGUAGE_PAGES_BASE) {
+  const extra = LANGUAGE_EXTRA[page.path];
+  if (!extra) continue;
+  const at = page.sections.indexOf(PROCESS);
+  page.sections = [...page.sections.slice(0, at), extra.section, ...page.sections.slice(at)];
+  page.faqs = [...page.faqs.slice(0, -1), ...extra.faqs, page.faqs.at(-1)];
+}
 
 const hubLinks = LANGUAGE_PAGES_BASE.map((page) => ({ href: `${page.path}/`, label: page.title }));
 
@@ -250,4 +367,6 @@ const LANGUAGE_HUB = {
 };
 
 export const LANGUAGE_HUB_PATH = HUB_PATH;
+// Language pages added in plan v4, wave 2 (checked by scripts/audit-landing-pages.mjs).
+export const NEW_LANGUAGE_PATHS = ['polnisch', 'spanisch', 'italienisch', 'griechisch', 'serbisch-kroatisch-bosnisch', 'albanisch'].map((slug) => `${HUB_PATH}/${slug}`);
 export const LANGUAGE_PAGES = [LANGUAGE_HUB, ...LANGUAGE_PAGES_BASE];
