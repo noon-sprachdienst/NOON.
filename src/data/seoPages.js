@@ -4,6 +4,7 @@ import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
+import { CITY_HUB_SECTIONS, LANDING_PAGES } from './landing/index.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -702,7 +703,11 @@ const locationPages = LOCATIONS.map((location) => ({
   ],
   cta: 'Kostenloses Angebot anfordern',
   ...locationDetails[location.slug],
-}));
+})).map((page) => {
+  // Offices with "Leistung + Stadt" sub-pages link to all of them right after the intro section.
+  const hub = CITY_HUB_SECTIONS[page.location.slug];
+  return hub ? { ...page, updated: '2026-10-29', sections: [page.sections[0], hub, ...page.sections.slice(1)] } : page;
+});
 
 // Service-area cities: places we serve digitally/deutschlandweit but do NOT
 // have a physical office in. These pages deliberately carry NO street address
@@ -1524,7 +1529,7 @@ const publishedDocumentPages = documentPagesDe
     };
   });
 
-export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE]
+export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE, ...LANDING_PAGES]
   .map((page) => (PAGE_UPGRADES[page.path] ? { ...page, ...PAGE_UPGRADES[page.path] } : page))
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
@@ -1718,8 +1723,9 @@ export function getPageSchema(page) {
     '@type': 'Service',
     name: page.serviceType,
     description: page.description,
-    provider: { '@id': `${SITE_URL}/#organization` },
-    areaServed: 'DE',
+    // City sub-pages: the service is provided by that office and aimed at that city.
+    provider: { '@id': page.branchSlug ? `${getCanonicalUrl(`/de/standorte/${page.branchSlug}`)}#branch` : `${SITE_URL}/#organization` },
+    areaServed: page.areaCity ? { '@type': 'City', name: page.areaCity } : 'DE',
     serviceType: page.serviceType,
     offers: {
       '@type': 'Offer',
