@@ -52,9 +52,9 @@ function dayLabel(key, t, long = false) {
 /* ─── Building blocks ─────────────────────────────────── */
 function Card({ title, sub, action, className = '', children }) {
   return (
-    <section className={`ad-card ${className}`}>
+    <section className={`np-card ${className}`}>
       {(title || action) && (
-        <header className="ad-card-head">
+        <header className="np-card-head">
           <div>
             {title && <h2>{title}</h2>}
             {sub && <p>{sub}</p>}
@@ -69,13 +69,13 @@ function Card({ title, sub, action, className = '', children }) {
 
 function Kpi({ icon: Icon, label, value, hint, delta, deltaLabel, invert, spark, color }) {
   return (
-    <div className="ad-kpi" style={{ '--ad-accent': color }}>
-      <div className="ad-kpi-top">
-        <span className="ad-kpi-icon"><Icon size={18} strokeWidth={2.2} /></span>
-        <span className="ad-kpi-label">{label}</span>
+    <div className="np-kpi" style={{ '--np-accent': color }}>
+      <div className="np-kpi-top">
+        <span className="np-kpi-icon"><Icon size={18} strokeWidth={2.2} /></span>
+        <span className="np-kpi-label">{label}</span>
       </div>
-      <div className="ad-kpi-value">{value}</div>
-      <div className="ad-kpi-meta">
+      <div className="np-kpi-value">{value}</div>
+      <div className="np-kpi-meta">
         <Delta value={delta} invert={invert} label={deltaLabel} />
         {hint && <span>{hint}</span>}
       </div>
@@ -85,12 +85,12 @@ function Kpi({ icon: Icon, label, value, hint, delta, deltaLabel, invert, spark,
 }
 
 function Notice({ children, tone = 'info' }) {
-  return <div className={`ad-notice ad-notice--${tone}`}>{children}</div>;
+  return <div className={`np-notice np-notice--${tone}`}>{children}</div>;
 }
 
 function Legend({ items }) {
   return (
-    <ul className="ad-legend">
+    <ul className="np-legend">
       {items.map((item) => (
         <li key={item.label}>
           <i style={{ background: item.color }} />
@@ -116,10 +116,10 @@ function OverviewTab({ daily, events, range, t, lang }) {
   const actionTotal = m.actions.reduce((s, [, v]) => s + v, 0);
 
   return (
-    <div className="ad-stack">
+    <div className="np-stack">
       {m.needsRebuild && <Notice tone="warn">{t.needsRebuild}</Notice>}
 
-      <div className="ad-kpis">
+      <div className="np-kpis">
         <Kpi icon={Users} color={COLORS.navy} label={t.visitors} value={visits === null ? '—' : nf(visits)} hint={t.visitorsHint}
           delta={m.delta.sessions} deltaLabel={t.noPrevious} spark={m.series.map((d) => d.sessions ?? 0)} />
         <Kpi icon={Eye} color={COLORS.sky} label={t.pageViews} value={nf(m.current.pageViews)} hint={t.pageViewsHint}
@@ -129,11 +129,11 @@ function OverviewTab({ daily, events, range, t, lang }) {
         <Kpi icon={Clock} color={COLORS.teal} label={t.avgTime} value={fmtDuration(m.current.avgDuration)} hint={t.avgTimeHint}
           delta={m.delta.avgDuration} deltaLabel={t.noPrevious} spark={m.series.map((d) => d.avgDuration)} />
       </div>
-      <p className="ad-compare">{m.previous ? vs : t.noPrevious}</p>
+      <p className="np-compare">{m.previous ? vs : t.noPrevious}</p>
 
-      {!hasData ? <Card><p className="ad-empty">{t.noData}</p></Card> : (
+      {!hasData ? <Card><p className="np-empty">{t.noData}</p></Card> : (
         <>
-          <div className="ad-row ad-row--wide">
+          <div className="np-row np-row--wide">
             <Card title={t.trafficTitle} sub={t.trafficSub}
               action={<Legend items={[{ label: t.pageViews, color: COLORS.sky }, { label: t.visitors, color: COLORS.navy }]} />}>
               <TrendChart
@@ -147,114 +147,114 @@ function OverviewTab({ daily, events, range, t, lang }) {
               />
             </Card>
             <Card title={t.contactTitle} sub={t.contactSub}>
-              <div className="ad-actions">
+              <div className="np-actions">
                 {m.actions.map(([action, count]) => {
                   const meta = ACTION_META[action] || { icon: MousePointerClick, color: COLORS.slate };
                   const Icon = meta.icon;
                   return (
-                    <div className="ad-action" key={action} style={{ '--ad-accent': meta.color }}>
-                      <span className="ad-action-icon"><Icon size={16} /></span>
-                      <span className="ad-action-label">{t.actions[action] || action}</span>
+                    <div className="np-action" key={action} style={{ '--np-accent': meta.color }}>
+                      <span className="np-action-icon"><Icon size={16} /></span>
+                      <span className="np-action-label">{t.actions[action] || action}</span>
                       <b>{nf(count)}</b>
-                      <span className="ad-action-bar"><i style={{ width: `${actionTotal ? (count / actionTotal) * 100 : 0}%` }} /></span>
+                      <span className="np-action-bar"><i style={{ width: `${actionTotal ? (count / actionTotal) * 100 : 0}%` }} /></span>
                     </div>
                   );
                 })}
-                {!m.actions.length && <p className="ad-empty-line">—</p>}
+                {!m.actions.length && <p className="np-empty-line">—</p>}
               </div>
-              <div className="ad-card-foot"><span>{t.total}</span><b>{nf(actionTotal)}</b></div>
+              <div className="np-card-foot"><span>{t.total}</span><b>{nf(actionTotal)}</b></div>
             </Card>
           </div>
 
-          <div className="ad-row ad-row--three">
+          <div className="np-row np-row--three">
             <Card title={t.sourcesTitle}>
-              <div className="ad-donut-row">
+              <div className="np-donut-row">
                 <Donut segments={m.sources.map(([k, v], i) => ({ label: k, value: v, color: SOURCE_COLORS[k] || [COLORS.slate, '#cbd5e1', '#64748b'][i % 3] }))}
                   centerLabel={visits !== null ? t.visits : t.pageViews} />
                 <Legend items={m.sources.map(([k, v], i) => ({ label: sourceLabel(k), value: nf(v), color: SOURCE_COLORS[k] || [COLORS.slate, '#cbd5e1', '#64748b'][i % 3] }))} />
               </div>
             </Card>
             <Card title={t.devicesTitle}>
-              <div className="ad-devices">
+              <div className="np-devices">
                 {['mobile', 'desktop', 'tablet'].map((key) => {
                   const value = m.devices[key] || 0;
                   const share = deviceTotal ? Math.round((value / deviceTotal) * 100) : 0;
                   const { icon: Icon, color } = DEVICE_META[key];
                   return (
-                    <div className="ad-device" key={key} style={{ '--ad-accent': color }}>
-                      <span className="ad-device-icon"><Icon size={18} /></span>
+                    <div className="np-device" key={key} style={{ '--np-accent': color }}>
+                      <span className="np-device-icon"><Icon size={18} /></span>
                       <div><strong>{share}%</strong><span>{t[key]} · {nf(value)}</span></div>
                     </div>
                   );
                 })}
               </div>
-              <div className="ad-stackbar">
+              <div className="np-stackbar">
                 {['mobile', 'desktop', 'tablet'].map((key) => (
                   <i key={key} style={{ width: `${deviceTotal ? ((m.devices[key] || 0) / deviceTotal) * 100 : 0}%`, background: DEVICE_META[key].color }} />
                 ))}
               </div>
             </Card>
             <Card title={t.countriesTitle}>
-              <BarList color="var(--ad-bar-navy)" rows={m.countries.map(([code, v]) => ({ key: code, badge: code, label: countryName(code, lang), value: v }))} />
+              <BarList color="var(--np-bar-navy)" rows={m.countries.map(([code, v]) => ({ key: code, badge: code, label: countryName(code, lang), value: v }))} />
             </Card>
           </div>
 
-          <div className="ad-row ad-row--wide">
+          <div className="np-row np-row--wide">
             <Card title={t.heatmapTitle} sub={t.heatmapSub}>
               {m.hasHeat
                 ? <Heatmap data={m.heat} weekdays={t.weekdays} less={t.less} more={t.more} peaks={{ day: t.peakDay, hour: t.peakHour, office: t.officeHours, weekend: t.weekend }} />
-                : <p className="ad-empty">{t.needsRebuild}</p>}
+                : <p className="np-empty">{t.needsRebuild}</p>}
             </Card>
             <Card title={t.languagesTitle}>
-              <BarList color="var(--ad-bar-teal)" rows={m.languages.map(([k, v]) => ({ key: k, label: k, value: v, ltr: true }))} />
-              <h3 className="ad-subhead">{t.citiesTitle}</h3>
-              <BarList color="var(--ad-bar-amber)" rows={m.cities.slice(0, 6).map(([k, v]) => ({ key: k, label: k, value: v }))} />
+              <BarList color="var(--np-bar-teal)" rows={m.languages.map(([k, v]) => ({ key: k, label: k, value: v, ltr: true }))} />
+              <h3 className="np-subhead">{t.citiesTitle}</h3>
+              <BarList color="var(--np-bar-amber)" rows={m.cities.slice(0, 6).map(([k, v]) => ({ key: k, label: k, value: v }))} />
             </Card>
           </div>
 
-          <div className="ad-row ad-row--half">
+          <div className="np-row np-row--half">
             <Card title={t.topPagesTitle}>
-              <BarList color="var(--ad-bar-sky)" rows={m.pages.map(([k, v]) => ({ key: k, label: k, value: v, ltr: true }))} />
+              <BarList color="var(--np-bar-sky)" rows={m.pages.map(([k, v]) => ({ key: k, label: k, value: v, ltr: true }))} />
             </Card>
             <Card title={t.landingTitle} sub={t.landingSub}>
               {m.landing.length
-                ? <BarList color="var(--ad-bar-red)" rows={m.landing.map(([k, v]) => ({ key: k, label: k, value: v, ltr: true }))} />
-                : <p className="ad-empty">{t.needsRebuild}</p>}
+                ? <BarList color="var(--np-bar-red)" rows={m.landing.map(([k, v]) => ({ key: k, label: k, value: v, ltr: true }))} />
+                : <p className="np-empty">{t.needsRebuild}</p>}
             </Card>
           </div>
         </>
       )}
 
       <Card title={t.recentTitle} sub={t.recentSub}>
-        <div className="ad-visits">
+        <div className="np-visits">
           {sessions.map((s) => {
             const DeviceIcon = DEVICE_META[s.device]?.icon || Monitor;
             return (
-              <div className="ad-visit" key={s.id}>
-                <div className="ad-visit-who">
-                  <span className="ad-code">{s.country || 'XX'}</span>
+              <div className="np-visit" key={s.id}>
+                <div className="np-visit-who">
+                  <span className="np-code">{s.country || 'XX'}</span>
                   <div>
                     <strong>{s.city || countryName(s.country || 'XX', lang)}</strong>
                     <span><DeviceIcon size={12} /> {s.browser || t.unknown} · {sourceLabel(s.referrer && s.referrer !== 'direct' ? s.referrer.replace(/^www\./, '') : 'direct')}</span>
                   </div>
                 </div>
-                <div className="ad-visit-path" dir="ltr">
-                  {s.pages.slice(0, 5).map((p, i) => <span key={`${p}-${i}`} className="ad-chip">{p}</span>)}
-                  {s.pages.length > 5 && <span className="ad-chip ad-chip--more">+{s.pages.length - 5}</span>}
-                  {s.cta.map((a, i) => <span key={`${a}-${i}`} className="ad-chip ad-chip--cta">{t.actions[a] || a}</span>)}
+                <div className="np-visit-path" dir="ltr">
+                  {s.pages.slice(0, 5).map((p, i) => <span key={`${p}-${i}`} className="np-chip">{p}</span>)}
+                  {s.pages.length > 5 && <span className="np-chip np-chip--more">+{s.pages.length - 5}</span>}
+                  {s.cta.map((a, i) => <span key={`${a}-${i}`} className="np-chip np-chip--cta">{t.actions[a] || a}</span>)}
                 </div>
-                <div className="ad-visit-time">
+                <div className="np-visit-time">
                   <b>{fmtDuration(s.duration)}</b>
                   <span>{timeAgo(s.end, t)}</span>
                 </div>
               </div>
             );
           })}
-          {!sessions.length && <p className="ad-empty">{t.noData}</p>}
+          {!sessions.length && <p className="np-empty">{t.noData}</p>}
         </div>
       </Card>
 
-      <p className="ad-footnote"><ShieldCheck size={14} /> {t.consentNote}</p>
+      <p className="np-footnote"><ShieldCheck size={14} /> {t.consentNote}</p>
     </div>
   );
 }
@@ -263,7 +263,7 @@ function OverviewTab({ daily, events, range, t, lang }) {
 function CopyField({ value, t }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div className="ad-copy">
+    <div className="np-copy">
       <code dir="ltr">{value || '—'}</code>
       <button type="button" onClick={() => { navigator.clipboard?.writeText(value); setCopied(true); setTimeout(() => setCopied(false), 1500); }}>
         {copied ? <Check size={14} /> : <Copy size={14} />} {copied ? t.copied : t.copy}
@@ -274,20 +274,20 @@ function CopyField({ value, t }) {
 
 function SearchSetup({ data, t }) {
   return (
-    <Card title={t.setupTitle} className="ad-setup">
+    <Card title={t.setupTitle} className="np-setup">
       <Notice tone="warn">{t.reasons[data.reason] || t.reasons.api_error}</Notice>
       <p>{t.setupIntro}</p>
-      <ol className="ad-steps">
+      <ol className="np-steps">
         <li>
           <span>{t.step1}</span>
-          <a className="ad-btn ad-btn--ghost" href={`https://console.cloud.google.com/apis/library/searchconsole.googleapis.com?project=${GCP_PROJECT}`} target="_blank" rel="noreferrer">
+          <a className="np-btn np-btn--ghost" href={`https://console.cloud.google.com/apis/library/searchconsole.googleapis.com?project=${GCP_PROJECT}`} target="_blank" rel="noreferrer">
             <ExternalLink size={14} /> {t.openApi}
           </a>
         </li>
         <li>
           <span>{t.step2}</span>
           <CopyField value={data.serviceAccount} t={t} />
-          <a className="ad-btn ad-btn--ghost" href={`https://search.google.com/search-console/users?resource_id=${encodeURIComponent(data.site || GSC_PROPERTY)}`} target="_blank" rel="noreferrer">
+          <a className="np-btn np-btn--ghost" href={`https://search.google.com/search-console/users?resource_id=${encodeURIComponent(data.site || GSC_PROPERTY)}`} target="_blank" rel="noreferrer">
             <ExternalLink size={14} /> {t.openUsers}
           </a>
         </li>
@@ -313,8 +313,8 @@ function SearchTab({ range, t, lang, reloadKey }) {
     return () => { alive = false; };
   }, [range, reloadKey]);
 
-  if (failed) return <Card><p className="ad-empty">{t.reasons.api_error}</p></Card>;
-  if (!data) return <Card><p className="ad-empty">{t.loading}</p></Card>;
+  if (failed) return <Card><p className="np-empty">{t.reasons.api_error}</p></Card>;
+  if (!data) return <Card><p className="np-empty">{t.loading}</p></Card>;
   if (!data.configured) return <SearchSetup data={data} t={t} />;
 
   const cur = data.totals;
@@ -328,8 +328,8 @@ function SearchTab({ range, t, lang, reloadKey }) {
   });
 
   return (
-    <div className="ad-stack">
-      <div className="ad-kpis">
+    <div className="np-stack">
+      <div className="np-kpis">
         <Kpi icon={MousePointerClick} color={COLORS.sky} label={t.clicks} value={nf(cur.clicks)} delta={change(cur.clicks, prev.clicks)} spark={data.series.map((d) => d.clicks)} />
         <Kpi icon={Eye} color={COLORS.violet} label={t.impressions} value={nf(cur.impressions)} delta={change(cur.impressions, prev.impressions)} spark={data.series.map((d) => d.impressions)} />
         <Kpi icon={FileText} color={COLORS.teal} label={t.ctr} value={`${nf(cur.ctr * 100, 1)}%`} delta={change(cur.ctr, prev.ctr)}
@@ -337,7 +337,7 @@ function SearchTab({ range, t, lang, reloadKey }) {
         <Kpi icon={Search} color={COLORS.amber} label={t.position} value={nf(cur.position, 1)} hint={t.positionHint} delta={change(cur.position, prev.position)} invert
           spark={data.series.map((d) => (d.position ? 100 - d.position : 0))} />
       </div>
-      <p className="ad-compare">{vs} · {t.delay}</p>
+      <p className="np-compare">{vs} · {t.delay}</p>
 
       <Card title={t.searchChart}
         action={<Legend items={[{ label: t.clicks, color: COLORS.sky }, { label: t.impressions, color: COLORS.violet }]} />}>
@@ -353,8 +353,8 @@ function SearchTab({ range, t, lang, reloadKey }) {
       </Card>
 
       <Card title={t.queriesTitle}>
-        <div className="ad-table-wrap">
-          <table className="ad-table">
+        <div className="np-table-wrap">
+          <table className="np-table">
             <thead>
               <tr><th>{t.query}</th><th>{t.clicks}</th><th>{t.impressions}</th><th>{t.ctr}</th><th>{t.position}</th></tr>
             </thead>
@@ -368,9 +368,9 @@ function SearchTab({ range, t, lang, reloadKey }) {
                     <td>{nf(q.impressions)}</td>
                     <td>{nf(q.ctr * 100, 1)}%</td>
                     <td>
-                      <span className={`ad-pos ${q.position <= 3 ? 'ad-pos--top' : q.position <= 10 ? 'ad-pos--p1' : ''}`}>{nf(q.position, 1)}</span>
-                      {moved === null ? <em className="ad-move ad-move--new">{t.newEntry}</em>
-                        : Math.abs(moved) >= 0.5 && <em className={`ad-move ${moved > 0 ? 'ad-move--up' : 'ad-move--down'}`} dir="ltr">{moved > 0 ? '▲' : '▼'} {nf(Math.abs(moved), 1)}</em>}
+                      <span className={`np-pos ${q.position <= 3 ? 'np-pos--top' : q.position <= 10 ? 'np-pos--p1' : ''}`}>{nf(q.position, 1)}</span>
+                      {moved === null ? <em className="np-move np-move--new">{t.newEntry}</em>
+                        : Math.abs(moved) >= 0.5 && <em className={`np-move ${moved > 0 ? 'np-move--up' : 'np-move--down'}`} dir="ltr">{moved > 0 ? '▲' : '▼'} {nf(Math.abs(moved), 1)}</em>}
                     </td>
                   </tr>
                 );
@@ -380,15 +380,15 @@ function SearchTab({ range, t, lang, reloadKey }) {
         </div>
       </Card>
 
-      <div className="ad-row ad-row--wide">
+      <div className="np-row np-row--wide">
         <Card title={t.pagesTitle}>
-          <div className="ad-table-wrap">
-            <table className="ad-table">
+          <div className="np-table-wrap">
+            <table className="np-table">
               <thead><tr><th>{t.page}</th><th>{t.clicks}</th><th>{t.impressions}</th><th>{t.position}</th></tr></thead>
               <tbody>
                 {data.pages.map((p) => (
                   <tr key={p.key}>
-                    <td><bdi dir="ltr" className="ad-ltr">{p.key}</bdi></td>
+                    <td><bdi dir="ltr" className="np-ltr">{p.key}</bdi></td>
                     <td>{nf(p.clicks)}</td>
                     <td>{nf(p.impressions)}</td>
                     <td>{nf(p.position, 1)}</td>
@@ -399,21 +399,21 @@ function SearchTab({ range, t, lang, reloadKey }) {
           </div>
         </Card>
         <Card title={t.devicesSearch}>
-          <BarList color="var(--ad-bar-sky)" rows={deviceRows} />
-          <h3 className="ad-subhead">{t.countriesSearch}</h3>
-          <BarList color="var(--ad-bar-navy)" rows={countryRows} />
+          <BarList color="var(--np-bar-sky)" rows={deviceRows} />
+          <h3 className="np-subhead">{t.countriesSearch}</h3>
+          <BarList color="var(--np-bar-navy)" rows={countryRows} />
         </Card>
       </div>
 
       {data.sitemaps.length > 0 && (
         <Card title={t.sitemapsTitle}>
-          <div className="ad-sitemaps">
+          <div className="np-sitemaps">
             {data.sitemaps.map((s) => (
-              <div className="ad-sitemap" key={s.path}>
-                <bdi dir="ltr" className="ad-ltr">{s.path}</bdi>
+              <div className="np-sitemap" key={s.path}>
+                <bdi dir="ltr" className="np-ltr">{s.path}</bdi>
                 <span><b>{nf(s.submitted)}</b> {t.submitted}</span>
                 <span>{t.lastRead}: <b>{s.lastDownloaded ? new Date(s.lastDownloaded).toLocaleDateString(numberLocale(t)) : '—'}</b></span>
-                <span className={s.errors ? 'ad-bad' : 'ad-good'}>{t.errors}: <b>{s.errors}</b> · {t.warnings}: <b>{s.warnings}</b></span>
+                <span className={s.errors ? 'np-bad' : 'np-good'}>{t.errors}: <b>{s.errors}</b> · {t.warnings}: <b>{s.warnings}</b></span>
               </div>
             ))}
           </div>
@@ -450,28 +450,28 @@ function SettingsTab({ t, meta, onRebuilt }) {
   };
 
   return (
-    <div className="ad-settings">
+    <div className="np-settings">
       <Card title={t.internalTitle} action={
-        <button type="button" role="switch" aria-checked={internal} className={`ad-switch${internal ? ' is-on' : ''}`} onClick={toggleInternal}>
+        <button type="button" role="switch" aria-checked={internal} className={`np-switch${internal ? ' is-on' : ''}`} onClick={toggleInternal}>
           <i /> <span>{internal ? t.on : t.off}</span>
         </button>
       }>
-        <p className="ad-text"><EyeOff size={15} /> {t.internalText}</p>
+        <p className="np-text"><EyeOff size={15} /> {t.internalText}</p>
       </Card>
       <Card title={t.countersTitle}>
-        <p className="ad-text"><Database size={15} /> {t.countersText}</p>
-        <div className="ad-settings-row">
-          <button type="button" className="ad-btn" onClick={runRebuild}><RefreshCw size={15} /> {t.rebuildBtn}</button>
-          <span className="ad-muted">{t.lastRebuild}: {meta?.rebuiltAt ? new Date(meta.rebuiltAt).toLocaleString(numberLocale(t)) : t.neverRebuilt}</span>
+        <p className="np-text"><Database size={15} /> {t.countersText}</p>
+        <div className="np-settings-row">
+          <button type="button" className="np-btn" onClick={runRebuild}><RefreshCw size={15} /> {t.rebuildBtn}</button>
+          <span className="np-muted">{t.lastRebuild}: {meta?.rebuiltAt ? new Date(meta.rebuiltAt).toLocaleString(numberLocale(t)) : t.neverRebuilt}</span>
         </div>
         {rebuild && <Notice>{rebuild}</Notice>}
       </Card>
-      <div className="ad-row ad-row--half">
-        <Card title={t.privacyTitle}><p className="ad-text"><ShieldCheck size={15} /> {t.privacyText}</p></Card>
-        <Card title={t.retentionTitle}><p className="ad-text"><Clock size={15} /> {t.retentionText}</p></Card>
+      <div className="np-row np-row--half">
+        <Card title={t.privacyTitle}><p className="np-text"><ShieldCheck size={15} /> {t.privacyText}</p></Card>
+        <Card title={t.retentionTitle}><p className="np-text"><Clock size={15} /> {t.retentionText}</p></Card>
       </div>
       <Card title={t.sessionTitle}>
-        <button type="button" className="ad-btn ad-btn--ghost" onClick={logout}><LogOut size={15} /> {t.logout}</button>
+        <button type="button" className="np-btn np-btn--ghost" onClick={logout}><LogOut size={15} /> {t.logout}</button>
       </Card>
     </div>
   );
@@ -480,7 +480,7 @@ function SettingsTab({ t, meta, onRebuilt }) {
 /* ─── Login ───────────────────────────────────────────── */
 function LangSwitch({ lang, setLang }) {
   return (
-    <div className="ad-lang">
+    <div className="np-lang">
       {['de', 'en', 'ar'].map((l) => (
         <button key={l} type="button" className={lang === l ? 'is-active' : ''} onClick={() => setLang(l)}>{l.toUpperCase()}</button>
       ))}
@@ -508,16 +508,16 @@ function LoginScreen({ onLogin, lang, setLang }) {
     }
   };
   return (
-    <div className="ad-login notranslate" dir={t.dir} translate="no">
-      <form className="ad-login-box" onSubmit={submit}>
+    <div className="np-login notranslate" dir={t.dir} translate="no">
+      <form className="np-login-box" onSubmit={submit}>
         <LangSwitch lang={lang} setLang={setLang} />
         <img src="/assets/logo2.png" alt="Noon" height="44" />
         <h1>{t.loginTitle}</h1>
         <p>{t.loginDesc}</p>
         <input type="password" placeholder={t.password} value={pw} onChange={(e) => { setPw(e.target.value); setErr(''); }} autoFocus autoComplete="current-password" />
-        {err && <p className="ad-err">{err}</p>}
-        <button type="submit" className="ad-btn ad-btn--block">{t.loginBtn}</button>
-        <a href="/" className="ad-back"><ArrowLeft size={14} /> {t.backToSite}</a>
+        {err && <p className="np-err">{err}</p>}
+        <button type="submit" className="np-btn np-btn--block">{t.loginBtn}</button>
+        <a href="/" className="np-back"><ArrowLeft size={14} /> {t.backToSite}</a>
       </form>
     </div>
   );
@@ -603,7 +603,7 @@ export default function Admin() {
       .finally(() => setLoading(false));
   }, [authed, reloadKey]);
 
-  if (checkingAuth) return <div className="ad-login" translate="no"><div className="ad-login-box"><p>{t.checking}</p></div></div>;
+  if (checkingAuth) return <div className="np-login" translate="no"><div className="np-login-box"><p>{t.checking}</p></div></div>;
   if (!authed) return <LoginScreen onLogin={() => setAuthed(true)} lang={lang} setLang={changeLang} />;
 
   const nav = [
@@ -613,44 +613,44 @@ export default function Admin() {
   ];
 
   return (
-    <div className="ad-root notranslate" dir={t.dir} lang={lang} translate="no">
-      {navOpen && <div className="ad-backdrop" onClick={() => setNavOpen(false)} />}
+    <div className="np-root notranslate" dir={t.dir} lang={lang} translate="no">
+      {navOpen && <div className="np-backdrop" onClick={() => setNavOpen(false)} />}
 
-      <aside className={`ad-sidebar${navOpen ? ' is-open' : ''}${collapsed ? ' is-collapsed' : ''}`}>
-        <div className="ad-brand">
+      <aside className={`np-sidebar${navOpen ? ' is-open' : ''}${collapsed ? ' is-collapsed' : ''}`}>
+        <div className="np-brand">
           <img src="/assets/logo2.png" alt="" height="34" />
-          <div className="ad-brand-text"><strong>Noon</strong><span>Admin</span></div>
-          <button type="button" className="ad-rail-toggle ad-only-desktop" aria-label={collapsed ? t.expand : t.collapse} data-tip={collapsed ? t.expand : t.collapse} onClick={toggleCollapsed}>
+          <div className="np-brand-text"><strong>Noon</strong><span>Admin</span></div>
+          <button type="button" className="np-rail-toggle np-only-desktop" aria-label={collapsed ? t.expand : t.collapse} data-tip={collapsed ? t.expand : t.collapse} onClick={toggleCollapsed}>
             {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
           </button>
-          <button type="button" className="ad-rail-toggle ad-only-mobile" aria-label={t.menu} onClick={() => setNavOpen(false)}><X size={17} /></button>
+          <button type="button" className="np-rail-toggle np-only-mobile" aria-label={t.menu} onClick={() => setNavOpen(false)}><X size={17} /></button>
         </div>
-        <nav className="ad-nav">
+        <nav className="np-nav">
           {nav.map(({ key, icon: Icon }) => (
             <button key={key} type="button" className={tab === key ? 'is-active' : ''} onClick={() => goTab(key)} data-tip={t[key]} aria-label={t[key]}>
               <Icon size={18} /> <span>{t[key]}</span>
             </button>
           ))}
         </nav>
-        <div className="ad-sidebar-foot">
+        <div className="np-sidebar-foot">
           <LangSwitch lang={lang} setLang={changeLang} />
-          <button type="button" className="ad-nav-link ad-lang-cycle" data-tip={lang.toUpperCase()} aria-label="Language"
+          <button type="button" className="np-nav-link np-lang-cycle" data-tip={lang.toUpperCase()} aria-label="Language"
             onClick={() => changeLang({ de: 'en', en: 'ar', ar: 'de' }[lang])}>
             <Globe size={17} /> <span>{lang.toUpperCase()}</span>
           </button>
-          <a href="/" className="ad-nav-link" data-tip={t.backToSite}><ArrowLeft size={17} /> <span>{t.backToSite}</span></a>
+          <a href="/" className="np-nav-link" data-tip={t.backToSite}><ArrowLeft size={17} /> <span>{t.backToSite}</span></a>
         </div>
       </aside>
 
-      <main className="ad-main">
-        <header className="ad-topbar">
-          <button type="button" className="ad-icon-btn ad-only-mobile" aria-label={t.menu} aria-expanded={navOpen} onClick={() => setNavOpen(true)}><Menu size={20} /></button>
-          <div className="ad-title">
+      <main className="np-main">
+        <header className="np-topbar">
+          <button type="button" className="np-icon-btn np-only-mobile" aria-label={t.menu} aria-expanded={navOpen} onClick={() => setNavOpen(true)}><Menu size={20} /></button>
+          <div className="np-title">
             <h1>{t[tab]}</h1>
             <p>{t[`${tab}Sub`]}</p>
           </div>
           {tab !== 'settings' && (
-            <div className="ad-range" role="group">
+            <div className="np-range" role="group">
               {RANGES.map((d) => (
                 <button key={d} type="button" className={range === d ? 'is-active' : ''} onClick={() => setRange(d)}>
                   {d} {t.daysShort}
@@ -658,12 +658,12 @@ export default function Admin() {
               ))}
             </div>
           )}
-          <button type="button" className="ad-icon-btn" onClick={reload} aria-label={t.refresh} title={loadedAt ? `${t.updated}: ${new Date(loadedAt).toLocaleTimeString(numberLocale(t))}` : t.refresh}>
-            <RefreshCw size={17} className={loading ? 'ad-spin' : ''} />
+          <button type="button" className="np-icon-btn" onClick={reload} aria-label={t.refresh} title={loadedAt ? `${t.updated}: ${new Date(loadedAt).toLocaleTimeString(numberLocale(t))}` : t.refresh}>
+            <RefreshCw size={17} className={loading ? 'np-spin' : ''} />
           </button>
         </header>
 
-        <div className="ad-content">
+        <div className="np-content">
           {tab === 'overview' && <OverviewTab daily={daily} events={events} range={range} t={t} lang={lang} />}
           {tab === 'search' && <SearchTab range={range} t={t} lang={lang} reloadKey={reloadKey} />}
           {tab === 'settings' && <SettingsTab t={t} meta={meta} onRebuilt={reload} />}

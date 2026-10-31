@@ -34,7 +34,7 @@ export function Sparkline({ values, color, height = 40 }) {
   const points = clean.map((v, i) => [i * step, height - 3 - (v / max) * (height - 6)]);
   const id = `spark-${color.replace('#', '')}`;
   return (
-    <div ref={ref} className="ad-spark" dir="ltr">
+    <div ref={ref} className="np-spark" dir="ltr">
       {width > 0 && (
         <svg width={width} height={height} aria-hidden="true">
           <defs>
@@ -75,7 +75,7 @@ export function TrendChart({ labels, series, height = 260, formatTick, formatVal
   };
 
   return (
-    <div ref={ref} className="ad-trend" dir="ltr" style={{ height }}>
+    <div ref={ref} className="np-trend" dir="ltr" style={{ height }}>
       {width > 0 && (
         <svg width={width} height={height} onMouseMove={onMove} onMouseLeave={() => setHover(null)} role="img">
           <defs>
@@ -90,13 +90,13 @@ export function TrendChart({ labels, series, height = 260, formatTick, formatVal
             const y = pad.top + (innerH / 4) * i;
             return (
               <g key={i}>
-                <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="ad-grid" />
-                <text x={pad.left - 8} y={y + 4} className="ad-tick" textAnchor="end">{Math.round(mainMax - (mainMax / 4) * i).toLocaleString()}</text>
+                <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="np-grid" />
+                <text x={pad.left - 8} y={y + 4} className="np-tick" textAnchor="end">{Math.round(mainMax - (mainMax / 4) * i).toLocaleString()}</text>
               </g>
             );
           })}
           {labels.map((label, i) => ((i % tickEvery === 0 && n - 1 - i >= tickEvery * 0.6) || i === n - 1) && (
-            <text key={label} x={pad.left + i * step} y={height - 8} className="ad-tick" textAnchor="middle">{formatTick ? formatTick(label) : label}</text>
+            <text key={label} x={pad.left + i * step} y={height - 8} className="np-tick" textAnchor="middle">{formatTick ? formatTick(label) : label}</text>
           ))}
           {scaled.map((s) => {
             const segment = s.points.filter(Boolean);
@@ -113,7 +113,7 @@ export function TrendChart({ labels, series, height = 260, formatTick, formatVal
           })}
           {hover !== null && (
             <g>
-              <line x1={pad.left + hover * step} x2={pad.left + hover * step} y1={pad.top} y2={pad.top + innerH} className="ad-cursor" />
+              <line x1={pad.left + hover * step} x2={pad.left + hover * step} y1={pad.top} y2={pad.top + innerH} className="np-cursor" />
               {scaled.map((s) => s.points[hover] && (
                 <circle key={s.key} cx={s.points[hover][0]} cy={s.points[hover][1]} r="4.5" fill="#fff" stroke={s.color} strokeWidth="2.5" />
               ))}
@@ -122,7 +122,7 @@ export function TrendChart({ labels, series, height = 260, formatTick, formatVal
         </svg>
       )}
       {hover !== null && width > 0 && (
-        <div className="ad-tooltip" style={{ left: Math.min(Math.max(pad.left + hover * step, 70), width - 70), top: 4 }}>
+        <div className="np-tooltip" style={{ left: Math.min(Math.max(pad.left + hover * step, 70), width - 70), top: 4 }}>
           <strong>{formatTick ? formatTick(labels[hover], true) : labels[hover]}</strong>
           {series.map((s) => (
             <span key={s.key}><i style={{ background: s.color }} />{s.label}: <b>{s.values[hover] === null || s.values[hover] === undefined ? '—' : formatValue(s.values[hover], s.key)}</b></span>
@@ -139,9 +139,9 @@ export function Donut({ segments, size = 148, thickness = 18, center, centerLabe
   const circumference = 2 * Math.PI * radius;
   let offset = 0;
   return (
-    <div className="ad-donut" style={{ width: size, height: size }}>
+    <div className="np-donut" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--ad-track)" strokeWidth={thickness} />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--np-track)" strokeWidth={thickness} />
         {total > 0 && segments.map((s) => {
           const length = (s.value / total) * circumference;
           const gap = segments.length > 1 ? Math.min(3, length / 3) : 0;
@@ -154,7 +154,7 @@ export function Donut({ segments, size = 148, thickness = 18, center, centerLabe
           return el;
         })}
       </svg>
-      <div className="ad-donut-center">
+      <div className="np-donut-center">
         <strong>{center ?? total.toLocaleString()}</strong>
         {centerLabel && <span>{centerLabel}</span>}
       </div>
@@ -163,26 +163,26 @@ export function Donut({ segments, size = 148, thickness = 18, center, centerLabe
 }
 
 // rows: [{ key, label, value, badge?, ltr? }]
-export function BarList({ rows, color = 'var(--ad-navy)', total, valueLabel }) {
+export function BarList({ rows, color = 'var(--np-navy)', total, valueLabel }) {
   const max = Math.max(...rows.map((r) => r.value), 1);
   const sum = total || rows.reduce((s, r) => s + r.value, 0);
   return (
-    <div className="ad-barlist">
+    <div className="np-barlist">
       {rows.map((row) => (
-        <div className="ad-barlist-row" key={row.key}>
-          <div className="ad-barlist-bar" style={{ width: `${(row.value / max) * 100}%`, background: color }} />
-          <span className="ad-barlist-label">
-            {row.badge && <span className="ad-code">{row.badge}</span>}
-            {row.ltr ? <bdi dir="ltr" className="ad-ltr">{row.label}</bdi> : row.label}
+        <div className="np-barlist-row" key={row.key}>
+          <div className="np-barlist-bar" style={{ width: `${(row.value / max) * 100}%`, background: color }} />
+          <span className="np-barlist-label">
+            {row.badge && <span className="np-code">{row.badge}</span>}
+            {row.ltr ? <bdi dir="ltr" className="np-ltr">{row.label}</bdi> : row.label}
           </span>
-          <span className="ad-barlist-value">
+          <span className="np-barlist-value">
             <b>{row.value.toLocaleString()}</b>
             {sum > 0 && <em>{Math.round((row.value / sum) * 100)}%</em>}
           </span>
         </div>
       ))}
-      {!rows.length && <p className="ad-empty-line">—</p>}
-      {valueLabel && <span className="ad-sr">{valueLabel}</span>}
+      {!rows.length && <p className="np-empty-line">—</p>}
+      {valueLabel && <span className="np-sr">{valueLabel}</span>}
     </div>
   );
 }
@@ -198,24 +198,24 @@ export function Heatmap({ data, weekdays, less, more, peaks }) {
   const officeShare = total ? Math.round((hours.filter((h) => h >= 8 && h < 18).reduce((s, h) => s + hourTotals[h], 0) / total) * 100) : 0;
   const weekendShare = total ? Math.round(((dayTotals[5] + dayTotals[6]) / total) * 100) : 0;
   return (
-    <div className="ad-heat-wrap">
+    <div className="np-heat-wrap">
       {peaks && total > 0 && (
-        <div className="ad-peaks">
+        <div className="np-peaks">
           <div><span>{peaks.day}</span><strong>{weekdays[peakDay]}</strong></div>
           <div><span>{peaks.hour}</span><strong dir="ltr">{String(peakHour).padStart(2, '0')}:00–{String(peakHour + 1).padStart(2, '0')}:00</strong></div>
           <div><span>{peaks.office}</span><strong>{officeShare}%</strong></div>
           <div><span>{peaks.weekend}</span><strong>{weekendShare}%</strong></div>
         </div>
       )}
-    <div className="ad-heat" dir="ltr">
-      <div className="ad-heat-grid">
+    <div className="np-heat" dir="ltr">
+      <div className="np-heat-grid">
         <span />
-        {hours.map((h) => <span key={h} className="ad-heat-hour">{h % 3 === 0 ? String(h).padStart(2, '0') : ''}</span>)}
+        {hours.map((h) => <span key={h} className="np-heat-hour">{h % 3 === 0 ? String(h).padStart(2, '0') : ''}</span>)}
         {weekdays.map((name, d) => (
           <FragmentRow key={name} name={name} d={d} hours={hours} data={data} max={max} />
         ))}
       </div>
-      <div className="ad-heat-legend">
+      <div className="np-heat-legend">
         <span>{less}</span>
         {[0.08, 0.3, 0.55, 0.8, 1].map((o) => <i key={o} style={{ opacity: o }} />)}
         <span>{more}</span>
@@ -228,12 +228,12 @@ export function Heatmap({ data, weekdays, less, more, peaks }) {
 function FragmentRow({ name, d, hours, data, max }) {
   return (
     <>
-      <span className="ad-heat-day">{name}</span>
+      <span className="np-heat-day">{name}</span>
       {hours.map((h) => {
         const value = data[`${d}-${h}`] || 0;
         return (
-          <span key={h} className="ad-heat-cell" title={`${name} ${String(h).padStart(2, '0')}:00 · ${value}`}
-            style={{ '--ad-heat': value ? 0.12 + (value / max) * 0.88 : 0 }} />
+          <span key={h} className="np-heat-cell" title={`${name} ${String(h).padStart(2, '0')}:00 · ${value}`}
+            style={{ '--np-heat': value ? 0.12 + (value / max) * 0.88 : 0 }} />
         );
       })}
     </>
@@ -241,11 +241,11 @@ function FragmentRow({ name, d, hours, data, max }) {
 }
 
 export function Delta({ value, invert = false, label }) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return <span className="ad-delta ad-delta--none">{label || '—'}</span>;
+  if (value === null || value === undefined || !Number.isFinite(value)) return <span className="np-delta np-delta--none">{label || '—'}</span>;
   const good = invert ? value < 0 : value > 0;
   const flat = Math.abs(value) < 0.5;
   return (
-    <span className={`ad-delta ${flat ? 'ad-delta--flat' : good ? 'ad-delta--up' : 'ad-delta--down'}`} dir="ltr">
+    <span className={`np-delta ${flat ? 'np-delta--flat' : good ? 'np-delta--up' : 'np-delta--down'}`} dir="ltr">
       {flat ? '±' : value > 0 ? '▲' : '▼'} {Math.abs(value).toFixed(Math.abs(value) < 10 ? 1 : 0)}%
     </span>
   );
