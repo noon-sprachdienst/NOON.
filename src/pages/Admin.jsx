@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   LayoutDashboard, Search, Settings, ArrowLeft, Users, Eye, MousePointerClick, Clock, RefreshCw, Menu, X,
   Monitor, Smartphone, Tablet, MessageCircle, Phone, Mail, FileText, Send, Languages, Copy, Check,
-  ExternalLink, LogOut, ShieldCheck, Database, EyeOff,
+  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen,
 } from 'lucide-react';
 import { INTERNAL_KEY } from '../lib/analytics.js';
 import { T, ALPHA3, countryName, fill } from './admin/i18n.js';
@@ -11,6 +11,7 @@ import { BarList, Delta, Donut, Heatmap, Sparkline, TrendChart } from './admin/c
 import './admin/admin.css';
 
 const LANG_KEY = 'noon_admin_lang';
+const RAIL_KEY = 'noon_admin_rail';
 const RANGES = [7, 14, 30, 90];
 // Local design preview with generated data: `npm run dev` → /admin?demo (never in production builds).
 const DEMO = import.meta.env.DEV && new URLSearchParams(window.location.search).has('demo');
@@ -536,7 +537,9 @@ export default function Admin() {
   const [reloadKey, setReloadKey] = useState(0);
   const [lang, setLang] = useState(() => localStorage.getItem(LANG_KEY) || 'de');
   const [navOpen, setNavOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem(RAIL_KEY) === '1');
   const t = T[lang] || T.de;
+  const toggleCollapsed = () => setCollapsed((c) => { localStorage.setItem(RAIL_KEY, c ? '0' : '1'); return !c; });
 
   const changeLang = (l) => { setLang(l); localStorage.setItem(LANG_KEY, l); };
   const goTab = (next) => { setTab(next); setNavOpen(false); };
@@ -599,22 +602,29 @@ export default function Admin() {
     <div className="ad-root" dir={t.dir} lang={lang}>
       {navOpen && <div className="ad-backdrop" onClick={() => setNavOpen(false)} />}
 
-      <aside className={`ad-sidebar${navOpen ? ' is-open' : ''}`}>
+      <aside className={`ad-sidebar${navOpen ? ' is-open' : ''}${collapsed ? ' is-collapsed' : ''}`}>
         <div className="ad-brand">
-          <img src="/assets/logo2.png" alt="" height="40" />
+          <img src="/assets/logo2.png" alt="" height="34" />
           <div className="ad-brand-text"><strong>Noon</strong><span>Admin</span></div>
-          <button type="button" className="ad-icon-btn ad-only-mobile" aria-label={t.menu} onClick={() => setNavOpen(false)}><X size={18} /></button>
+          <button type="button" className="ad-rail-toggle ad-only-desktop" aria-label={collapsed ? t.expand : t.collapse} data-tip={collapsed ? t.expand : t.collapse} onClick={toggleCollapsed}>
+            {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
+          </button>
+          <button type="button" className="ad-rail-toggle ad-only-mobile" aria-label={t.menu} onClick={() => setNavOpen(false)}><X size={17} /></button>
         </div>
         <nav className="ad-nav">
           {nav.map(({ key, icon: Icon }) => (
-            <button key={key} type="button" className={tab === key ? 'is-active' : ''} onClick={() => goTab(key)}>
+            <button key={key} type="button" className={tab === key ? 'is-active' : ''} onClick={() => goTab(key)} data-tip={t[key]} aria-label={t[key]}>
               <Icon size={18} /> <span>{t[key]}</span>
             </button>
           ))}
         </nav>
         <div className="ad-sidebar-foot">
           <LangSwitch lang={lang} setLang={changeLang} />
-          <a href="/" className="ad-nav-link"><ArrowLeft size={16} /> <span>{t.backToSite}</span></a>
+          <button type="button" className="ad-nav-link ad-lang-cycle" data-tip={lang.toUpperCase()} aria-label="Language"
+            onClick={() => changeLang({ de: 'en', en: 'ar', ar: 'de' }[lang])}>
+            <Globe size={17} /> <span>{lang.toUpperCase()}</span>
+          </button>
+          <a href="/" className="ad-nav-link" data-tip={t.backToSite}><ArrowLeft size={17} /> <span>{t.backToSite}</span></a>
         </div>
       </aside>
 

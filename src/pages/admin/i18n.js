@@ -1,6 +1,7 @@
 // Admin panel texts. Every visible label lives here, in all three languages.
 export const T = {
   en: {
+    collapse: 'Collapse sidebar', expand: 'Expand sidebar',
     peakDay: 'Busiest day', peakHour: 'Busiest hour', officeHours: 'During office hours (8–18)', weekend: 'On weekends',
     dir: 'ltr', locale: 'en-GB',
     loginTitle: 'Admin sign-in', loginDesc: 'Enter the admin password to continue.', password: 'Password',
@@ -43,6 +44,7 @@ export const T = {
     on: 'On', off: 'Off', sessionTitle: 'Session', logout: 'Sign out',
   },
   de: {
+    collapse: 'Seitenleiste einklappen', expand: 'Seitenleiste ausklappen',
     peakDay: 'Stärkster Tag', peakHour: 'Stärkste Uhrzeit', officeHours: 'Zu Bürozeiten (8–18 Uhr)', weekend: 'Am Wochenende',
     dir: 'ltr', locale: 'de-DE',
     loginTitle: 'Admin-Anmeldung', loginDesc: 'Geben Sie das Admin-Passwort ein.', password: 'Passwort',
@@ -85,6 +87,7 @@ export const T = {
     on: 'An', off: 'Aus', sessionTitle: 'Sitzung', logout: 'Abmelden',
   },
   ar: {
+    collapse: 'تصغير القائمة', expand: 'توسيع القائمة',
     peakDay: 'أكتر يوم', peakHour: 'أكتر ساعة', officeHours: 'في مواعيد العمل (8–18)', weekend: 'في الويك إند',
     dir: 'rtl', locale: 'ar-EG',
     loginTitle: 'دخول المشرف', loginDesc: 'أدخل كلمة مرور المشرف للمتابعة.', password: 'كلمة المرور',

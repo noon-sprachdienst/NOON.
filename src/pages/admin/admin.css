@@ -33,32 +33,64 @@
 
 /* Layout */
 .ad-root { display: flex; min-height: 100vh; background: var(--ad-bg); }
+/* Sidebar: a slim rail that collapses to icons (state kept in localStorage) */
 .ad-sidebar {
-  position: sticky; top: 0; height: 100vh; width: 248px; flex-shrink: 0;
-  display: flex; flex-direction: column; gap: 22px; padding: 20px 14px;
-  background: var(--ad-card); color: var(--ad-ink);
+  --ad-rail: 232px;
+  position: sticky; top: 0; height: 100vh; width: var(--ad-rail); flex-shrink: 0; z-index: 20;
+  display: flex; flex-direction: column; gap: 18px; padding: 14px 12px;
+  background: #fbfcfe; color: var(--ad-ink);
   border-inline-end: 1px solid var(--ad-line);
+  transition: width .22s cubic-bezier(.4, 0, .2, 1), padding .22s;
 }
-.ad-brand { display: flex; align-items: center; gap: 10px; padding: 2px 8px 18px; border-bottom: 1px solid var(--ad-line); }
-.ad-brand img { filter: brightness(0); opacity: .82; flex-shrink: 0; }
-.ad-brand-text { display: flex; flex-direction: column; line-height: 1.15; flex: 1; }
-.ad-brand-text strong { font-size: 16px; font-weight: 750; color: var(--ad-navy); letter-spacing: -0.01em; }
-.ad-brand-text span { font-size: 12px; color: var(--ad-muted); }
-.ad-nav { display: flex; flex-direction: column; gap: 4px; }
+.ad-sidebar.is-collapsed { --ad-rail: 68px; padding-inline: 12px; }
+.ad-brand { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px 0 6px; }
+.ad-brand img { filter: brightness(0); opacity: .85; flex-shrink: 0; }
+.ad-brand-text { display: flex; flex-direction: column; line-height: 1.15; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; transition: opacity .15s; }
+.ad-brand-text strong { font-size: 15px; font-weight: 750; color: var(--ad-navy); letter-spacing: -0.01em; }
+.ad-brand-text span { font-size: 11.5px; color: var(--ad-muted); }
+.ad-rail-toggle {
+  display: inline-grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: 9px;
+  border: 0; background: transparent; color: var(--ad-muted); transition: background .15s, color .15s;
+}
+.ad-rail-toggle:hover { background: #eef1f7; color: var(--ad-ink); }
+.ad-root[dir="rtl"] .ad-rail-toggle svg { transform: scaleX(-1); }
+
+.ad-nav { display: flex; flex-direction: column; gap: 2px; }
 .ad-nav button, .ad-nav-link {
-  display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border: 0; border-radius: 11px;
-  background: transparent; color: var(--ad-ink-2); font-size: 14px; font-weight: 500; text-decoration: none; text-align: start;
+  position: relative; display: flex; align-items: center; gap: 12px; width: 100%; height: 40px; padding: 0 11px; border: 0; border-radius: 10px;
+  background: transparent; color: var(--ad-ink-2); font-size: 14px; font-weight: 500; text-decoration: none; text-align: start; white-space: nowrap;
   transition: background .15s, color .15s;
 }
-.ad-nav button svg, .ad-nav-link svg { color: var(--ad-muted); transition: color .15s; }
-.ad-nav button:hover, .ad-nav-link:hover { background: var(--ad-bg); color: var(--ad-ink); }
-.ad-nav button.is-active { background: #eaeef7; color: var(--ad-navy); font-weight: 650; }
+.ad-nav button svg, .ad-nav-link svg { flex-shrink: 0; color: var(--ad-muted); transition: color .15s; }
+.ad-nav button span, .ad-nav-link span { overflow: hidden; text-overflow: ellipsis; transition: opacity .15s; }
+.ad-nav button:hover, .ad-nav-link:hover { background: #eef1f7; color: var(--ad-ink); }
+.ad-nav button:hover svg, .ad-nav-link:hover svg { color: var(--ad-ink-2); }
+.ad-nav button.is-active { background: #fff; color: var(--ad-navy); font-weight: 650; box-shadow: 0 0 0 1px var(--ad-line), 0 2px 6px -2px rgba(17,26,46,.12); }
 .ad-nav button.is-active svg { color: var(--ad-navy); }
-.ad-root[dir="rtl"] .ad-nav-link svg { transform: scaleX(-1); }
-.ad-sidebar-foot { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid var(--ad-line); }
-.ad-lang { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 11px; background: var(--ad-bg); border: 1px solid var(--ad-line); }
-.ad-lang button { border: 0; border-radius: 8px; padding: 6px 0; background: transparent; color: var(--ad-muted); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
-.ad-lang button.is-active { background: var(--ad-card); color: var(--ad-navy); box-shadow: 0 1px 3px rgba(17,26,46,.1); }
+.ad-root[dir="rtl"] .ad-sidebar a.ad-nav-link svg { transform: scaleX(-1); }
+.ad-sidebar-foot { margin-top: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid var(--ad-line); }
+.ad-lang { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding: 3px; border-radius: 10px; background: #eef1f7; }
+.ad-lang button { border: 0; border-radius: 8px; padding: 6px 0; background: transparent; color: var(--ad-muted); font-size: 11.5px; font-weight: 650; letter-spacing: .05em; }
+.ad-lang button:hover { color: var(--ad-ink); }
+.ad-lang button.is-active { background: #fff; color: var(--ad-navy); box-shadow: 0 1px 3px rgba(17,26,46,.12); }
+.ad-lang-cycle { display: none !important; }
+
+/* Collapsed rail */
+.ad-sidebar.is-collapsed .ad-brand { flex-direction: column; gap: 8px; padding: 0; }
+.ad-sidebar.is-collapsed .ad-brand-text,
+.ad-sidebar.is-collapsed .ad-nav span,
+.ad-sidebar.is-collapsed .ad-nav-link span,
+.ad-sidebar.is-collapsed .ad-lang { display: none; }
+.ad-sidebar.is-collapsed .ad-lang-cycle { display: flex !important; }
+.ad-sidebar.is-collapsed .ad-nav button,
+.ad-sidebar.is-collapsed .ad-nav-link { justify-content: center; padding: 0; width: 44px; margin-inline: auto; }
+.ad-sidebar.is-collapsed .ad-lang-cycle span { display: none; }
+.ad-sidebar.is-collapsed [data-tip]:hover::after {
+  content: attr(data-tip); position: absolute; top: 50%; inset-inline-start: calc(100% + 12px); transform: translateY(-50%);
+  padding: 6px 10px; border-radius: 8px; background: var(--ad-navy-2); color: #fff; font-size: 12.5px; font-weight: 500;
+  white-space: nowrap; pointer-events: none; box-shadow: 0 8px 20px -8px rgba(17,26,46,.45); z-index: 40;
+}
+.ad-sidebar.is-collapsed .ad-rail-toggle { position: relative; }
 
 .ad-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .ad-topbar {
@@ -77,6 +109,7 @@
   border: 1px solid var(--ad-line); background: var(--ad-card); color: var(--ad-ink-2);
 }
 .ad-only-mobile { display: none; }
+.ad-only-desktop { display: inline-grid; }
 .ad-spin { animation: ad-spin 0.9s linear infinite; }
 @keyframes ad-spin { to { transform: rotate(360deg); } }
 .ad-content { padding: 26px 32px 48px; max-width: 1480px; width: 100%; }
@@ -265,11 +298,19 @@
   .ad-row--wide { grid-template-columns: 1fr; }
 }
 @media (max-width: 860px) {
-  .ad-sidebar { position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 30; transform: translateX(-105%); transition: transform .2s ease; }
+  .ad-sidebar, .ad-sidebar.is-collapsed { --ad-rail: 264px; position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 30; transform: translateX(-105%); transition: transform .2s ease; box-shadow: 0 20px 50px -20px rgba(17,26,46,.35); }
+  .ad-sidebar.is-collapsed .ad-brand { flex-direction: row; padding: 0 4px 0 6px; }
+  .ad-sidebar.is-collapsed .ad-brand-text, .ad-sidebar.is-collapsed .ad-nav span, .ad-sidebar.is-collapsed .ad-nav-link span { display: flex; }
+  .ad-sidebar.is-collapsed .ad-lang { display: grid; }
+  .ad-sidebar.is-collapsed .ad-lang-cycle { display: none !important; }
+  .ad-sidebar.is-collapsed .ad-nav button, .ad-sidebar.is-collapsed .ad-nav-link { justify-content: flex-start; padding: 0 11px; width: 100%; }
+  .ad-sidebar.is-collapsed [data-tip]:hover::after { display: none; }
+  .ad-only-desktop { display: none; }
   .ad-root[dir="rtl"] .ad-sidebar { transform: translateX(105%); }
   .ad-sidebar.is-open, .ad-root[dir="rtl"] .ad-sidebar.is-open { transform: none; }
   .ad-backdrop { position: fixed; inset: 0; z-index: 25; background: rgba(10,16,30,.45); }
   .ad-only-mobile { display: inline-grid; }
+  .ad-sidebar .ad-only-mobile { display: inline-grid; }
   .ad-topbar { padding: 14px 16px; }
   .ad-range { order: 5; width: 100%; justify-content: space-between; }
   .ad-range button { flex: 1; }
