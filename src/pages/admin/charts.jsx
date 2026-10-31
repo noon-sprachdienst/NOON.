@@ -15,11 +15,12 @@ function useWidth() {
   return [ref, width];
 }
 
+// Smallest "round" axis maximum (4 whole-number grid steps) that fits the value.
 function niceMax(value) {
   if (value <= 4) return 4;
-  const magnitude = 10 ** Math.floor(Math.log10(value));
-  const step = [1, 2, 2.5, 5, 10].find((s) => s * magnitude * 4 >= value) * magnitude;
-  return step * 4;
+  const magnitude = 10 ** Math.floor(Math.log10(value / 4));
+  const steps = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].filter((s) => Number.isInteger(s * magnitude));
+  return steps.find((s) => s * magnitude * 4 >= value) * magnitude * 4;
 }
 
 function linePath(points) {

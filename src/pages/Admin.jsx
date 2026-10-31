@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   LayoutDashboard, Search, Settings, ArrowLeft, Users, Eye, MousePointerClick, Clock, RefreshCw, Menu, X,
   Monitor, Smartphone, Tablet, MessageCircle, Phone, Mail, FileText, Send, Languages, Copy, Check,
-  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen,
+  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen, Mic,
 } from 'lucide-react';
 import { INTERNAL_KEY } from '../lib/analytics.js';
 import { T, ALPHA3, countryName, fill } from './admin/i18n.js';
@@ -23,6 +23,7 @@ const ACTION_META = {
   quote_request: { icon: FileText, color: COLORS.red }, whatsapp: { icon: MessageCircle, color: '#1faa5b' },
   phone: { icon: Phone, color: COLORS.navy }, email: { icon: Mail, color: COLORS.sky },
   quote_form_submit: { icon: Send, color: COLORS.violet }, hero_translation: { icon: Languages, color: COLORS.amber },
+  hero_interpreting: { icon: Mic, color: COLORS.teal },
 };
 const GCP_PROJECT = 'noon-sprachdienst';
 const GSC_PROPERTY = 'sc-domain:noon-sprachdienst.de';

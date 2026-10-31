@@ -25,7 +25,8 @@ export function decodeCity(city) {
 export function sourceName(host) {
   const h = String(host || '').toLowerCase();
   if (!h || h === 'direct') return 'direct';
-  if (h.endsWith('noon-sprachdienst.de')) return null;
+  // Our own site, Vercel preview links and local testing are not real sources.
+  if (h.endsWith('noon-sprachdienst.de') || h.endsWith('.vercel.app') || /^(localhost|127\.0\.0\.1)/.test(h)) return null;
   if (/(^|\.)google\./.test(h)) return 'Google';
   if (/l\.wl\.co|wa\.me|whatsapp/.test(h)) return 'WhatsApp';
   if (/bing\.com/.test(h)) return 'Bing';
