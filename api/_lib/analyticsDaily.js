@@ -5,13 +5,35 @@ import { FieldValue } from 'firebase-admin/firestore';
 // document per day instead of every raw event (which capped it at 5,000).
 export const DAILY_COLLECTION = 'analyticsDaily';
 export const META_DOC = ['analyticsMeta', 'daily'];
+const OWN_HOST = 'noon-sprachdienst.de';
 
 const berlinDay = new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
 });
+const berlinSlot = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Europe/Berlin', weekday: 'short', hour: '2-digit', hourCycle: 'h23',
+});
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export function dayKey(ms) {
   return berlinDay.format(new Date(ms));
+}
+
+// "Weekday-hour" in Berlin time, Monday = 0, e.g. "2-14" = Wednesday 14:00–14:59.
+export function slotKey(ms) {
+  const parts = Object.fromEntries(berlinSlot.formatToParts(new Date(ms)).map((p) => [p.type, p.value]));
+  return `${WEEKDAYS.indexOf(parts.weekday)}-${Number(parts.hour)}`;
+}
+
+// "/angebot/" and "/angebot" are the same page: count them under one key.
+export function normalizePath(path) {
+  const clean = String(path || '/');
+  return clean.length > 1 ? clean.replace(/\/+$/, '') || '/' : '/';
+}
+
+// Vercel sends the city header URL-encoded ("Osnabr%C3%BCck").
+export function decodeCity(city) {
+  try { return decodeURIComponent(city || ''); } catch { return city || ''; }
 }
 
 function mapKey(value, fallback) {
@@ -20,18 +42,30 @@ function mapKey(value, fallback) {
 }
 
 // Plain-number delta for one event; used live (as increments) and for rebuilds.
+// `record.entry` marks the first page view of a visit (session).
 export function dailyDelta(record) {
   if (record.type === 'page_view') {
+    const path = normalizePath(record.path);
     const delta = {
       pageViews: 1,
       byDevice: { [mapKey(record.device, 'desktop')]: 1 },
-      byPath: { [mapKey(record.path, '/')]: 1 },
+      byPath: { [mapKey(path, '/')]: 1 },
       byReferrer: { [mapKey(record.referrer, 'direct')]: 1 },
       byLanguage: { [mapKey((record.siteLanguage || record.browserLanguage || 'de').slice(0, 2).toUpperCase(), 'DE')]: 1 },
       byCountry: { [mapKey(record.country, 'XX')]: 1 },
       byBrowser: { [mapKey(record.browser, 'Unknown')]: 1 },
+      byHour: { [slotKey(record.createdAt)]: 1 },
     };
-    if (record.city) delta.byCity = { [mapKey(record.city, 'Unknown')]: 1 };
+    const city = decodeCity(record.city);
+    if (city) delta.byCity = { [mapKey(city, 'Unknown')]: 1 };
+    if (record.entry) {
+      const source = record.referrer && !String(record.referrer).endsWith(OWN_HOST) ? record.referrer : 'direct';
+      delta.sessions = 1;
+      delta.bySource = { [mapKey(source, 'direct')]: 1 };
+      delta.byLanding = { [mapKey(path, '/')]: 1 };
+      delta.bySessionCountry = { [mapKey(record.country, 'XX')]: 1 };
+      delta.bySessionDevice = { [mapKey(record.device, 'desktop')]: 1 };
+    }
     return delta;
   }
   if (record.type === 'page_leave' && record.durationSeconds > 0) {

@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     const db = getDatabase();
     const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
     const days = {};
+    const seenSessions = new Set();
     let processed = 0;
     let last = null;
 
@@ -29,6 +30,11 @@ export default async function handler(req, res) {
 
       snapshot.docs.forEach((doc) => {
         const event = doc.data();
+        // Older events have no `entry` flag: the first page view of a session is its entry.
+        if (event.type === 'page_view') {
+          if (typeof event.entry !== 'boolean') event.entry = !seenSessions.has(event.sessionId);
+          seenSessions.add(event.sessionId);
+        }
         const delta = dailyDelta(event);
         if (delta) mergeInto(days[dayKey(event.createdAt)] || (days[dayKey(event.createdAt)] = {}), delta);
       });

@@ -8,8 +8,11 @@ export default async function handler(req, res) {
   if (!isAdminRequest(req)) return sendJson(res, 401, { error: 'Unauthorized.' });
 
   try {
-    const days = Math.min(Math.max(Number(req.query.days) || 90, 1), 90);
+    // Up to 180 days of daily summaries (they do not expire), so a 90-day view can
+    // be compared with the 90 days before it. Raw events only live 90 days.
+    const days = Math.min(Math.max(Number(req.query.days) || 90, 1), 180);
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+    const eventCutoff = Date.now() - 2 * 24 * 60 * 60 * 1000;
     const db = getDatabase();
     // Daily counters: at most one document read per day in the range.
     const [dailySnapshot, recentSnapshot, metaSnapshot] = await Promise.all([
@@ -19,9 +22,9 @@ export default async function handler(req, res) {
         .get(),
       // A small sample of raw events, only for the "recent sessions" list.
       db.collection('analyticsEvents')
-        .where('createdAt', '>=', cutoff)
+        .where('createdAt', '>=', eventCutoff)
         .orderBy('createdAt', 'desc')
-        .limit(200)
+        .limit(300)
         .get(),
       db.collection(META_DOC[0]).doc(META_DOC[1]).get(),
     ]);

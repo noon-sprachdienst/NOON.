@@ -2,7 +2,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { getDatabase } from '../_lib/firebase.js';
 import { cleanPath, cleanReferrer, cleanText, readJson, sendJson } from '../_lib/http.js';
 import { getClientIp, rateLimit } from '../_lib/rateLimit.js';
-import { recordDaily } from '../_lib/analyticsDaily.js';
+import { decodeCity, normalizePath, recordDaily } from '../_lib/analyticsDaily.js';
 
 const ALLOWED_EVENTS = new Set(['page_view', 'page_leave', 'cta_click', 'consent_withdrawn']);
 const ALLOWED_DEVICES = new Set(['desktop', 'tablet', 'mobile']);
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       ts: now,
       expireAt: Timestamp.fromMillis(now + 90 * 24 * 60 * 60 * 1000),
       sessionId: cleanText(body.sessionId, 64),
-      path: cleanPath(body.path),
+      path: normalizePath(cleanPath(body.path)),
       referrer: cleanReferrer(body.referrer),
       siteLanguage: cleanText(body.siteLanguage, 8),
       browserLanguage: cleanText(body.browserLanguage, 16),
@@ -47,7 +47,8 @@ export default async function handler(req, res) {
       browser: cleanText(body.browser, 32),
       os: cleanText(body.os, 32),
       country: cleanText(req.headers['x-vercel-ip-country'], 2) || 'XX',
-      city: cleanText(req.headers['x-vercel-ip-city'], 80),
+      city: cleanText(decodeCity(req.headers['x-vercel-ip-city']), 80),
+      entry: body.entry === true,
       durationSeconds: Math.max(0, Math.min(Number(body.durationSeconds) || 0, 86400)),
       action: cleanText(body.action, 48),
       campaign: cleanText(body.campaign, 80),

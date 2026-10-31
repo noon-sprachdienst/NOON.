@@ -2,24 +2,34 @@ export const COOKIE_KEY = 'noon_cookie';
 const SESSION_KEY = 'noon_analytics_session';
 const CONSENT_EVENT = 'noonConsentChanged';
 const SESSION_MAX_AGE = 24 * 60 * 60 * 1000;
+// Set when someone signs in to /admin: our own visits are not counted.
+export const INTERNAL_KEY = 'noon_internal';
 
 let pageStartedAt = Date.now();
 let currentPath = window.location.pathname || '/';
+let leaveSent = false;
 
 function hasAnalyticsConsent() {
-  return localStorage.getItem(COOKIE_KEY) === 'all';
+  return localStorage.getItem(COOKIE_KEY) === 'all' && localStorage.getItem(INTERNAL_KEY) !== '1';
 }
 
 function readSession() {
   if (!hasAnalyticsConsent()) return null;
   try {
     const stored = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-    if (stored?.id && Date.now() - stored.createdAt < SESSION_MAX_AGE) return stored.id;
+    if (stored?.id && Date.now() - stored.createdAt < SESSION_MAX_AGE) return stored;
   } catch {}
 
   const session = { id: crypto.randomUUID(), createdAt: Date.now() };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  return session.id;
+  return session;
+}
+
+// True only for the first page view of a visit; marks the session as started.
+function takeEntry(session) {
+  if (session.started) return false;
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, started: true }));
+  return true;
 }
 
 function deviceType() {
@@ -52,12 +62,13 @@ function campaignName() {
 }
 
 export function trackEvent(type, extra = {}) {
-  const sessionId = readSession();
-  if (!sessionId) return;
+  const session = readSession();
+  if (!session) return;
 
   const payload = {
     type,
-    sessionId,
+    sessionId: session.id,
+    entry: type === 'page_view' ? takeEntry(session) : undefined,
     path: window.location.pathname || '/',
     referrer: document.referrer,
     siteLanguage: document.documentElement.lang,
@@ -83,7 +94,10 @@ export function trackEvent(type, extra = {}) {
   }).catch(() => {});
 }
 
+// Hiding the tab and then closing it fire both; only the first one counts.
 function trackPageLeave() {
+  if (leaveSent) return;
+  leaveSent = true;
   const durationSeconds = Math.round((Date.now() - pageStartedAt) / 1000);
   if (durationSeconds > 0) trackEvent('page_leave', { path: currentPath, durationSeconds });
 }
@@ -91,6 +105,7 @@ function trackPageLeave() {
 function trackPageView() {
   currentPath = window.location.pathname || '/';
   pageStartedAt = Date.now();
+  leaveSent = false;
   trackEvent('page_view', { path: currentPath });
 }
 
@@ -134,6 +149,7 @@ export function initializeAnalytics() {
     else {
       pageStartedAt = Date.now();
       currentPath = window.location.pathname || '/';
+      leaveSent = false;
     }
   };
 
