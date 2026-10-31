@@ -508,7 +508,7 @@ function LoginScreen({ onLogin, lang, setLang }) {
     }
   };
   return (
-    <div className="ad-login" dir={t.dir}>
+    <div className="ad-login notranslate" dir={t.dir} translate="no">
       <form className="ad-login-box" onSubmit={submit}>
         <LangSwitch lang={lang} setLang={setLang} />
         <img src="/assets/logo2.png" alt="Noon" height="44" />
@@ -548,6 +548,20 @@ export default function Admin() {
   useEffect(() => {
     document.title = `Noon · ${t[tab]}`;
   }, [t, tab]);
+
+  // Browser page translation rewrites React's text nodes and crashes the panel
+  // (blank page), so the admin opts out of it.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute('translate', 'no');
+    html.classList.add('notranslate');
+    if (!document.querySelector('meta[name="google"]')) {
+      const meta = document.createElement('meta');
+      meta.name = 'google';
+      meta.content = 'notranslate';
+      document.head.appendChild(meta);
+    }
+  }, []);
 
   useEffect(() => {
     if (!navOpen) return undefined;
@@ -589,7 +603,7 @@ export default function Admin() {
       .finally(() => setLoading(false));
   }, [authed, reloadKey]);
 
-  if (checkingAuth) return <div className="ad-login"><div className="ad-login-box"><p>{t.checking}</p></div></div>;
+  if (checkingAuth) return <div className="ad-login" translate="no"><div className="ad-login-box"><p>{t.checking}</p></div></div>;
   if (!authed) return <LoginScreen onLogin={() => setAuthed(true)} lang={lang} setLang={changeLang} />;
 
   const nav = [
@@ -599,7 +613,7 @@ export default function Admin() {
   ];
 
   return (
-    <div className="ad-root" dir={t.dir} lang={lang}>
+    <div className="ad-root notranslate" dir={t.dir} lang={lang} translate="no">
       {navOpen && <div className="ad-backdrop" onClick={() => setNavOpen(false)} />}
 
       <aside className={`ad-sidebar${navOpen ? ' is-open' : ''}${collapsed ? ' is-collapsed' : ''}`}>

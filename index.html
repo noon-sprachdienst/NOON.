@@ -120,7 +120,7 @@
       var loader = document.getElementById('app-loader');
       if (!loader) return;
       var start = Date.now();
-      var isAdmin = window.location.pathname === '/admin';
+      var isAdmin = /^\/admin\/?$/.test(window.location.pathname);
       function ready() {
         var root = document.getElementById('root');
         if (!root) return false;
