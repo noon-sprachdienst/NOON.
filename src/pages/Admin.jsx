@@ -601,7 +601,8 @@ export default function Admin() {
 
       <aside className={`ad-sidebar${navOpen ? ' is-open' : ''}`}>
         <div className="ad-brand">
-          <img src="/assets/logo2.png" alt="Noon" height="34" />
+          <img src="/assets/logo2.png" alt="" height="40" />
+          <div className="ad-brand-text"><strong>Noon</strong><span>Admin</span></div>
           <button type="button" className="ad-icon-btn ad-only-mobile" aria-label={t.menu} onClick={() => setNavOpen(false)}><X size={18} /></button>
         </div>
         <nav className="ad-nav">
