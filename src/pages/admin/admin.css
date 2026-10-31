@@ -205,7 +205,7 @@
 .ad-device { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--ad-accent) 5%, #fff); border: 1px solid color-mix(in srgb, var(--ad-accent) 12%, #fff); }
 .ad-device-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: #fff; background: var(--ad-accent); }
 .ad-device strong { display: block; font-size: 18px; font-weight: 750; font-variant-numeric: tabular-nums; }
-.ad-device span { font-size: 12.5px; color: var(--ad-muted); }
+.ad-device div span { font-size: 12.5px; color: var(--ad-muted); }
 .ad-stackbar { display: flex; height: 10px; margin-top: 16px; border-radius: 10px; overflow: hidden; gap: 2px; background: var(--ad-track); }
 
 /* Latest visits */
