@@ -28,6 +28,7 @@ const ACTION_META = {
   phone: { icon: Phone, color: COLORS.navy }, email: { icon: Mail, color: COLORS.sky },
   quote_form_submit: { icon: Send, color: COLORS.violet }, hero_translation: { icon: Languages, color: COLORS.amber },
   hero_interpreting: { icon: Mic, color: COLORS.teal },
+  phone_menu: { icon: Phone, color: COLORS.slate },
 };
 const GCP_PROJECT = 'noon-sprachdienst';
 const GSC_PROPERTY = 'sc-domain:noon-sprachdienst.de';
