@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   LayoutDashboard, Search, Settings, ArrowLeft, Users, Eye, MousePointerClick, Clock, RefreshCw, Menu, X,
   Monitor, Smartphone, Tablet, MessageCircle, Phone, Mail, FileText, Send, Languages, Copy, Check,
-  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen, Mic,
+  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen, Mic, Sparkles,
 } from 'lucide-react';
 import { INTERNAL_KEY } from '../lib/analytics.js';
 import { T, ALPHA3, countryName, fill } from './admin/i18n.js';
-import { buildMetrics, buildSessions } from './admin/metrics.js';
+import { buildMetrics, buildSessions, sourceName } from './admin/metrics.js';
 import { BarList, Delta, Donut, Heatmap, Sparkline, TrendChart } from './admin/charts.jsx';
 import './admin/admin.css';
 
@@ -17,7 +17,11 @@ const RANGES = [7, 14, 30, 90];
 const DEMO = import.meta.env.DEV && new URLSearchParams(window.location.search).has('demo');
 
 const COLORS = { navy: '#1f2d4d', red: '#c0283a', teal: '#0f9d8a', amber: '#e3a22b', violet: '#6d5bd0', sky: '#3b82f6', slate: '#94a3b8' };
-const SOURCE_COLORS = { Google: '#3b6fe0', direct: COLORS.navy, WhatsApp: '#1faa5b', Bing: '#0ea5b7', Facebook: '#6d5bd0', Instagram: '#d63c7a' };
+const SOURCE_COLORS = {
+  Google: '#3b6fe0', direct: COLORS.navy, WhatsApp: '#1faa5b', Bing: '#0ea5b7', Facebook: '#6d5bd0', Instagram: '#d63c7a',
+  ChatGPT: '#10a37f', Perplexity: '#1f8a99', Gemini: '#8b5cf6', Claude: '#d97757', Copilot: '#2563eb',
+};
+const sourceColor = (key, i) => SOURCE_COLORS[key] || [COLORS.slate, '#cbd5e1', '#64748b'][i % 3];
 const DEVICE_META = { desktop: { icon: Monitor, color: COLORS.navy }, mobile: { icon: Smartphone, color: COLORS.red }, tablet: { icon: Tablet, color: COLORS.amber } };
 const ACTION_META = {
   quote_request: { icon: FileText, color: COLORS.red }, whatsapp: { icon: MessageCircle, color: '#1faa5b' },
@@ -170,10 +174,17 @@ function OverviewTab({ daily, events, range, t, lang }) {
           <div className="np-row np-row--three">
             <Card title={t.sourcesTitle}>
               <div className="np-donut-row">
-                <Donut segments={m.sources.map(([k, v], i) => ({ label: k, value: v, color: SOURCE_COLORS[k] || [COLORS.slate, '#cbd5e1', '#64748b'][i % 3] }))}
+                <Donut segments={m.sources.map(([k, v], i) => ({ label: k, value: v, color: sourceColor(k, i) }))}
                   centerLabel={visits !== null ? t.visits : t.pageViews} />
-                <Legend items={m.sources.map(([k, v], i) => ({ label: sourceLabel(k), value: nf(v), color: SOURCE_COLORS[k] || [COLORS.slate, '#cbd5e1', '#64748b'][i % 3] }))} />
+                <Legend items={m.sources.map(([k, v], i) => ({ label: sourceLabel(k), value: nf(v), color: sourceColor(k, i) }))} />
               </div>
+              <div className="np-card-foot np-ai-foot">
+                <span><Sparkles size={14} /> {t.aiSources}</span>
+                <b>{nf(m.aiSources.reduce((sum, [, v]) => sum + v, 0))}</b>
+              </div>
+              {m.aiSources.length
+                ? <div className="np-ai-list"><Legend items={m.aiSources.map(([k, v]) => ({ label: k, value: nf(v), color: sourceColor(k, 0) }))} /></div>
+                : <p className="np-empty-line">{t.aiNone}</p>}
             </Card>
             <Card title={t.devicesTitle}>
               <div className="np-devices">
@@ -236,7 +247,7 @@ function OverviewTab({ daily, events, range, t, lang }) {
                   <span className="np-code">{s.country || 'XX'}</span>
                   <div>
                     <strong>{s.city || countryName(s.country || 'XX', lang)}</strong>
-                    <span><DeviceIcon size={12} /> {s.browser || t.unknown} · {sourceLabel(s.referrer && s.referrer !== 'direct' ? s.referrer.replace(/^www\./, '') : 'direct')}</span>
+                    <span><DeviceIcon size={12} /> {s.browser || t.unknown} · {sourceLabel(sourceName(s.referrer) ?? 'direct')}</span>
                   </div>
                 </div>
                 <div className="np-visit-path" dir="ltr">

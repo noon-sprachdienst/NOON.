@@ -21,12 +21,31 @@ export function decodeCity(city) {
   try { return decodeURIComponent(city || ''); } catch { return city || ''; }
 }
 
+// AI assistants and AI search engines, by referrer host. Checked before the Google
+// and Bing rules, because Gemini and Copilot live on Google/Bing domains.
+const AI_RULES = [
+  [/(^|\.)chatgpt\.com$|(^|\.)openai\.com$/, 'ChatGPT'],
+  [/(^|\.)perplexity\.ai$/, 'Perplexity'],
+  [/^(gemini|bard)\.google\.com$/, 'Gemini'],
+  [/(^|\.)claude\.ai$/, 'Claude'],
+  [/^copilot\.microsoft\.com$|^copilot\.cloud\.microsoft$|^edgeservices\.bing\.com$/, 'Copilot'],
+  [/(^|\.)deepseek\.com$/, 'DeepSeek'],
+  [/^chat\.mistral\.ai$/, 'Mistral'],
+  [/(^|\.)grok\.com$/, 'Grok'],
+  [/(^|\.)meta\.ai$/, 'Meta AI'],
+  [/(^|\.)you\.com$/, 'You.com'],
+  [/(^|\.)phind\.com$/, 'Phind'],
+];
+export const AI_SOURCES = new Set(AI_RULES.map(([, name]) => name));
+
 // Groups referrer hosts into the sources people recognise.
 export function sourceName(host) {
-  const h = String(host || '').toLowerCase();
+  const h = String(host || '').toLowerCase().replace(/^www\./, '');
   if (!h || h === 'direct') return 'direct';
   // Our own site, Vercel preview links and local testing are not real sources.
   if (h.endsWith('noon-sprachdienst.de') || h.endsWith('.vercel.app') || /^(localhost|127\.0\.0\.1)/.test(h)) return null;
+  const ai = AI_RULES.find(([rule]) => rule.test(h));
+  if (ai) return ai[1];
   if (/(^|\.)google\./.test(h)) return 'Google';
   if (/l\.wl\.co|wa\.me|whatsapp/.test(h)) return 'WhatsApp';
   if (/bing\.com/.test(h)) return 'Bing';
@@ -34,8 +53,7 @@ export function sourceName(host) {
   if (/instagram/.test(h)) return 'Instagram';
   if (/duckduckgo/.test(h)) return 'DuckDuckGo';
   if (/yahoo/.test(h)) return 'Yahoo';
-  if (/chatgpt|openai/.test(h)) return 'ChatGPT';
-  return h.replace(/^www\./, '');
+  return h;
 }
 
 export function sumField(docs, field) {
@@ -118,6 +136,8 @@ export function buildMetrics(daily, range) {
     pages: topN(sumMap(docs, 'byPath', normalizePath), 8),
     landing: topN(sumMap(docs, 'byLanding', normalizePath), 8),
     sources: topN(sources, 6),
+    // AI assistants are listed separately so small counts are never cut off by the top 6.
+    aiSources: topN(Object.fromEntries(Object.entries(sources).filter(([k]) => AI_SOURCES.has(k))), AI_SOURCES.size),
     devices: sumMap(docs, docs.every((d) => d.bySessionDevice) ? 'bySessionDevice' : 'byDevice'),
     countries: topN(sumMap(docs, 'byCountry'), 8),
     cities: topN(sumMap(docs, 'byCity', decodeCity), 8),

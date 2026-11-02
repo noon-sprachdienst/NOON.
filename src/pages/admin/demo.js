@@ -8,7 +8,10 @@ function rand(seed) {
 }
 
 const PAGES = ['/', '/de/standorte/osnabrueck', '/angebot', '/preise', '/de/standorte/stuttgart', '/de/standorte/berlin', '/de/sprachen/arabisch', '/de/geburtsurkunde-uebersetzung', '/de/fuehrerschein-uebersetzung', '/de/standorte/kiel'];
-const SOURCES = [['direct', 0.42], ['www.google.com', 0.38], ['l.wl.co', 0.08], ['www.bing.com', 0.04], ['noon-sprachdienst.de', 0.05], ['m.facebook.com', 0.03]];
+const SOURCES = [
+  ['direct', 0.4], ['www.google.com', 0.36], ['l.wl.co', 0.08], ['www.bing.com', 0.04], ['noon-sprachdienst.de', 0.05], ['m.facebook.com', 0.03],
+  ['chatgpt.com', 0.04], ['www.perplexity.ai', 0.025], ['gemini.google.com', 0.02], ['claude.ai', 0.015], ['copilot.microsoft.com', 0.015],
+];
 const COUNTRIES = [['DE', 0.84], ['EG', 0.05], ['CH', 0.02], ['TR', 0.02], ['NL', 0.02], ['PL', 0.02], ['AT', 0.02], ['PT', 0.01]];
 const CITIES = [['Stuttgart', 0.2], ['Berlin', 0.18], ['Osnabrück', 0.16], ['Hamburg', 0.1], ['Frankfurt am Main', 0.1], ['Essen', 0.08], ['Kiel', 0.08], ['Mainz', 0.1]];
 const ACTIONS = [['quote_request', 0.32], ['whatsapp', 0.25], ['email', 0.15], ['quote_form_submit', 0.13], ['phone', 0.1], ['hero_translation', 0.05]];
@@ -60,7 +63,7 @@ export function demoAnalytics() {
     const start = Date.now() - Math.round(r() * 40 * 3600000);
     const [country] = COUNTRIES[Math.floor(r() * 4)];
     const city = CITIES[Math.floor(r() * CITIES.length)][0];
-    const base = { sessionId: `demo-${s}`, country, city: encodeURIComponent(city), device: r() > 0.3 ? 'mobile' : 'desktop', browser: r() > 0.5 ? 'Chrome' : 'Safari', referrer: r() > 0.5 ? 'google.com' : 'direct' };
+    const base = { sessionId: `demo-${s}`, country, city: encodeURIComponent(city), device: r() > 0.3 ? 'mobile' : 'desktop', browser: r() > 0.5 ? 'Chrome' : 'Safari', referrer: ['google.com', 'direct', 'chatgpt.com', 'google.com', 'www.perplexity.ai', 'direct'][s % 6] };
     const count = 1 + Math.floor(r() * 4);
     for (let p = 0; p < count; p += 1) {
       const path = PAGES[Math.floor(r() * PAGES.length)];

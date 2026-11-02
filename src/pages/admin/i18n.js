@@ -1,6 +1,7 @@
 // Admin panel texts. Every visible label lives here, in all three languages.
 export const T = {
   en: {
+    aiSources: 'From AI assistants', aiNone: 'No visits from AI assistants (ChatGPT, Perplexity, Gemini …) in this period yet.',
     collapse: 'Collapse sidebar', expand: 'Expand sidebar',
     peakDay: 'Busiest day', peakHour: 'Busiest hour', officeHours: 'During office hours (8–18)', weekend: 'On weekends',
     dir: 'ltr', locale: 'en-GB',
@@ -44,6 +45,7 @@ export const T = {
     on: 'On', off: 'Off', sessionTitle: 'Session', logout: 'Sign out',
   },
   de: {
+    aiSources: 'Über KI-Assistenten', aiNone: 'In diesem Zeitraum noch keine Besuche über KI-Assistenten (ChatGPT, Perplexity, Gemini …).',
     collapse: 'Seitenleiste einklappen', expand: 'Seitenleiste ausklappen',
     peakDay: 'Stärkster Tag', peakHour: 'Stärkste Uhrzeit', officeHours: 'Zu Bürozeiten (8–18 Uhr)', weekend: 'Am Wochenende',
     dir: 'ltr', locale: 'de-DE',
@@ -87,6 +89,7 @@ export const T = {
     on: 'An', off: 'Aus', sessionTitle: 'Sitzung', logout: 'Abmelden',
   },
   ar: {
+    aiSources: 'من أدوات الذكاء الاصطناعي', aiNone: 'مفيش زيارات من أدوات الذكاء الاصطناعي (ChatGPT وPerplexity وGemini …) في الفترة دي لسه.',
     collapse: 'تصغير القائمة', expand: 'توسيع القائمة',
     peakDay: 'أكتر يوم', peakHour: 'أكتر ساعة', officeHours: 'في مواعيد العمل (8–18)', weekend: 'في الويك إند',
     dir: 'rtl', locale: 'ar-EG',
