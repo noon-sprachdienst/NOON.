@@ -45,6 +45,12 @@ const field = (id, type, width, extra = {}) => ({
 
 export const DEFAULT_FORM_CONFIG = {
   schema: 1,
+  section: {
+    eyebrow: fromKey('how.eyebrow'),
+    title: fromKey('how.title'),
+    sub: fromKey('how.sub'),
+  },
+  steps: [1, 2, 3, 4, 5].map((n) => ({ id: `step${n}`, label: fromKey(`how.step${n}.label`), desc: fromKey(`how.step${n}.desc`) })),
   texts: {
     title: fromKey('form.h3'),
     sub: fromKey('form.sub'),

@@ -7351,8 +7351,8 @@ html[dir="rtl"] .faq-more {
 .section-eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #999; margin-bottom: 16px; }
 .how-contact h2  { font-size: clamp(26px,3.5vw,44px); font-weight: 400; letter-spacing: -.025em; line-height: 1.15; margin-bottom: 8px; color: #0A0A0A; }
 .how-contact .section-sub { font-size: 15px; color: #888; max-width: 440px; line-height: 1.65; margin-bottom: 52px; }
-.steps-bar { display: grid; grid-template-columns: repeat(5,1fr); position: relative; margin-bottom: 56px; }
-.steps-bar::after { content:''; position:absolute; top:18px; left:calc(10% + 18px); right:calc(10% + 18px); height:1px; background:#e0ddd8; z-index:0; }
+.steps-bar { --steps: 5; display: grid; grid-template-columns: repeat(var(--steps), 1fr); position: relative; margin-bottom: 56px; }
+.steps-bar::after { content:''; position:absolute; top:18px; left:calc(50% / var(--steps) + 18px); right:calc(50% / var(--steps) + 18px); height:1px; background:#e0ddd8; z-index:0; }
 .step { display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 8px; position:relative; z-index:1; }
 .step-circle { width:36px; height:36px; border-radius:50%; border:1px solid #d8d5cf; background:#faf9f7; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:500; color:#aaa; margin-bottom:14px; transition:all .25s; letter-spacing:.04em; }
 .step.active .step-circle { background:#1a1a1a; color:#faf9f7; border-color:#1a1a1a; }

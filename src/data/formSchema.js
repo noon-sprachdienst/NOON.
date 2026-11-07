@@ -3,6 +3,8 @@
 //
 // config = {
 //   schema: 1,
+//   section: { eyebrow, title, sub },                  // heading of the section above the form
+//   steps: [{ id, label, desc }],                      // 2–6 steps shown above the form
 //   texts: { title, sub, submit, otherName, otherLabel, otherPlaceholder },  // each { de, en, ar, … }
 //   fields: [{ id, type, width, required, show, hidden, builtin, label, placeholder, help, options }],
 //   languages: [{ id, name, source, target }],           // "Other language" is fixed and not stored
@@ -26,7 +28,7 @@ export const ALL_TYPES = [...CUSTOM_TYPES, 'language', 'service', 'file'];
 export const WIDTHS = ['half', 'full'];
 export const SHOW = ['both', 'translation', 'interpreting'];
 
-export const LIMITS = { fields: 40, options: 60, languages: 200, label: 120, placeholder: 160, help: 300, text: 600, versions: 10 };
+export const LIMITS = { fields: 40, options: 60, languages: 200, label: 120, placeholder: 160, help: 300, text: 600, versions: 10, minSteps: 2, maxSteps: 6 };
 
 // Text of a { de, en, … } map in one language, falling back to German.
 export function textIn(map, lang) {
@@ -119,9 +121,26 @@ export function sanitizeFormConfig(input) {
   const firstWith = (flag) => languages.find((language) => language[flag])?.id || OTHER_LANGUAGE;
   const pick = (id, flag) => (languages.some((language) => language.id === id && language[flag]) ? id : firstWith(flag));
 
+  const stepIds = new Set();
+  const steps = (Array.isArray(input.steps) ? input.steps : []).slice(0, LIMITS.maxSteps).map((step) => {
+    const id = cleanString(step?.id, 40);
+    if (!ID_PATTERN.test(id) || stepIds.has(id)) fail('Invalid step.');
+    stepIds.add(id);
+    const out = { id, label: cleanTexts(step.label, 60), desc: cleanTexts(step.desc, 120) };
+    if (!out.label.de) fail('Every step needs a German name.');
+    return out;
+  });
+  if (steps.length < LIMITS.minSteps) fail(`At least ${LIMITS.minSteps} steps are needed.`);
+
   const confirmation = input.confirmation || {};
   return {
     schema: 1,
+    section: {
+      eyebrow: cleanTexts(input.section?.eyebrow, 80),
+      title: cleanTexts(input.section?.title, LIMITS.label),
+      sub: cleanTexts(input.section?.sub, LIMITS.help),
+    },
+    steps,
     texts: {
       title: cleanTexts(input.texts?.title, LIMITS.label),
       sub: cleanTexts(input.texts?.sub, LIMITS.help),

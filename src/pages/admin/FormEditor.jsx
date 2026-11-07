@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import QuoteFormFields from '../../components/QuoteFormFields.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
-import { ALWAYS_REQUIRED, CUSTOM_TYPES, LOCKED_FIELDS, OTHER_LANGUAGE, SITE_LANGS, phoneHref, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
+import { ALWAYS_REQUIRED, CUSTOM_TYPES, LIMITS, LOCKED_FIELDS, OTHER_LANGUAGE, SITE_LANGS, phoneHref, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
 
@@ -27,6 +27,8 @@ function missingTexts(config, lang) {
   let missing = 0;
   const check = (map) => { if (map?.de && !map[lang]) missing += 1; };
   Object.values(config.texts).forEach(check);
+  Object.values(config.section || {}).forEach(check);
+  (config.steps || []).forEach((step) => { check(step.label); check(step.desc); });
   config.fields.filter((field) => !field.hidden).forEach((field) => {
     check(field.label); check(field.placeholder); check(field.help);
     (field.options || []).forEach((option) => check(option.label));
@@ -192,6 +194,41 @@ function FieldRow({ field, index, count, lang, t, update, open, setOpen }) {
   );
 }
 
+// Heading and steps of the "Ablauf & Kontakt" section above the form.
+function SectionCard({ config, lang, t, update }) {
+  const steps = config.steps || [];
+  const moveStep = (i, delta) => update((c) => { const [step] = c.steps.splice(i, 1); c.steps.splice(i + delta, 0, step); });
+  return (
+    <section className="np-card">
+      <header className="np-card-head"><div><h2>{t.sectionTitle}</h2><p>{t.sectionSub}</p></div></header>
+      <TextField label={t.sEyebrow} map={config.section?.eyebrow} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, eyebrow: v }; })} />
+      <TextField label={t.sTitle} map={config.section?.title} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, title: v }; })} />
+      <TextField label={t.sSub} map={config.section?.sub} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, sub: v }; })} multiline rows={2} />
+      <div className="np-options">
+        <span className="np-options-title">{t.steps} · <span className="np-muted">{t.stepsHint}</span></span>
+        {steps.map((step, i) => (
+          <div key={step.id} className="np-step-edit">
+            <span className="np-step-num">{String(i + 1).padStart(2, '0')}</span>
+            <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.label[lang] || ''} placeholder={lang !== 'de' ? step.label.de : ''} aria-label={`${t.stepLabel} ${i + 1}`}
+              onChange={(e) => update((c) => { c.steps[i].label = { ...c.steps[i].label, [lang]: e.target.value }; })} />
+            <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.desc[lang] || ''} placeholder={lang !== 'de' ? step.desc.de : t.stepDesc} aria-label={`${t.stepDesc} ${i + 1}`}
+              onChange={(e) => update((c) => { c.steps[i].desc = { ...c.steps[i].desc, [lang]: e.target.value }; })} />
+            <div className="np-step-tools">
+              <button type="button" className="np-mini" disabled={i === 0} onClick={() => moveStep(i, -1)} aria-label={t.moveUp} title={t.moveUp}><ArrowUp size={14} /></button>
+              <button type="button" className="np-mini" disabled={i === steps.length - 1} onClick={() => moveStep(i, 1)} aria-label={t.moveDown} title={t.moveDown}><ArrowDown size={14} /></button>
+              <button type="button" className="np-mini is-danger" disabled={steps.length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps.splice(i, 1); })} aria-label={t.delete} title={t.delete}><Trash2 size={14} /></button>
+            </div>
+          </div>
+        ))}
+        <button type="button" className="np-btn np-btn--ghost np-btn--sm" disabled={steps.length >= LIMITS.maxSteps}
+          onClick={() => update((c) => { c.steps = [...(c.steps || []), { id: randomId('s'), label: { de: t.newStep, ...(lang !== 'de' ? { [lang]: t.newStep } : {}) }, desc: {} }]; })}>
+          <Plus size={14} /> {t.addStep}
+        </button>
+      </div>
+    </section>
+  );
+}
+
 function FieldsSection({ config, lang, t, update }) {
   const [open, setOpen] = useState(null);
   const [adding, setAdding] = useState(false);
@@ -209,6 +246,7 @@ function FieldsSection({ config, lang, t, update }) {
   };
   return (
     <>
+      <SectionCard config={config} lang={lang} t={t} update={update} />
       <section className="np-card">
         <header className="np-card-head"><div><h2>{t.formTexts}</h2></div></header>
         <div className="np-grid2">
@@ -388,6 +426,22 @@ function Preview({ config, lang, t, mode, setMode }) {
         <Segmented small value={mode} options={[['form', t.previewForm], ['done', t.previewDone]]} onChange={setMode} />
       </div>
       <div className="np-preview-frame" dir={LANG_META[lang].dir} lang={lang}>
+        {mode === 'form' && config.section && (
+          <div className="np-pv-section">
+            <span className="np-pv-eyebrow">{textIn(config.section.eyebrow, lang)}</span>
+            <strong>{textIn(config.section.title, lang)}</strong>
+            <p>{textIn(config.section.sub, lang)}</p>
+            <ol className="np-pv-steps" style={{ '--steps': (config.steps || []).length }}>
+              {(config.steps || []).map((step, i) => (
+                <li key={step.id} className={i === 0 ? 'is-first' : ''}>
+                  <i>{String(i + 1).padStart(2, '0')}</i>
+                  <b>{textIn(step.label, lang)}</b>
+                  <small>{textIn(step.desc, lang)}</small>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
         {mode === 'form' ? (
           <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
             <h3>{textIn(config.texts.title, lang)}</h3>
@@ -432,7 +486,11 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
     setMessage(null);
     try {
       const data = await api();
-      const start = data.draft?.config || data.published?.config || defaultFormConfig();
+      const start = structuredClone(data.draft?.config || data.published?.config || defaultFormConfig());
+      // Settings saved before the section heading and steps were editable get the built-in ones.
+      const builtIn = defaultFormConfig();
+      if (!start.section) start.section = builtIn.section;
+      if (!start.steps?.length) start.steps = builtIn.steps;
       setConfig(start);
       setBaseline(JSON.stringify(start));
       setState({ published: data.published, draft: data.draft, history: data.history || [] });

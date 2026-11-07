@@ -4,15 +4,9 @@ import { trackEvent } from '../lib/analytics';
 import { CONTACT } from '../config/contact.js';
 import QuoteFormFields from './QuoteFormFields.jsx';
 import { useFormConfig } from '../lib/formConfig.js';
+import { DEFAULT_FORM_CONFIG } from '../data/formConfig.js';
 import { OTHER_LANGUAGE, phoneHref, textIn } from '../data/formSchema.js';
 
-const STEPS = [
-  { num: '01', label: 'how.step1.label', desc: 'how.step1.desc' },
-  { num: '02', label: 'how.step2.label', desc: 'how.step2.desc' },
-  { num: '03', label: 'how.step3.label', desc: 'how.step3.desc' },
-  { num: '04', label: 'how.step4.label', desc: 'how.step4.desc' },
-  { num: '05', label: 'how.step5.label', desc: 'how.step5.desc' },
-];
 
 const FORM_STATUS = {
   de: { sending: 'Wird gesendet ...', sent: 'Anfrage gesendet', error: 'Senden fehlgeschlagen. Bitte versuchen Sie es erneut oder senden Sie uns Ihr Dokument per WhatsApp.' },
@@ -200,6 +194,9 @@ export default function HowContact({ branch = null }) {
   const [sourceLang, setSourceLang] = useState(config.defaultSource);
   const [targetLang, setTargetLang] = useState(config.defaultTarget);
   const done = config.confirmation;
+  // Heading and steps above the form (settings saved before they were editable fall back to the built-in ones).
+  const section = config.section || DEFAULT_FORM_CONFIG.section;
+  const steps = config.steps?.length ? config.steps : DEFAULT_FORM_CONFIG.steps;
   // Office pages show their own number; elsewhere the number set in the admin.
   const donePhone = branch?.phone || (done.phone ? { label: done.phone, href: phoneHref(done.phone) } : phones[0]);
   const withPhone = (text, Wrap) => text.split('{phone}').flatMap((part, i) => (i ? [<Wrap key={i} />, part] : [part]));
@@ -339,17 +336,17 @@ export default function HowContact({ branch = null }) {
   return (
     <section className="how-contact" id="contact" aria-labelledby="how-heading">
       <div className="wrap">
-        <div className="section-eyebrow">{t('how.eyebrow')}</div>
-        <h2 id="how-heading" data-reveal="">{t('how.title')}</h2>
-        <p className="section-sub" data-reveal="" style={{ '--ri': 1 }}>{t('how.sub')}</p>
+        <div className="section-eyebrow">{textIn(section.eyebrow, lang)}</div>
+        <h2 id="how-heading" data-reveal="">{textIn(section.title, lang)}</h2>
+        <p className="section-sub" data-reveal="" style={{ '--ri': 1 }}>{textIn(section.sub, lang)}</p>
 
         {/* Steps bar */}
-        <nav className="steps-bar" aria-label={t('how.eyebrow')} data-reveal="" style={{ '--ri': 0 }}>
-          {STEPS.map((step, i) => (
-            <div key={step.num} className={`step${i === 0 ? ' active' : ''}`}>
-              <div className="step-circle" aria-hidden="true">{step.num}</div>
-              <div className="step-label">{t(step.label)}</div>
-              <div className="step-desc">{t(step.desc)}</div>
+        <nav className="steps-bar" aria-label={textIn(section.eyebrow, lang)} data-reveal="" style={{ '--ri': 0, '--steps': steps.length }}>
+          {steps.map((step, i) => (
+            <div key={step.id} className={`step${i === 0 ? ' active' : ''}`}>
+              <div className="step-circle" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
+              <div className="step-label">{textIn(step.label, lang)}</div>
+              <div className="step-desc">{textIn(step.desc, lang)}</div>
             </div>
           ))}
         </nav>
