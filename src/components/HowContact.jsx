@@ -425,7 +425,8 @@ export default function HowContact({ branch = null }) {
               <h3 tabIndex="-1">{textIn(done.title, lang)}</h3>
               <p>{withPhone(textIn(done.text, lang), () => <a href={donePhone.href} dir="ltr">{donePhone.label}</a>)}</p>
               <div className="form-done-actions">
-                <a className="btn btn-primary" href={donePhone.href} onClick={() => trackEvent('cta_click', { action: 'phone_confirmation' })}>
+                {/* tel: links are counted automatically as "phone" by the site analytics */}
+                <a className="btn btn-primary" href={donePhone.href}>
                   {withPhone(textIn(done.call, lang), () => <span dir="ltr">{donePhone.label}</span>)}
                 </a>
                 <button type="button" className="btn btn-secondary form-done-again" onClick={startOver}>{textIn(done.again, lang)}</button>
