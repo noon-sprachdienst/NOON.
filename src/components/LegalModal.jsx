@@ -15,9 +15,9 @@ export const ImpressumBody = ({ lang }) => {
   };
   const note = lang in NOTE ? NOTE[lang] : NOTE.en;
   return (
-    <div className="legal-body">
+    <div className="legal-body" dir="ltr">
       {note && (
-        <p style={{ background: '#f5f5f5', borderRadius: 8, padding: '10px 14px', fontSize: 13, marginBottom: 20, color: '#555' }}>
+        <p dir="auto" style={{ background: '#f5f5f5', borderRadius: 8, padding: '10px 14px', fontSize: 13, marginBottom: 20, color: '#555' }}>
           ℹ️ {note}
         </p>
       )}
