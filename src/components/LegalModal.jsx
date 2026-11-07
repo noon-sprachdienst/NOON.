@@ -96,6 +96,7 @@ export const DATENSCHUTZ = {
       <h3>4. Kontaktformular</h3>
       <p>Anfragen über das Kontaktformular werden inklusive Ihrer Kontaktdaten zur Bearbeitung gespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
       <p>Dateien, die Sie über das Formular hochladen, werden direkt in einem nicht öffentlichen Speicher von Google Firebase (Google Cloud Storage) abgelegt, nur über signierte, zeitlich begrenzte Links an unser Büro weitergegeben und nach 30 Tagen automatisch gelöscht.</p>
+      <p>Zur Bearbeitung legen wir zu jeder Anfrage zusätzlich einen Eintrag in unserem internen, passwortgeschützten Verwaltungsbereich an: nur Datum, Name, gewählte Leistung und die Links zu den hochgeladenen Dateien. Diese Einträge werden in Cloud Firestore mit Speicherort in der EU gespeichert und nach 30 Tagen automatisch gelöscht.</p>
       <h3>5. Datenübertragung in Drittstaaten</h3>
       <p>Wir wählen für Cloud Firestore einen Speicherort in der EU. Bei der Nutzung von Vercel und Google Firebase können Zugriffe oder Verarbeitungen durch Dienstleister außerhalb der EU/EWR nicht vollständig ausgeschlossen werden. Soweit erforderlich, erfolgen diese auf Grundlage geeigneter Datenschutzgarantien und Auftragsverarbeitungsvereinbarungen.</p>
       <h3>6. Karten und externe Links</h3>
@@ -128,6 +129,7 @@ export const DATENSCHUTZ = {
       <h3>4. Contact Form</h3>
       <p>Enquiries via the contact form are stored including your contact details for processing purposes. Legal basis: Art. 6(1)(b) GDPR.</p>
       <p>Files you upload via the form are stored in a non-public Google Firebase storage (Google Cloud Storage), shared with our office only through signed, time-limited links and deleted automatically after 30 days.</p>
+      <p>To process requests, we also keep an entry for each request in our internal, password-protected admin area: only the date, name, chosen service and the links to the uploaded files. These entries are stored in Cloud Firestore with an EU storage location and are deleted automatically after 30 days.</p>
       <h3>5. International Transfers</h3>
       <p>We select an EU storage location for Cloud Firestore. Access or processing by Vercel and Google Firebase service providers outside the EU/EEA cannot be fully excluded. Where required, appropriate data-protection safeguards and processing agreements apply.</p>
       <h3>6. Maps and External Links</h3>
@@ -159,6 +161,7 @@ export const DATENSCHUTZ = {
       <h3>٤. نموذج التواصل</h3>
       <p>يتم تخزين استفساراتك عبر نموذج التواصل لأغراض المعالجة.</p>
       <p>الملفات التي ترفعها عبر النموذج تُحفظ في مساحة تخزين غير عامة لدى Google Firebase (Google Cloud Storage)، ولا يصل إليها مكتبنا إلا عبر روابط موقّعة ومحدودة المدة، وتُحذف تلقائيًا بعد 30 يومًا.</p>
+      <p>لمعالجة الطلبات نحتفظ أيضًا بسجل لكل طلب في منطقة الإدارة الداخلية المحمية بكلمة مرور: التاريخ والاسم والخدمة المختارة وروابط الملفات المرفوعة فقط. تُحفظ هذه السجلات في Cloud Firestore بموقع تخزين داخل الاتحاد الأوروبي وتُحذف تلقائيًا بعد 30 يومًا.</p>
       <h3>٥. النقل الدولي للبيانات</h3>
       <p>نختار موقع تخزين داخل الاتحاد الأوروبي لخدمة Cloud Firestore. لا يمكن استبعاد الوصول أو المعالجة بشكل كامل من قبل مزودي خدمات Vercel وGoogle Firebase خارج الاتحاد الأوروبي. عند الحاجة تُطبّق ضمانات مناسبة لحماية البيانات واتفاقيات لمعالجة البيانات.</p>
       <h3>٦. الخرائط والروابط الخارجية</h3>
@@ -190,6 +193,7 @@ export const DATENSCHUTZ = {
       <h3>4. İletişim Formu</h3>
       <p>İletişim formu üzerinden gelen başvurular, işleme amaçlı olarak iletişim bilgilerinizle birlikte saklanır.</p>
       <p>Form üzerinden yüklediğiniz dosyalar, Google Firebase'in herkese açık olmayan depolama alanında (Google Cloud Storage) saklanır, büromuza yalnızca imzalı ve süreli bağlantılarla iletilir ve 30 gün sonra otomatik olarak silinir.</p>
+      <p>Talepleri işlemek için her talep için şifre korumalı dahili yönetim alanımızda ayrıca bir kayıt tutarız: yalnızca tarih, ad, seçilen hizmet ve yüklenen dosyaların bağlantıları. Bu kayıtlar AB içinde bir depolama konumuna sahip Cloud Firestore'da saklanır ve 30 gün sonra otomatik olarak silinir.</p>
       <h3>5. Uluslararası Veri Transferleri</h3>
       <p>Cloud Firestore için AB içinde bir depolama konumu seçiyoruz. Vercel ve Google Firebase hizmet sağlayıcıları tarafından AB/AEA dışından erişim veya işleme tamamen hariç tutulamaz. Gerektiğinde uygun veri koruma güvenceleri ve veri işleme sözleşmeleri uygulanır.</p>
       <h3>6. Haritalar ve Harici Bağlantılar</h3>
@@ -221,6 +225,7 @@ export const DATENSCHUTZ = {
       <h3>4. Контактная форма</h3>
       <p>Запросы через контактную форму сохраняются вместе с контактными данными для обработки обращения.</p>
       <p>Файлы, загруженные через форму, хранятся в закрытом хранилище Google Firebase (Google Cloud Storage), передаются нашему бюро только по подписанным временным ссылкам и автоматически удаляются через 30 дней.</p>
+      <p>Для обработки запросов мы также сохраняем запись о каждом запросе во внутренней защищённой паролем административной области: только дату, имя, выбранную услугу и ссылки на загруженные файлы. Эти записи хранятся в Cloud Firestore с местом хранения в ЕС и автоматически удаляются через 30 дней.</p>
       <h3>5. Международная передача данных</h3>
       <p>Для Cloud Firestore выбирается место хранения в ЕС. Нельзя полностью исключить доступ или обработку со стороны поставщиков услуг Vercel и Google Firebase за пределами ЕС/ЕЭЗ. При необходимости применяются соответствующие гарантии защиты данных и соглашения об обработке.</p>
       <h3>6. Карты и внешние ссылки</h3>
@@ -252,6 +257,7 @@ export const DATENSCHUTZ = {
       <h3>4. Formulaire de contact</h3>
       <p>Les demandes via le formulaire de contact sont stockées avec vos coordonnées à des fins de traitement.</p>
       <p>Les fichiers téléversés via le formulaire sont stockés dans un espace non public de Google Firebase (Google Cloud Storage), transmis à notre bureau uniquement via des liens signés à durée limitée et supprimés automatiquement après 30 jours.</p>
+      <p>Pour traiter les demandes, nous conservons également une entrée par demande dans notre espace d'administration interne protégé par mot de passe : uniquement la date, le nom, le service choisi et les liens vers les fichiers téléversés. Ces entrées sont stockées dans Cloud Firestore avec un lieu de stockage dans l'UE et supprimées automatiquement après 30 jours.</p>
       <h3>5. Transferts internationaux</h3>
       <p>Nous choisissons un lieu de stockage situé dans l’UE pour Cloud Firestore. Un accès ou un traitement par les prestataires Vercel et Google Firebase hors UE/EEE ne peut pas être totalement exclu. Lorsque cela est nécessaire, des garanties appropriées et des accords de traitement s’appliquent.</p>
       <h3>6. Cartes et liens externes</h3>
@@ -283,6 +289,7 @@ export const DATENSCHUTZ = {
       <h3>4. Контактна форма</h3>
       <p>Запити через контактну форму зберігаються разом з контактними даними для обробки звернення.</p>
       <p>Файли, завантажені через форму, зберігаються в закритому сховищі Google Firebase (Google Cloud Storage), передаються нашому бюро лише за підписаними тимчасовими посиланнями та автоматично видаляються через 30 днів.</p>
+      <p>Для обробки запитів ми також зберігаємо запис про кожен запит у внутрішній захищеній паролем адміністративній зоні: лише дату, імʼя, обрану послугу та посилання на завантажені файли. Ці записи зберігаються в Cloud Firestore з місцем зберігання в ЄС і автоматично видаляються через 30 днів.</p>
       <h3>5. Міжнародна передача даних</h3>
       <p>Для Cloud Firestore обирається місце зберігання в ЄС. Неможливо повністю виключити доступ або обробку постачальниками послуг Vercel і Google Firebase за межами ЄС/ЄЕП. За потреби застосовуються належні гарантії захисту даних та угоди про обробку.</p>
       <h3>6. Карти та зовнішні посилання</h3>

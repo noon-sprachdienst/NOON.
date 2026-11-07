@@ -1,6 +1,8 @@
 ﻿import nodemailer from 'nodemailer';
 import { cleanText, readJson, sendJson } from '../_lib/http.js';
 import { getBucket, isUploadPath, MAX_TOTAL_BYTES, MAX_UPLOAD_FILES, signPath, storageConfigured } from '../_lib/storage.js';
+import { CMS, getStore, REQUEST_DAYS, REQUESTS } from '../_lib/cmsStore.js';
+import { textIn } from '../../src/data/formSchema.js';
 
 const ALLOWED_FILE_TYPES = new Set([
   'application/pdf',
@@ -108,6 +110,46 @@ async function getStoredUploads(uploads, siteUrl) {
   return { links, attachments };
 }
 
+// Fields the admin added to the form. Only ids found in the published settings are accepted,
+// and the e-mail shows them with their German label. Settings are cached per instance for a minute.
+let formCache = { at: 0, config: null };
+async function publishedFormConfig() {
+  if (Date.now() - formCache.at < 60 * 1000) return formCache.config;
+  const published = await getStore().get(CMS, 'form').catch(() => null);
+  formCache = { at: Date.now(), config: published?.config || null };
+  return formCache.config;
+}
+
+async function customFields(values) {
+  if (!values || typeof values !== 'object') return [];
+  const config = await publishedFormConfig();
+  if (!config) return [];
+  return config.fields
+    .filter((field) => !field.builtin && !field.hidden && Object.prototype.hasOwnProperty.call(values, field.id))
+    .map((field) => {
+      const raw = values[field.id];
+      let value = cleanText(typeof raw === 'string' ? raw : '', field.type === 'textarea' ? 2000 : 500);
+      if (field.type === 'checkbox') value = value ? 'Ja' : 'Nein';
+      if (field.type === 'select') value = textIn(field.options?.find((option) => option.id === value)?.label, 'de');
+      return { label: textIn(field.label, 'de') || field.id, value };
+    })
+    .filter((field) => field.value);
+}
+
+// Requests page of the admin: only date, name, service and file links, deleted after 30 days.
+function saveRequest({ name, service, links, driveLink, attached }) {
+  const now = Date.now();
+  return getStore().add(REQUESTS, {
+    createdAt: now,
+    expireAt: new Date(now + REQUEST_DAYS * 24 * 60 * 60 * 1000),
+    name,
+    service,
+    files: [...links.map((link) => ({ name: link.name, size: link.size, url: link.url })), ...(driveLink ? [{ name: 'Google Drive', size: 0, url: driveLink }] : [])],
+    attached,
+    status: 'new',
+  });
+}
+
 const formatMb = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1).replace('.', ',')} MB`;
 
 export default async function handler(req, res) {
@@ -150,7 +192,12 @@ export default async function handler(req, res) {
     };
     const siteUrl = process.env.SITE_URL || `https://${req.headers.host}`;
     const stored = await getStoredUploads(body.uploads, siteUrl);
-    const attachments = [...getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []), ...stored.attachments];
+    const inlineFiles = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
+    const attachments = [...inlineFiles, ...stored.attachments];
+    const extra = await customFields(body.custom).catch(() => []);
+    // Saved in parallel with the e-mail and never blocks it; if the e-mail fails the request is still listed.
+    const saving = saveRequest({ name: fields.name, service, links: stored.links, driveLink: fields.driveLink, attached: inlineFiles.length })
+      .catch((error) => console.error('request save error', error.message));
     const fileLinksText = stored.links.length
       ? ['', 'Dateien (Download-Link, 30 Tage verfügbar):', ...stored.links.map((l) => `- ${l.name} (${formatMb(l.size)}): ${l.url}`)]
       : [];
@@ -162,7 +209,10 @@ export default async function handler(req, res) {
       : (process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de');
     const smtpPort = Number(process.env.SMTP_PORT || 465);
 
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
+    // SMTP_DEV_LOG=1 is set only by the local dev server (scripts/dev-api.mjs): print instead of sending.
+    const devLog = process.env.SMTP_DEV_LOG === '1';
+    if (!devLog && (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD)) {
+      await saving;
       throw new Error('SMTP is not configured.');
     }
 
@@ -175,7 +225,7 @@ export default async function handler(req, res) {
 
     const fromAddress = (process.env.SMTP_FROM || process.env.SMTP_USER || '').trim();
     fromHeader = `"NOON Website Anfrage" <${fromAddress}>`;
-    await transporter.sendMail({
+    const mail = {
       from: fromHeader,
       to: recipient,
       replyTo: email || undefined,
@@ -192,6 +242,7 @@ export default async function handler(req, res) {
         `Ausgangssprache: ${fields.sourceLanguage}`,
         `Zielsprache: ${fields.targetLanguage}`,
         `Website-Sprache: ${fields.language}`,
+        ...extra.map((field) => `${field.label}: ${field.value}`),
         ...(fields.driveLink ? [`Datei-Link (Google Drive): ${fields.driveLink}`] : []),
         ...fileLinksText,
         '',
@@ -210,7 +261,8 @@ export default async function handler(req, res) {
             <strong>Gewünschte Uhrzeit:</strong> ${escapeHtml(fields.appointmentTime)}<br>` : ''}
             <strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
             <strong>Zielsprache:</strong> ${escapeHtml(fields.targetLanguage)}<br>
-            <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}${fields.driveLink ? `<br>
+            <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}${extra.map((field) => `<br>
+            <strong>${escapeHtml(field.label)}:</strong> ${escapeHtml(field.value).replace(/\n/g, '<br>')}`).join('')}${fields.driveLink ? `<br>
             <strong>Datei-Link (Google Drive):</strong> <a href="${escapeHtml(fields.driveLink)}">${escapeHtml(fields.driveLink)}</a>` : ''}
           </p>
           ${fileLinksHtml}
@@ -218,7 +270,10 @@ export default async function handler(req, res) {
         </div>
       `,
       attachments,
-    });
+    };
+    if (devLog) console.log(`[dev] e-mail to ${recipient}\n${mail.text}`);
+    else await transporter.sendMail(mail);
+    await saving;
 
     return sendJson(res, 202, { ok: true });
   } catch (error) {

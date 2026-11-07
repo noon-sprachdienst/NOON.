@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { devApi } from './scripts/dev-api.mjs'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), devApi()],
   server: {
     host: '127.0.0.1',
     port: 5173,

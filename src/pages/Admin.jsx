@@ -1,13 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   LayoutDashboard, Search, Settings, ArrowLeft, Users, Eye, MousePointerClick, Clock, RefreshCw, Menu, X,
   Monitor, Smartphone, Tablet, MessageCircle, Phone, Mail, FileText, Send, Languages, Copy, Check,
-  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen, Mic, Sparkles,
+  ExternalLink, LogOut, ShieldCheck, Database, EyeOff, Globe, PanelLeftClose, PanelLeftOpen, Mic, Sparkles, ClipboardList, Inbox,
 } from 'lucide-react';
 import { INTERNAL_KEY } from '../lib/analytics.js';
 import { T, ALPHA3, countryName, fill } from './admin/i18n.js';
 import { buildMetrics, buildSessions, sourceName } from './admin/metrics.js';
 import { BarList, Delta, Donut, Heatmap, Sparkline, TrendChart } from './admin/charts.jsx';
+import { CMS_T } from './admin/cmsI18n.js';
+import FormEditor from './admin/FormEditor.jsx';
+import RequestsTab from './admin/RequestsTab.jsx';
 import './admin/admin.css';
 
 const LANG_KEY = 'noon_admin_lang';
@@ -551,11 +554,21 @@ export default function Admin() {
   const [lang, setLang] = useState(() => localStorage.getItem(LANG_KEY) || 'de');
   const [navOpen, setNavOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem(RAIL_KEY) === '1');
-  const t = T[lang] || T.de;
+  const t = useMemo(() => ({ ...(T[lang] || T.de), ...(CMS_T[lang] || CMS_T.de) }), [lang]);
+  const formDirty = useRef(false);
+  const setFormDirty = useCallback((dirty) => { formDirty.current = dirty; }, []);
+  const [newRequests, setNewRequests] = useState(0);
   const toggleCollapsed = () => setCollapsed((c) => { localStorage.setItem(RAIL_KEY, c ? '0' : '1'); return !c; });
 
   const changeLang = (l) => { setLang(l); localStorage.setItem(LANG_KEY, l); };
-  const goTab = (next) => { setTab(next); setNavOpen(false); };
+  const goTab = (next) => {
+    if (next === tab) { setNavOpen(false); return; }
+    // Unsaved changes in the form editor are lost when leaving the tab, so ask first.
+    if (tab === 'form' && formDirty.current && !window.confirm(t.leaveUnsaved)) return;
+    formDirty.current = false;
+    setTab(next);
+    setNavOpen(false);
+  };
   const reload = useCallback(() => setReloadKey((k) => k + 1), []);
 
   useEffect(() => {
@@ -616,12 +629,23 @@ export default function Admin() {
       .finally(() => setLoading(false));
   }, [authed, reloadKey]);
 
+  // Number of new requests for the badge in the sidebar.
+  useEffect(() => {
+    if (!authed || DEMO) return;
+    fetch('/api/admin/requests')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => { if (data) setNewRequests((data.requests || []).filter((r) => r.status === 'new').length); })
+      .catch(() => {});
+  }, [authed, reloadKey]);
+
   if (checkingAuth) return <div className="np-login" translate="no"><div className="np-login-box"><p>{t.checking}</p></div></div>;
   if (!authed) return <LoginScreen onLogin={() => setAuthed(true)} lang={lang} setLang={changeLang} />;
 
   const nav = [
     { key: 'overview', icon: LayoutDashboard },
     { key: 'search', icon: Search },
+    { key: 'requests', icon: Inbox, badge: newRequests },
+    { key: 'form', icon: ClipboardList },
     { key: 'settings', icon: Settings },
   ];
 
@@ -639,9 +663,10 @@ export default function Admin() {
           <button type="button" className="np-rail-toggle np-only-mobile" aria-label={t.menu} onClick={() => setNavOpen(false)}><X size={17} /></button>
         </div>
         <nav className="np-nav">
-          {nav.map(({ key, icon: Icon }) => (
-            <button key={key} type="button" className={tab === key ? 'is-active' : ''} onClick={() => goTab(key)} data-tip={t[key]} aria-label={t[key]}>
+          {nav.map(({ key, icon: Icon, badge }) => (
+            <button key={key} type="button" className={tab === key ? 'is-active' : ''} onClick={() => goTab(key)} data-tip={t[key]} aria-label={badge ? `${t[key]} (${badge})` : t[key]}>
               <Icon size={18} /> <span>{t[key]}</span>
+              {badge > 0 && <b className="np-nav-badge">{badge}</b>}
             </button>
           ))}
         </nav>
@@ -662,7 +687,7 @@ export default function Admin() {
             <h1>{t[tab]}</h1>
             <p>{t[`${tab}Sub`]}</p>
           </div>
-          {tab !== 'settings' && (
+          {(tab === 'overview' || tab === 'search') && (
             <div className="np-range" role="group">
               {RANGES.map((d) => (
                 <button key={d} type="button" className={range === d ? 'is-active' : ''} onClick={() => setRange(d)}>
@@ -671,7 +696,7 @@ export default function Admin() {
               ))}
             </div>
           )}
-          <button type="button" className="np-icon-btn" onClick={reload} aria-label={t.refresh} title={loadedAt ? `${t.updated}: ${new Date(loadedAt).toLocaleTimeString(numberLocale(t))}` : t.refresh}>
+          <button type="button" className="np-icon-btn" onClick={() => { if (tab === 'form' && formDirty.current && !window.confirm(t.leaveUnsaved)) return; reload(); }} aria-label={t.refresh} title={loadedAt ? `${t.updated}: ${new Date(loadedAt).toLocaleTimeString(numberLocale(t))}` : t.refresh}>
             <RefreshCw size={17} className={loading ? 'np-spin' : ''} />
           </button>
         </header>
@@ -679,6 +704,8 @@ export default function Admin() {
         <div className="np-content">
           {tab === 'overview' && <OverviewTab daily={daily} events={events} range={range} t={t} lang={lang} />}
           {tab === 'search' && <SearchTab range={range} t={t} lang={lang} reloadKey={reloadKey} />}
+          {tab === 'requests' && <RequestsTab t={t} locale={numberLocale(t)} reloadKey={reloadKey} onNewCount={setNewRequests} />}
+          {tab === 'form' && <FormEditor key={reloadKey} t={t} locale={numberLocale(t)} onDirtyChange={setFormDirty} />}
           {tab === 'settings' && <SettingsTab t={t} meta={meta} onRebuilt={reload} />}
         </div>
       </main>

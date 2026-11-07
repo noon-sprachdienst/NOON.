@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { trackEvent } from '../lib/analytics';
 import { CONTACT } from '../config/contact.js';
-import { FORM_CONFIRMATION, FORM_LANGUAGE_LISTS, FORM_LANGUAGES, FORM_OTHER_LANGUAGE } from '../data/formLanguages.js';
+import QuoteFormFields from './QuoteFormFields.jsx';
+import { useFormConfig } from '../lib/formConfig.js';
+import { OTHER_LANGUAGE, phoneHref, textIn } from '../data/formSchema.js';
 
 const STEPS = [
   { num: '01', label: 'how.step1.label', desc: 'how.step1.desc' },
@@ -22,15 +24,6 @@ const FORM_STATUS = {
   uk: { sending: 'Надсилання ...', sent: 'Запит надіслано', error: 'Не вдалося надіслати. Спробуйте ще раз або надішліть документ через WhatsApp.' },
 };
 
-const FORM_UPLOAD_HINT = {
-  de: 'PDF, Word oder Bilder | bis zu 10 Dateien | max. 50 MB pro Datei',
-  en: 'PDF, Word or images | up to 10 files | max. 50 MB per file',
-  ar: 'ملفات PDF أو Word أو صور | حتى 10 ملفات | 50 ميغابايت كحد أقصى لكل ملف',
-  tr: 'PDF, Word veya görsel | en fazla 10 dosya | dosya başına en fazla 50 MB',
-  ru: 'PDF, Word или изображения | до 10 файлов | до 50 МБ на файл',
-  fr: "PDF, Word ou images | jusqu'à 10 fichiers | 50 Mo max. par fichier",
-  uk: 'PDF, Word або зображення | до 10 файлів | до 50 МБ на файл',
-};
 
 const FORM_UPLOAD_ERROR = {
   de: {
@@ -144,39 +137,7 @@ async function uploadToStorage(files) {
 
 const formatMb = (bytes, lang) => (bytes / (1024 * 1024)).toFixed(1).replace('.', lang === 'en' || lang === 'ar' ? '.' : ',');
 
-const FORM_DRIVE = {
-  de: { label: 'Link zu gro\u00dfen Dateien (optional)', placeholder: 'https://drive.google.com/...', hint: 'Dateien \u00fcber 50 MB? \u00dcber Google Drive teilen und den Link hier einf\u00fcgen.' },
-  en: { label: 'Link to large files (optional)', placeholder: 'https://drive.google.com/...', hint: 'Files over 50 MB? Share them via Google Drive and paste the link here.' },
-  ar: { label: '\u0631\u0627\u0628\u0637 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)', placeholder: 'https://drive.google.com/...', hint: '\u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631 \u0645\u0646 50 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a\u061f \u0634\u0627\u0631\u0643\u0647\u0627 \u0639\u0628\u0631 Google Drive \u0648\u0623\u0644\u0635\u0642 \u0627\u0644\u0631\u0627\u0628\u0637 \u0647\u0646\u0627.' },
-  tr: { label: 'Buyuk dosya baglantisi (istege bagli)', placeholder: 'https://drive.google.com/...', hint: '50 MB\u2019tan buyuk dosyalar? Google Drive ile paylasin ve baglantiyi buraya yapistirin.' },
-  ru: { label: '\u0421\u0441\u044b\u043b\u043a\u0430 \u043d\u0430 \u0431\u043e\u043b\u044c\u0448\u0438\u0435 \u0444\u0430\u0439\u043b\u044b (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u044b \u0431\u043e\u043b\u044c\u0448\u0435 50 \u041c\u0411? \u041f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0447\u0435\u0440\u0435\u0437 Google Drive \u0438 \u0432\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0441\u0441\u044b\u043b\u043a\u0443 \u0441\u044e\u0434\u0430.' },
-  fr: { label: 'Lien vers les fichiers volumineux (facultatif)', placeholder: 'https://drive.google.com/...', hint: 'Fichiers de plus de 50 Mo ? Partagez-les via Google Drive et collez le lien ici.' },
-  uk: { label: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0432\u0435\u043b\u0438\u043a\u0456 \u0444\u0430\u0439\u043b\u0438 (\u043d\u0435\u043e\u0431\u043e\u0432\u02bc\u044f\u0437\u043a\u043e\u0432\u043e)', placeholder: 'https://drive.google.com/...', hint: '\u0424\u0430\u0439\u043b\u0438 \u043f\u043e\u043d\u0430\u0434 50 \u041c\u0411? \u041f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0447\u0435\u0440\u0435\u0437 Google Drive \u0456 \u0432\u0441\u0442\u0430\u0432\u0442\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0441\u044e\u0434\u0438.' },
-};
 
-const FORM_LANGUAGE_OPTIONS = {
-  de: {
-    docPlaceholder: 'z.B. Heiratsurkunde aus Damaskus, beglaubigt für das Standesamt ...',
-  },
-  en: {
-    docPlaceholder: 'e.g. marriage certificate from Damascus, certified for the registry office ...',
-  },
-  ar: {
-    docPlaceholder: 'مثلا: شهادة زواج من دمشق، ترجمة معتمدة لمكتب الأحوال المدنية ...',
-  },
-  tr: {
-    docPlaceholder: 'örn. Şam’dan evlilik belgesi, nüfus dairesi için onaylı çeviri ...',
-  },
-  ru: {
-    docPlaceholder: 'например, свидетельство о браке из Дамаска, заверенный перевод для ЗАГСа ...',
-  },
-  fr: {
-    docPlaceholder: 'p. ex. acte de mariage de Damas, traduction certifiée pour l’état civil ...',
-  },
-  uk: {
-    docPlaceholder: 'наприклад, свідоцтво про шлюб з Дамаска, засвідчений переклад для РАЦСу ...',
-  },
-};
 
 const MAX_UPLOAD_BYTES = 3 * 1024 * 1024;
 
@@ -233,15 +194,21 @@ export default function HowContact({ branch = null }) {
   const [serviceType, setServiceType] = useState('translation');
   const [startedAt] = useState(() => Date.now());
   const statusCopy = FORM_STATUS[lang] || FORM_STATUS.de;
-  const formOptions = FORM_LANGUAGE_OPTIONS[lang] || FORM_LANGUAGE_OPTIONS.de;
-  const driveCopy = FORM_DRIVE[lang] || FORM_DRIVE.de;
   const uploadErrorCopy = FORM_UPLOAD_ERROR[lang] || FORM_UPLOAD_ERROR.de;
   const tooBigCopy = FORM_UPLOAD_TOO_BIG[lang] || FORM_UPLOAD_TOO_BIG.de;
-  const otherCopy = FORM_OTHER_LANGUAGE[lang] || FORM_OTHER_LANGUAGE.de;
-  const doneCopy = FORM_CONFIRMATION[lang] || FORM_CONFIRMATION.de;
-  const languageName = (id) => FORM_LANGUAGES[id][lang] || FORM_LANGUAGES[id].de;
-  const [sourceLang, setSourceLang] = useState(FORM_LANGUAGE_LISTS.source[0]);
-  const [targetLang, setTargetLang] = useState(FORM_LANGUAGE_LISTS.target[0]);
+  const config = useFormConfig();
+  const [sourceLang, setSourceLang] = useState(config.defaultSource);
+  const [targetLang, setTargetLang] = useState(config.defaultTarget);
+  const done = config.confirmation;
+  // Office pages show their own number; elsewhere the number set in the admin.
+  const donePhone = branch?.phone || (done.phone ? { label: done.phone, href: phoneHref(done.phone) } : phones[0]);
+  const withPhone = (text, Wrap) => text.split('{phone}').flatMap((part, i) => (i ? [<Wrap key={i} />, part] : [part]));
+
+  // Settings published in the admin arrive after the first render: keep the preselected languages in step.
+  useEffect(() => {
+    setSourceLang(config.defaultSource);
+    setTargetLang(config.defaultTarget);
+  }, [config]);
   const doneRef = useRef(null);
 
   // After sending, the form is replaced by the confirmation card: bring it into view and
@@ -255,15 +222,33 @@ export default function HowContact({ branch = null }) {
   }, [status]);
 
   // The office e-mail always gets the German language name; "Other" sends what the visitor typed.
-  const languageValue = (data, field, id) => (id === 'other'
+  const languageValue = (data, field, id) => (id === OTHER_LANGUAGE
     ? `Andere: ${String(data.get(`${field}Other`) || '').trim() || '-'}`
-    : FORM_LANGUAGES[id].de);
+    : textIn(config.languages.find((language) => language.id === id)?.name, 'de') || id);
+
+  // Fields added in the admin, sent by their id; the server only accepts ids it finds in the published settings.
+  const customValues = (data) => Object.fromEntries(config.fields
+    .filter((field) => !field.builtin && !field.hidden && (field.show === 'both' || field.show === serviceType))
+    .map((field) => [field.id, field.type === 'checkbox' ? (data.get(field.id) ? 'yes' : '') : String(data.get(field.id) || '').trim()]));
 
   const startOver = () => {
-    setSourceLang(FORM_LANGUAGE_LISTS.source[0]);
-    setTargetLang(FORM_LANGUAGE_LISTS.target[0]);
+    setSourceLang(config.defaultSource);
+    setTargetLang(config.defaultTarget);
     setServiceType('translation');
     setStatus('idle');
+  };
+
+  const onFilesChange = (e) => {
+    // Checked against the Firebase upload limits; the 3 MB fallback is only checked on submit.
+    const chosen = [...e.currentTarget.files];
+    const biggest = chosen.reduce((max, file) => Math.max(max, file.size), 0);
+    if (chosen.length > STORAGE_LIMITS.files) return setStatus('upload-count');
+    if (biggest > STORAGE_LIMITS.perFile) {
+      setUploadBytes(biggest);
+      setUploadMax(STORAGE_LIMITS.perFile);
+      return setStatus('upload-size');
+    }
+    return setStatus('idle');
   };
 
   const handleSubmit = async (e) => {
@@ -321,6 +306,7 @@ export default function HowContact({ branch = null }) {
         targetLanguage: languageValue(data, 'targetLanguage', targetLang),
         message: data.get('message'),
         driveLink: data.get('driveLink'),
+        custom: customValues(data),
         website: data.get('website'),
         service: serviceType,
         language: lang,
@@ -439,13 +425,13 @@ export default function HowContact({ branch = null }) {
               <div className="form-done-check" aria-hidden="true">
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
               </div>
-              <h3 tabIndex="-1">{doneCopy.title}</h3>
-              <p>{doneCopy.text.split('{phone}').flatMap((part, i) => (i ? [<a key={i} href={phones[0].href} dir="ltr">{phones[0].label}</a>, part] : [part]))}</p>
+              <h3 tabIndex="-1">{textIn(done.title, lang)}</h3>
+              <p>{withPhone(textIn(done.text, lang), () => <a href={donePhone.href} dir="ltr">{donePhone.label}</a>)}</p>
               <div className="form-done-actions">
-                <a className="btn btn-primary" href={phones[0].href} onClick={() => trackEvent('cta_click', { action: 'phone_confirmation' })}>
-                  {doneCopy.call.split('{phone}')[0]}<span dir="ltr">{phones[0].label}</span>{doneCopy.call.split('{phone}')[1]}
+                <a className="btn btn-primary" href={donePhone.href} onClick={() => trackEvent('cta_click', { action: 'phone_confirmation' })}>
+                  {withPhone(textIn(done.call, lang), () => <span dir="ltr">{donePhone.label}</span>)}
                 </a>
-                <button type="button" className="btn btn-secondary form-done-again" onClick={startOver}>{doneCopy.again}</button>
+                <button type="button" className="btn btn-secondary form-done-again" onClick={startOver}>{textIn(done.again, lang)}</button>
               </div>
             </div>
           ) : (
@@ -456,127 +442,20 @@ export default function HowContact({ branch = null }) {
             style={{ '--ri': 1 }}
             aria-label={t('form.h3')}
           >
-            <h3>{t('form.h3')}</h3>
-            <p className="sub">{t('form.sub')}</p>
+            <h3>{textIn(config.texts.title, lang) || t('form.h3')}</h3>
+            <p className="sub">{textIn(config.texts.sub, lang) || t('form.sub')}</p>
 
-            <div className="form-row">
-              <div className="form-field">
-                <label htmlFor="form-first">{t('form.firstName')}</label>
-                <input id="form-first" name="firstName" type="text" placeholder="Maria" required autoComplete="given-name" />
-              </div>
-              <div className="form-field">
-                <label htmlFor="form-last">{t('form.lastName')}</label>
-                <input id="form-last" name="lastName" type="text" placeholder="Schmidt" required autoComplete="family-name" />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-field">
-                <label htmlFor="form-email">{t('form.email')}</label>
-                <input id="form-email" name="email" type="email" placeholder="m.schmidt@email.de" required autoComplete="email" />
-              </div>
-              <div className="form-field">
-                <label htmlFor="form-phone">{t('form.phone')}</label>
-                <input id="form-phone" name="phone" type="tel" placeholder="+49 ..." autoComplete="tel" />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-field">
-                <label htmlFor="form-from">{t('form.from')}</label>
-                <select id="form-from" name="sourceLanguage" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
-                  {FORM_LANGUAGE_LISTS.source.map((id) => <option key={id} value={id}>{languageName(id)}</option>)}
-                </select>
-                {sourceLang === 'other' && (
-                  <input className="form-other-lang" name="sourceLanguageOther" type="text" required maxLength={60} aria-label={`${t('form.from')}: ${otherCopy.label}`} placeholder={otherCopy.placeholder} autoComplete="off" />
-                )}
-              </div>
-              <div className="form-field">
-                <label htmlFor="form-to">{t('form.to')}</label>
-                <select id="form-to" name="targetLanguage" value={targetLang} onChange={(e) => setTargetLang(e.target.value)}>
-                  {FORM_LANGUAGE_LISTS.target.map((id) => <option key={id} value={id}>{languageName(id)}</option>)}
-                </select>
-                {targetLang === 'other' && (
-                  <input className="form-other-lang" name="targetLanguageOther" type="text" required maxLength={60} aria-label={`${t('form.to')}: ${otherCopy.label}`} placeholder={otherCopy.placeholder} autoComplete="off" />
-                )}
-              </div>
-            </div>
-
-            <div className="service-toggle" role="group" aria-label={t('form.service.label')}>
-              <button
-                type="button"
-                className={`service-choice${serviceType === 'translation' ? ' active' : ''}`}
-                onClick={() => setServiceType('translation')}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                  <rect x="5" y="2" width="14" height="20" rx="2"/>
-                  <path d="M9 7h6M9 11h6M9 15h4"/>
-                </svg>
-                {t('service.translation')}
-              </button>
-              <button
-                type="button"
-                className={`service-choice${serviceType === 'interpreting' ? ' active' : ''}`}
-                onClick={() => setServiceType('interpreting')}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                  <path d="M12 19v4M8 23h8"/>
-                </svg>
-                {t('service.interpreting')}
-              </button>
-            </div>
-
-            {serviceType === 'translation' && (
-              <div className="form-field">
-                <label htmlFor="form-file">{t('form.file')}</label>
-                <input
-                  id="form-file"
-                  name="files"
-                  type="file"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.heic,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp,image/heic"
-                  multiple
-                  onChange={(e) => {
-                    // Checked against the Firebase upload limits; the 3 MB fallback is only checked on submit.
-                    const chosen = [...e.currentTarget.files];
-                    const biggest = chosen.reduce((max, file) => Math.max(max, file.size), 0);
-                    if (chosen.length > STORAGE_LIMITS.files) return setStatus('upload-count');
-                    if (biggest > STORAGE_LIMITS.perFile) {
-                      setUploadBytes(biggest);
-                      setUploadMax(STORAGE_LIMITS.perFile);
-                      return setStatus('upload-size');
-                    }
-                    return setStatus('idle');
-                  }}
-                />
-                <p className="form-hint">{FORM_UPLOAD_HINT[lang] || FORM_UPLOAD_HINT.de}</p>
-              </div>
-            )}
-
-            {serviceType === 'translation' && (
-              <div className="form-field">
-                <label htmlFor="form-drive">{driveCopy.label}</label>
-                <input
-                  id="form-drive"
-                  name="driveLink"
-                  type="url"
-                  inputMode="url"
-                  placeholder={driveCopy.placeholder}
-                  autoComplete="off"
-                />
-                <p className="form-hint">{driveCopy.hint}</p>
-              </div>
-            )}
-
-            <div className="form-field">
-              <label htmlFor="form-doc">{t('form.doc')}</label>
-              <textarea
-                id="form-doc"
-                name="message"
-                placeholder={formOptions.docPlaceholder}
-              />
-            </div>
+            <QuoteFormFields
+              config={config}
+              lang={lang}
+              service={serviceType}
+              onService={setServiceType}
+              sourceLang={sourceLang}
+              onSourceLang={setSourceLang}
+              targetLang={targetLang}
+              onTargetLang={setTargetLang}
+              onFilesChange={onFilesChange}
+            />
 
             <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
 
@@ -612,7 +491,7 @@ export default function HowContact({ branch = null }) {
               </p>
             )}
             <button type="submit" className="btn btn-primary" disabled={status === 'sending'} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
-              {status === 'sending' ? statusCopy.sending : <><span>{t('form.submit')}</span> <span className="arrow">→</span></>}
+              {status === 'sending' ? statusCopy.sending : <><span>{textIn(config.texts.submit, lang) || t('form.submit')}</span> <span className="arrow">→</span></>}
             </button>
           </form>
           )}
