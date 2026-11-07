@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { trackEvent } from '../lib/analytics';
 import { CONTACT } from '../config/contact.js';
+import { FORM_CONFIRMATION, FORM_LANGUAGE_LISTS, FORM_LANGUAGES, FORM_OTHER_LANGUAGE } from '../data/formLanguages.js';
 
 const STEPS = [
   { num: '01', label: 'how.step1.label', desc: 'how.step1.desc' },
@@ -155,38 +156,24 @@ const FORM_DRIVE = {
 
 const FORM_LANGUAGE_OPTIONS = {
   de: {
-    source: ['Arabisch', 'Türkisch', 'Russisch', 'Ukrainisch', 'Englisch', 'Persisch', 'Polnisch', 'Andere...'],
-    target: ['Deutsch', 'Englisch', 'Andere...'],
     docPlaceholder: 'z.B. Heiratsurkunde aus Damaskus, beglaubigt für das Standesamt ...',
   },
   en: {
-    source: ['Arabic', 'Turkish', 'Russian', 'Ukrainian', 'English', 'Persian', 'Polish', 'Other...'],
-    target: ['German', 'English', 'Other...'],
     docPlaceholder: 'e.g. marriage certificate from Damascus, certified for the registry office ...',
   },
   ar: {
-    source: ['العربية', 'التركية', 'الروسية', 'الأوكرانية', 'الإنجليزية', 'الفارسية', 'البولندية', 'لغة أخرى...'],
-    target: ['الألمانية', 'الإنجليزية', 'لغة أخرى...'],
     docPlaceholder: 'مثلا: شهادة زواج من دمشق، ترجمة معتمدة لمكتب الأحوال المدنية ...',
   },
   tr: {
-    source: ['Arapça', 'Türkçe', 'Rusça', 'Ukraynaca', 'İngilizce', 'Farsça', 'Lehçe', 'Diğer...'],
-    target: ['Almanca', 'İngilizce', 'Diğer...'],
     docPlaceholder: 'örn. Şam’dan evlilik belgesi, nüfus dairesi için onaylı çeviri ...',
   },
   ru: {
-    source: ['Арабский', 'Турецкий', 'Русский', 'Украинский', 'Английский', 'Персидский', 'Польский', 'Другой...'],
-    target: ['Немецкий', 'Английский', 'Другой...'],
     docPlaceholder: 'например, свидетельство о браке из Дамаска, заверенный перевод для ЗАГСа ...',
   },
   fr: {
-    source: ['Arabe', 'Turc', 'Russe', 'Ukrainien', 'Anglais', 'Persan', 'Polonais', 'Autre...'],
-    target: ['Allemand', 'Anglais', 'Autre...'],
     docPlaceholder: 'p. ex. acte de mariage de Damas, traduction certifiée pour l’état civil ...',
   },
   uk: {
-    source: ['Арабська', 'Турецька', 'Російська', 'Українська', 'Англійська', 'Перська', 'Польська', 'Інша...'],
-    target: ['Німецька', 'Англійська', 'Інша...'],
     docPlaceholder: 'наприклад, свідоцтво про шлюб з Дамаска, засвідчений переклад для РАЦСу ...',
   },
 };
@@ -250,6 +237,34 @@ export default function HowContact({ branch = null }) {
   const driveCopy = FORM_DRIVE[lang] || FORM_DRIVE.de;
   const uploadErrorCopy = FORM_UPLOAD_ERROR[lang] || FORM_UPLOAD_ERROR.de;
   const tooBigCopy = FORM_UPLOAD_TOO_BIG[lang] || FORM_UPLOAD_TOO_BIG.de;
+  const otherCopy = FORM_OTHER_LANGUAGE[lang] || FORM_OTHER_LANGUAGE.de;
+  const doneCopy = FORM_CONFIRMATION[lang] || FORM_CONFIRMATION.de;
+  const languageName = (id) => FORM_LANGUAGES[id][lang] || FORM_LANGUAGES[id].de;
+  const [sourceLang, setSourceLang] = useState(FORM_LANGUAGE_LISTS.source[0]);
+  const [targetLang, setTargetLang] = useState(FORM_LANGUAGE_LISTS.target[0]);
+  const doneRef = useRef(null);
+
+  // After sending, the form is replaced by the confirmation card: bring it into view and
+  // move focus to its heading so screen readers announce it.
+  useEffect(() => {
+    if (status !== 'sent' || !doneRef.current) return;
+    const card = doneRef.current;
+    const rect = card.getBoundingClientRect();
+    if (rect.top < 80 || rect.bottom > window.innerHeight) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.querySelector('h3')?.focus({ preventScroll: true });
+  }, [status]);
+
+  // The office e-mail always gets the German language name; "Other" sends what the visitor typed.
+  const languageValue = (data, field, id) => (id === 'other'
+    ? `Andere: ${String(data.get(`${field}Other`) || '').trim() || '-'}`
+    : FORM_LANGUAGES[id].de);
+
+  const startOver = () => {
+    setSourceLang(FORM_LANGUAGE_LISTS.source[0]);
+    setTargetLang(FORM_LANGUAGE_LISTS.target[0]);
+    setServiceType('translation');
+    setStatus('idle');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -302,8 +317,8 @@ export default function HowContact({ branch = null }) {
         lastName: data.get('lastName'),
         email: data.get('email'),
         phone: data.get('phone'),
-        sourceLanguage: data.get('sourceLanguage'),
-        targetLanguage: data.get('targetLanguage'),
+        sourceLanguage: languageValue(data, 'sourceLanguage', sourceLang),
+        targetLanguage: languageValue(data, 'targetLanguage', targetLang),
         message: data.get('message'),
         driveLink: data.get('driveLink'),
         website: data.get('website'),
@@ -418,7 +433,22 @@ export default function HowContact({ branch = null }) {
             </a>
           </div>
 
-          {/* Right — form card */}
+          {/* Right — form card, replaced by the confirmation card once the request was sent */}
+          {status === 'sent' ? (
+            <div className="contact-card form-card form-done" ref={doneRef} role="status" aria-live="polite">
+              <div className="form-done-check" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              </div>
+              <h3 tabIndex="-1">{doneCopy.title}</h3>
+              <p>{doneCopy.text.split('{phone}').flatMap((part, i) => (i ? [<a key={i} href={phones[0].href} dir="ltr">{phones[0].label}</a>, part] : [part]))}</p>
+              <div className="form-done-actions">
+                <a className="btn btn-primary" href={phones[0].href} onClick={() => trackEvent('cta_click', { action: 'phone_confirmation' })}>
+                  {doneCopy.call.split('{phone}')[0]}<span dir="ltr">{phones[0].label}</span>{doneCopy.call.split('{phone}')[1]}
+                </a>
+                <button type="button" className="btn btn-secondary form-done-again" onClick={startOver}>{doneCopy.again}</button>
+              </div>
+            </div>
+          ) : (
           <form
             className="contact-card form-card"
             onSubmit={handleSubmit}
@@ -454,15 +484,21 @@ export default function HowContact({ branch = null }) {
             <div className="form-row">
               <div className="form-field">
                 <label htmlFor="form-from">{t('form.from')}</label>
-                <select id="form-from" name="sourceLanguage">
-                  {formOptions.source.map((option) => <option key={option}>{option}</option>)}
+                <select id="form-from" name="sourceLanguage" value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
+                  {FORM_LANGUAGE_LISTS.source.map((id) => <option key={id} value={id}>{languageName(id)}</option>)}
                 </select>
+                {sourceLang === 'other' && (
+                  <input className="form-other-lang" name="sourceLanguageOther" type="text" required maxLength={60} aria-label={`${t('form.from')}: ${otherCopy.label}`} placeholder={otherCopy.placeholder} autoComplete="off" />
+                )}
               </div>
               <div className="form-field">
                 <label htmlFor="form-to">{t('form.to')}</label>
-                <select id="form-to" name="targetLanguage">
-                  {formOptions.target.map((option) => <option key={option}>{option}</option>)}
+                <select id="form-to" name="targetLanguage" value={targetLang} onChange={(e) => setTargetLang(e.target.value)}>
+                  {FORM_LANGUAGE_LISTS.target.map((id) => <option key={id} value={id}>{languageName(id)}</option>)}
                 </select>
+                {targetLang === 'other' && (
+                  <input className="form-other-lang" name="targetLanguageOther" type="text" required maxLength={60} aria-label={`${t('form.to')}: ${otherCopy.label}`} placeholder={otherCopy.placeholder} autoComplete="off" />
+                )}
               </div>
             </div>
 
@@ -575,12 +611,11 @@ export default function HowContact({ branch = null }) {
                 <a href={`mailto:${CONTACT.email}`}>{uploadErrorCopy.action}</a>
               </p>
             )}
-            {status === 'sent' && <p className="form-feedback form-feedback--success" role="status">{statusCopy.sent}</p>}
-
             <button type="submit" className="btn btn-primary" disabled={status === 'sending'} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
               {status === 'sending' ? statusCopy.sending : <><span>{t('form.submit')}</span> <span className="arrow">→</span></>}
             </button>
           </form>
+          )}
         </div>
       </div>
     </section>

@@ -7638,6 +7638,29 @@ footer { background: #FAF9F6; padding: 42px 0 22px; border-top: 1px solid var(--
 .form-feedback--error { color: #A4192C; }
 .form-feedback a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .form-card .btn:disabled { opacity: .62; cursor: wait; }
+.form-field .form-other-lang { margin-top: 8px; }
+
+/* Confirmation card that replaces the quote form after sending */
+.form-done {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  min-height: 420px; padding: 48px 32px;
+  animation: formDoneIn .45s cubic-bezier(.2,.8,.2,1) both;
+}
+.form-done-check {
+  width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: #E8F6EE; color: #087A38; margin-bottom: 22px;
+  animation: formDoneCheck .5s .12s cubic-bezier(.2,.9,.3,1.3) both;
+}
+.form-done h3 { font-size: 26px; font-weight: 600; letter-spacing: -.02em; color: var(--navy); margin: 0 0 12px; outline: none; }
+.form-done p { max-width: 440px; margin: 0 auto; font-size: 15px; line-height: 1.65; color: #4A4A4A; }
+.form-done p a { color: var(--navy); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.form-done p a:hover { text-decoration: underline; }
+.form-done-actions { display: grid; gap: 10px; width: 100%; max-width: 360px; margin-top: 28px; }
+.form-done-actions .btn { margin-top: 0; justify-content: center; }
+@keyframes formDoneIn { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes formDoneCheck { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .form-done, .form-done-check { animation: none; } }
+@media (max-width: 640px) { .form-done { min-height: 0; padding: 36px 20px; } .form-done h3 { font-size: 22px; } }
 
 /* Search landing pages */
 .seo-page { background: var(--bg); }
