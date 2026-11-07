@@ -8133,8 +8133,8 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
 .legal-tabs a { padding: 9px 16px; border-radius: 9px; color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: none; transition: background .15s, color .15s; }
 .legal-tabs a:hover { color: var(--ink); }
 .legal-tabs a.is-active { background: #fff; color: var(--navy); box-shadow: 0 1px 3px rgba(10,10,10,.1); }
-.legal-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 40px; }
-.legal-layout:not(:has(.legal-toc)) { grid-template-columns: minmax(0, 860px); justify-content: center; }
+.legal-page .legal-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 40px; }
+.legal-page .legal-layout:not(:has(.legal-toc)) { grid-template-columns: minmax(0, 860px); justify-content: center; }
 .legal-toc { position: sticky; top: 110px; }
 .legal-toc-title { margin: 0 0 10px; color: var(--muted-2); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .legal-toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -8158,7 +8158,7 @@ html[dir="rtl"] .hero-svc-btn--primary:hover .hero-svc-arrow { transform: scaleX
 @media (max-width: 900px) {
   .legal-hero { padding-top: 104px; }
   .legal-page .wrap { padding: 0 20px; }
-  .legal-layout { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
+  .legal-page .legal-layout { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
   .legal-toc { display: none; }
   .legal-card { padding: 26px 20px; border-radius: 14px; }
   .legal-facts > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
