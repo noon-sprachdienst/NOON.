@@ -2,6 +2,9 @@ import { fieldRows, languageList, OTHER_LANGUAGE, textIn } from '../data/formSch
 
 // Renders the quote-form fields from the CMS settings. Used by the site form (HowContact)
 // and by the live preview in the admin, so both always look the same.
+// Admin only: `editing` turns labels into click targets (no htmlFor), `renderText(field, prop, text)`
+// replaces the label / help text with an inline editor, and `wrapField(field, node)` wraps each
+// field with the selection outline and toolbar. The website never passes these.
 const HTML_IDS = {
   firstName: 'form-first', lastName: 'form-last', email: 'form-email', phone: 'form-phone', sourceLanguage: 'form-from',
   targetLanguage: 'form-to', files: 'form-file', driveLink: 'form-drive', message: 'form-doc',
@@ -26,6 +29,7 @@ function ServiceIcon({ id }) {
 
 export default function QuoteFormFields({
   config, lang, service, onService, sourceLang, onSourceLang, targetLang, onTargetLang, onFilesChange, idPrefix = '',
+  editing = false, renderText, wrapField,
 }) {
   const htmlId = (field) => `${idPrefix}${HTML_IDS[field.id] || `form-${field.id}`}`;
   const languageName = (id) => {
@@ -38,7 +42,9 @@ export default function QuoteFormFields({
     const label = textIn(field.label, lang);
     const placeholder = textIn(field.placeholder, lang) || undefined;
     const help = textIn(field.help, lang);
-    const helpNode = help ? <p className="form-hint">{help}</p> : null;
+    const show = (prop, text) => (editing && renderText ? renderText(field, prop, text) : text);
+    const helpNode = help ? <p className="form-hint">{show('help', help)}</p> : null;
+    const labelFor = editing ? undefined : id;
 
     if (field.type === 'service') {
       return (
@@ -56,9 +62,9 @@ export default function QuoteFormFields({
     if (field.type === 'checkbox') {
       return (
         <div key={field.id} className="form-field form-check">
-          <label htmlFor={id}>
+          <label htmlFor={labelFor}>
             <input id={id} name={field.id} type="checkbox" value="yes" required={field.required} />
-            <span>{label}</span>
+            <span>{show('label', label)}</span>
           </label>
           {helpNode}
         </div>
@@ -102,15 +108,16 @@ export default function QuoteFormFields({
 
     return (
       <div key={field.id} className="form-field">
-        <label htmlFor={id}>{label}{field.required && !field.builtin ? ' *' : ''}</label>
+        <label htmlFor={labelFor}>{show('label', label)}{field.required && !field.builtin ? ' *' : ''}</label>
         {control}
         {helpNode}
       </div>
     );
   };
 
+  const render = (field) => (wrapField ? wrapField(field, renderField(field)) : renderField(field));
   return fieldRows(config, service).map((row) => {
-    if (row.length === 1 && row[0].width !== 'half') return renderField(row[0]);
-    return <div key={row.map((field) => field.id).join('+')} className="form-row">{row.map(renderField)}</div>;
+    if (row.length === 1 && row[0].width !== 'half') return render(row[0]);
+    return <div key={row.map((field) => field.id).join('+')} className="form-row">{row.map(render)}</div>;
   });
 }

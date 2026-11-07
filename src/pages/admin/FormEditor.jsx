@@ -2,14 +2,22 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDown, ArrowUp, Check, ChevronDown, ChevronUp, Eye, EyeOff, History, Lock, Plus, RotateCcw, Rocket, Save, Trash2, TriangleAlert, Undo2,
 } from 'lucide-react';
-import QuoteFormFields from '../../components/QuoteFormFields.jsx';
+import VisualPreview from './VisualPreview.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
-import { ALWAYS_REQUIRED, CUSTOM_TYPES, LIMITS, LOCKED_FIELDS, OTHER_LANGUAGE, SITE_LANGS, phoneHref, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
+import { ALWAYS_REQUIRED, CUSTOM_TYPES, LIMITS, LOCKED_FIELDS, OTHER_LANGUAGE, SITE_LANGS, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
 
 const NO_PLACEHOLDER = ['service', 'file', 'checkbox', 'language', 'select'];
 const randomId = (prefix) => `${prefix}${Math.random().toString(36).slice(2, 8)}`;
+// A new field added by the admin (German label first, plus the language being edited).
+function newCustomField(id, type, lang, t) {
+  return {
+    id, type, builtin: false, width: 'full', required: false, show: 'both', hidden: false,
+    label: { de: t.newField, ...(lang !== 'de' ? { [lang]: t.newField } : {}) }, placeholder: {}, help: {},
+    ...(type === 'select' ? { options: [{ id: randomId('o'), label: { de: t.newOption } }] } : {}),
+  };
+}
 const slug = (name) => String(name).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '').slice(0, 20);
 
 async function api(body) {
@@ -79,7 +87,7 @@ function FieldRow({ field, index, count, lang, t, update, open, setOpen }) {
   const canRequire = !['service', 'language', 'file'].includes(field.type) && !ALWAYS_REQUIRED.includes(field.id);
 
   return (
-    <li className={`np-frow${field.hidden ? ' is-hidden' : ''}${open ? ' is-open' : ''}`}>
+    <li className={`np-frow${field.hidden ? ' is-hidden' : ''}${open ? ' is-open' : ''}`} data-edit-key={`field:${field.id}`}>
       <div className="np-frow-main">
         <div className="np-frow-move">
           <button type="button" className="np-mini" onClick={() => move(-1)} disabled={index === 0} aria-label={t.moveUp} title={t.moveUp}><ArrowUp size={14} /></button>
@@ -199,7 +207,7 @@ function SectionCard({ config, lang, t, update }) {
   const steps = config.steps || [];
   const moveStep = (i, delta) => update((c) => { const [step] = c.steps.splice(i, 1); c.steps.splice(i + delta, 0, step); });
   return (
-    <section className="np-card">
+    <section className="np-card" data-edit-key="section">
       <header className="np-card-head"><div><h2>{t.sectionTitle}</h2><p>{t.sectionSub}</p></div></header>
       <TextField label={t.sEyebrow} map={config.section?.eyebrow} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, eyebrow: v }; })} />
       <TextField label={t.sTitle} map={config.section?.title} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, title: v }; })} />
@@ -207,7 +215,7 @@ function SectionCard({ config, lang, t, update }) {
       <div className="np-options">
         <span className="np-options-title">{t.steps} · <span className="np-muted">{t.stepsHint}</span></span>
         {steps.map((step, i) => (
-          <div key={step.id} className="np-step-edit">
+          <div key={step.id} className="np-step-edit" data-edit-key={`step:${step.id}`}>
             <span className="np-step-num">{String(i + 1).padStart(2, '0')}</span>
             <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.label[lang] || ''} placeholder={lang !== 'de' ? step.label.de : ''} aria-label={`${t.stepLabel} ${i + 1}`}
               onChange={(e) => update((c) => { c.steps[i].label = { ...c.steps[i].label, [lang]: e.target.value }; })} />
@@ -229,25 +237,20 @@ function SectionCard({ config, lang, t, update }) {
   );
 }
 
-function FieldsSection({ config, lang, t, update }) {
-  const [open, setOpen] = useState(null);
+function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey }) {
+  const open = selectedKey?.startsWith('field:') ? selectedKey.slice(6) : null;
+  const setOpen = (id) => setSelectedKey(id ? `field:${id}` : null);
   const [adding, setAdding] = useState(false);
   const add = (type) => {
     const id = randomId('c_');
-    update((next) => {
-      next.fields.push({
-        id, type, builtin: false, width: 'full', required: false, show: 'both', hidden: false,
-        label: { de: t.newField, ...(lang !== 'de' ? { [lang]: t.newField } : {}) }, placeholder: {}, help: {},
-        ...(type === 'select' ? { options: [{ id: randomId('o'), label: { de: t.newOption } }] } : {}),
-      });
-    });
+    update((next) => { next.fields.push(newCustomField(id, type, lang, t)); });
     setAdding(false);
     setOpen(id);
   };
   return (
     <>
       <SectionCard config={config} lang={lang} t={t} update={update} />
-      <section className="np-card">
+      <section className="np-card" data-edit-key="formtexts">
         <header className="np-card-head"><div><h2>{t.formTexts}</h2></div></header>
         <div className="np-grid2">
           <TextField label={t.fTitle} map={config.texts.title} lang={lang} onChange={(v) => update((c) => { c.texts.title = v; })} />
@@ -368,7 +371,7 @@ function ConfirmationSection({ config, lang, t, update }) {
   const c = config.confirmation;
   const set = (key) => (value) => update((next) => { next.confirmation[key] = value; });
   return (
-    <section className="np-card">
+    <section className="np-card" data-edit-key="confirm">
       <header className="np-card-head"><div><h2>{t.confTitle}</h2><p>{t.confSub}</p></div></header>
       <TextField label={t.cTitle} map={c.title} lang={lang} onChange={set('title')} />
       <TextField label={t.cText} map={c.text} lang={lang} onChange={set('text')} multiline rows={4} hint={t.phoneHint} />
@@ -411,65 +414,6 @@ function HistorySection({ history, published, t, locale, onLoadVersion, onLoadDe
   );
 }
 
-function Preview({ config, lang, t, mode, setMode }) {
-  const [service, setService] = useState('translation');
-  const [source, setSource] = useState(config.defaultSource);
-  const [target, setTarget] = useState(config.defaultTarget);
-  useEffect(() => { setSource(config.defaultSource); setTarget(config.defaultTarget); }, [config.defaultSource, config.defaultTarget]);
-  const done = config.confirmation;
-  const phone = done.phone || '+49 160 956 27 666';
-  const withPhone = (text, wrap) => text.split('{phone}').flatMap((part, i) => (i ? [wrap(i), part] : [part]));
-  return (
-    <aside className="np-preview">
-      <div className="np-preview-head">
-        <strong>{t.preview}</strong>
-        <Segmented small value={mode} options={[['form', t.previewForm], ['done', t.previewDone]]} onChange={setMode} />
-      </div>
-      <div className="np-preview-frame" dir={LANG_META[lang].dir} lang={lang}>
-        {mode === 'form' && config.section && (
-          <div className="np-pv-section">
-            <span className="np-pv-eyebrow">{textIn(config.section.eyebrow, lang)}</span>
-            <strong>{textIn(config.section.title, lang)}</strong>
-            <p>{textIn(config.section.sub, lang)}</p>
-            <ol className="np-pv-steps" style={{ '--steps': (config.steps || []).length }}>
-              {(config.steps || []).map((step, i) => (
-                <li key={step.id} className={i === 0 ? 'is-first' : ''}>
-                  <i>{String(i + 1).padStart(2, '0')}</i>
-                  <b>{textIn(step.label, lang)}</b>
-                  <small>{textIn(step.desc, lang)}</small>
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-        {mode === 'form' ? (
-          <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
-            <h3>{textIn(config.texts.title, lang)}</h3>
-            <p className="sub">{textIn(config.texts.sub, lang)}</p>
-            <QuoteFormFields config={config} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
-              targetLang={target} onTargetLang={setTarget} onFilesChange={() => {}} idPrefix="pv-" />
-            <button type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }} onClick={() => setMode('done')}>
-              <span>{textIn(config.texts.submit, lang)}</span> <span className="arrow">→</span>
-            </button>
-          </form>
-        ) : (
-          <div className="contact-card form-card form-done">
-            <div className="form-done-check" aria-hidden="true">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-            </div>
-            <h3>{textIn(done.title, lang)}</h3>
-            <p>{withPhone(textIn(done.text, lang), (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)}</p>
-            <div className="form-done-actions">
-              <span className="btn btn-primary">{withPhone(textIn(done.call, lang), (i) => <span key={i} dir="ltr">{phone}</span>)}</span>
-              <button type="button" className="btn btn-secondary" onClick={() => setMode('form')}>{textIn(done.again, lang)}</button>
-            </div>
-          </div>
-        )}
-      </div>
-    </aside>
-  );
-}
-
 export default function FormEditor({ t, locale, onDirtyChange }) {
   const [state, setState] = useState({ loading: true });
   const [config, setConfig] = useState(null);
@@ -479,6 +423,8 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   const [previewMode, setPreviewMode] = useState('form');
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState(null);
+  const [selectedKey, setSelectedKey] = useState(null);
+  const [flash, setFlash] = useState(null);
   const messageRef = useRef(null);
 
   const load = async () => {
@@ -509,6 +455,41 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
     return () => window.removeEventListener('beforeunload', warn);
   }, [dirty]);
   useEffect(() => { if (message) messageRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, [message]);
+  // A click in the preview selects the element: open its settings and bring them into view.
+  const select = (key) => {
+    setSelectedKey(key);
+    if (key === 'confirm') setSection('confirmation');
+    else if (section !== 'fields') setSection('fields');
+    setFlash({ key, at: Date.now() });
+  };
+  useEffect(() => {
+    if (!flash) return undefined;
+    const el = document.querySelector(`[data-edit-key="${flash.key}"]`);
+    if (!el) return undefined;
+    el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    el.classList.add('is-flash');
+    const timer = setTimeout(() => el.classList.remove('is-flash'), 1200);
+    return () => { clearTimeout(timer); el.classList.remove('is-flash'); };
+  }, [flash]);
+  const insertField = (afterId, type) => {
+    const id = randomId('c_');
+    update((next) => { next.fields.splice(next.fields.findIndex((f) => f.id === afterId) + 1, 0, newCustomField(id, type, lang, t)); });
+    select(`field:${id}`);
+  };
+  const deleteField = (id) => {
+    const field = config.fields.find((f) => f.id === id);
+    if (!field || field.builtin || !window.confirm(fill(t.confirmDeleteField, { name: textIn(field.label, lang) || t.types[field.type] }))) return;
+    update((next) => { next.fields = next.fields.filter((f) => f.id !== id); });
+    if (selectedKey === `field:${id}`) setSelectedKey(null);
+  };
+
+  // Switching the preview between form and message opens the matching settings.
+  const showPreview = (next) => {
+    setPreviewMode(next);
+    if (next === 'done') setSection('confirmation');
+    else if (section === 'confirmation') setSection('fields');
+  };
+
   // The confirmation section previews the message, the other sections the form.
   useEffect(() => { setPreviewMode(section === 'confirmation' ? 'done' : 'form'); }, [section]);
 
@@ -640,7 +621,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
 
       <div className={`np-cms-grid${section === 'history' ? ' is-single' : ''}`}>
         <div className="np-cms-col">
-          {section === 'fields' && <FieldsSection {...props} />}
+          {section === 'fields' && <FieldsSection {...props} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />}
           {section === 'languages' && <LanguagesSection {...props} />}
           {section === 'confirmation' && <ConfirmationSection {...props} />}
           {section === 'history' && (
@@ -648,7 +629,8 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
           )}
         </div>
         {section !== 'history' && (
-          <Preview config={config} lang={lang} t={t} mode={previewMode} setMode={setPreviewMode} />
+          <VisualPreview config={config} lang={lang} t={t} update={update} mode={previewMode} setMode={showPreview}
+            selectedKey={selectedKey} onSelect={select} onInsertField={insertField} onDeleteField={deleteField} />
         )}
       </div>
     </div>

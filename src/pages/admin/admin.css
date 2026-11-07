@@ -483,3 +483,56 @@ textarea.np-input { resize: vertical; line-height: 1.55; }
 .np-pv-steps small { font-size: 9.5px; color: #999; line-height: 1.35; overflow-wrap: anywhere; }
 @media (max-width: 640px) { .np-step-edit { grid-template-columns: 24px minmax(0, 1fr); } .np-step-edit .np-input:nth-of-type(2), .np-step-tools { grid-column: 2; } }
 .np-preview-frame .service-choice { min-width: 0; flex: 1 1 0; padding: 12px 14px; }
+
+/* Click-to-edit preview */
+.np-cms-grid { grid-template-columns: minmax(360px, 440px) minmax(0, 1fr); }
+.np-preview-head { flex-wrap: wrap; }
+.np-preview-controls { display: flex; gap: 6px; flex-wrap: wrap; }
+.np-pv-hint { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--np-ink-2); background: #eef3ff; border: 1px solid #dbe5fb; border-radius: 10px; padding: 7px 12px; }
+.np-pv-hint svg { flex-shrink: 0; color: #2b4a8c; }
+.np-preview-frame.np-edit { padding: 24px 22px; }
+.np-edit .np-pv-el { position: relative; border-radius: 12px; outline: 1.5px dashed transparent; outline-offset: 5px; cursor: pointer; transition: outline-color .12s; }
+.np-edit .np-pv-el:hover { outline-color: rgba(31,45,77,.32); }
+.np-edit .np-pv-el.is-selected { outline: 2px solid #1f2d4d; }
+.np-edit .np-pv-field { margin-bottom: 4px; }
+.np-edit .np-pv-field input, .np-edit .np-pv-field select, .np-edit .np-pv-field textarea, .np-edit .np-pv-field .service-choice { pointer-events: none; }
+.np-edit .np-pv-el.is-ghost > :not(.np-pv-chip):not(.np-pv-add):not(.np-addmenu) { opacity: .4; }
+.np-pv-chip { position: absolute; top: -15px; inset-inline-end: 8px; z-index: 3; display: none; align-items: center; gap: 1px; padding: 2px 4px; border-radius: 8px; background: #1f2d4d; color: #fff; font-size: 10.5px; line-height: 1; box-shadow: 0 4px 12px -4px rgba(17,26,46,.45); white-space: nowrap; cursor: default; }
+.np-pv-chip em { font-style: normal; font-weight: 600; padding: 0 6px 0 2px; }
+.np-pv-chip button { width: 20px; height: 20px; display: inline-grid; place-items: center; border: 0; border-radius: 5px; background: transparent; color: #fff; padding: 0; }
+.np-pv-chip button:hover:not(:disabled) { background: rgba(255,255,255,.18); }
+.np-pv-chip button.is-danger:hover:not(:disabled) { background: #c0283a; }
+.np-pv-chip button:disabled { opacity: .35; cursor: default; }
+.np-pv-grip { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 5px; cursor: grab; }
+.np-pv-grip:hover { background: rgba(255,255,255,.18); }
+.np-pv-grip:active { cursor: grabbing; }
+.np-edit .np-pv-el:hover > .np-pv-chip, .np-edit .np-pv-el.is-selected > .np-pv-chip { display: inline-flex; }
+.np-pv-chip--step { inset-inline-end: auto; left: 50%; transform: translateX(-50%); top: -22px; }
+
+.np-pv-add { position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); z-index: 4; width: 26px; height: 26px; border-radius: 50%; display: none; place-items: center; padding: 0; border: 1px solid #c9d1e3; background: #fff; color: #1f2d4d; box-shadow: 0 3px 10px -3px rgba(17,26,46,.3); cursor: pointer; }
+.np-pv-add:hover { background: #1f2d4d; color: #fff; border-color: #1f2d4d; }
+.np-edit .np-pv-el:hover > .np-pv-add, .np-edit .np-pv-el.is-selected > .np-pv-add { display: grid; }
+.np-pv-addmenu { top: calc(100% + 16px); left: 50%; right: auto; inset-inline-end: auto; transform: translateX(-50%); }
+.np-pv-addmenu > span { font-size: 11px; font-weight: 700; color: var(--np-muted); text-transform: uppercase; letter-spacing: .05em; padding: 6px 12px 4px; }
+.np-pv-field.is-drop-before::before, .np-pv-field.is-drop-after::after { content: ""; position: absolute; left: 0; right: 0; height: 3px; border-radius: 3px; background: #3b6fe0; z-index: 5; }
+.np-pv-field.is-drop-before::before { top: -9px; }
+.np-pv-field.is-drop-after::after { bottom: -9px; }
+.np-pv-step.is-drop-before, .np-pv-step.is-drop-after { background: rgba(59,111,224,.12); border-radius: 10px; }
+.np-edit .np-pv-steps { gap: 10px; padding-top: 10px; }
+.np-pv-addstep { display: grid; justify-items: center; gap: 4px; }
+.np-pv-addstep button { width: 26px; height: 26px; border-radius: 50%; border: 1px dashed #9aa8c7; background: #fff; color: #1f2d4d; display: grid; place-items: center; padding: 0; cursor: pointer; }
+.np-pv-addstep button:hover { background: #1f2d4d; color: #fff; border-style: solid; }
+.np-pv-addstep small { font-size: 9.5px; color: #8590a6; }
+
+.np-inline { outline: none; border-radius: 4px; min-width: 1ch; cursor: text; transition: background .12s, box-shadow .12s; }
+.np-edit .np-inline:hover { background: rgba(31,45,77,.06); }
+.np-inline:focus { background: #fff; box-shadow: 0 0 0 2px rgba(59,111,224,.4); color: inherit; }
+.np-inline:empty::before { content: attr(data-placeholder); color: #a6aec0; font-style: italic; font-weight: 400; }
+.btn .np-inline:focus { background: rgba(255,255,255,.12); }
+.np-pv-submit { width: 100%; justify-content: center; margin-top: 8px; cursor: text; }
+.np-pv-token { display: block; margin-top: 8px; font-size: 11px; color: #8590a6; }
+
+.np-card.is-flash, .np-frow.is-flash, .np-step-edit.is-flash { animation: npFlash 1.2s ease-out; }
+.np-step-edit { border-radius: 10px; }
+@keyframes npFlash { 0%, 30% { box-shadow: 0 0 0 3px rgba(59,111,224,.35); } 100% { box-shadow: 0 0 0 0 rgba(59,111,224,0); } }
+@media (max-width: 1180px) { .np-cms-grid { grid-template-columns: minmax(0, 1fr); } }

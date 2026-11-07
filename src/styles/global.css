@@ -7639,6 +7639,9 @@ footer { background: #FAF9F6; padding: 42px 0 22px; border-top: 1px solid var(--
 .form-feedback a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .form-card .btn:disabled { opacity: .62; cursor: wait; }
 .form-field .form-other-lang { margin-top: 8px; }
+/* Checkbox fields added in the admin */
+.form-field.form-check label { display: flex; align-items: flex-start; gap: 10px; margin: 4px 0 0; font-size: 13px; color: #0A0A0A; line-height: 1.5; cursor: pointer; }
+.form-field.form-check input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; margin: 1px 0 0; padding: 0; border-radius: 4px; accent-color: #0A0A0A; cursor: pointer; }
 
 /* Confirmation card that replaces the quote form after sending */
 .form-done {
