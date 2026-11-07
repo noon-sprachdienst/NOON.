@@ -78,7 +78,7 @@ export const DATENSCHUTZ = {
       <h4>Allgemeine Hinweise</h4>
       <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.</p>
       <h4>Datenerfassung auf dieser Website</h4>
-      <p><strong>Wer ist verantwortlich?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Wer ist verantwortlich?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de<br/>Inhaber: Mohamed Elsharkawei · Tel. <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>2. Ihre Rechte</h3>
       <p>Sie haben jederzeit das Recht auf:</p>
       <ul>
@@ -88,6 +88,7 @@ export const DATENSCHUTZ = {
         <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
         <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
         <li>Widerruf einer erteilten Einwilligung</li>
+        <li>Beschwerde bei einer Datenschutz-Aufsichtsbehörde (Art. 77 DSGVO)</li>
       </ul>
       <h3>3. Cookies</h3>
       <p><strong>Essentielle Cookies</strong> sind für den Betrieb der Website unbedingt erforderlich (Art. 6 Abs. 1 lit. f DSGVO). <strong>Analyse-Cookies</strong> werden nur mit Ihrer Einwilligung gesetzt (Art. 6 Abs. 1 lit. a DSGVO). Sie können Ihre Einwilligung jederzeit über unseren Cookie-Banner widerrufen.</p>
@@ -97,7 +98,10 @@ export const DATENSCHUTZ = {
       <p>Dateien, die Sie über das Formular hochladen, werden direkt in einem nicht öffentlichen Speicher von Google Firebase (Google Cloud Storage) abgelegt, nur über signierte, zeitlich begrenzte Links an unser Büro weitergegeben und nach 30 Tagen automatisch gelöscht.</p>
       <h3>5. Datenübertragung in Drittstaaten</h3>
       <p>Wir wählen für Cloud Firestore einen Speicherort in der EU. Bei der Nutzung von Vercel und Google Firebase können Zugriffe oder Verarbeitungen durch Dienstleister außerhalb der EU/EWR nicht vollständig ausgeschlossen werden. Soweit erforderlich, erfolgen diese auf Grundlage geeigneter Datenschutzgarantien und Auftragsverarbeitungsvereinbarungen.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>6. Karten und externe Links</h3>
+      <p>Die interaktiven Standortkarten laden Kartenkacheln von OpenStreetMap (OpenStreetMap Foundation). Dabei wird Ihre IP-Adresse an deren Server übertragen. Die Karten werden erst geladen, wenn Sie im Cookie-Banner alle Cookies akzeptiert haben (Art. 6 Abs. 1 lit. a DSGVO); vorher sehen Sie nur ein statisches Vorschaubild von unserem eigenen Server.</p>
+      <p>Links zu WhatsApp (WhatsApp Ireland Limited) und Google Maps (Google Ireland Limited) öffnen externe Dienste. Daten werden erst an diese Anbieter übertragen, wenn Sie einen solchen Link anklicken; dann gelten deren Datenschutzbestimmungen.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
   en: (
@@ -106,7 +110,7 @@ export const DATENSCHUTZ = {
       <h4>General Information</h4>
       <p>The following information gives a simple overview of what happens to your personal data when you visit this website.</p>
       <h4>Data Collection</h4>
-      <p><strong>Who is responsible?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Who is responsible?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de<br/>Owner: Mohamed Elsharkawei · Phone <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>2. Your Rights</h3>
       <p>You have the right at any time to:</p>
       <ul>
@@ -116,6 +120,7 @@ export const DATENSCHUTZ = {
         <li>Object to processing (Art. 21 GDPR)</li>
         <li>Data portability (Art. 20 GDPR)</li>
         <li>Withdraw a given consent at any time</li>
+        <li>Lodge a complaint with a data protection supervisory authority (Art. 77 GDPR)</li>
       </ul>
       <h3>3. Cookies</h3>
       <p><strong>Essential cookies</strong> are required for the website to function (Art. 6(1)(f) GDPR). <strong>Analytics cookies</strong> are only set with your consent (Art. 6(1)(a) GDPR). You can withdraw your consent at any time via our cookie banner.</p>
@@ -125,7 +130,10 @@ export const DATENSCHUTZ = {
       <p>Files you upload via the form are stored in a non-public Google Firebase storage (Google Cloud Storage), shared with our office only through signed, time-limited links and deleted automatically after 30 days.</p>
       <h3>5. International Transfers</h3>
       <p>We select an EU storage location for Cloud Firestore. Access or processing by Vercel and Google Firebase service providers outside the EU/EEA cannot be fully excluded. Where required, appropriate data-protection safeguards and processing agreements apply.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>6. Maps and External Links</h3>
+      <p>The interactive office maps load map tiles from OpenStreetMap (OpenStreetMap Foundation), which transmits your IP address to their servers. The maps only load after you accept all cookies in the cookie banner (Art. 6(1)(a) GDPR); until then you only see a static preview image served from our own server.</p>
+      <p>Links to WhatsApp (WhatsApp Ireland Limited) and Google Maps (Google Ireland Limited) open external services. No data is sent to these providers until you click such a link; their privacy policies then apply.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
   ar: (
@@ -134,7 +142,7 @@ export const DATENSCHUTZ = {
       <h4>معلومات عامة</h4>
       <p>تقدم المعلومات التالية نظرة عامة بسيطة حول ما يحدث لبياناتك الشخصية عند زيارة هذا الموقع.</p>
       <h4>جمع البيانات</h4>
-      <p><strong>من المسؤول؟</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro، Rosenplatz 17، 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>من المسؤول؟</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro، Rosenplatz 17، 49074 Osnabrück — info@noon-sprachdienst.de<br/>المالك: Mohamed Elsharkawei · هاتف <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>٢. حقوقك</h3>
       <p>لديك في أي وقت الحق في:</p>
       <ul>
@@ -144,6 +152,7 @@ export const DATENSCHUTZ = {
         <li>الاعتراض على المعالجة (المادة 21 GDPR)</li>
         <li>قابلية نقل البيانات (المادة 20 GDPR)</li>
         <li>سحب الموافقة الممنوحة في أي وقت</li>
+        <li>تقديم شكوى إلى إحدى سلطات الرقابة على حماية البيانات (المادة 77 GDPR)</li>
       </ul>
       <h3>٣. ملفات تعريف الارتباط</h3>
       <p><strong>ملفات الارتباط الأساسية</strong> ضرورية لتشغيل الموقع. <strong>ملفات تعريف التحليل</strong> تُضبط فقط بموافقتك. يمكنك سحب موافقتك في أي وقت عبر شريط ملفات الارتباط.</p>
@@ -152,7 +161,10 @@ export const DATENSCHUTZ = {
       <p>الملفات التي ترفعها عبر النموذج تُحفظ في مساحة تخزين غير عامة لدى Google Firebase (Google Cloud Storage)، ولا يصل إليها مكتبنا إلا عبر روابط موقّعة ومحدودة المدة، وتُحذف تلقائيًا بعد 30 يومًا.</p>
       <h3>٥. النقل الدولي للبيانات</h3>
       <p>نختار موقع تخزين داخل الاتحاد الأوروبي لخدمة Cloud Firestore. لا يمكن استبعاد الوصول أو المعالجة بشكل كامل من قبل مزودي خدمات Vercel وGoogle Firebase خارج الاتحاد الأوروبي. عند الحاجة تُطبّق ضمانات مناسبة لحماية البيانات واتفاقيات لمعالجة البيانات.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>٦. الخرائط والروابط الخارجية</h3>
+      <p>تحمّل خرائط الفروع التفاعلية أجزاء الخريطة من OpenStreetMap (OpenStreetMap Foundation)، وبذلك يُرسل عنوان IP الخاص بك إلى خوادمها. لا تُحمَّل الخرائط إلا بعد موافقتك على جميع ملفات تعريف الارتباط في شريط الموافقة (المادة 6 فقرة 1 بند أ GDPR)؛ وقبل ذلك تظهر لك صورة معاينة ثابتة من خادمنا فقط.</p>
+      <p>روابط WhatsApp (WhatsApp Ireland Limited) وGoogle Maps (Google Ireland Limited) تفتح خدمات خارجية. لا تُرسل أي بيانات إلى هذه الجهات إلا عند الضغط على أحد هذه الروابط، وعندها تسري سياسات الخصوصية الخاصة بها.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
   tr: (
@@ -161,7 +173,7 @@ export const DATENSCHUTZ = {
       <h4>Genel Bilgiler</h4>
       <p>Aşağıdaki bilgiler, bu web sitesini ziyaret ettiğinizde kişisel verilerinizle neler yapıldığına dair basit bir genel bakış sunmaktadır.</p>
       <h4>Veri Toplama</h4>
-      <p><strong>Kim sorumlu?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Kim sorumlu?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de<br/>Sahibi: Mohamed Elsharkawei · Tel. <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>2. Haklarınız</h3>
       <p>Her zaman şu haklara sahipsiniz:</p>
       <ul>
@@ -171,6 +183,7 @@ export const DATENSCHUTZ = {
         <li>İşlemeye itiraz (GDPR Madde 21)</li>
         <li>Veri taşınabilirliği (GDPR Madde 20)</li>
         <li>Verilen rızayı geri çekme</li>
+        <li>Bir veri koruma denetim makamına şikâyette bulunma (GDPR Madde 77)</li>
       </ul>
       <h3>3. Çerezler</h3>
       <p><strong>Zorunlu çerezler</strong> web sitesinin çalışması için gereklidir. <strong>Analiz çerezleri</strong> yalnızca onayınızla kullanılır. Onayınızı çerez bannerı aracılığıyla istediğiniz zaman geri çekebilirsiniz.</p>
@@ -179,7 +192,10 @@ export const DATENSCHUTZ = {
       <p>Form üzerinden yüklediğiniz dosyalar, Google Firebase'in herkese açık olmayan depolama alanında (Google Cloud Storage) saklanır, büromuza yalnızca imzalı ve süreli bağlantılarla iletilir ve 30 gün sonra otomatik olarak silinir.</p>
       <h3>5. Uluslararası Veri Transferleri</h3>
       <p>Cloud Firestore için AB içinde bir depolama konumu seçiyoruz. Vercel ve Google Firebase hizmet sağlayıcıları tarafından AB/AEA dışından erişim veya işleme tamamen hariç tutulamaz. Gerektiğinde uygun veri koruma güvenceleri ve veri işleme sözleşmeleri uygulanır.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>6. Haritalar ve Harici Bağlantılar</h3>
+      <p>Etkileşimli ofis haritaları, harita karolarını OpenStreetMap'ten (OpenStreetMap Foundation) yükler; bu sırada IP adresiniz onların sunucularına iletilir. Haritalar yalnızca çerez banner'ında tüm çerezleri kabul ettiğinizde yüklenir (GDPR Madde 6/1-a); o zamana kadar yalnızca kendi sunucumuzdan sabit bir önizleme görseli gösterilir.</p>
+      <p>WhatsApp (WhatsApp Ireland Limited) ve Google Maps (Google Ireland Limited) bağlantıları harici hizmetleri açar. Böyle bir bağlantıya tıklamadığınız sürece bu sağlayıcılara veri aktarılmaz; tıkladığınızda onların gizlilik politikaları geçerlidir.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
   ru: (
@@ -188,7 +204,7 @@ export const DATENSCHUTZ = {
       <h4>Общая информация</h4>
       <p>Следующая информация даёт простой обзор того, что происходит с вашими персональными данными при посещении этого сайта.</p>
       <h4>Сбор данных</h4>
-      <p><strong>Кто несёт ответственность?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Кто несёт ответственность?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de<br/>Владелец: Mohamed Elsharkawei · Тел. <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>2. Ваши права</h3>
       <p>Вы вправе в любое время:</p>
       <ul>
@@ -198,6 +214,7 @@ export const DATENSCHUTZ = {
         <li>Возразить против обработки (ст. 21 GDPR)</li>
         <li>Получить данные в переносимом формате (ст. 20 GDPR)</li>
         <li>Отозвать данное согласие</li>
+        <li>Подать жалобу в надзорный орган по защите данных (ст. 77 GDPR)</li>
       </ul>
       <h3>3. Файлы cookie</h3>
       <p><strong>Необходимые cookies</strong> требуются для работы сайта. <strong>Аналитические cookies</strong> устанавливаются только с вашего согласия. Вы можете отозвать согласие в любое время через наш баннер.</p>
@@ -206,7 +223,10 @@ export const DATENSCHUTZ = {
       <p>Файлы, загруженные через форму, хранятся в закрытом хранилище Google Firebase (Google Cloud Storage), передаются нашему бюро только по подписанным временным ссылкам и автоматически удаляются через 30 дней.</p>
       <h3>5. Международная передача данных</h3>
       <p>Для Cloud Firestore выбирается место хранения в ЕС. Нельзя полностью исключить доступ или обработку со стороны поставщиков услуг Vercel и Google Firebase за пределами ЕС/ЕЭЗ. При необходимости применяются соответствующие гарантии защиты данных и соглашения об обработке.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>6. Карты и внешние ссылки</h3>
+      <p>Интерактивные карты офисов загружают фрагменты карты с OpenStreetMap (OpenStreetMap Foundation); при этом ваш IP-адрес передаётся на их серверы. Карты загружаются только после того, как вы приняли все cookie в баннере (ст. 6 п. 1 лит. a GDPR); до этого показывается лишь статичное изображение с нашего собственного сервера.</p>
+      <p>Ссылки на WhatsApp (WhatsApp Ireland Limited) и Google Maps (Google Ireland Limited) открывают внешние сервисы. Данные передаются этим поставщикам только после нажатия на такую ссылку; тогда действуют их правила конфиденциальности.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
   fr: (
@@ -215,7 +235,7 @@ export const DATENSCHUTZ = {
       <h4>Informations générales</h4>
       <p>Les informations suivantes donnent un aperçu simple de ce qui se passe avec vos données personnelles lorsque vous visitez ce site.</p>
       <h4>Collecte de données</h4>
-      <p><strong>Qui est responsable ?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Qui est responsable ?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de<br/>Propriétaire: Mohamed Elsharkawei · Tél. <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>2. Vos droits</h3>
       <p>Vous avez à tout moment le droit de :</p>
       <ul>
@@ -225,6 +245,7 @@ export const DATENSCHUTZ = {
         <li>Opposition au traitement (Art. 21 RGPD)</li>
         <li>Portabilité des données (Art. 20 RGPD)</li>
         <li>Retirer un consentement donné à tout moment</li>
+        <li>Introduire une réclamation auprès d'une autorité de contrôle de la protection des données (Art. 77 RGPD)</li>
       </ul>
       <h3>3. Cookies</h3>
       <p>Les <strong>cookies essentiels</strong> sont nécessaires au fonctionnement du site. Les <strong>cookies analytiques</strong> ne sont définis qu'avec votre consentement. Vous pouvez retirer votre consentement à tout moment via notre bandeau de cookies.</p>
@@ -233,7 +254,10 @@ export const DATENSCHUTZ = {
       <p>Les fichiers téléversés via le formulaire sont stockés dans un espace non public de Google Firebase (Google Cloud Storage), transmis à notre bureau uniquement via des liens signés à durée limitée et supprimés automatiquement après 30 jours.</p>
       <h3>5. Transferts internationaux</h3>
       <p>Nous choisissons un lieu de stockage situé dans l’UE pour Cloud Firestore. Un accès ou un traitement par les prestataires Vercel et Google Firebase hors UE/EEE ne peut pas être totalement exclu. Lorsque cela est nécessaire, des garanties appropriées et des accords de traitement s’appliquent.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>6. Cartes et liens externes</h3>
+      <p>Les cartes interactives des agences chargent des tuiles depuis OpenStreetMap (OpenStreetMap Foundation), ce qui transmet votre adresse IP à leurs serveurs. Les cartes ne se chargent qu'après acceptation de tous les cookies dans la bannière (Art. 6, par. 1, let. a RGPD) ; auparavant, seule une image d'aperçu statique hébergée sur notre propre serveur est affichée.</p>
+      <p>Les liens vers WhatsApp (WhatsApp Ireland Limited) et Google Maps (Google Ireland Limited) ouvrent des services externes. Aucune donnée n'est transmise à ces prestataires avant que vous ne cliquiez sur un tel lien ; leurs politiques de confidentialité s'appliquent alors.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
   uk: (
@@ -242,7 +266,7 @@ export const DATENSCHUTZ = {
       <h4>Загальна інформація</h4>
       <p>Наступна інформація дає простий огляд того, що відбувається з вашими персональними даними при відвідуванні цього сайту.</p>
       <h4>Збір даних</h4>
-      <p><strong>Хто несе відповідальність?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de</p>
+      <p><strong>Хто несе відповідальність?</strong><br/>Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück — info@noon-sprachdienst.de<br/>Власник: Mohamed Elsharkawei · Тел. <span dir="ltr">+49 160 956 27 666</span></p>
       <h3>2. Ваші права</h3>
       <p>Ви маєте право в будь-який час:</p>
       <ul>
@@ -252,6 +276,7 @@ export const DATENSCHUTZ = {
         <li>Заперечити проти обробки (ст. 21 GDPR)</li>
         <li>Отримати дані в переносному форматі (ст. 20 GDPR)</li>
         <li>Відкликати надану згоду</li>
+        <li>Подати скаргу до наглядового органу із захисту даних (ст. 77 GDPR)</li>
       </ul>
       <h3>3. Файли cookie</h3>
       <p><strong>Необхідні cookies</strong> потрібні для роботи сайту. <strong>Аналітичні cookies</strong> встановлюються лише з вашої згоди. Ви можете відкликати згоду в будь-який час через наш банер.</p>
@@ -260,7 +285,10 @@ export const DATENSCHUTZ = {
       <p>Файли, завантажені через форму, зберігаються в закритому сховищі Google Firebase (Google Cloud Storage), передаються нашому бюро лише за підписаними тимчасовими посиланнями та автоматично видаляються через 30 днів.</p>
       <h3>5. Міжнародна передача даних</h3>
       <p>Для Cloud Firestore обирається місце зберігання в ЄС. Неможливо повністю виключити доступ або обробку постачальниками послуг Vercel і Google Firebase за межами ЄС/ЄЕП. За потреби застосовуються належні гарантії захисту даних та угоди про обробку.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {new Date().getFullYear()} — info@noon-sprachdienst.de</p>
+      <h3>6. Карти та зовнішні посилання</h3>
+      <p>Інтерактивні карти офісів завантажують фрагменти карти з OpenStreetMap (OpenStreetMap Foundation); при цьому ваша IP-адреса передається на їхні сервери. Карти завантажуються лише після того, як ви прийняли всі cookie в банері (ст. 6 п. 1 літ. a GDPR); до цього показується лише статичне зображення з нашого власного сервера.</p>
+      <p>Посилання на WhatsApp (WhatsApp Ireland Limited) і Google Maps (Google Ireland Limited) відкривають зовнішні сервіси. Дані передаються цим постачальникам лише після натискання на таке посилання; тоді діють їхні правила конфіденційності.</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {LEGAL_INFO.updated} — info@noon-sprachdienst.de</p>
     </div>
   ),
 };
@@ -270,7 +298,7 @@ export const AGB = {
   de: (
     <div className="legal-body">
       <h3>§ 1 Geltungsbereich</h3>
-      <p>Diese AGB gelten für alle Verträge zwischen Noon Sprachdienst und dem Auftraggeber über Übersetzungs-, Dolmetsch- und sonstige Sprachdienstleistungen.</p>
+      <p>Diese AGB gelten für alle Verträge zwischen Noon Dolmetscher &amp; Übersetzungsbüro und dem Auftraggeber über Übersetzungs-, Dolmetsch- und sonstige Sprachdienstleistungen.</p>
       <h3>§ 2 Vertragsschluss</h3>
       <p>Ein Vertrag kommt durch schriftliche oder mündliche Auftragserteilung und deren Bestätigung durch Noon zustande. Angebote sind freibleibend bis zur schriftlichen Bestätigung.</p>
       <h3>§ 3 Leistungen</h3>
@@ -287,13 +315,13 @@ export const AGB = {
       <p>Alle übermittelten Dokumente werden vertraulich behandelt. Mitarbeiter und Übersetzer sind zur Verschwiegenheit verpflichtet.</p>
       <h3>§ 9 Gerichtsstand</h3>
       <p>Es gilt deutsches Recht. Gerichtsstand ist Osnabrück für Kaufleute und juristische Personen des öffentlichen Rechts.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Stand: {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
   en: (
     <div className="legal-body">
       <h3>§ 1 Scope</h3>
-      <p>These Terms & Conditions apply to all contracts between Noon Sprachdienst and the client for translation, interpreting and other language services.</p>
+      <p>These Terms & Conditions apply to all contracts between Noon Dolmetscher &amp; Übersetzungsbüro and the client for translation, interpreting and other language services.</p>
       <h3>§ 2 Contract Formation</h3>
       <p>A contract is formed upon written or verbal order placement and its confirmation by Noon. Quotations are non-binding until confirmed in writing.</p>
       <h3>§ 3 Services</h3>
@@ -310,13 +338,13 @@ export const AGB = {
       <p>All documents submitted are treated confidentially. Staff and translators are bound to secrecy.</p>
       <h3>§ 9 Jurisdiction</h3>
       <p>German law applies. Place of jurisdiction is Osnabrück for merchants and legal entities under public law.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>As of: {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
   ar: (
     <div className="legal-body" dir="rtl">
       <h3>§ ١ نطاق التطبيق</h3>
-      <p>تسري هذه الشروط على جميع العقود بين Noon Sprachdienst والعميل المتعلقة بخدمات الترجمة التحريرية والفورية وسائر الخدمات اللغوية.</p>
+      <p>تسري هذه الشروط على جميع العقود بين Noon Dolmetscher &amp; Übersetzungsbüro والعميل المتعلقة بخدمات الترجمة التحريرية والفورية وسائر الخدمات اللغوية.</p>
       <h3>§ ٢ إبرام العقد</h3>
       <p>يُبرم العقد عند تقديم الطلب كتابيًا أو شفهيًا وتأكيده من قِبَل Noon. تبقى العروض غير ملزمة حتى التأكيد الكتابي.</p>
       <h3>§ ٣ الخدمات</h3>
@@ -333,13 +361,13 @@ export const AGB = {
       <p>تُعالَج جميع الوثائق المُرسلة بسرية تامة. يلتزم الموظفون والمترجمون بالسرية.</p>
       <h3>§ ٩ الاختصاص القضائي</h3>
       <p>يسري القانون الألماني. مكان الاختصاص هو Osnabrück للتجار والكيانات القانونية العامة.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>اعتبارًا من: {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
   tr: (
     <div className="legal-body">
       <h3>§ 1 Kapsam</h3>
-      <p>Bu Genel Koşullar, Noon Sprachdienst ile müşteri arasındaki tüm çeviri, tercümanlık ve diğer dil hizmetleri sözleşmelerine uygulanır.</p>
+      <p>Bu Genel Koşullar, Noon Dolmetscher &amp; Übersetzungsbüro ile müşteri arasındaki tüm çeviri, tercümanlık ve diğer dil hizmetleri sözleşmelerine uygulanır.</p>
       <h3>§ 2 Sözleşme Kurulumu</h3>
       <p>Sözleşme, yazılı veya sözlü sipariş verilmesi ve Noon'un bu siparişi onaylaması ile kurulur. Teklifler, yazılı olarak onaylanana kadar bağlayıcı değildir.</p>
       <h3>§ 3 Hizmetler</h3>
@@ -356,13 +384,13 @@ export const AGB = {
       <p>İletilen tüm belgeler gizli tutulur. Personel ve çevirmenler gizlilik yükümlülüğüne tabidir.</p>
       <h3>§ 9 Yetki Alanı</h3>
       <p>Alman hukuku geçerlidir. Tacirler ve kamu hukuku tüzel kişileri için yetki alanı Osnabrück'tür.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Tarih: {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
   ru: (
     <div className="legal-body">
       <h3>§ 1 Область применения</h3>
-      <p>Настоящие Общие условия применяются ко всем договорам между Noon Sprachdienst и заказчиком по услугам письменного перевода, устного перевода и иным языковым услугам.</p>
+      <p>Настоящие Общие условия применяются ко всем договорам между Noon Dolmetscher &amp; Übersetzungsbüro и заказчиком по услугам письменного перевода, устного перевода и иным языковым услугам.</p>
       <h3>§ 2 Заключение договора</h3>
       <p>Договор заключается путём письменного или устного размещения заказа и его подтверждения со стороны Noon. Коммерческие предложения не являются обязательными до письменного подтверждения.</p>
       <h3>§ 3 Услуги</h3>
@@ -379,13 +407,13 @@ export const AGB = {
       <p>Все переданные документы обрабатываются конфиденциально. Сотрудники и переводчики обязаны соблюдать конфиденциальность.</p>
       <h3>§ 9 Юрисдикция</h3>
       <p>Применяется немецкое право. Местом рассмотрения споров для коммерческих организаций и юридических лиц публичного права является Оснабрюк.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Актуально с: {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
   fr: (
     <div className="legal-body">
       <h3>§ 1 Champ d'application</h3>
-      <p>Les présentes CGV s'appliquent à tous les contrats entre Noon Sprachdienst et le client concernant des services de traduction, d'interprétation et autres services linguistiques.</p>
+      <p>Les présentes CGV s'appliquent à tous les contrats entre Noon Dolmetscher &amp; Übersetzungsbüro et le client concernant des services de traduction, d'interprétation et autres services linguistiques.</p>
       <h3>§ 2 Formation du contrat</h3>
       <p>Le contrat est formé par la passation d'une commande écrite ou orale et sa confirmation par Noon. Les devis ne sont pas contraignants jusqu'à confirmation écrite.</p>
       <h3>§ 3 Prestations</h3>
@@ -402,13 +430,13 @@ export const AGB = {
       <p>Tous les documents transmis sont traités de manière confidentielle. Le personnel et les traducteurs sont tenus au secret.</p>
       <h3>§ 9 Juridiction compétente</h3>
       <p>Le droit allemand s'applique. Le lieu de juridiction est Osnabrück pour les commerçants et personnes morales de droit public.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>En vigueur au : {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
   uk: (
     <div className="legal-body">
       <h3>§ 1 Сфера застосування</h3>
-      <p>Ці Загальні умови застосовуються до всіх договорів між Noon Sprachdienst та замовником щодо послуг письмового перекладу, усного перекладу та інших мовних послуг.</p>
+      <p>Ці Загальні умови застосовуються до всіх договорів між Noon Dolmetscher &amp; Übersetzungsbüro та замовником щодо послуг письмового перекладу, усного перекладу та інших мовних послуг.</p>
       <h3>§ 2 Укладення договору</h3>
       <p>Договір укладається шляхом письмового або усного розміщення замовлення та його підтвердження з боку Noon. Комерційні пропозиції є необов'язковими до письмового підтвердження.</p>
       <h3>§ 3 Послуги</h3>
@@ -425,7 +453,7 @@ export const AGB = {
       <p>Всі передані документи обробляються конфіденційно. Співробітники та перекладачі зобов'язані дотримуватися конфіденційності.</p>
       <h3>§ 9 Юрисдикція</h3>
       <p>Застосовується німецьке право. Місцем розгляду спорів для комерційних організацій та юридичних осіб публічного права є Оснабрюк.</p>
-      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {new Date().getFullYear()} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
+      <p style={{ marginTop: 32, fontSize: 13, color: '#888' }}>Чинно з: {LEGAL_INFO.updated} — Noon Dolmetscher &amp; Übersetzungsbüro, Rosenplatz 17, 49074 Osnabrück</p>
     </div>
   ),
 };
