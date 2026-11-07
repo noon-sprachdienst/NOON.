@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowDown, ArrowUp, Check, ChevronDown, ChevronUp, Eye, EyeOff, History, Lock, Plus, RotateCcw, Rocket, Save, Trash2, TriangleAlert, Undo2,
+  ArrowDown, ArrowUp, Check, ChevronDown, ChevronUp, Eye, EyeOff, History, Lock, Plus, Redo2, RotateCcw, Rocket, Save, Trash2, TriangleAlert, Undo2,
 } from 'lucide-react';
 import VisualPreview from './VisualPreview.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
@@ -426,6 +426,42 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   const [selectedKey, setSelectedKey] = useState(null);
   const [flash, setFlash] = useState(null);
   const messageRef = useRef(null);
+  // Undo / redo: earlier states of the form in this editing session. Quick edits in a row
+  // (typing a word) are grouped into one step.
+  const configRef = useRef(null);
+  configRef.current = config;
+  const historyRef = useRef({ undo: [], redo: [], last: 0 });
+  const [, setHistoryTick] = useState(0);
+  const resetHistory = () => { historyRef.current = { undo: [], redo: [], last: 0 }; setHistoryTick((n) => n + 1); };
+  const remember = (previous) => {
+    const h = historyRef.current;
+    const now = Date.now();
+    if (previous && now - h.last > 700) {
+      h.undo.push(previous);
+      if (h.undo.length > 80) h.undo.shift();
+    }
+    h.last = now;
+    h.redo = [];
+    setHistoryTick((n) => n + 1);
+  };
+  // Changes the form and keeps the previous state for undo.
+  const change = (next) => {
+    remember(configRef.current);
+    configRef.current = next;
+    setConfig(next);
+  };
+  const stepHistory = (from, to) => {
+    const h = historyRef.current;
+    if (!h[from].length) return;
+    h[to].push(configRef.current);
+    const target = h[from].pop();
+    h.last = 0;
+    configRef.current = target;
+    setConfig(target);
+    setHistoryTick((n) => n + 1);
+  };
+  const undo = () => stepHistory('undo', 'redo');
+  const redo = () => stepHistory('redo', 'undo');
 
   const load = async () => {
     setState({ loading: true });
@@ -439,6 +475,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       if (!start.steps?.length) start.steps = builtIn.steps;
       setConfig(start);
       setBaseline(JSON.stringify(start));
+      resetHistory();
       setState({ published: data.published, draft: data.draft, history: data.history || [] });
     } catch {
       setState({ error: true });
@@ -493,10 +530,24 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   // The confirmation section previews the message, the other sections the form.
   useEffect(() => { setPreviewMode(section === 'confirmation' ? 'done' : 'form'); }, [section]);
 
-  const update = (fn) => setConfig((current) => {
-    const next = structuredClone(current);
+  const update = (fn) => {
+    const next = structuredClone(configRef.current);
     fn(next);
-    return next;
+    change(next);
+  };
+  // Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y (⌘ on Mac). Inside a text box the browser's own undo for that box is used.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (!(e.ctrlKey || e.metaKey) || e.altKey) return;
+      const key = e.key.toLowerCase();
+      if (key !== 'z' && key !== 'y') return;
+      const el = e.target;
+      if (el?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el?.tagName)) return;
+      e.preventDefault();
+      if (key === 'y' || e.shiftKey) redo(); else undo();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   });
   const missing = useMemo(() => (config ? Object.fromEntries(SITE_LANGS.map((l) => [l, missingTexts(config, l)])) : {}), [config]);
 
@@ -545,19 +596,20 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       setState((s) => ({ ...s, draft: null }));
       setConfig(live);
       setBaseline(JSON.stringify(live));
+      resetHistory();
       setMessage({ tone: 'good', text: t.discarded });
     } catch (error) { fail(error); } finally { setBusy(''); }
   };
   const loadVersion = async (rev) => {
     try {
       const data = await api({ action: 'version', rev });
-      setConfig(data.version.config);
+      change(data.version.config);
       setSection('fields');
       setMessage({ tone: 'info', text: fill(t.loadedVersion, { rev }) });
     } catch (error) { fail(error); }
   };
   const loadDefault = () => {
-    setConfig(defaultFormConfig());
+    change(defaultFormConfig());
     setSection('fields');
     setMessage({ tone: 'info', text: t.loadedDefault });
   };
@@ -583,6 +635,10 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       <div className="np-cms-bar">
         <span className={`np-cms-status${dirty ? ' is-dirty' : ''}`}><i />{status}</span>
         <div className="np-cms-actions">
+          <div className="np-undo" role="group">
+            <button type="button" className="np-mini" onClick={undo} disabled={!historyRef.current.undo.length} title={`${t.undo} (Ctrl+Z)`} aria-label={t.undo}><Undo2 size={15} /></button>
+            <button type="button" className="np-mini" onClick={redo} disabled={!historyRef.current.redo.length} title={`${t.redo} (Ctrl+Shift+Z)`} aria-label={t.redo}><Redo2 size={15} /></button>
+          </div>
           {state.draft && !busy && <button type="button" className="np-btn np-btn--ghost np-btn--sm" onClick={discard}><RotateCcw size={14} /> {t.discardDraft}</button>}
           <button type="button" className="np-btn np-btn--ghost" onClick={saveDraft} disabled={!dirty || Boolean(busy)}><Save size={15} /> {busy === 'save' ? t.saving : t.saveDraft}</button>
           <button type="button" className="np-btn" onClick={publish} disabled={Boolean(busy) || (!dirty && !state.draft && Boolean(state.published))}>

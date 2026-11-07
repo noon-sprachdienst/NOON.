@@ -150,6 +150,15 @@ function saveRequest({ name, service, links, driveLink, attached }) {
   });
 }
 
+// Entries older than 30 days are removed on every new request as well as whenever the Requests
+// page is opened, so the 30-day promise holds even if nobody opens the admin for a while.
+async function removeExpiredRequests() {
+  const store = getStore();
+  const cutoff = Date.now() - REQUEST_DAYS * 24 * 60 * 60 * 1000;
+  const expired = await store.list(REQUESTS, { where: ['createdAt', '<', cutoff], limit: 100 });
+  if (expired.length) await store.deleteMany(REQUESTS, expired.map((entry) => entry.id));
+}
+
 const formatMb = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1).replace('.', ',')} MB`;
 
 export default async function handler(req, res) {
@@ -196,8 +205,11 @@ export default async function handler(req, res) {
     const attachments = [...inlineFiles, ...stored.attachments];
     const extra = await customFields(body.custom).catch(() => []);
     // Saved in parallel with the e-mail and never blocks it; if the e-mail fails the request is still listed.
-    const saving = saveRequest({ name: fields.name, service, links: stored.links, driveLink: fields.driveLink, attached: inlineFiles.length })
-      .catch((error) => console.error('request save error', error.message));
+    const saving = Promise.all([
+      saveRequest({ name: fields.name, service, links: stored.links, driveLink: fields.driveLink, attached: inlineFiles.length })
+        .catch((error) => console.error('request save error', error.message)),
+      removeExpiredRequests().catch((error) => console.error('request cleanup error', error.message)),
+    ]);
     const fileLinksText = stored.links.length
       ? ['', 'Dateien (Download-Link, 30 Tage verfügbar):', ...stored.links.map((l) => `- ${l.name} (${formatMb(l.size)}): ${l.url}`)]
       : [];

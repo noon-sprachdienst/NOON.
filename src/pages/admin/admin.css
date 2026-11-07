@@ -377,7 +377,9 @@ textarea.np-input { resize: vertical; line-height: 1.55; }
 .np-cms-status { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; color: var(--np-ink-2); }
 .np-cms-status i { width: 9px; height: 9px; border-radius: 50%; background: var(--np-good); box-shadow: 0 0 0 4px var(--np-good-bg); }
 .np-cms-status.is-dirty i { background: #e3a22b; box-shadow: 0 0 0 4px #fff3dc; }
-.np-cms-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.np-cms-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.np-undo { display: inline-flex; gap: 4px; padding-inline-end: 6px; margin-inline-end: 2px; }
+.np-undo .np-mini { width: 36px; height: 36px; border-radius: 10px; }
 .np-cms-langs { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
 .np-cms-note { flex-basis: 100%; }
 .np-langchips { display: inline-flex; gap: 4px; flex-wrap: wrap; }
