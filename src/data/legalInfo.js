@@ -9,6 +9,7 @@ export const LEGAL_INFO = {
   phone: '+49 160 956 27 666',
   email: 'info@noon-sprachdienst.de',
   vatId: 'DE344454178',
+  updated: '07.11.2026',
   offices: [
     'Friedrichstraße 15, 70174 Stuttgart',
     'Potsdamer Str. 63, 10785 Berlin',

@@ -22,27 +22,18 @@ export const ImpressumBody = ({ lang }) => {
         </p>
       )}
       <h3>Angaben gemäß § 5 DDG</h3>
-      <p>
-        <strong>{LEGAL_INFO.company}</strong><br/>
-        Inhaber: {LEGAL_INFO.owner}<br/>
-        {LEGAL_INFO.street}<br/>
-        {LEGAL_INFO.postalCity}<br/>
-        {LEGAL_INFO.country}
-      </p>
-      <h3>Kontakt</h3>
-      <p>
-        Mobil: {LEGAL_INFO.phone}<br/>
-        E-Mail: {LEGAL_INFO.email}
-      </p>
-      <h3>Umsatzsteuer-ID</h3>
-      <p>
-        Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br/>
-        {LEGAL_INFO.vatId}
-      </p>
+      <dl className="legal-facts">
+        <div><dt>Anbieter</dt><dd><strong>{LEGAL_INFO.company}</strong></dd></div>
+        <div><dt>Inhaber</dt><dd>{LEGAL_INFO.owner}</dd></div>
+        <div><dt>Anschrift</dt><dd>{LEGAL_INFO.street}<br/>{LEGAL_INFO.postalCity}<br/>{LEGAL_INFO.country}</dd></div>
+        <div><dt>Telefon</dt><dd><a href={`tel:${LEGAL_INFO.phone.replace(/\s/g, '')}`}>{LEGAL_INFO.phone}</a></dd></div>
+        <div><dt>E-Mail</dt><dd><a href={`mailto:${LEGAL_INFO.email}`}>{LEGAL_INFO.email}</a></dd></div>
+        <div><dt>USt-IdNr.</dt><dd>{LEGAL_INFO.vatId}<span className="legal-facts-note">Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz</span></dd></div>
+      </dl>
       <h3>Weitere Standorte</h3>
-      <p>
-        {LEGAL_INFO.offices.map((office, i) => <span key={office}>{i > 0 && <br/>}{office}</span>)}
-      </p>
+      <ul className="legal-offices">
+        {LEGAL_INFO.offices.map((office) => <li key={office}>{office}</li>)}
+      </ul>
       <h3>Haftung für Inhalte</h3>
       <p>
         Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen
