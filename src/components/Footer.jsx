@@ -11,8 +11,6 @@ function findPath(lang, match, fallback) {
   return page ? withSlash(page.path) : fallback;
 }
 
-const openLegal = (page) =>
-  window.dispatchEvent(new CustomEvent('openLegal', { detail: page }));
 
 export default function Footer() {
   const { t, lang } = useI18n();
@@ -87,19 +85,19 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button type="button" className="foot-legal-link" onClick={() => openLegal('datenschutz')}>
+                <a href="/datenschutz/" className="foot-legal-link">
                   {t('foot.privacy')}
-                </button>
+                </a>
               </li>
               <li>
-                <button type="button" className="foot-legal-link" onClick={() => openLegal('impressum')}>
+                <a href="/impressum/" className="foot-legal-link">
                   {t('foot.imprint')}
-                </button>
+                </a>
               </li>
               <li>
-                <button type="button" className="foot-legal-link" onClick={() => openLegal('agb')}>
+                <a href="/agb/" className="foot-legal-link">
                   {t('foot.agb')}
-                </button>
+                </a>
               </li>
               <li>
                 <button type="button" className="foot-legal-link" onClick={() => window.dispatchEvent(new Event('openCookieSettings'))}>
@@ -142,11 +140,11 @@ export default function Footer() {
           <div>© {new Date().getFullYear()} Noon Dolmetscher &amp; Übersetzungsbüro</div>
           <a href="https://3assem0.github.io/MyPortflio/" target="_blank" rel="noopener noreferrer" className="foot-legal-link foot-legal-link--sm foot-credit-center">Built by 3A</a>
           <div className="foot-bottom-links">
-            <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('impressum')}>{t('foot.imprint')}</button>
+            <a href="/impressum/" className="foot-legal-link foot-legal-link--sm">{t('foot.imprint')}</a>
             <span>·</span>
-            <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('datenschutz')}>{t('foot.privacy')}</button>
+            <a href="/datenschutz/" className="foot-legal-link foot-legal-link--sm">{t('foot.privacy')}</a>
             <span>·</span>
-            <button type="button" className="foot-legal-link foot-legal-link--sm" onClick={() => openLegal('agb')}>{t('foot.agb')}</button>
+            <a href="/agb/" className="foot-legal-link foot-legal-link--sm">{t('foot.agb')}</a>
           </div>
         </div>
 

@@ -23,6 +23,8 @@ const Appointment = lazy(() => import('./pages/Appointment.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 import CookieConsent from './components/CookieConsent.jsx';
 import LegalModal from './components/LegalModal.jsx';
+import { LEGAL_PAGES } from './data/legalInfo.js';
+const LegalPage = lazy(() => import('./pages/LegalPage.jsx'));
 import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
 import { CONTACT } from './config/contact.js';
 import { getSimplePageMeta } from './data/simplePages.js';
@@ -80,11 +82,12 @@ export default function App() {
   const isServicesPage = simpleRoute.path === '/leistungen' || simpleRoute.path === '/services';
   const isPricingPage = !!pricingPage;
   const isSpecialtiesPage = simpleRoute.path === '/fachuebersetzungen' || simpleRoute.path === '/specialties';
+  const legalPage = LEGAL_PAGES[path] || null;
   const isHome = path === '/' || !!languageHomeLang;
-  const isNotFound = !(seoPage || isRequestPage || isAppointmentPage || isApplicationPage || isServicesPage || isPricingPage || isSpecialtiesPage || isHome);
+  const isNotFound = !(seoPage || legalPage || isRequestPage || isAppointmentPage || isApplicationPage || isServicesPage || isPricingPage || isSpecialtiesPage || isHome);
   const simpleCanonicalPath = isRequestPage ? '/angebot' : isAppointmentPage ? '/termin' : isApplicationPage ? '/bewerbung' : isServicesPage ? '/leistungen' : isSpecialtiesPage ? '/fachuebersetzungen' : null;
-  const m = seoPage || (isNotFound ? (NOT_FOUND_META[lang] || NOT_FOUND_META.de) : simpleCanonicalPath ? getSimplePageMeta(simpleCanonicalPath, simpleRoute.lang || lang) : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
-  const canonicalUrl = getCanonicalUrl(seoPage?.path || pricingPage?.path || (simpleCanonicalPath ? getLocalizedSimplePath(simpleCanonicalPath, simpleRoute.lang || lang) : languageHomeLang ? (languageHomeLang === 'de' ? '/' : `/${languageHomeLang}`) : '/'));
+  const m = seoPage || legalPage || (isNotFound ? (NOT_FOUND_META[lang] || NOT_FOUND_META.de) : simpleCanonicalPath ? getSimplePageMeta(simpleCanonicalPath, simpleRoute.lang || lang) : isPricingPage ? pricingPage : META_BY_LANG[languageHomeLang || lang] || META_BY_LANG.de);
+  const canonicalUrl = getCanonicalUrl(seoPage?.path || pricingPage?.path || (legalPage ? path : null) || (simpleCanonicalPath ? getLocalizedSimplePath(simpleCanonicalPath, simpleRoute.lang || lang) : languageHomeLang ? (languageHomeLang === 'de' ? '/' : `/${languageHomeLang}`) : '/'));
   const languageAlternates = seoPage ? getLanguageAlternates(seoPage) : (pricingPage ? PRICE_PAGES.map((page) => ({
     lang: SEO_LANGUAGES[page.lang].html,
     href: getCanonicalUrl(page.path),
@@ -219,7 +222,7 @@ export default function App() {
       <Helmet htmlAttributes={{ lang: meta.html, dir: meta.dir }}>
         <title>{m.metaTitle || m.title}</title>
         <meta name="description" content={m.description} />
-        <meta name="robots" content={isNotFound ? 'noindex, follow' : 'index, follow'} />
+        <meta name="robots" content={isNotFound || legalPage ? 'noindex, follow' : 'index, follow'} />
         <meta property="og:title" content={m.metaTitle || m.title} />
         <meta property="og:description" content={m.description} />
         <meta property="og:url" content={canonicalUrl} />
@@ -239,6 +242,8 @@ export default function App() {
         <Suspense fallback={<div className="route-loading" aria-live="polite" />}>
         {seoPage ? (
           <SeoLanding page={seoPage} />
+        ) : legalPage ? (
+          <LegalPage type={legalPage.key} />
         ) : isRequestPage ? (
           <HowContact />
         ) : isAppointmentPage ? (

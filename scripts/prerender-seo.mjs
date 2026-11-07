@@ -16,6 +16,7 @@ import { getServiceNavigation } from '../src/data/serviceContent.js';
 import { CONTENT_UPDATED } from '../src/data/pageUpgrades.js';
 import { homeExtraMarkup, simpleExtraMarkup } from './staticMain.mjs';
 import { SIMPLE_PAGE_CTA, SIMPLE_PAGE_META } from '../src/data/simplePages.js';
+import { LEGAL_INFO, LEGAL_PAGES } from '../src/data/legalInfo.js';
 
 function isListHeadingText(text = '') {
   return /^(wir übersetzen|typische|dazu gehören|dazu gehoren|häufig|haufig|so läuft|so lauft|these|typical|we translate|nous traduisons|nous proposons|نترجم|تشمل|نموذجية|типичные|ми перекладаємо|çevirdiğimiz)/i.test(text.trim());
@@ -339,6 +340,36 @@ for (const page of languageHomePages) {
   const target = join(distDir, page.path.slice(1), 'index.html');
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, renderLanguageHome(page), 'utf8');
+}
+
+// Legal pages: real URLs for the footer links, noindex and outside the sitemap.
+function legalMarkup(key) {
+  const i = LEGAL_INFO;
+  if (key === 'impressum') {
+    return `<main><article><h1>Impressum</h1><h2>Angaben gemäß § 5 DDG</h2><p>${escapeHtml(i.company)}<br>Inhaber: ${escapeHtml(i.owner)}<br>${escapeHtml(i.street)}<br>${escapeHtml(i.postalCity)}<br>${escapeHtml(i.country)}</p>`
+      + `<h2>Kontakt</h2><p>Mobil: ${escapeHtml(i.phone)}<br>E-Mail: ${escapeHtml(i.email)}</p>`
+      + `<h2>Umsatzsteuer-ID</h2><p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: ${escapeHtml(i.vatId)}</p>`
+      + `<h2>Weitere Standorte</h2><p>${i.offices.map(escapeHtml).join('<br>')}</p></article></main>`;
+  }
+  const heading = key === 'datenschutz' ? 'Datenschutzerklärung' : 'Allgemeine Geschäftsbedingungen';
+  return `<main><article><h1>${heading}</h1><p>${escapeHtml(LEGAL_PAGES[`/${key}`].description)}</p><p><a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · <a href="/agb/">AGB</a></p></article></main>`;
+}
+
+for (const [path, page] of Object.entries(LEGAL_PAGES)) {
+  const canonical = getCanonicalUrl(path);
+  let html = template;
+  html = html.replace(/<html[^>]*>/, '<html lang="de-DE" dir="ltr">');
+  html = setTag(html, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(page.title)}</title>`);
+  html = setTag(html, /<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeHtml(page.description)}" />`);
+  html = setTag(html, /<meta name="robots" content="[^"]*"\s*\/?>/, '<meta name="robots" content="noindex, follow" />');
+  html = setTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${canonical}" />`);
+  html = setTag(html, /<meta property="og:url" content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${canonical}" />`);
+  html = html.replace(/\s*<link rel="alternate" hrefLang="[^"]*" href="[^"]*"\s*\/?>/g, '');
+  html = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '');
+  html = fillRoot(html, legalMarkup(page.key), 'de');
+  const target = join(distDir, path.slice(1), 'index.html');
+  await mkdir(dirname(target), { recursive: true });
+  await writeFile(target, html, 'utf8');
 }
 
 // /admin is rewritten to this untouched shell so it never shows homepage fallback text.

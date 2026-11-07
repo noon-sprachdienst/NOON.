@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useI18n } from '../hooks/useI18n';
+import { LEGAL_INFO } from '../data/legalInfo.js';
 
-/* ── Impressum: always German (§ 5 TMG) ── */
-const ImpressumBody = ({ lang }) => {
+/* ── Impressum: always German (§ 5 DDG) ── */
+export const ImpressumBody = ({ lang }) => {
   const NOTE = {
     de: null,
-    en: 'This imprint is required by German law (§ 5 TMG) and is therefore provided in German.',
-    ar: 'هذا الإفصاح القانوني مطلوب بموجب القانون الألماني (§ 5 TMG) وبالتالي يُقدَّم باللغة الألمانية.',
-    tr: 'Bu künye, Alman hukuku (§ 5 TMG) gereği zorunlu olup bu nedenle Almanca sunulmaktadır.',
-    ru: 'Этот выходной лист предусмотрен немецким законом (§ 5 TMG) и поэтому предоставляется на немецком языке.',
-    fr: "Cet impressum est requis par la loi allemande (§ 5 TMG) et est donc fourni en allemand.",
-    uk: 'Цей вихідний листок вимагається німецьким законодавством (§ 5 TMG) і тому надається німецькою мовою.',
+    en: 'This imprint is required by German law (§ 5 DDG) and is therefore provided in German.',
+    ar: 'هذا الإفصاح القانوني مطلوب بموجب القانون الألماني (§ 5 DDG) وبالتالي يُقدَّم باللغة الألمانية.',
+    tr: 'Bu künye, Alman hukuku (§ 5 DDG) gereği zorunlu olup bu nedenle Almanca sunulmaktadır.',
+    ru: 'Этот выходной лист предусмотрен немецким законом (§ 5 DDG) и поэтому предоставляется на немецком языке.',
+    fr: "Cet impressum est requis par la loi allemande (§ 5 DDG) et est donc fourni en allemand.",
+    uk: 'Цей вихідний листок вимагається німецьким законодавством (§ 5 DDG) і тому надається німецькою мовою.',
   };
-  const note = NOTE[lang] || NOTE.en;
+  const note = lang in NOTE ? NOTE[lang] : NOTE.en;
   return (
     <div className="legal-body">
       {note && (
@@ -20,31 +21,32 @@ const ImpressumBody = ({ lang }) => {
           ℹ️ {note}
         </p>
       )}
-      <h3>Angaben gemäß § 5 TMG</h3>
+      <h3>Angaben gemäß § 5 DDG</h3>
       <p>
-        <strong>Noon Dolmetscher &amp; Übersetzungsbüro</strong><br/>
-        Rosenplatz 17<br/>
-        49074 Osnabrück<br/>
-        Deutschland
+        <strong>{LEGAL_INFO.company}</strong><br/>
+        Inhaber: {LEGAL_INFO.owner}<br/>
+        {LEGAL_INFO.street}<br/>
+        {LEGAL_INFO.postalCity}<br/>
+        {LEGAL_INFO.country}
       </p>
       <h3>Kontakt</h3>
       <p>
-        Mobil: +49 160 956 27 666<br/>
-        E-Mail: info@noon-sprachdienst.de
+        Mobil: {LEGAL_INFO.phone}<br/>
+        E-Mail: {LEGAL_INFO.email}
+      </p>
+      <h3>Umsatzsteuer-ID</h3>
+      <p>
+        Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br/>
+        {LEGAL_INFO.vatId}
       </p>
       <h3>Weitere Standorte</h3>
       <p>
-        Friedrichstraße 15, 70174 Stuttgart<br/>
-        Potsdamer Str. 63, 10785 Berlin<br/>
-        Teichstraße 24, 33615 Bielefeld<br/>
-        Richard-Wagner-Straße 13, 55118 Mainz<br/>
-        Bothwellstraße 25, 24143 Kiel
+        {LEGAL_INFO.offices.map((office, i) => <span key={office}>{i > 0 && <br/>}{office}</span>)}
       </p>
       <h3>Haftung für Inhalte</h3>
       <p>
-        Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach
-        den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter
-        jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
+        Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen
+        Gesetzen verantwortlich. Als Diensteanbieter sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
         oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
       </p>
       <p>
@@ -68,12 +70,9 @@ const ImpressumBody = ({ lang }) => {
         Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
         jeweiligen Autors bzw. Erstellers.
       </p>
-      <h3>Streitschlichtung</h3>
+      <h3>Verbraucherstreitbeilegung</h3>
       <p>
-        Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{' '}
-        <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">
-          https://ec.europa.eu/consumers/odr/
-        </a>. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+        Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
         Verbraucherschlichtungsstelle teilzunehmen.
       </p>
     </div>
@@ -81,7 +80,7 @@ const ImpressumBody = ({ lang }) => {
 };
 
 /* ── Datenschutz content per language ── */
-const DATENSCHUTZ = {
+export const DATENSCHUTZ = {
   de: (
     <div className="legal-body">
       <h3>1. Datenschutz auf einen Blick</h3>
@@ -276,7 +275,7 @@ const DATENSCHUTZ = {
 };
 
 /* ── AGB content per language ── */
-const AGB = {
+export const AGB = {
   de: (
     <div className="legal-body">
       <h3>§ 1 Geltungsbereich</h3>
@@ -452,7 +451,7 @@ const TAB_LABELS = {
 };
 
 /* ── Page titles per language ── */
-const PAGE_TITLES = {
+export const PAGE_TITLES = {
   de: { impressum: 'Impressum', datenschutz: 'Datenschutzerklärung', agb: 'Allgemeine Geschäftsbedingungen' },
   en: { impressum: 'Legal Notice', datenschutz: 'Privacy Policy', agb: 'Terms & Conditions' },
   ar: { impressum: 'الإفصاح القانوني', datenschutz: 'سياسة الخصوصية', agb: 'الشروط والأحكام العامة' },
