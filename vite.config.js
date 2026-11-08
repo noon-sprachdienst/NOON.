@@ -11,6 +11,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    // Read by scripts/prerender-seo.mjs (to preload the page chunk), then deleted.
+    manifest: true,
     rollupOptions: {
       output: {
         manualChunks(id) {

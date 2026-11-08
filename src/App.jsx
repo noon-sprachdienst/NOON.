@@ -22,13 +22,14 @@ const Application = lazy(() => import('./pages/Application.jsx'));
 const Appointment = lazy(() => import('./pages/Appointment.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 import CookieConsent from './components/CookieConsent.jsx';
-import LegalModal from './components/LegalModal.jsx';
+// The legal texts are only downloaded when someone opens the modal (cookie banner links).
+const LegalModal = lazy(() => import('./components/LegalModal.jsx'));
 import { LEGAL_PAGES } from './data/legalInfo.js';
 const LegalPage = lazy(() => import('./pages/LegalPage.jsx'));
 import { initializeAnalytics, notifyRouteChange } from './lib/analytics.js';
 import { CONTACT } from './config/contact.js';
 import { getSimplePageMeta } from './data/simplePages.js';
-import { getCanonicalUrl, getLanguageAlternates, getPricingPage, getSeoPage, LANGUAGE_HOME_META, PRICE_PAGES, SEO_LANGUAGES, SEO_PATHS } from './data/seoPages.js';
+import { getCanonicalUrl, getLanguageAlternates, getPricingPage, getSeoPage, LANGUAGE_HOME_META, PRICE_PAGES, SEO_LANGUAGES, SEO_PATHS } from './data/seoRoutes.js';
 
 
 const normalizePath = (value) => {
@@ -68,6 +69,18 @@ const NOT_FOUND_META = {
   fr: { title: 'Page introuvable (404) | Noon Übersetzungsbüro', description: 'La page demandée n’existe pas ou a été déplacée.' },
   uk: { title: 'Сторінку не знайдено (404) | Noon Übersetzungsbüro', description: 'Запитувана сторінка не існує або була переміщена.' },
 };
+
+function LegalModalLoader() {
+  const [initial, setInitial] = useState(null);
+  useEffect(() => {
+    if (initial) return undefined;
+    const open = (event) => setInitial(event.detail || 'impressum');
+    window.addEventListener('openLegal', open);
+    return () => window.removeEventListener('openLegal', open);
+  }, [initial]);
+  if (!initial) return null;
+  return <Suspense fallback={null}><LegalModal initial={initial} /></Suspense>;
+}
 
 export default function App() {
   const { lang, meta, setLang } = useI18n();
@@ -282,7 +295,7 @@ export default function App() {
       <CookieConsent />
 
       {/* Legal modals — Impressum / Datenschutz / AGB */}
-      <LegalModal />
+      <LegalModalLoader />
     </>
   );
 }

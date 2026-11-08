@@ -480,8 +480,8 @@ export const PAGE_TITLES = {
   uk: { impressum: 'Вихідний лист', datenschutz: 'Політика конфіденційності', agb: 'Загальні умови' },
 };
 
-export default function LegalModal() {
-  const [open, setOpen] = useState(null); // 'impressum' | 'datenschutz' | 'agb' | null
+export default function LegalModal({ initial = null }) {
+  const [open, setOpen] = useState(initial); // 'impressum' | 'datenschutz' | 'agb' | null
   const { lang } = useI18n();
 
   useEffect(() => {

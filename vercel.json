@@ -76,7 +76,13 @@
     { "source": "/ubersetzungsburo-lingen(/)?", "destination": "/de/standorte/lingen/", "permanent": true },
     { "source": "/ubersetzungsburo-braunschweig(/)?", "destination": "/de/standorte/braunschweig/", "permanent": true },
     { "source": "/ubersetzungsburo-oldenburg(/)?", "destination": "/de/standorte/oldenburg/", "permanent": true },
-    { "source": "/ubersetzungsburo-ibbenburen(/)?", "destination": "/de/standorte/ibbenbueren/", "permanent": true }
+    { "source": "/ubersetzungsburo-ibbenburen(/)?", "destination": "/de/standorte/ibbenbueren/", "permanent": true },
+
+    { "source": "/ar/locations/:city(bochum|braunschweig|bremen|dortmund|dresden|duesseldorf|essen|frankfurt-am-main|hamburg|hannover|ibbenbueren|koeln|leipzig|lingen|muenchen|nuernberg|oldenburg|rheine|wiesbaden|wuppertal)(/)?", "destination": "/de/standorte/:city/", "permanent": true },
+    { "source": "/tr/subeler/:city(bochum|braunschweig|bremen|dortmund|dresden|duesseldorf|essen|frankfurt-am-main|hamburg|hannover|ibbenbueren|koeln|leipzig|lingen|muenchen|nuernberg|oldenburg|rheine|wiesbaden|wuppertal)(/)?", "destination": "/de/standorte/:city/", "permanent": true },
+    { "source": "/ru/filialy/:city(bochum|braunschweig|bremen|dortmund|dresden|duesseldorf|essen|frankfurt-am-main|hamburg|hannover|ibbenbueren|koeln|leipzig|lingen|muenchen|nuernberg|oldenburg|rheine|wiesbaden|wuppertal)(/)?", "destination": "/de/standorte/:city/", "permanent": true },
+    { "source": "/fr/agences/:city(bochum|braunschweig|bremen|dortmund|dresden|duesseldorf|essen|frankfurt-am-main|hamburg|hannover|ibbenbueren|koeln|leipzig|lingen|muenchen|nuernberg|oldenburg|rheine|wiesbaden|wuppertal)(/)?", "destination": "/de/standorte/:city/", "permanent": true },
+    { "source": "/uk/filiji/:city(bochum|braunschweig|bremen|dortmund|dresden|duesseldorf|essen|frankfurt-am-main|hamburg|hannover|ibbenbueren|koeln|leipzig|lingen|muenchen|nuernberg|oldenburg|rheine|wiesbaden|wuppertal)(/)?", "destination": "/de/standorte/:city/", "permanent": true }
 
   ],
   "rewrites": [

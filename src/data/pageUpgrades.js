@@ -58,7 +58,7 @@ const CITIES = {
   '/de/standorte/frankfurt-am-main': cityPage({
     city: 'Frankfurt am Main',
     region: 'Hessen',
-    description: 'Übersetzungsbüro Frankfurt: beglaubigte Übersetzungen und beeidigte Dolmetscher für Arabisch, Türkisch, Französisch und alle Sprachen – Express möglich.',
+    description: 'Übersetzungsbüro Frankfurt: beglaubigte Übersetzungen ab 39 € und beeidigte Dolmetscher für Arabisch, Türkisch und alle Sprachen, Festpreis in 5 Min.',
     intro: 'Beglaubigte Übersetzungen und Dolmetscher für Frankfurt am Main: Geburtsurkunden, Heiratsurkunden und Zeugnisse übersetzen unsere ermächtigten Übersetzer komplett digital – für Dolmetschtermine in Frankfurt organisieren wir beeidigte Dolmetscher, unter anderem für Arabisch, Türkisch und Französisch.',
     authorities: '• Ausländerbehörde Frankfurt: Aufenthaltstitel, Familiennachzug und Einbürgerung\n• Standesämter: Anmeldung der Eheschließung, Geburtsbeurkundung und Namenserklärungen\n• Goethe-Universität und Frankfurt University of Applied Sciences: Zeugnisse und Diplome für Bewerbung und Anerkennung\n• Amtsgericht, Landgericht und Oberlandesgericht Frankfurt: Urteile, Beschlüsse und Vollmachten\n• Unternehmen und Banken: Verträge, Handelsregisterauszüge und Geschäftsunterlagen',
     focus: ['Arabisch-, Türkisch- und Französisch-Dolmetscher für Frankfurt', 'Besonders oft fragen Kundinnen und Kunden aus Frankfurt nach Arabisch-Dolmetschern – unsere Dolmetscher decken den syrischen, sudanesischen, libyschen, marokkanischen, algerischen und ägyptischen Dialekt ab. Ebenso häufig sind Türkisch, Französisch und Persisch (Farsi und Dari). Für Gerichtstermine und Beurkundungen stellen wir beeidigte bzw. vereidigte Dolmetscher.',

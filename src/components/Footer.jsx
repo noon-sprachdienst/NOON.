@@ -1,7 +1,6 @@
 import { useI18n } from '../hooks/useI18n';
 import { CONTACT } from '../config/contact.js';
-import { LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
-import { LANGUAGE_HUB_PATH } from '../data/languagePages.js';
+import { LANGUAGE_HUB_PATH, LOCATIONS, SEO_PAGES } from '../data/seoRoutes.js';
 
 const withSlash = (path) => `${path.replace(/\/+$/, '')}/`;
 
