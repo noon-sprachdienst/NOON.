@@ -48,14 +48,26 @@ if (await exists(join(distDir, '404.html'))) {
   check(!/<link rel="canonical"/.test(notFound), '404 page must not declare a canonical URL.');
 }
 
-for (const redirect of config.redirects || []) {
+// Rules with a parameter list such as "/ar/locations/:city(bremen|koeln)(/)?" are checked once per value.
+function expandRedirect(rule) {
+  const match = /:(\w+)\(([^)]+)\)/.exec(rule.source);
+  if (!match) return [rule];
+  return match[2].split('|').flatMap((value) => expandRedirect({
+    ...rule,
+    source: rule.source.replace(match[0], value),
+    destination: rule.destination.replaceAll(`:${match[1]}`, value),
+  }));
+}
+const redirects = (config.redirects || []).flatMap(expandRedirect);
+
+for (const redirect of redirects) {
   const sourcePath = redirect.source.replace('(/)?', '');
   check(!sitemapUrls.some((url) => new URL(url).pathname === sourcePath), `Redirect source appears in sitemap: ${redirect.source}`);
   check(!redirect.destination.startsWith('http://'), `Redirect is not HTTPS: ${redirect.source}`);
   const destinationPath = new URL(redirect.destination, siteUrl).pathname;
   const destinationFile = destinationPath === '/' ? join(distDir, 'index.html') : join(distDir, destinationPath.slice(1), 'index.html');
   check(await exists(destinationFile), `Redirect destination has no static page: ${redirect.destination}`);
-  check(!(config.redirects || []).some((rule) => rule.source.replace('(/)?', '') === destinationPath), `Redirect chain detected: ${redirect.source} -> ${redirect.destination}`);
+  check(!redirects.some((rule) => rule.source.replace('(/)?', '') === destinationPath), `Redirect chain detected: ${redirect.source} -> ${redirect.destination}`);
 }
 
 if (failures.length) {
