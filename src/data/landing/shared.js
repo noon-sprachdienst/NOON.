@@ -18,11 +18,26 @@ export const CITY = {
     hub: { href: '/de/standorte/stuttgart/', label: 'Übersetzungsbüro Stuttgart' },
     office: 'Friedrichstraße 15, 70174 Stuttgart (Mitte)',
   },
-  // No office yet (KAN-11): pages describe digital handling; add `office` once the address exists.
+  // Cities without an office: pages describe digital handling and name the nearest office
+  // for personal appointments (`appointments`). München gets `office` once the address exists (KAN-11).
   muenchen: {
     slug: 'muenchen',
     name: 'München',
     hub: { href: '/de/standorte/muenchen/', label: 'Übersetzungsbüro München' },
+    appointments: 'in unserem Büro in Stuttgart',
+  },
+  frankfurt: {
+    slug: 'frankfurt-am-main',
+    name: 'Frankfurt am Main',
+    short: 'Frankfurt',
+    hub: { href: '/de/standorte/frankfurt-am-main/', label: 'Übersetzungsbüro Frankfurt' },
+    appointments: 'in unserem Büro in Mainz',
+  },
+  koeln: {
+    slug: 'koeln',
+    name: 'Köln',
+    hub: { href: '/de/standorte/koeln/', label: 'Übersetzungsbüro Köln' },
+    appointments: 'in unseren Büros in Bielefeld und Mainz',
   },
   kiel: {
     slug: 'kiel',
@@ -54,6 +69,27 @@ export function interpretingPriceSection(city) {
   return ['Preise für Dolmetscher',
     `Dolmetscheinsätze in ${city} beginnen ab 85 € pro Stunde. Den genauen Festpreis nennen wir Ihnen vorab, sobald wir Datum, Uhrzeit, Ort, voraussichtliche Dauer und Sprache kennen. Kurze Gespräche lassen sich oft günstiger per Telefon oder Video dolmetschen.`,
     [QUOTE_LINK]];
+}
+
+// Second content pass per page: extra sections go before the page's closing section,
+// extra FAQs at the end.
+export function withMore(pages, more) {
+  return pages.map((page) => {
+    const extra = more[page.slug];
+    if (!extra) return page;
+    return {
+      ...page,
+      sections: [...page.sections.slice(0, -1), ...(extra.sections || []), page.sections.at(-1)],
+      faqs: [...page.faqs, ...(extra.faqs || [])],
+    };
+  });
+}
+
+// Closing section for cities without an office of their own.
+export function digitalSection(c, text) {
+  return [`Für ${c.short || c.name} komplett digital`,
+    `${text} Persönliche Termine bieten wir nach Vereinbarung ${c.appointments} an. Telefonisch sind wir rund um die Uhr erreichbar.`,
+    [c.hub, QUOTE_LINK]];
 }
 
 export function officeSection(c) {

@@ -5,7 +5,8 @@
 // Stuttgart as the nearest office. When the Munich office opens, add its address in CITY.
 import {
   APOSTILLE_LINK, CERTIFIED_LINK, CITY, DOCUMENT_LINKS, FAQ_DIGITAL, INTERPRETING_LINK, INTERPRETING_STEPS,
-  NOTARY_GUIDE_LINK, ORDER_STEPS, PRICE_LINK, QUOTE_LINK, interpretingPriceSection, translationPriceSection,
+  NOTARY_GUIDE_LINK, ORDER_STEPS, PRICE_LINK, QUOTE_LINK, digitalSection as cityDigitalSection, interpretingPriceSection, withMore,
+  translationPriceSection,
 } from './shared.js';
 
 const C = CITY.muenchen;
@@ -44,11 +45,7 @@ const HUB = C.hub;
 const DISTRICTS = 'Milbertshofen-Am Hart, Neuperlach, Feldmoching-Hasenbergl, Berg am Laim, Schwanthalerhöhe, Ludwigsvorstadt-Isarvorstadt, Sendling und Moosach';
 
 // No office in München yet: honest block about digital handling and the nearest office.
-function digitalSection(text) {
-  return ['Für München komplett digital',
-    `${text} Persönliche Termine bieten wir nach Vereinbarung in unserem Büro in Stuttgart an. Telefonisch sind wir rund um die Uhr erreichbar.`,
-    [HUB, QUOTE_LINK]];
-}
+const digitalSection = (text) => cityDigitalSection(C, text);
 const DIGITAL_TRANSLATION = 'Für eine beglaubigte Übersetzung müssen Sie in München nirgendwo hinfahren: Dokument als Foto oder Scan per WhatsApp, E-Mail oder Formular senden, Festpreis erhalten, Übersetzung als PDF und per Post an Ihre Münchner Adresse bekommen.';
 const DIGITAL_INTERPRETING = 'Dolmetscher kommen zu Ihrem Termin in München – in die Behörde, ins Standesamt, zum Notar oder ins Gericht. Kurze Gespräche dolmetschen wir auch per Video oder Telefon.';
 
@@ -740,12 +737,4 @@ const BATCH2_PAGES = [
   }),
 ];
 
-export const MUENCHEN_PAGES = [...BASE_PAGES.map((page) => {
-  const more = MORE[page.slug];
-  if (!more) return page;
-  return {
-    ...page,
-    sections: [...page.sections.slice(0, -1), ...(more.sections || []), page.sections.at(-1)],
-    faqs: [...page.faqs, ...(more.faqs || [])],
-  };
-}), ...BATCH2_PAGES];
+export const MUENCHEN_PAGES = [...withMore(BASE_PAGES, MORE), ...BATCH2_PAGES];
