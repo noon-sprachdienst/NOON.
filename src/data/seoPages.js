@@ -7,6 +7,7 @@ import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
 import { LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
 import { FOREIGN_UPGRADES } from './landing/foreign.js';
 import { DEEP_SECTIONS } from './landing/deepSections.js';
+import { PHASE1, UPDATED_PHASE1 } from './landing/phase1.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -1540,10 +1541,21 @@ const publishedDocumentPages = documentPagesDe
     };
   });
 
+// SEO plan Nov 2026, phase 1: extra sections go before the page's closing section, FAQs at the end.
+function withPhase1(page) {
+  const extra = PHASE1[page.path];
+  if (!extra) return page;
+  const sections = page.sections.length > 1
+    ? [...page.sections.slice(0, -1), ...(extra.sections || []), page.sections.at(-1)]
+    : [...page.sections, ...(extra.sections || [])];
+  return { ...page, sections, faqs: [...(page.faqs || []), ...(extra.faqs || [])], updated: UPDATED_PHASE1 };
+}
+
 export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE, ...LANDING_PAGES]
   .map((page) => (PAGE_UPGRADES[page.path] ? { ...page, ...PAGE_UPGRADES[page.path] } : page))
   .map((page) => (FOREIGN_UPGRADES[page.path] ? { ...page, ...FOREIGN_UPGRADES[page.path], updated: '2026-10-29' } : page))
   .map((page) => (DEEP_SECTIONS[page.path] ? { ...page, sections: [...page.sections, DEEP_SECTIONS[page.path]], updated: '2026-10-30' } : page))
+  .map(withPhase1)
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
