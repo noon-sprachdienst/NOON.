@@ -12,6 +12,7 @@ const Services = lazy(() => import('./components/Services.jsx'));
 import Beratung from './components/Beratung.jsx';
 const Pricing = lazy(() => import('./components/Pricing.jsx'));
 const Branches = lazy(() => import('./components/Branches.jsx'));
+const PopularLinks = lazy(() => import('./components/PopularLinks.jsx'));
 const Testimonials = lazy(() => import('./components/Testimonials.jsx'));
 const HowContact = lazy(() => import('./components/HowContact.jsx'));
 const FAQ = lazy(() => import('./components/FAQ.jsx'));
@@ -278,6 +279,7 @@ export default function App() {
             <StatsStrip />
             <Specialties />
             <Branches />
+            <PopularLinks />
             <Testimonials />
             <FAQ />
             <HowContact />
