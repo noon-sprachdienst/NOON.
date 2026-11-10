@@ -15,3 +15,6 @@ outputs/
 # Internal notes stay local, not in the repo
 *.md
 !README.md
+# Rules for AI coding agents belong to the repo
+!AGENTS.md
+!CLAUDE.md
