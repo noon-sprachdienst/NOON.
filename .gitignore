@@ -8,7 +8,9 @@ test/
 .DS_Store
 
 # Local tooling, scratch output, and Word lock files
-.claude/
+.claude/*
+# Shared Claude Code hooks belong to the repo
+!.claude/settings.json
 outputs/
 ~$*.docx
 

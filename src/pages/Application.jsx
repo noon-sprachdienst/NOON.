@@ -335,7 +335,7 @@ async function getSubmitErrorMessage(response, lang, fallback) {
 
   if (response.status === 404 || !contentType.includes('application/json')) return messages.apiMissing;
 
-  let error = '';
+  let error;
   try {
     const body = await response.json();
     error = String(body?.error || '');

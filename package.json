@@ -8,7 +8,10 @@
     "build": "node scripts/build-seo-index.mjs && vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "smoke:services": "node scripts/smoke-services.mjs",
-    "test:seo": "npm run build && node scripts/audit-seo-build.mjs && node scripts/audit-landing-pages.mjs && node scripts/review-built-site.mjs"
+    "test:seo": "npm run build && node scripts/audit-seo-build.mjs && node scripts/audit-landing-pages.mjs && node scripts/review-built-site.mjs",
+    "lint": "eslint .",
+    "check:dupes": "jscpd src/components src/pages src/hooks src/lib api scripts --min-lines 10 --min-tokens 70 --threshold 2 --reporters console --silent",
+    "check": "npm run lint && npm run check:dupes"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^7.2.0",
@@ -25,7 +28,12 @@
     "three-globe": "^2.45.2"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "jscpd": "^5.4.3",
     "vite": "^5.4.2"
   }
 }

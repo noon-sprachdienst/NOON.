@@ -21,6 +21,7 @@ export async function readJson(req) {
 
 export function cleanText(value, max = 120) {
   return typeof value === 'string'
+    // eslint-disable-next-line no-control-regex -- strips control characters from user input on purpose
     ? value.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max)
     : '';
 }

@@ -18,7 +18,9 @@ function readSession() {
   try {
     const stored = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
     if (stored?.id && Date.now() - stored.createdAt < SESSION_MAX_AGE) return stored;
-  } catch {}
+  } catch {
+    // Missing or corrupted session in localStorage: a new one is created below.
+  }
 
   const session = { id: crypto.randomUUID(), createdAt: Date.now() };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));

@@ -21,6 +21,9 @@ what they cannot.
 - `npm run build`: SEO index, Vite build and prerender into `dist/`.
 - `npm run test:seo`: build plus the three SEO audits. This is the main check.
 - `npm run smoke:services`: smoke test for the service pages.
+- `npm run lint`: ESLint (bugs, not style). Errors block commits; warnings don't.
+- `npm run check:dupes`: duplicate-code check. Fails if duplication rises above 2 %.
+- `npm run check`: lint plus duplicate check.
 - Preview servers (`.claude/launch.json`): `noon-preview` (port 4173, serves `dist/`, so
   build first) and `noon-dev` (port 5173).
 
@@ -91,6 +94,19 @@ hides a failure.
 - A test written by the same agent can share its blind spots. For logic changes, also
   check what must not happen.
 - Do not swallow errors: no empty `catch`, no silent fallback that hides a failure.
+
+## Checks that run automatically
+
+- Claude Code hooks (`.claude/settings.json`, scripts in `scripts/hooks/`). They load when
+  a Claude Code session starts in this folder.
+  - Before an edit: generated files are blocked. Changes to checks and guards (audit
+    scripts, hooks, `.claude/settings.json`) need the user's approval.
+  - Before Claude finishes: if site files changed, ESLint errors on the changed files and
+    the landing-page audit must pass, or Claude is sent back to fix them.
+- Git pre-commit hook (`scripts/git-hooks/`). Enable it once per clone with
+  `git config core.hooksPath scripts/git-hooks`. On commits that touch site files it runs
+  `lint`, `check:dupes` and `test:seo`. Commits that change checks or guards are blocked
+  unless `NOON_ALLOW_GUARD_CHANGE=1` is set after the user approved the change.
 
 ## Git
 
