@@ -33,6 +33,8 @@ const ALL_DOCUMENTS = [
   doc('vertrag-uebersetzung', 'Verträge'),
   doc('testament-uebersetzung', 'Testament und Erbschein'),
   doc('handelsregisterauszug-uebersetzung', 'Handelsregisterauszug'),
+  doc('finanzdokumente-uebersetzung', 'Kontoauszug, Gehaltsabrechnung, Steuerbescheid'),
+  doc('medizinische-dokumente-uebersetzung', 'Arztbrief, Befund, Impfpass'),
 ];
 
 const PURPOSES = [
@@ -50,7 +52,9 @@ const ALL_LANGUAGES = [
   lang('arabisch', 'Arabisch'), lang('tuerkisch', 'Türkisch'), lang('ukrainisch', 'Ukrainisch'), lang('russisch', 'Russisch'),
   lang('persisch', 'Persisch und Dari'), lang('polnisch', 'Polnisch'), lang('rumaenisch', 'Rumänisch'), lang('englisch', 'Englisch'),
   lang('franzoesisch', 'Französisch'), lang('spanisch', 'Spanisch'), lang('italienisch', 'Italienisch'), lang('griechisch', 'Griechisch'),
-  lang('serbisch-kroatisch-bosnisch', 'Serbisch, Kroatisch, Bosnisch'), lang('albanisch', 'Albanisch'), link('/de/sprachen/', 'Alle 190+ Sprachen'),
+  lang('serbisch-kroatisch-bosnisch', 'Serbisch, Kroatisch, Bosnisch'), lang('albanisch', 'Albanisch'), lang('kurdisch', 'Kurdisch'),
+  lang('bulgarisch', 'Bulgarisch'), lang('chinesisch', 'Chinesisch'), lang('vietnamesisch', 'Vietnamesisch'), lang('tigrinya', 'Tigrinya'),
+  link('/de/sprachen/', 'Alle 190+ Sprachen'),
 ];
 
 const OFFICES = [

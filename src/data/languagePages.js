@@ -322,6 +322,95 @@ const LANGUAGE_PAGES_BASE = [
       ['Übersetzen Sie Dokumente aus dem Kosovo?', 'Ja, albanischsprachige Urkunden aus dem Kosovo – auch zweisprachige Albanisch/Serbisch.'],
     ],
   }),
+  // SEO plan Nov 2026, phase 4: languages people search for without a page so far.
+  languagePage({
+    slug: 'kurdisch',
+    language: 'Kurdisch',
+    adjective: 'Kurdische',
+    description: 'Kurdisch Übersetzer und Dolmetscher für Kurmanci und Sorani: beglaubigte Übersetzungen von Dokumenten aus dem Irak, Syrien, der Türkei und dem Iran.',
+    intro: 'Kurdisch ist nicht eine einzige Sprache für alle: Die meisten Kurdinnen und Kurden in Deutschland sprechen Kurmanci oder Sorani – je nach Herkunft aus der Türkei, Syrien, dem Irak oder dem Iran. Wir übersetzen kurdische Dokumente beglaubigt ins Deutsche und stellen Dolmetscher, die genau Ihre Variante sprechen.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Personenstandsurkunden und Ausweise aus der Region Kurdistan-Irak, oft zweisprachig Kurdisch und Arabisch\n• Geburts- und Heiratsurkunden, Familienregisterauszüge\n• Schul- und Universitätszeugnisse für die Anerkennung\n• Führerscheine für die Umschreibung\n• Gerichtsentscheidungen und Vollmachten',
+    reverse: 'Auch vom Deutschen ins Kurdische – zum Beispiel Urkunden und Vollmachten für Behörden in der Region Kurdistan-Irak.',
+    interpretingExtra: 'Unsere Kurdisch-Dolmetscher arbeiten in Kurmanci und Sorani. Viele sprechen zusätzlich Arabisch, Türkisch oder Persisch – hilfreich, wenn in einem Gespräch mehrere Sprachen gebraucht werden.\n\n',
+    special: [
+      'Kurmanci oder Sorani?',
+      'Kurmanci wird vor allem von Kurdinnen und Kurden aus der Türkei, Syrien und dem Nordirak gesprochen und meist in lateinischer Schrift geschrieben. Sorani ist im Irak und im Iran verbreitet und wird in arabischer Schrift geschrieben. Für ein gutes Gespräch kommt es auf die richtige Variante an – sagen Sie uns bei der Anfrage, woher Ihre Gesprächspartner kommen.',
+    ],
+    faqs: [
+      ['Übersetzen Sie Dokumente aus der Region Kurdistan-Irak?', 'Ja, auch zweisprachige Dokumente auf Kurdisch und Arabisch – vollständig in einer Übersetzung.'],
+      ['Gibt es Dolmetscher für Kurmanci und Sorani?', 'Ja. Nennen Sie uns bei der Buchung die Variante, dann wählen wir die passende Person aus.'],
+    ],
+  }),
+  languagePage({
+    slug: 'bulgarisch',
+    language: 'Bulgarisch',
+    adjective: 'Bulgarische',
+    description: 'Bulgarisch Übersetzer und Dolmetscher: beglaubigte Übersetzungen Bulgarisch–Deutsch von Urkunden, Zeugnissen und Bescheinigungen – Festpreis vorab.',
+    intro: 'Für Familien, Fachkräfte und Studierende aus Bulgarien übersetzen wir Urkunden, Zeugnisse und Bescheinigungen beglaubigt ins Deutsche – für Standesamt, Familienkasse, Arbeitgeber und Anerkennungsstellen. Deutsche Dokumente übersetzen wir für bulgarische Behörden ins Bulgarische.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden (удостоверение за раждане, удостоверение за граждански брак)\n• Bescheinigungen über den Familienstand und die Familienzusammensetzung\n• Schul- und Hochschulzeugnisse, Diplome mit Anlage\n• Berufsabschlüsse und Arbeitsbescheinigungen\n• Führerscheine, Urteile und Vollmachten',
+    reverse: 'Auch vom Deutschen ins Bulgarische – zum Beispiel Geburtsurkunden in Deutschland geborener Kinder, Heiratsurkunden oder Bescheinigungen für bulgarische Behörden.',
+    special: [
+      'Kyrillische Namen in lateinischer Schrift',
+      'Bulgarien überträgt kyrillische Namen nach einem eigenen amtlichen System in lateinische Buchstaben – aus Жеков wird zum Beispiel Zhekov. Deutsche Behörden kennen oft andere Schreibweisen. Wir übernehmen die Schreibweise aus Ihrem Reisepass oder Personalausweis, damit alle Unterlagen zusammenpassen.',
+    ],
+    faqs: [
+      ['Brauchen bulgarische Urkunden eine Apostille?', 'Für viele öffentliche Urkunden aus EU-Staaten entfällt die Apostille. Ob eine deutsche Stelle eine Übersetzung oder ein mehrsprachiges EU-Formular verlangt, entscheidet sie selbst.'],
+      ['Übersetzen Sie Unterlagen für das Kindergeld?', 'Ja, Urkunden und Bescheinigungen für die Familienkasse – beglaubigt und mit einheitlicher Namensschreibweise.'],
+    ],
+  }),
+  languagePage({
+    slug: 'chinesisch',
+    language: 'Chinesisch',
+    adjective: 'Chinesische',
+    description: 'Chinesisch Übersetzer und Dolmetscher: beglaubigte Übersetzungen Chinesisch–Deutsch von Urkunden, Notariatszertifikaten, Zeugnissen und Verträgen.',
+    intro: 'Für Studierende, Fachkräfte, Familien und Unternehmen übersetzen wir chinesische Dokumente beglaubigt ins Deutsche und deutsche Dokumente ins Chinesische – in Kurzzeichen für die Volksrepublik China oder in Langzeichen für Taiwan und Hongkong.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Notariatszertifikate (公证书) über Geburt, Ehe, Familienstand oder Abschlüsse\n• Haushaltsregister (户口簿) und Ausweise\n• Abschlusszeugnisse, Studiennachweise und Notenübersichten\n• Arbeitsbescheinigungen und Führerscheine\n• Verträge, Handelsregisterauszüge und Vollmachten für Unternehmen',
+    reverse: 'Auch vom Deutschen ins Chinesische – zum Beispiel Urkunden, Zeugnisse oder Gesellschaftsdokumente für Behörden und Geschäftspartner in China, Taiwan oder Hongkong.',
+    special: [
+      'Notariatszertifikate und Apostille',
+      'Personenstand und Abschlüsse werden in China häufig durch Notariatszertifikate nachgewiesen, die manchmal schon eine englische Übersetzung enthalten. Für deutsche Behörden übersetzen wir das gesamte Zertifikat ins Deutsche. China ist seit November 2023 Mitglied des Haager Apostilleübereinkommens; ob Ihr Dokument eine Apostille braucht, sagt Ihnen die Stelle, bei der Sie es vorlegen.',
+      [{ href: '/de/apostille/', label: 'Apostille und Legalisation' }],
+    ],
+    faqs: [
+      ['Wie werden chinesische Namen geschrieben?', 'In Pinyin, so wie sie in Ihrem Reisepass stehen – damit alle Übersetzungen zu Ihren Ausweisdokumenten passen.'],
+      ['Übersetzen Sie auch Dokumente aus Taiwan und Hongkong?', 'Ja, Dokumente in Langzeichen ebenso wie in Kurzzeichen.'],
+    ],
+  }),
+  languagePage({
+    slug: 'vietnamesisch',
+    language: 'Vietnamesisch',
+    adjective: 'Vietnamesische',
+    description: 'Vietnamesisch Übersetzer und Dolmetscher: beglaubigte Übersetzungen Vietnamesisch–Deutsch von Geburtsurkunden, Heiratsurkunden und Zeugnissen – Festpreis vorab.',
+    intro: 'Die vietnamesische Gemeinschaft gehört seit Jahrzehnten zu Deutschland, und jedes Jahr kommen neue Auszubildende, Pflegekräfte und Studierende hinzu. Wir übersetzen vietnamesische Urkunden und Zeugnisse beglaubigt ins Deutsche, deutsche Dokumente ins Vietnamesische und stellen Vietnamesisch-Dolmetscher.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburtsurkunden (Giấy khai sinh) und Heiratsurkunden (Giấy chứng nhận kết hôn)\n• Bescheinigungen über den Familienstand (Giấy xác nhận tình trạng hôn nhân)\n• Schul-, Berufs- und Hochschulzeugnisse für Ausbildung, Pflege und Studium\n• Führerscheine und Strafregisterauszüge\n• Arbeitsverträge und Vollmachten',
+    reverse: 'Auch vom Deutschen ins Vietnamesische – etwa Urkunden in Deutschland geborener Kinder oder Unterlagen für Behörden in Vietnam.',
+    special: [
+      'Vietnamesische Namen und Echtheitsprüfung',
+      'Vietnamesische Namen enthalten viele Tonzeichen und werden mit dem Familiennamen zuerst geschrieben. Wir übernehmen Namen genau wie im Reisepass und übertragen die Reihenfolge eindeutig. Vietnam ist nicht Mitglied des Haager Apostilleübereinkommens; für vietnamesische Urkunden verlangen deutsche Stellen deshalb oft ein besonderes Verfahren zur Echtheitsprüfung über die deutsche Auslandsvertretung. Was in Ihrem Fall nötig ist, sagt Ihnen die Stelle, bei der Sie die Urkunde vorlegen.',
+    ],
+    faqs: [
+      ['Übersetzen Sie Unterlagen für Pflegekräfte und Auszubildende?', 'Ja, Zeugnisse, Fächerübersichten und Praktikumsnachweise für Anerkennung, Visum und Ausbildungsbetrieb.'],
+      ['Wie wird die Reihenfolge der Namen übertragen?', 'Wie im Reisepass; Familienname und Vornamen kennzeichnen wir eindeutig.'],
+    ],
+  }),
+  languagePage({
+    slug: 'tigrinya',
+    language: 'Tigrinya',
+    adjective: 'Tigrinya',
+    description: 'Tigrinya Übersetzer und Dolmetscher: beglaubigte Übersetzungen Tigrinya–Deutsch von Dokumenten aus Eritrea und Äthiopien, Dolmetscher für Behörde und Arzt.',
+    intro: 'Tigrinya wird in Eritrea und in der Region Tigray in Äthiopien gesprochen und in der äthiopischen Schrift (Ge’ez) geschrieben. Für Menschen aus Eritrea und Äthiopien übersetzen wir Dokumente beglaubigt ins Deutsche und stellen Tigrinya-Dolmetscher für Behörden, Beratung, Gesundheit und Gericht.',
+    documents: 'Wir übersetzen zum Beispiel:\n• Geburts- und Heiratsurkunden, Taufscheine und Bescheinigungen der Kirche\n• Ausweise und Bescheinigungen von Behörden\n• Schul- und Ausbildungszeugnisse\n• Führerscheine\n• Gerichtsentscheidungen und Vollmachten',
+    reverse: 'Auch vom Deutschen ins Tigrinya – etwa Bescheide, Schreiben und Informationen, die Sie für Ihre Familie verständlich machen möchten.',
+    interpretingExtra: 'Für Anhörungen, Beratungsgespräche und Arzttermine ist Vertrauen wichtig. Unsere Dolmetscher übertragen vollständig, neutral und vertraulich.\n\n',
+    special: [
+      'Dokumente aus Eritrea und Äthiopien',
+      'Dokumente aus Eritrea und Äthiopien sind oft auf Tigrinya, Amharisch oder Englisch ausgestellt, teils mehrsprachig. Äthiopische Dokumente tragen häufig Daten nach dem äthiopischen Kalender, der vom gregorianischen abweicht – wir übertragen sie exakt wie im Original und ergänzen auf Wunsch das gregorianische Datum als Anmerkung. Welche Nachweise eine Behörde akzeptiert, wenn Originaldokumente fehlen, entscheidet die jeweilige Stelle.',
+    ],
+    faqs: [
+      ['Übersetzen Sie auch Amharisch?', 'Auf Anfrage ja – senden Sie uns das Dokument, und wir nennen Ihnen Preis und Liefertermin.'],
+      ['Gibt es Tigrinya-Dolmetscher per Video?', 'Ja, für kurze Gespräche auch per Video oder Telefon.'],
+    ],
+  }),
 ];
 
 // Plan v4 language pages get one more own section (before "So einfach geht’s") and FAQs.
@@ -367,6 +456,10 @@ const LANGUAGE_HUB = {
 };
 
 export const LANGUAGE_HUB_PATH = HUB_PATH;
-// Language pages added in plan v4, wave 2 (checked by scripts/audit-landing-pages.mjs).
-export const NEW_LANGUAGE_PATHS = ['polnisch', 'spanisch', 'italienisch', 'griechisch', 'serbisch-kroatisch-bosnisch', 'albanisch'].map((slug) => `${HUB_PATH}/${slug}`);
+// Language pages added in plan v4, wave 2, and SEO plan Nov 2026, phase 4
+// (checked by scripts/audit-landing-pages.mjs).
+export const NEW_LANGUAGE_PATHS = [
+  'polnisch', 'spanisch', 'italienisch', 'griechisch', 'serbisch-kroatisch-bosnisch', 'albanisch',
+  'kurdisch', 'bulgarisch', 'chinesisch', 'vietnamesisch', 'tigrinya',
+].map((slug) => `${HUB_PATH}/${slug}`);
 export const LANGUAGE_PAGES = [LANGUAGE_HUB, ...LANGUAGE_PAGES_BASE];
