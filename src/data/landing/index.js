@@ -7,6 +7,10 @@ import { KIEL_PAGES } from './kiel.js';
 import { MUENCHEN_HUB, MUENCHEN_PAGES } from './muenchen.js';
 import { FRANKFURT_HUB, FRANKFURT_PAGES } from './frankfurt.js';
 import { KOELN_HUB, KOELN_PAGES } from './koeln.js';
+import { DORTMUND_HUB, DORTMUND_PAGES } from './dortmund.js';
+import { NUERNBERG_HUB, NUERNBERG_PAGES } from './nuernberg.js';
+import { BREMEN_HUB, BREMEN_PAGES } from './bremen.js';
+import { DUESSELDORF_HUB, DUESSELDORF_PAGES } from './duesseldorf.js';
 import { GUIDE_PAGES } from './guides.js';
 import { DOCUMENT_PAGES } from './documents.js';
 import { INTERPRETING_PAGES } from './interpreting.js';
@@ -78,6 +82,10 @@ export const LANDING_PAGES = [
   ...MUENCHEN_PAGES.map((page) => cityPage('muenchen', page, 4)),
   ...FRANKFURT_PAGES.map((page) => cityPage('frankfurt', page, 5)),
   ...KOELN_PAGES.map((page) => cityPage('koeln', page, 5)),
+  ...DORTMUND_PAGES.map((page) => cityPage('dortmund', page, 5)),
+  ...NUERNBERG_PAGES.map((page) => cityPage('nuernberg', page, 5)),
+  ...BREMEN_PAGES.map((page) => cityPage('bremen', page, 5)),
+  ...DUESSELDORF_PAGES.map((page) => cityPage('duesseldorf', page, 5)),
 ].map(withExtras);
 
 // City hubs without an office that got their own page set (SEO plan Nov 2026): title,
@@ -86,6 +94,10 @@ export const CITY_HUBS = {
   '/de/standorte/muenchen': MUENCHEN_HUB,
   '/de/standorte/frankfurt-am-main': FRANKFURT_HUB,
   '/de/standorte/koeln': KOELN_HUB,
+  '/de/standorte/dortmund': DORTMUND_HUB,
+  '/de/standorte/nuernberg': NUERNBERG_HUB,
+  '/de/standorte/bremen': BREMEN_HUB,
+  '/de/standorte/duesseldorf': DUESSELDORF_HUB,
 };
 
 // Extra sections for office pages, inserted right after the intro section:

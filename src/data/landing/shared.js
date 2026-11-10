@@ -39,6 +39,30 @@ export const CITY = {
     hub: { href: '/de/standorte/koeln/', label: 'Übersetzungsbüro Köln' },
     appointments: 'in unseren Büros in Bielefeld und Mainz',
   },
+  dortmund: {
+    slug: 'dortmund',
+    name: 'Dortmund',
+    hub: { href: '/de/standorte/dortmund/', label: 'Übersetzungsbüro Dortmund' },
+    appointments: 'in unseren Büros in Bielefeld und Osnabrück',
+  },
+  nuernberg: {
+    slug: 'nuernberg',
+    name: 'Nürnberg',
+    hub: { href: '/de/standorte/nuernberg/', label: 'Übersetzungsbüro Nürnberg' },
+    appointments: 'in unserem Büro in Stuttgart',
+  },
+  bremen: {
+    slug: 'bremen',
+    name: 'Bremen',
+    hub: { href: '/de/standorte/bremen/', label: 'Übersetzungsbüro Bremen' },
+    appointments: 'in unserem Büro in Osnabrück',
+  },
+  duesseldorf: {
+    slug: 'duesseldorf',
+    name: 'Düsseldorf',
+    hub: { href: '/de/standorte/duesseldorf/', label: 'Übersetzungsbüro Düsseldorf' },
+    appointments: 'in unseren Büros in Bielefeld und Mainz',
+  },
   kiel: {
     slug: 'kiel',
     name: 'Kiel',
