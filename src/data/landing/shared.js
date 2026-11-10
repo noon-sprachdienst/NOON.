@@ -18,6 +18,12 @@ export const CITY = {
     hub: { href: '/de/standorte/stuttgart/', label: 'Übersetzungsbüro Stuttgart' },
     office: 'Friedrichstraße 15, 70174 Stuttgart (Mitte)',
   },
+  // No office yet (KAN-11): pages describe digital handling; add `office` once the address exists.
+  muenchen: {
+    slug: 'muenchen',
+    name: 'München',
+    hub: { href: '/de/standorte/muenchen/', label: 'Übersetzungsbüro München' },
+  },
   kiel: {
     slug: 'kiel',
     name: 'Kiel',

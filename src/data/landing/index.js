@@ -4,6 +4,7 @@
 import { BERLIN_LINKS, BERLIN_PAGES } from './berlin.js';
 import { STUTTGART_LINKS, STUTTGART_PAGES } from './stuttgart.js';
 import { KIEL_PAGES } from './kiel.js';
+import { MUENCHEN_HUB, MUENCHEN_PAGES } from './muenchen.js';
 import { GUIDE_PAGES } from './guides.js';
 import { DOCUMENT_PAGES } from './documents.js';
 import { INTERPRETING_PAGES } from './interpreting.js';
@@ -72,7 +73,14 @@ export const LANDING_PAGES = [
   ...INTERPRETING_PAGES.map((page) => nationalPage(page, { prefix: '/de/dolmetschen', serviceGroup: 'interpreting', parent: { href: '/de/dolmetschen/', label: 'Dolmetschen' }, phase: 2 })),
   ...RATGEBER_PAGES.map((page) => nationalPage(page, { prefix: '/de/ratgeber', serviceGroup: 'guide', parent: { href: '/de/ratgeber/', label: 'Ratgeber' }, phase: 3 })),
   { ...nationalPage(RATGEBER_HUB, { prefix: '/de', serviceGroup: 'guide', parent: { href: '/de/beglaubigte-uebersetzungen/', label: 'Beglaubigte Übersetzungen' }, phase: 3 }), hub: true },
+  ...MUENCHEN_PAGES.map((page) => cityPage('muenchen', page, 4)),
 ].map(withExtras);
+
+// City hubs without an office that got their own page set (SEO plan Nov 2026): title,
+// description and an "Alle Leistungen in <Stadt>" section right after the intro section.
+export const CITY_HUBS = {
+  '/de/standorte/muenchen': MUENCHEN_HUB,
+};
 
 // Extra sections for office pages, inserted right after the intro section:
 // "Alle Leistungen in <Stadt>" (hub → every sub-page) and phase-2 upgrades.

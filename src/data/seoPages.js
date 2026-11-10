@@ -4,7 +4,7 @@ import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
-import { LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
+import { CITY_HUBS, LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
 import { FOREIGN_UPGRADES } from './landing/foreign.js';
 import { DEEP_SECTIONS } from './landing/deepSections.js';
 import { PHASE1, UPDATED_PHASE1 } from './landing/phase1.js';
@@ -1542,6 +1542,18 @@ const publishedDocumentPages = documentPagesDe
   });
 
 // SEO plan Nov 2026, phase 1: extra sections go before the page's closing section, FAQs at the end.
+function withCityHub(page) {
+  const hub = CITY_HUBS[page.path];
+  if (!hub) return page;
+  return {
+    ...page,
+    metaTitle: hub.metaTitle || page.metaTitle,
+    description: hub.description || page.description,
+    sections: [page.sections[0], ...hub.sections, ...page.sections.slice(1)],
+    updated: UPDATED_PHASE1,
+  };
+}
+
 function withPhase1(page) {
   const extra = PHASE1[page.path];
   if (!extra) return page;
@@ -1556,6 +1568,7 @@ export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages
   .map((page) => (FOREIGN_UPGRADES[page.path] ? { ...page, ...FOREIGN_UPGRADES[page.path], updated: '2026-10-29' } : page))
   .map((page) => (DEEP_SECTIONS[page.path] ? { ...page, sections: [...page.sections, DEEP_SECTIONS[page.path]], updated: '2026-10-30' } : page))
   .map(withPhase1)
+  .map(withCityHub)
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 
