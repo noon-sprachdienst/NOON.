@@ -12,6 +12,7 @@ export const GUARDS = [
   /^scripts\/audit-[^/]+\.mjs$/,
   /^scripts\/review-built-site\.mjs$/,
   /^scripts\/smoke-services\.mjs$/,
+  /^scripts\/verify-deploy/,
   /^scripts\/hooks\//,
   /^scripts\/git-hooks\//,
   /^\.claude\/settings\.json$/,

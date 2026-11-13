@@ -24,6 +24,9 @@ what they cannot.
 - `npm run lint`: ESLint (bugs, not style). Errors block commits; warnings don't.
 - `npm run check:dupes`: duplicate-code check. Fails if duplication rises above 2 %.
 - `npm run check`: lint plus duplicate check.
+- `npm run verify:deploy -- [url]`: after a deployment, checks every page, the redirects
+  and the admin login guard of the live site (default: production) against the local
+  build of the same commit. Read-only.
 - Preview servers (`.claude/launch.json`): `noon-preview` (port 4173, serves `dist/`, so
   build first) and `noon-dev` (port 5173).
 
