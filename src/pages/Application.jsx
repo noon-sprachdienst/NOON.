@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { Clock3, Globe2, Mail, MapPin, Phone, Send, ShieldCheck, UsersRound } from 'lucide-react';
 import { CONTACT } from '../config/contact.js';
 import { useI18n } from '../hooks/useI18n.jsx';
+import { STORAGE_LIMITS, UPLOAD_HINT, uploadToStorage } from '../lib/uploads.js';
 
-const MAX_FILES = 6;
-const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
+// Fallback when storage uploads are unavailable: files go into the e-mail request itself,
+// which Vercel limits to 4.5 MB.
+const FALLBACK_MAX_FILES = 6;
+const FALLBACK_MAX_BYTES = 3 * 1024 * 1024;
 
 const COPY = {
   de: {
@@ -27,14 +30,13 @@ const COPY = {
     multi: 'Mehrfachauswahl möglich',
     message: 'Kurze Nachricht',
     upload: 'Lebenslauf hochladen',
-    uploadHint: 'PDF, Word oder Bilder | bis zu 6 Dateien | insgesamt max. 3 MB',
     submit: 'Bewerbung senden',
     sending: 'Bewerbung wird gesendet ...',
     sent: 'Bewerbung gesendet. Wir melden uns schnellstmöglich.',
     sendError: 'Senden fehlgeschlagen. Bitte versuchen Sie es erneut.',
     languageError: 'Bitte wählen Sie mindestens eine Sprache aus.',
-    countError: 'Bitte wählen Sie höchstens 6 Dateien aus.',
-    sizeError: 'Die ausgewählten Dateien sind größer als 3 MB.',
+    countError: 'Bitte wählen Sie höchstens 10 Dateien aus.',
+    sizeError: 'Eine Datei ist größer als 50 MB oder alle Dateien zusammen größer als 100 MB.',
     privacy: 'Ihre Daten werden vertraulich behandelt und ausschließlich zur Bearbeitung Ihrer Bewerbung verwendet.',
     messagePrefix: 'Kurze Nachricht:',
     offeredLanguages: 'Sprache(n):',
@@ -66,14 +68,13 @@ const COPY = {
     multi: 'Multiple selection possible',
     message: 'Short message',
     upload: 'Upload CV',
-    uploadHint: 'PDF, Word or images | up to 6 files | 3 MB total',
     submit: 'Send application',
     sending: 'Sending application ...',
     sent: 'Application sent. We will contact you as soon as possible.',
     sendError: 'Could not send. Please try again.',
     languageError: 'Please select at least one language.',
-    countError: 'Please select no more than 6 files.',
-    sizeError: 'The selected files exceed the 3 MB limit.',
+    countError: 'Please select no more than 10 files.',
+    sizeError: 'A file is larger than 50 MB, or all files together exceed 100 MB.',
     privacy: 'Your data will be treated confidentially and used only to process your application.',
     messagePrefix: 'Short message:',
     offeredLanguages: 'Language(s):',
@@ -105,14 +106,13 @@ const COPY = {
     multi: 'يمكن اختيار أكثر من لغة',
     message: 'رسالة قصيرة',
     upload: 'تحميل السيرة الذاتية',
-    uploadHint: 'PDF أو Word أو صور | حتى 6 ملفات | 3 ميغابايت إجمالا',
     submit: 'إرسال الطلب',
     sending: 'جار إرسال الطلب ...',
     sent: 'تم إرسال الطلب. سنتواصل معكم في أقرب وقت ممكن.',
     sendError: 'تعذر الإرسال. يرجى المحاولة مرة أخرى.',
     languageError: 'يرجى اختيار لغة واحدة على الأقل.',
-    countError: 'يرجى اختيار 6 ملفات كحد أقصى.',
-    sizeError: 'حجم الملفات المختارة يتجاوز 3 ميغابايت.',
+    countError: 'يرجى اختيار 10 ملفات كحد أقصى.',
+    sizeError: 'أحد الملفات أكبر من 50 ميغابايت، أو مجموع الملفات أكبر من 100 ميغابايت.',
     privacy: 'سيتم التعامل مع بياناتكم بسرية واستخدامها فقط لمعالجة طلبكم.',
     messagePrefix: 'رسالة قصيرة:',
     offeredLanguages: 'اللغة أو اللغات:',
@@ -144,14 +144,13 @@ const COPY = {
     multi: 'Birden fazla seçim yapılabilir',
     message: 'Kısa mesaj',
     upload: 'CV yükle',
-    uploadHint: 'PDF, Word veya görseller | en fazla 6 dosya | toplam 3 MB',
     submit: 'Başvuruyu gönder',
     sending: 'Başvuru gönderiliyor ...',
     sent: 'Başvuru gönderildi. En kısa sürede sizinle iletişime geçeceğiz.',
     sendError: 'Gönderilemedi. Lütfen tekrar deneyin.',
     languageError: 'Lütfen en az bir dil seçin.',
-    countError: 'Lütfen en fazla 6 dosya seçin.',
-    sizeError: 'Seçilen dosyalar 3 MB sınırını aşıyor.',
+    countError: 'Lütfen en fazla 10 dosya seçin.',
+    sizeError: 'Bir dosya 50 MB’tan büyük veya tüm dosyalar toplam 100 MB’ı aşıyor.',
     privacy: 'Verileriniz gizli tutulur ve yalnızca başvurunuzun işlenmesi için kullanılır.',
     messagePrefix: 'Kısa mesaj:',
     offeredLanguages: 'Dil(ler):',
@@ -183,14 +182,13 @@ const COPY = {
     multi: 'Можно выбрать несколько вариантов',
     message: 'Короткое сообщение',
     upload: 'Загрузить резюме',
-    uploadHint: 'PDF, Word или изображения | до 6 файлов | всего 3 МБ',
     submit: 'Отправить заявку',
     sending: 'Заявка отправляется ...',
     sent: 'Заявка отправлена. Мы свяжемся с вами как можно скорее.',
     sendError: 'Не удалось отправить. Попробуйте еще раз.',
     languageError: 'Выберите хотя бы один язык.',
-    countError: 'Выберите не более 6 файлов.',
-    sizeError: 'Выбранные файлы превышают лимит 3 МБ.',
+    countError: 'Выберите не более 10 файлов.',
+    sizeError: 'Один файл больше 50 МБ или все файлы вместе больше 100 МБ.',
     privacy: 'Ваши данные будут обрабатываться конфиденциально и использоваться только для обработки заявки.',
     messagePrefix: 'Короткое сообщение:',
     offeredLanguages: 'Язык(и):',
@@ -222,14 +220,13 @@ const COPY = {
     multi: 'Sélection multiple possible',
     message: 'Message court',
     upload: 'Télécharger le CV',
-    uploadHint: 'PDF, Word ou images | jusqu’à 6 fichiers | 3 Mo au total',
     submit: 'Envoyer la candidature',
     sending: 'Envoi de la candidature ...',
     sent: 'Candidature envoyée. Nous vous contacterons dès que possible.',
     sendError: 'Envoi impossible. Veuillez réessayer.',
     languageError: 'Veuillez sélectionner au moins une langue.',
-    countError: 'Veuillez sélectionner au maximum 6 fichiers.',
-    sizeError: 'Les fichiers sélectionnés dépassent la limite de 3 Mo.',
+    countError: 'Veuillez sélectionner au maximum 10 fichiers.',
+    sizeError: 'Un fichier dépasse 50 Mo ou l’ensemble des fichiers dépasse 100 Mo.',
     privacy: 'Vos données sont traitées confidentiellement et utilisées uniquement pour votre candidature.',
     messagePrefix: 'Message court:',
     offeredLanguages: 'Langue(s):',
@@ -261,14 +258,13 @@ const COPY = {
     multi: 'Можна вибрати кілька варіантів',
     message: 'Коротке повідомлення',
     upload: 'Завантажити резюме',
-    uploadHint: 'PDF, Word або зображення | до 6 файлів | загалом 3 МБ',
     submit: 'Надіслати заявку',
     sending: 'Заявка надсилається ...',
     sent: 'Заявку надіслано. Ми зв’яжемося з вами якнайшвидше.',
     sendError: 'Не вдалося надіслати. Спробуйте ще раз.',
     languageError: 'Виберіть принаймні одну мову.',
-    countError: 'Виберіть не більше 6 файлів.',
-    sizeError: 'Вибрані файли перевищують ліміт 3 МБ.',
+    countError: 'Виберіть не більше 10 файлів.',
+    sizeError: 'Один файл більший за 50 МБ або всі файли разом більші за 100 МБ.',
     privacy: 'Ваші дані обробляються конфіденційно та використовуються лише для розгляду заявки.',
     messagePrefix: 'Коротке повідомлення:',
     offeredLanguages: 'Мова/мови:',
@@ -367,10 +363,24 @@ export default function Application() {
   const [startedAt] = useState(() => Date.now());
 
   const getUploadError = (files) => {
-    if (files.length > MAX_FILES) return copy.countError;
-    const totalBytes = files.reduce((total, file) => total + file.size, 0);
-    if (totalBytes > MAX_TOTAL_FILE_BYTES) return copy.sizeError;
+    if (files.length > STORAGE_LIMITS.files) return copy.countError;
+    if (files.some((file) => file.size > STORAGE_LIMITS.perFile)) return copy.sizeError;
     return '';
+  };
+
+  // Uploads to storage; when storage is unavailable, falls back to e-mail attachments
+  // within the old 3 MB limit. Returns the payload part for /api/contact/send.
+  const prepareFiles = async (files) => {
+    if (!files.length) return {};
+    const uploads = await uploadToStorage(files);
+    if (uploads) return { uploads };
+    const total = files.reduce((sum, file) => sum + file.size, 0);
+    if (files.length > FALLBACK_MAX_FILES || total > FALLBACK_MAX_BYTES) {
+      throw Object.assign(new Error('Too large'), { status: 413, fallback: true });
+    }
+    return {
+      files: await Promise.all(files.map(async (file) => ({ name: file.name, type: file.type, content: await readFileAsBase64(file) }))),
+    };
   };
 
   const handleSubmit = async (event) => {
@@ -413,11 +423,7 @@ export default function Application() {
           copy.messagePrefix,
           data.get('message') || '-',
         ].join('\n'),
-        files: await Promise.all(files.map(async (file) => ({
-          name: file.name,
-          type: file.type,
-          content: await readFileAsBase64(file),
-        }))),
+        ...(await prepareFiles(files)),
       };
 
       const response = await fetch('/api/contact/send', {
@@ -436,6 +442,11 @@ export default function Application() {
       setLanguageOpen(false);
       setStatus({ type: 'success', message: copy.sent });
     } catch (error) {
+      const messages = SUBMIT_ERROR_MESSAGES[lang] || SUBMIT_ERROR_MESSAGES.de;
+      if (error?.status === 413) {
+        setStatus({ type: 'error', message: error.fallback ? messages.tooLarge : copy.sizeError });
+        return;
+      }
       setStatus({ type: 'error', message: error?.message || copy.sendError });
     }
   };
@@ -572,7 +583,7 @@ export default function Application() {
                 setStatus(message ? { type: 'error', message } : initialStatus);
               }}
             />
-            <p className="application-hint">{copy.uploadHint}</p>
+            <p className="application-hint">{UPLOAD_HINT[lang] || UPLOAD_HINT.de}</p>
           </div>
 
           <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
