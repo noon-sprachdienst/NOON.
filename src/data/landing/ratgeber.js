@@ -3,6 +3,7 @@
 // rules per country change and would otherwise produce near-duplicate pages.
 // Facts stay general; the responsible office always decides in the individual case.
 import { APOSTILLE_LINK, DURATION_LINK, FAQ_DIGITAL, NOTARY_GUIDE_LINK, PRICE_LINK, QUOTE_LINK } from './shared.js';
+import { UPDATED_PHASE1 } from './phase1.js';
 
 const D = (slug, label) => ({ href: `/de/${slug}/`, label });
 const R = (slug, label) => ({ href: `/de/ratgeber/${slug}/`, label });
@@ -184,6 +185,7 @@ export const RATGEBER_PAGES = [
   // SEO plan Nov 2026, phase 4: questions people search before they order.
   {
     slug: 'was-ist-eine-beglaubigte-uebersetzung',
+    updated: UPDATED_PHASE1,
     eyebrow: 'Was ist eine beglaubigte Übersetzung?',
     title: 'Was ist eine beglaubigte Übersetzung? Bedeutung, Stempel und Muster.',
     metaTitle: 'Was ist eine beglaubigte Übersetzung? Muster & Stempel | Noon',
@@ -211,6 +213,7 @@ export const RATGEBER_PAGES = [
   },
   {
     slug: 'wer-bezahlt-die-uebersetzung',
+    updated: UPDATED_PHASE1,
     eyebrow: 'Wer bezahlt die Übersetzung?',
     title: 'Wer bezahlt die beglaubigte Übersetzung? Jobcenter, Zuschüsse und Kostenübernahme.',
     metaTitle: 'Wer bezahlt die Übersetzung? Jobcenter & Zuschuss | Noon',
@@ -239,6 +242,7 @@ export const RATGEBER_PAGES = [
   },
   {
     slug: 'beglaubigte-uebersetzung-usa-kanada-australien',
+    updated: UPDATED_PHASE1,
     eyebrow: 'Übersetzung für USA, Kanada, Australien',
     title: 'Beglaubigte Übersetzung für die USA, Kanada und Australien.',
     metaTitle: 'Beglaubigte Übersetzung für USA, Kanada & Australien | Noon',

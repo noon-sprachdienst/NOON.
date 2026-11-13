@@ -17,6 +17,7 @@ import { INTERPRETING_PAGES } from './interpreting.js';
 import { RATGEBER_HUB, RATGEBER_PAGES } from './ratgeber.js';
 import { OFFICE_EXTRA_SECTIONS } from './offices.js';
 import { CITY, UPDATED } from './shared.js';
+import { UPDATED_PHASE1 } from './phase1.js';
 import { DESCRIPTIONS, EXTRA } from './extras.js';
 import { DESCRIPTIONS_2, EXTRA_2 } from './extras2.js';
 import { PAGE_REVIEWS, REVIEW_QUOTES } from './reviews.js';
@@ -41,7 +42,8 @@ function cityPage(city, page, phase) {
     kind: 'service',
     lang: 'de',
     serviceGroup: 'city-service',
-    updated: UPDATED,
+    // Phases 4 and 5 (München and the six big cities) are part of the November 2026 plan.
+    updated: phase >= 4 ? UPDATED_PHASE1 : UPDATED,
     phase,
     ...page,
     path: `/de/standorte/${c.slug}/${page.slug}`,

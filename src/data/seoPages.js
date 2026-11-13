@@ -1554,6 +1554,13 @@ function withCityHub(page) {
   };
 }
 
+// German city titles (pageTitles.js) and the lists on the language and guide hubs also
+// changed with the November 2026 plan, so their sitemap date moves with it.
+function withNovemberPlanDate(page) {
+  const changed = (page.kind === 'location' && page.lang === 'de') || page.path === '/de/sprachen' || page.path === '/de/ratgeber';
+  return changed ? { ...page, updated: UPDATED_PHASE1 } : page;
+}
+
 function withPhase1(page) {
   const extra = PHASE1[page.path];
   if (!extra) return page;
@@ -1569,6 +1576,7 @@ export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages
   .map((page) => (DEEP_SECTIONS[page.path] ? { ...page, sections: [...page.sections, DEEP_SECTIONS[page.path]], updated: '2026-10-30' } : page))
   .map(withPhase1)
   .map(withCityHub)
+  .map(withNovemberPlanDate)
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 

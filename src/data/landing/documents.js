@@ -1,6 +1,7 @@
 // Document pages that competitors have and we did not (plan v4, wave 2).
 // Facts kept general: the receiving office always decides what it requires.
 import { APOSTILLE_LINK, DURATION_LINK, FAQ_DIGITAL, NOTARY_GUIDE_LINK, ORDER_STEPS, PRICE_LINK, QUOTE_LINK } from './shared.js';
+import { UPDATED_PHASE1 } from './phase1.js';
 
 const D = (slug, label) => ({ href: `/de/${slug}/`, label });
 const PRICE_DOC = ['Preis und Lieferzeit', 'Standarddokumente übersetzen wir beglaubigt ab 39 € pro Dokument; mehrseitige Dokumente nach Umfang. Den Festpreis nennen wir vorab und kostenlos. Lieferung in der Regel in 2–3 Werktagen, im Express am selben Tag – als PDF und als gestempeltes Original per Post.', [PRICE_LINK, DURATION_LINK]];
@@ -207,6 +208,7 @@ export const DOCUMENT_PAGES = [
   // SEO plan Nov 2026, phase 4: financial and medical documents.
   {
     slug: 'finanzdokumente-uebersetzung',
+    updated: UPDATED_PHASE1,
     eyebrow: 'Finanzdokumente übersetzen',
     title: 'Kontoauszug, Gehaltsabrechnung und Steuerbescheid übersetzen lassen.',
     metaTitle: 'Kontoauszug & Gehaltsabrechnung übersetzen | Noon',
@@ -235,6 +237,7 @@ export const DOCUMENT_PAGES = [
   },
   {
     slug: 'medizinische-dokumente-uebersetzung',
+    updated: UPDATED_PHASE1,
     eyebrow: 'Medizinische Dokumente übersetzen',
     title: 'Arztbrief, Befund und Impfpass übersetzen lassen.',
     metaTitle: 'Arztbrief & Befund übersetzen lassen – beglaubigt | Noon',

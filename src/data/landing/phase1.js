@@ -13,7 +13,9 @@ const city = (slug, label) => link(`/de/standorte/${slug}/`, label);
 const interp = (slug, label) => link(`/de/dolmetschen/${slug}/`, label);
 const guide = (slug, label) => link(`/de/ratgeber/${slug}/`, label);
 
-export const UPDATED_PHASE1 = '2026-11-10';
+// Date the SEO plan of November 2026 went live: sitemap lastmod of every page it added or
+// changed, so Google sees them as new.
+export const UPDATED_PHASE1 = '2026-11-14';
 
 const ALL_DOCUMENTS = [
   doc('geburtsurkunde-uebersetzung', 'Geburtsurkunde'),

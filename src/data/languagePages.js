@@ -6,6 +6,7 @@
 // Sections are [heading, text, links?]; text lines starting with "• " render as a list.
 
 import { LANGUAGE_EXTRA } from './landing/extras2.js';
+import { UPDATED_PHASE1 } from './landing/phase1.js';
 
 const HUB_PATH = '/de/sprachen';
 const PARENT = { href: `${HUB_PATH}/`, label: 'Sprachen' };
@@ -54,7 +55,7 @@ function interpretingText(language, extra = '') {
   return `Unsere ${language}-Dolmetscher begleiten Sie zum Beispiel:\n• bei der Ausländerbehörde\n• beim Standesamt und bei Ihrer Trauung\n• beim Notar und vor Gericht\n• beim Arzt oder im Krankenhaus\n• bei Geschäftsterminen\n\n${extra}Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.`;
 }
 
-function languagePage({ slug, language, adjective, intro, description, documents, reverse, interpretingExtra = '', special, faqs, highlights }) {
+function languagePage({ slug, language, adjective, intro, description, documents, reverse, interpretingExtra = '', special, faqs, highlights, updated }) {
   return {
     path: `${HUB_PATH}/${slug}`,
     kind: 'service',
@@ -79,6 +80,7 @@ function languagePage({ slug, language, adjective, intro, description, documents
     faqs: [faqAccepted(language), FAQ_ORIGINAL, ...faqs, FAQ_QUOTE],
     serviceType: `${adjective} Übersetzungen und Dolmetschen`,
     cta: CTA,
+    ...(updated ? { updated } : {}),
   };
 }
 
@@ -325,6 +327,7 @@ const LANGUAGE_PAGES_BASE = [
   // SEO plan Nov 2026, phase 4: languages people search for without a page so far.
   languagePage({
     slug: 'kurdisch',
+    updated: UPDATED_PHASE1,
     language: 'Kurdisch',
     adjective: 'Kurdische',
     description: 'Kurdisch Übersetzer und Dolmetscher für Kurmanci und Sorani: beglaubigte Übersetzungen von Dokumenten aus dem Irak, Syrien, der Türkei und dem Iran.',
@@ -343,6 +346,7 @@ const LANGUAGE_PAGES_BASE = [
   }),
   languagePage({
     slug: 'bulgarisch',
+    updated: UPDATED_PHASE1,
     language: 'Bulgarisch',
     adjective: 'Bulgarische',
     description: 'Bulgarisch Übersetzer und Dolmetscher: beglaubigte Übersetzungen Bulgarisch–Deutsch von Urkunden, Zeugnissen und Bescheinigungen – Festpreis vorab.',
@@ -360,6 +364,7 @@ const LANGUAGE_PAGES_BASE = [
   }),
   languagePage({
     slug: 'chinesisch',
+    updated: UPDATED_PHASE1,
     language: 'Chinesisch',
     adjective: 'Chinesische',
     description: 'Chinesisch Übersetzer und Dolmetscher: beglaubigte Übersetzungen Chinesisch–Deutsch von Urkunden, Notariatszertifikaten, Zeugnissen und Verträgen.',
@@ -378,6 +383,7 @@ const LANGUAGE_PAGES_BASE = [
   }),
   languagePage({
     slug: 'vietnamesisch',
+    updated: UPDATED_PHASE1,
     language: 'Vietnamesisch',
     adjective: 'Vietnamesische',
     description: 'Vietnamesisch Übersetzer und Dolmetscher: beglaubigte Übersetzungen Vietnamesisch–Deutsch von Geburtsurkunden, Heiratsurkunden und Zeugnissen – Festpreis vorab.',
@@ -395,6 +401,7 @@ const LANGUAGE_PAGES_BASE = [
   }),
   languagePage({
     slug: 'tigrinya',
+    updated: UPDATED_PHASE1,
     language: 'Tigrinya',
     adjective: 'Tigrinya',
     description: 'Tigrinya Übersetzer und Dolmetscher: beglaubigte Übersetzungen Tigrinya–Deutsch von Dokumenten aus Eritrea und Äthiopien, Dolmetscher für Behörde und Arzt.',
