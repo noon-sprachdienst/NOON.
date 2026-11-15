@@ -44,6 +44,7 @@ export function phoneHref(label) {
 const ID_PATTERN = /^[A-Za-z][A-Za-z0-9_-]{0,39}$/;
 
 function cleanString(value, max) {
+  // eslint-disable-next-line no-control-regex -- strips control characters from admin input on purpose
   return typeof value === 'string' ? value.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').trim().slice(0, max) : '';
 }
 

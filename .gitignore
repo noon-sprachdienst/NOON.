@@ -8,10 +8,15 @@ test/
 .DS_Store
 
 # Local tooling, scratch output, and Word lock files
-.claude/
+.claude/*
+# Shared Claude Code hooks belong to the repo
+!.claude/settings.json
 outputs/
 ~$*.docx
 
 # Internal notes stay local, not in the repo
 *.md
 !README.md
+# Rules for AI coding agents belong to the repo
+!AGENTS.md
+!CLAUDE.md

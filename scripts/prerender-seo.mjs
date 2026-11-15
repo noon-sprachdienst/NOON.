@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import {
   COMPANY,
@@ -100,6 +100,27 @@ function specialistFallbackMarkup(page, activeService) {
 const distDir = join(process.cwd(), 'dist');
 const template = await readFile(join(distDir, 'index.html'), 'utf8');
 
+// SEO pages render with the SeoLanding chunk (page content), which the app would only request after
+// the main file has run. Preloading it lets the browser download both at the same time.
+// The list comes from Vite's build manifest, which is removed afterwards (it is not needed online).
+let seoPreload = '';
+try {
+  const manifest = JSON.parse(await readFile(join(distDir, '.vite', 'manifest.json'), 'utf8'));
+  const files = new Set();
+  const visit = (key) => {
+    const item = manifest[key];
+    if (!item || item.isEntry || files.has(item.file)) return;
+    files.add(item.file);
+    (item.imports || []).forEach(visit);
+  };
+  visit('src/pages/SeoLanding.jsx');
+  seoPreload = [...files].filter((file) => !template.includes(file))
+    .map((file) => `  <link rel="modulepreload" crossorigin href="/${file}">`).join('\n');
+} catch {
+  // No manifest: the pages still work, just without the preload.
+}
+await rm(join(distDir, '.vite'), { recursive: true, force: true });
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -113,6 +134,7 @@ function setTag(html, matcher, replacement) {
 }
 
 const ALL_PAGES = [...SEO_PAGES, ...PRICE_PAGES];
+const SEO_PAGE_SET = new Set(SEO_PAGES);
 
 function localPath(lang, path) {
   return lang === 'de' ? path : `/${lang}${path}`;
@@ -243,6 +265,7 @@ function renderPage(page) {
     : null;
   const markup = activeService ? specialistFallbackMarkup(page, activeService) : fallbackMarkup(page);
   html = fillRoot(html, markup, page.lang);
+  if (seoPreload && SEO_PAGE_SET.has(page)) html = html.replace('</head>', `${seoPreload}\n</head>`);
   return html;
 }
 

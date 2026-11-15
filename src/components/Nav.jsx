@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
-import { getPricingPage, getPricingPathForLanguage, getSeoPathForLanguage } from '../data/seoPages.js';
+import { getPricingPage, getPricingPathForLanguage, getSeoPathForLanguage } from '../data/seoRoutes.js';
 
 const APPLICATION_LABEL = {
   de: 'Bewerbung',

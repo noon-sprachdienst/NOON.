@@ -73,4 +73,26 @@ export const LANGUAGE_EXTRA = {
     section: ['Typische Anlässe', '• Heirat in Deutschland: Geburtsurkunde, Familienzertifikat und Ledigkeitsbescheinigung\n• Familiennachzug und Einbürgerung: Personenstandsurkunden und Nachweise\n• Arbeit: Berufsabschlüsse – etwa in Pflege und Handwerk – für die Anerkennung\n• Führerschein: Übersetzung für die Umschreibung\n• Dolmetschen bei Ausländerbehörde, Standesamt, Arzt und Gericht\n\nAlbanische Namen mit ë und ç übernehmen wir originalgetreu, so wie sie im Pass stehen.'],
     faqs: [['Übersetzen Sie auch Familienzertifikate (certifikatë familjare)?', 'Ja, vollständig mit allen Familienmitgliedern und Vermerken.']],
   },
+  // SEO plan Nov 2026, phase 4.
+  '/de/sprachen/kurdisch': {
+    section: ['Kurdisch in Deutschland – typische Anlässe', '• Asyl- und Aufenthaltsverfahren: Anhörungen, Beratung, Gespräche mit Anwältinnen und Anwälten\n• Familie: Heirat, Geburt eines Kindes, Familiennachzug\n• Arbeit und Ausbildung: Zeugnisse aus dem Irak oder Syrien für die Anerkennung\n• Gesundheit und Schule: Arzttermine, Elterngespräche\n\nAmtliche Dokumente aus Syrien und der Türkei sind meist auf Arabisch beziehungsweise Türkisch ausgestellt – auch diese übersetzen wir beglaubigt.',
+      [{ href: '/de/sprachen/arabisch/', label: 'Arabisch Übersetzer' }, { href: '/de/sprachen/tuerkisch/', label: 'Türkisch Übersetzer' }]],
+    faqs: [['Dolmetschen Sie auch Badini oder Zazaki?', 'Auf Anfrage – wir prüfen, ob eine passende Person für Ihren Termin verfügbar ist.']],
+  },
+  '/de/sprachen/bulgarisch': {
+    section: ['Bulgarisch in Deutschland – typische Anlässe', '• Arbeit in Pflege, Bau, Logistik und Gastronomie: Abschlüsse und Arbeitsnachweise\n• Familie: Kindergeld, Schulanmeldung, Geburt eines Kindes\n• Rente: Versicherungszeiten in Bulgarien und Deutschland\n• Heirat: Urkunden für das Standesamt\n\nFür Termine bei Jobcenter, Schule oder Arzt stellen wir Bulgarisch-Dolmetscher – vor Ort, per Video oder Telefon.'],
+    faqs: [['Übersetzen Sie deutsche Geburtsurkunden für Bulgarien?', 'Ja, beglaubigt ins Bulgarische – mit der kyrillischen Schreibweise der Namen wie in den bulgarischen Dokumenten.']],
+  },
+  '/de/sprachen/chinesisch': {
+    section: ['Chinesisch für Studium, Arbeit und Unternehmen', '• Studium: Abschlusszeugnisse, Notenübersichten und Nachweise der Hochschulzugangsprüfung für Bewerbung und Zulassung\n• Arbeit: Abschlüsse und Arbeitsbescheinigungen für Blaue Karte und Anerkennung\n• Familie: Notariatszertifikate über Geburt und Ehe für Standesamt und Ausländerbehörde\n• Unternehmen: Verträge, Geschäftsberichte und technische Dokumentation für Partner in China\n\nFür Geschäftsverhandlungen, Messen und Werksbesuche stellen wir auf Anfrage Chinesisch-Dolmetscher.'],
+    faqs: [['Übersetzen Sie Verträge mit chinesischen Partnern?', 'Ja, als Fachübersetzung oder beglaubigt – in beide Richtungen.']],
+  },
+  '/de/sprachen/vietnamesisch': {
+    section: ['Vietnamesisch für Ausbildung, Pflege und Familie', '• Ausbildung und Pflege: Schul- und Berufszeugnisse für Visum, Ausbildungsbetrieb und Anerkennung\n• Familie: Heirat in Deutschland, Geburt eines Kindes, Familiennachzug\n• Einbürgerung: Geburts- und Heiratsurkunden, Familienstandsnachweise\n• Gesundheit und Schule: Dolmetscher für Arzttermine und Elterngespräche\n\nWir übersetzen alle Dokumente einer Familie mit derselben Schreibweise der Namen und Tonzeichen.'],
+    faqs: [['Dolmetschen Sie für Elterngespräche?', 'Ja, in Schulen und Kitas – vor Ort oder per Video.']],
+  },
+  '/de/sprachen/tigrinya': {
+    section: ['Tigrinya in Deutschland – typische Anlässe', '• Asylverfahren: Anhörung, Beratung, Gespräche mit Anwältinnen und Anwälten\n• Familie: Heirat, Geburt eines Kindes, Familiennachzug\n• Gesundheit: Arzttermine und Aufklärungsgespräche\n• Schule und Ausbildung: Elterngespräche, Zeugnisse\n\nBescheide und Schreiben deutscher Behörden übersetzen wir auf Wunsch ins Tigrinya, damit Sie und Ihre Familie den Inhalt genau verstehen.'],
+    faqs: [['Übersetzen Sie Taufscheine der eritreischen Kirche?', 'Ja, kirchliche Bescheinigungen übersetzen wir vollständig und beglaubigt. Ob sie als Nachweis genügen, entscheidet die Behörde.']],
+  },
 };

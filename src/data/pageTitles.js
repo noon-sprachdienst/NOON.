@@ -29,7 +29,7 @@ const DE_TITLES = {
   '/de/geburtsurkunde-uebersetzung': 'Geburtsurkunde übersetzen lassen – beglaubigt',
   '/de/zeugnis-uebersetzung': 'Zeugnis übersetzen lassen – beglaubigt',
   '/de/gerichtsdolmetscher': 'Gerichtsdolmetscher – beeidigte Dolmetscher für Gericht',
-  '/de/standorte/frankfurt-am-main': 'Übersetzungsbüro Frankfurt – beglaubigt & Dolmetscher',
+  '/de/standorte/frankfurt-am-main': 'Übersetzungsbüro Frankfurt – beglaubigt ab 39 € & Dolmetscher',
 };
 
 function cleanTitle(text = '') {
@@ -44,7 +44,8 @@ function baseTitle(page) {
   if (DE_TITLES[page.path]) return DE_TITLES[page.path];
   if (page.kind === 'location' && page.location?.city) {
     const { city } = page.location;
-    if (page.lang === 'de') return `Übersetzungsbüro ${city} – beglaubigt & Dolmetscher`;
+    // The price is in the title: at positions 5–10 it is what makes people click (Search Console, Nov 2026).
+    if (page.lang === 'de') return `Übersetzungsbüro ${city} – beglaubigt ab 39 € & Dolmetscher`;
     // Long city names (e.g. "Frankfurt am Main") drop the second half to stay within ~65 characters.
     if (page.lang === 'en') return city.length > 12 ? `Translation Office ${city} – Certified` : `Translation Office ${city} – Certified & Interpreters`;
   }
@@ -57,8 +58,11 @@ const SHORT_SUFFIX = 'Noon';
 
 function fitTitle(title) {
   const longSuffix = ` | ${TITLE_SUFFIX}`;
+  const shortSuffix = ` | ${SHORT_SUFFIX}`;
   if (title.length <= MAX_TITLE || !title.endsWith(longSuffix)) return title;
-  return `${title.slice(0, -longSuffix.length)} | ${SHORT_SUFFIX}`;
+  const short = `${title.slice(0, -longSuffix.length)}${shortSuffix}`;
+  // Still too long: drop the brand (Google shows the site name above the title anyway).
+  return short.length <= MAX_TITLE ? short : short.slice(0, -shortSuffix.length);
 }
 
 export function applyPageSeo(page) {

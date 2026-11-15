@@ -4,9 +4,10 @@ import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
-import { LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
+import { CITY_HUBS, LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
 import { FOREIGN_UPGRADES } from './landing/foreign.js';
 import { DEEP_SECTIONS } from './landing/deepSections.js';
+import { PHASE1, UPDATED_PHASE1 } from './landing/phase1.js';
 
 export const SITE_URL = 'https://www.noon-sprachdienst.de';
 
@@ -530,7 +531,7 @@ const locationIntros = {
 // Termine vor Ort nach Vereinbarung) plus publicly known authorities of the city.
 const locationDetails = {
   berlin: {
-    description: 'Übersetzungsbüro Berlin: beglaubigte Übersetzungen für LEA, Standesamt und Gericht sowie beeidigte Dolmetscher – Potsdamer Str. 63, nach Vereinbarung.',
+    description: 'Übersetzungsbüro Berlin: beglaubigte Übersetzungen ab 39 € für LEA, Standesamt und Gericht, Festpreis in 5 Min., Express am selben Tag – plus Dolmetscher.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in Berlin: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine beim Landesamt für Einwanderung, beim Standesamt, vor Gericht und beim Notar – in der Potsdamer Straße 63 nach Terminvereinbarung oder komplett digital.',
     highlights: ['Ermächtigte Übersetzer', 'Express am selben Tag', 'Termine nach Vereinbarung'],
     sections: [
@@ -552,7 +553,7 @@ const locationDetails = {
     ],
   },
   stuttgart: {
-    description: 'Übersetzungsbüro Stuttgart: beglaubigte Übersetzungen für Behörden, Standesamt und Gericht sowie Dolmetscher – Friedrichstraße 15, nach Vereinbarung.',
+    description: 'Übersetzungsbüro Stuttgart: beglaubigte Übersetzungen ab 39 € für Behörden, Standesamt und Gericht, Festpreis in 5 Min., Express möglich – plus Dolmetscher.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in Stuttgart: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Friedrichstraße 15 nach Terminvereinbarung oder komplett digital.',
     highlights: ['Ermächtigte Übersetzer', 'Express am selben Tag', 'Termine nach Vereinbarung'],
     sections: [
@@ -576,7 +577,7 @@ const locationDetails = {
     ],
   },
   osnabrueck: {
-    description: 'Übersetzungsbüro Osnabrück – Hauptsitz am Rosenplatz 17: beglaubigte Übersetzungen für Behörden und Gericht sowie Dolmetscher. Express am selben Tag.',
+    description: 'Übersetzungsbüro Osnabrück, Hauptsitz Rosenplatz 17: beglaubigte Übersetzungen ab 39 €, Festpreis in 5 Min., Express am selben Tag – plus Dolmetscher.',
     intro: 'Am Rosenplatz 17 in Osnabrück hat Noon Dolmetscher & Übersetzungsbüro seinen Hauptsitz. Von hier aus betreuen wir Kundinnen und Kunden aus Osnabrück, dem Landkreis und dem Münsterland mit beglaubigten Übersetzungen durch ermächtigte Übersetzer und mit Dolmetschern für Behörde, Standesamt, Gericht und Notar.',
     highlights: ['Hauptsitz Osnabrück', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
     sections: [
@@ -605,7 +606,7 @@ const locationDetails = {
     ],
   },
   kiel: {
-    description: 'Übersetzungsbüro Kiel, Bothwellstraße 25: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht sowie Dolmetscher – eigene Kieler Nummer.',
+    description: 'Übersetzungsbüro Kiel, Bothwellstraße 25: beglaubigte Übersetzungen ab 39 € für Ausländerbehörde und Standesamt, Festpreis in 5 Min. – plus Dolmetscher.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in Kiel: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Bothwellstraße 25 in Kiel-Gaarden, mit eigener Kieler Telefon- und WhatsApp-Nummer.',
     highlights: ['Eigene Kieler Nummer', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
     sections: [
@@ -627,7 +628,7 @@ const locationDetails = {
     ],
   },
   bielefeld: {
-    description: 'Übersetzungsbüro Bielefeld, Teichstraße 24: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht sowie Dolmetscher. Express möglich.',
+    description: 'Übersetzungsbüro Bielefeld, Teichstraße 24: beglaubigte Übersetzungen ab 39 € für Ausländerbehörde und Standesamt, Festpreis in 5 Min. – plus Dolmetscher.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in Bielefeld: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Teichstraße 24 nach Terminvereinbarung oder komplett digital, für Bielefeld und ganz Ostwestfalen-Lippe.',
     highlights: ['Büro in Bielefeld-Mitte', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
     sections: [
@@ -655,7 +656,7 @@ const locationDetails = {
     ],
   },
   mainz: {
-    description: 'Übersetzungsbüro Mainz: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Gericht, Dolmetscher für Mainz und Wiesbaden – Express möglich.',
+    description: 'Übersetzungsbüro Mainz: beglaubigte Übersetzungen ab 39 € für Ausländerbehörde und Standesamt, Festpreis in 5 Min., Dolmetscher für Mainz und Wiesbaden.',
     intro: 'Noon Dolmetscher & Übersetzungsbüro in der Landeshauptstadt Mainz: beglaubigte Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für Termine bei Ausländerbehörde, Standesamt, Gericht und Notar – in der Richard-Wagner-Straße 13 nach Terminvereinbarung oder komplett digital, für Mainz, Wiesbaden und das Rhein-Main-Gebiet.',
     highlights: ['Büro in Mainz', 'Ermächtigte Übersetzer', 'Express am selben Tag'],
     sections: [
@@ -1540,10 +1541,42 @@ const publishedDocumentPages = documentPagesDe
     };
   });
 
+// SEO plan Nov 2026, phase 1: extra sections go before the page's closing section, FAQs at the end.
+function withCityHub(page) {
+  const hub = CITY_HUBS[page.path];
+  if (!hub) return page;
+  return {
+    ...page,
+    metaTitle: hub.metaTitle || page.metaTitle,
+    description: hub.description || page.description,
+    sections: [page.sections[0], ...hub.sections, ...page.sections.slice(1)],
+    updated: UPDATED_PHASE1,
+  };
+}
+
+// German city titles (pageTitles.js) and the lists on the language and guide hubs also
+// changed with the November 2026 plan, so their sitemap date moves with it.
+function withNovemberPlanDate(page) {
+  const changed = (page.kind === 'location' && page.lang === 'de') || page.path === '/de/sprachen' || page.path === '/de/ratgeber';
+  return changed ? { ...page, updated: UPDATED_PHASE1 } : page;
+}
+
+function withPhase1(page) {
+  const extra = PHASE1[page.path];
+  if (!extra) return page;
+  const sections = page.sections.length > 1
+    ? [...page.sections.slice(0, -1), ...(extra.sections || []), page.sections.at(-1)]
+    : [...page.sections, ...(extra.sections || [])];
+  return { ...page, sections, faqs: [...(page.faqs || []), ...(extra.faqs || [])], updated: UPDATED_PHASE1 };
+}
+
 export const SEO_PAGES = [...servicePages, ...locationPages, ...serviceAreaPages, ...localizedServiceAreaPages, ...localizedLocationPages, ...LANGUAGE_PAGES, ...publishedDocumentPages, ...NEW_PAGES_DE, ...LANDING_PAGES]
   .map((page) => (PAGE_UPGRADES[page.path] ? { ...page, ...PAGE_UPGRADES[page.path] } : page))
   .map((page) => (FOREIGN_UPGRADES[page.path] ? { ...page, ...FOREIGN_UPGRADES[page.path], updated: '2026-10-29' } : page))
   .map((page) => (DEEP_SECTIONS[page.path] ? { ...page, sections: [...page.sections, DEEP_SECTIONS[page.path]], updated: '2026-10-30' } : page))
+  .map(withPhase1)
+  .map(withCityHub)
+  .map(withNovemberPlanDate)
   .map(applyPageSeo);
 export const SEO_PATHS = SEO_PAGES.map((page) => page.path);
 

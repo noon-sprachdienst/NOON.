@@ -2,7 +2,7 @@ import HowContact from '../components/HowContact.jsx';
 import { BRANCHES, BranchCard, useExternalMapsConsent } from '../components/Branches.jsx';
 import { useI18n } from '../hooks/useI18n';
 import { CONTACT } from '../config/contact.js';
-import { LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
+import { getSeoPage, LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
 import { getServiceNavigation } from '../data/serviceContent.js';
 import { RichServicePanel, VISUAL_COPY } from '../components/Services.jsx';
 
@@ -117,7 +117,10 @@ function CopyBlocks({ sections, faqs, faqLabel }) {
   );
 }
 
-export default function SeoLanding({ page }) {
+// App passes the light index entry; the full page (sections, FAQs …) comes from seoPages.js,
+// which is loaded together with this page.
+export default function SeoLanding({ page: indexPage }) {
+  const page = getSeoPage(indexPage.path) || indexPage;
   const isLocation = page.kind === 'location';
   const copy = UI[page.lang] || UI.de;
   const { t } = useI18n();

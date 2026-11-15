@@ -31,7 +31,7 @@ export const CITY_LOCAL = {
 export const CITY_FAQ = {
   Hamburg: ['Übersetzen Sie Unterlagen für das Hamburg Welcome Center?', 'Ja. Urkunden, Abschlüsse und Arbeitsverträge für Aufenthaltstitel und Blaue Karte übersetzen wir beglaubigt – in der Regel in 2–3 Werktagen.'],
   Köln: ['Übersetzen Sie Unterlagen für die Universität zu Köln?', 'Ja, Abiturzeugnisse, Bachelor-Urkunden und Transcripts für Bewerbung, Einschreibung oder Anerkennung – beglaubigt und mit einheitlicher Namensschreibweise.'],
-  München: ['Akzeptiert das KVR München Ihre Übersetzungen?', 'Ja. Beglaubigte Übersetzungen ermächtigter Übersetzer werden vom KVR und von anderen Münchner Behörden anerkannt.'],
+  München: ['Übersetzen Sie Unterlagen für LMU und TU München?', 'Ja, Abiturzeugnisse, Bachelor- und Masterurkunden und Transcripts für Bewerbung, Einschreibung oder Anerkennung – beglaubigt.'],
   'Frankfurt am Main': ['Übersetzen Sie Finanzdokumente für Banken in Frankfurt?', 'Ja, zum Beispiel Jahresabschlüsse, Kontoauszüge und Handelsregisterauszüge – als Fachübersetzung oder beglaubigt.'],
   Düsseldorf: ['Übersetzen Sie auch ins Japanische oder Chinesische?', 'Ja, auf Anfrage – zum Beispiel Verträge, Zeugnisse und Urkunden. Den Festpreis nennen wir nach Sichtung des Dokuments.'],
   Dortmund: ['Übersetzen Sie Berufsabschlüsse für Pflege- und Logistikfachkräfte?', 'Ja, mit Fächer- und Stundenübersicht, so wie Anerkennungsstellen sie verlangen.'],
