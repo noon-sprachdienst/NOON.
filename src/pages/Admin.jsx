@@ -516,11 +516,15 @@ function LoginScreen({ onLogin, lang, setLang }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pw }),
       });
-      if (!response.ok) throw new Error('login failed');
-      onLogin();
-    } catch {
-      setErr(t.wrongPw);
+      if (response.ok) {
+        onLogin();
+        return;
+      }
+      // Only a 401 means the password was wrong; 429 is the login rate limit (10 per 15 min).
+      setErr(response.status === 401 ? t.wrongPw : response.status === 429 ? t.tooManyLogins : t.loginFailed);
       setPw('');
+    } catch {
+      setErr(t.loginFailed);
     }
   };
   return (
