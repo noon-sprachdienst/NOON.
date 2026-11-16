@@ -5,7 +5,7 @@ import { CONTACT } from '../config/contact.js';
 import QuoteFormFields from './QuoteFormFields.jsx';
 import { useFormConfig } from '../lib/formConfig.js';
 import { DEFAULT_FORM_CONFIG } from '../data/formConfig.js';
-import { OTHER_LANGUAGE, phoneHref, textIn } from '../data/formSchema.js';
+import { buttonCss, isFieldHidden, isHidden, OTHER_LANGUAGE, phoneHref, styleOf, textCss, textIn } from '../data/formSchema.js';
 import { STORAGE_LIMITS, uploadToStorage } from '../lib/uploads.js';
 
 
@@ -172,7 +172,11 @@ export default function HowContact({ branch = null }) {
   const done = config.confirmation;
   // Heading and steps above the form (settings saved before they were editable fall back to the built-in ones).
   const section = config.section || DEFAULT_FORM_CONFIG.section;
-  const steps = config.steps?.length ? config.steps : DEFAULT_FORM_CONFIG.steps;
+  const steps = (config.steps?.length ? config.steps : DEFAULT_FORM_CONFIG.steps).filter((step) => !isHidden(config, `step:${step.id}`, lang));
+  // Elements the admin hid (in all languages or only this one) and their text style.
+  const shown = (key) => !isHidden(config, key, lang);
+  const css = (key) => textCss(styleOf(config, key, lang));
+  const btnCss = (key) => buttonCss(styleOf(config, key, lang));
   // Office pages show their own number; elsewhere the number set in the admin.
   const donePhone = branch?.phone || (done.phone ? { label: done.phone, href: phoneHref(done.phone) } : phones[0]);
   const withPhone = (text, Wrap) => text.split('{phone}').flatMap((part, i) => (i ? [<Wrap key={i} />, part] : [part]));
@@ -201,7 +205,7 @@ export default function HowContact({ branch = null }) {
 
   // Fields added in the admin, sent by their id; the server only accepts ids it finds in the published settings.
   const customValues = (data) => Object.fromEntries(config.fields
-    .filter((field) => !field.builtin && !field.hidden && (field.show === 'both' || field.show === serviceType))
+    .filter((field) => !field.builtin && !isFieldHidden(config, field, lang) && (field.show === 'both' || field.show === serviceType))
     .map((field) => [field.id, field.type === 'checkbox' ? (data.get(field.id) ? 'yes' : '') : String(data.get(field.id) || '').trim()]));
 
   const startOver = () => {
@@ -312,20 +316,23 @@ export default function HowContact({ branch = null }) {
   return (
     <section className="how-contact" id="contact" aria-labelledby="how-heading">
       <div className="wrap">
-        <div className="section-eyebrow">{textIn(section.eyebrow, lang)}</div>
-        <h2 id="how-heading" data-reveal="">{textIn(section.title, lang)}</h2>
-        <p className="section-sub" data-reveal="" style={{ '--ri': 1 }}>{textIn(section.sub, lang)}</p>
+        {shown('section.eyebrow') && <div className="section-eyebrow" style={css('section.eyebrow')}>{textIn(section.eyebrow, lang)}</div>}
+        {/* The heading stays for screen readers when hidden, because the section is labelled by it. */}
+        <h2 id="how-heading" data-reveal="" className={shown('section.title') ? undefined : 'sr-only'} style={css('section.title')}>{textIn(section.title, lang)}</h2>
+        {shown('section.sub') && <p className="section-sub" data-reveal="" style={{ '--ri': 1, ...css('section.sub') }}>{textIn(section.sub, lang)}</p>}
 
         {/* Steps bar */}
+        {shown('steps') && steps.length > 0 && (
         <nav className="steps-bar" aria-label={textIn(section.eyebrow, lang)} data-reveal="" style={{ '--ri': 0, '--steps': steps.length }}>
           {steps.map((step, i) => (
             <div key={step.id} className={`step${i === 0 ? ' active' : ''}`}>
               <div className="step-circle" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
-              <div className="step-label">{textIn(step.label, lang)}</div>
+              <div className="step-label" style={css(`step:${step.id}`)}>{textIn(step.label, lang)}</div>
               <div className="step-desc">{textIn(step.desc, lang)}</div>
             </div>
           ))}
         </nav>
+        )}
 
         {/* Contact + Form grid */}
         <div className="contact-grid">
@@ -398,14 +405,20 @@ export default function HowContact({ branch = null }) {
               <div className="form-done-check" aria-hidden="true">
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
               </div>
-              <h3 tabIndex="-1">{textIn(done.title, lang)}</h3>
-              <p>{withPhone(textIn(done.text, lang), () => <a href={donePhone.href} dir="ltr">{donePhone.label}</a>)}</p>
+              <h3 tabIndex="-1" className={shown('confirm.title') ? undefined : 'sr-only'} style={css('confirm.title')}>{textIn(done.title, lang)}</h3>
+              {shown('confirm.text') && <p style={css('confirm.text')}>{withPhone(textIn(done.text, lang), () => <a href={donePhone.href} dir="ltr">{donePhone.label}</a>)}</p>}
               <div className="form-done-actions">
                 {/* tel: links are counted automatically as "phone" by the site analytics */}
-                <a className="btn btn-primary" href={donePhone.href}>
-                  {withPhone(textIn(done.call, lang), () => <span dir="ltr">{donePhone.label}</span>)}
-                </a>
-                <button type="button" className="btn btn-secondary form-done-again" onClick={startOver}>{textIn(done.again, lang)}</button>
+                {shown('confirm.call') && (
+                  <a className="btn btn-primary" href={donePhone.href} style={btnCss('confirm.call')}>
+                    <span style={css('confirm.call')}>{withPhone(textIn(done.call, lang), () => <span dir="ltr">{donePhone.label}</span>)}</span>
+                  </a>
+                )}
+                {shown('confirm.again') && (
+                  <button type="button" className="btn btn-secondary form-done-again" onClick={startOver} style={btnCss('confirm.again')}>
+                    <span style={css('confirm.again')}>{textIn(done.again, lang)}</span>
+                  </button>
+                )}
               </div>
             </div>
           ) : (
@@ -416,8 +429,8 @@ export default function HowContact({ branch = null }) {
             style={{ '--ri': 1 }}
             aria-label={t('form.h3')}
           >
-            <h3>{textIn(config.texts.title, lang) || t('form.h3')}</h3>
-            <p className="sub">{textIn(config.texts.sub, lang) || t('form.sub')}</p>
+            {shown('form.title') && <h3 style={css('form.title')}>{textIn(config.texts.title, lang) || t('form.h3')}</h3>}
+            {shown('form.sub') && <p className="sub" style={css('form.sub')}>{textIn(config.texts.sub, lang) || t('form.sub')}</p>}
 
             <QuoteFormFields
               config={config}
@@ -464,8 +477,8 @@ export default function HowContact({ branch = null }) {
                 <a href={`mailto:${CONTACT.email}`}>{uploadErrorCopy.action}</a>
               </p>
             )}
-            <button type="submit" className="btn btn-primary" disabled={status === 'sending'} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
-              {status === 'sending' ? statusCopy.sending : <><span>{textIn(config.texts.submit, lang) || t('form.submit')}</span> <span className="arrow">→</span></>}
+            <button type="submit" className="btn btn-primary" disabled={status === 'sending'} style={{ width: '100%', justifyContent: 'center', marginTop: 8, ...btnCss('submit') }}>
+              {status === 'sending' ? statusCopy.sending : <><span style={css('submit')}>{textIn(config.texts.submit, lang) || t('form.submit')}</span> <span className="arrow">→</span></>}
             </button>
           </form>
           )}

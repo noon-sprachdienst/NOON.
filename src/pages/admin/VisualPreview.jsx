@@ -1,7 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, Eye, EyeOff, GripVertical, MousePointerClick, Plus, Trash2 } from 'lucide-react';
 import QuoteFormFields from '../../components/QuoteFormFields.jsx';
-import { CUSTOM_TYPES, LIMITS, LOCKED_FIELDS, phoneHref, textIn } from '../../data/formSchema.js';
+import {
+  buttonCss, CUSTOM_TYPES, isFieldHidden, isHidden, LIMITS, NEW_TEXTS, phoneHref, styleOf, textCss, textIn,
+} from '../../data/formSchema.js';
+import { focusEnd, setHidden, UNHIDEABLE } from './ElementBar.jsx';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
 
@@ -49,8 +52,7 @@ function Segmented({ value, options, onChange }) {
 // The quote form as the visitor sees it. In "Edit" mode every element can be clicked (opens its
 // settings in the panel), its texts can be typed in place, fields can be dragged by the handle,
 // moved, hidden or deleted from the small toolbar, and "+" inserts a new field right there.
-export default function VisualPreview({ config, lang, t, update, mode, setMode, selectedKey, onSelect, onInsertField, onDeleteField }) {
-  const [tool, setTool] = useState('edit');
+export default function VisualPreview({ config, lang, t, update, mode, setMode, selectedKey, onSelect, onInsertField, onDeleteField, scope, tool, setTool }) {
   const [service, setService] = useState('translation');
   const [source, setSource] = useState(config.defaultSource);
   const [target, setTarget] = useState(config.defaultTarget);
@@ -98,9 +100,20 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
     c.steps.splice(pos === 'after' ? to + 1 : to, 0, item);
   });
 
-  // Selection outline + click target around any preview element.
+  // Hidden elements are left out of "Try out" and shown faded while editing, so they can be shown again.
+  const visible = (key) => editing || !isHidden(config, key, lang);
+  const css = (key) => textCss(styleOf(config, key, lang));
+  const btnCss = (key) => buttonCss(styleOf(config, key, lang));
+  // Selection outline + click target around any preview element. A click anywhere on the
+  // element (also next to its text, e.g. on the button padding) puts the caret into its text.
   const box = (key, children, className = '') => (editing ? (
-    <div className={`np-pv-el ${className}${selectedKey === key ? ' is-selected' : ''}`} onClick={(e) => { e.stopPropagation(); onSelect(key); }}>
+    <div className={`np-pv-el ${className}${selectedKey === key ? ' is-selected' : ''}${isHidden(config, key, lang) ? ' is-ghost' : ''}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect(key);
+        const inline = e.currentTarget.querySelector('.np-inline');
+        if (inline && !e.target.closest('.np-inline')) focusEnd(inline);
+      }}>
       {children}
     </div>
   ) : children);
@@ -129,32 +142,30 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
     </span>
   );
 
-  // In edit mode hidden fields are shown faded, so they can be clicked and shown again.
-  const original = (id) => config.fields.find((f) => f.id === id);
-  const previewConfig = editing ? { ...config, fields: config.fields.map((f) => ({ ...f, hidden: false })) } : config;
   const fieldIndex = (id) => config.fields.findIndex((f) => f.id === id);
+  const toggleHidden = (key) => update((c) => setHidden(c, key, !(key.startsWith('field:')
+    ? isFieldHidden(c, c.fields.find((f) => `field:${f.id}` === key), lang) : isHidden(c, key, lang)), scope, lang));
 
   const wrapField = (field, node) => {
-    const real = original(field.id);
     const key = `field:${field.id}`;
-    const locked = LOCKED_FIELDS.includes(field.id);
+    const hidden = isFieldHidden(config, field, lang);
     const index = fieldIndex(field.id);
     return (
       <div key={field.id} {...dropProps('field', field.id, 'y')}
-        className={`np-pv-el np-pv-field${selectedKey === key ? ' is-selected' : ''}${real?.hidden ? ' is-ghost' : ''}${drop?.id === field.id ? ` is-drop-${drop.pos}` : ''}`}
+        className={`np-pv-el np-pv-field${selectedKey === key ? ' is-selected' : ''}${hidden ? ' is-ghost' : ''}${drop?.id === field.id ? ` is-drop-${drop.pos}` : ''}`}
         onClickCapture={(e) => { if (e.target.closest('.np-pv-chip, .np-pv-add, .np-addmenu, .np-inline')) return; e.preventDefault(); }}
         onClick={(e) => { e.stopPropagation(); onSelect(key); }}>
         <div className="np-pv-chip" onClick={(e) => e.stopPropagation()}>
           {grip('field', field.id)}
-          <em>{t.types[field.type]}{real?.hidden ? ` · ${t.hidden}` : ''}</em>
+          <em>{t.types[field.type]}{hidden ? ` · ${t.hidden}` : ''}</em>
           <button type="button" disabled={index <= 0} onClick={() => stepBy(field.id, -1)} title={t.moveUp} aria-label={t.moveUp}><ArrowUp size={12} /></button>
           <button type="button" disabled={index >= config.fields.length - 1} onClick={() => stepBy(field.id, 1)} title={t.moveDown} aria-label={t.moveDown}><ArrowDown size={12} /></button>
-          {real?.builtin && !locked && (
-            <button type="button" onClick={() => update((c) => { const f = c.fields.find((x) => x.id === field.id); f.hidden = !f.hidden; })} title={real.hidden ? t.unhide : t.hide} aria-label={real.hidden ? t.unhide : t.hide}>
-              {real.hidden ? <Eye size={12} /> : <EyeOff size={12} />}
+          {!UNHIDEABLE.includes(key) && (
+            <button type="button" onClick={() => toggleHidden(key)} title={hidden ? t.unhide : t.hide} aria-label={hidden ? t.unhide : t.hide}>
+              {hidden ? <Eye size={12} /> : <EyeOff size={12} />}
             </button>
           )}
-          {!real?.builtin && (
+          {!field.builtin && (
             <button type="button" className="is-danger" onClick={() => onDeleteField(field.id)} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
           )}
         </div>
@@ -174,8 +185,16 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
     );
   };
 
-  const renderText = (field, prop, value) => edit(field[prop], (map) => update((c) => { c.fields.find((f) => f.id === field.id)[prop] = map; }));
-  const steps = config.steps || [];
+  const renderText = (field, prop) => edit(field[prop], (map) => update((c) => { c.fields.find((f) => f.id === field.id)[prop] = map; }));
+  const steps = (config.steps || []).filter((step) => visible(`step:${step.id}`));
+  // One text element of the preview: selectable box, its style, and inline editing.
+  const piece = (key, map, onSet, Tag, className) => visible(key) && box(key, (
+    <Tag className={className} style={css(key)}>{text(map, onSet)}</Tag>
+  ));
+  const setSection = (prop) => (v) => update((c) => { c.section[prop] = v; });
+  const setText = (prop) => (v) => update((c) => { c.texts[prop] = v; });
+  const setDone = (prop) => (v) => update((c) => { c.confirmation[prop] = v; });
+  const stepHidden = (key) => isHidden(config, key, lang);
 
   return (
     <aside className="np-preview">
@@ -192,90 +211,99 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
       {editing && <p className="np-pv-hint"><MousePointerClick size={14} /> {t.pvHint}</p>}
 
       <div className={`np-preview-frame${editing ? ' np-edit' : ''}`} dir={dir} lang={lang} onClick={() => setAddAt(null)}>
-        {mode === 'form' && config.section && box('section', (
+        {mode === 'form' && config.section && (
           <div className="np-pv-section">
-            <span className="np-pv-eyebrow">{text(config.section.eyebrow, (v) => update((c) => { c.section.eyebrow = v; }))}</span>
-            <strong>{text(config.section.title, (v) => update((c) => { c.section.title = v; }))}</strong>
-            <p>{text(config.section.sub, (v) => update((c) => { c.section.sub = v; }))}</p>
-            <ol className="np-pv-steps" style={{ '--steps': steps.length + (editing && steps.length < LIMITS.maxSteps ? 1 : 0) }}>
-              {steps.map((step, i) => {
-                const key = `step:${step.id}`;
-                return (
-                  <li key={step.id} {...(editing ? dropProps('step', step.id, 'x') : {})}
-                    className={`${i === 0 ? 'is-first' : ''}${editing ? ' np-pv-el np-pv-step' : ''}${selectedKey === key ? ' is-selected' : ''}${drop?.id === step.id ? ` is-drop-${drop.pos}` : ''}`}
-                    onClick={editing ? (e) => { e.stopPropagation(); onSelect(key); } : undefined}>
-                    {editing && (
-                      <div className="np-pv-chip np-pv-chip--step" onClick={(e) => e.stopPropagation()}>
-                        {grip('step', step.id)}
-                        <button type="button" className="is-danger" disabled={steps.length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps = c.steps.filter((s) => s.id !== step.id); })} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
-                      </div>
-                    )}
-                    <i>{String(i + 1).padStart(2, '0')}</i>
-                    <b>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</b>
-                    <small>{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</small>
+            {piece('section.eyebrow', config.section.eyebrow, setSection('eyebrow'), 'span', 'np-pv-eyebrow')}
+            {piece('section.title', config.section.title, setSection('title'), 'strong', 'np-pv-title')}
+            {piece('section.sub', config.section.sub, setSection('sub'), 'p', 'np-pv-sub')}
+            {visible('steps') && box('steps', (
+              <ol className="np-pv-steps" style={{ '--steps': steps.length + (editing && steps.length < LIMITS.maxSteps ? 1 : 0) }}>
+                {steps.map((step, i) => {
+                  const key = `step:${step.id}`;
+                  return (
+                    <li key={step.id} {...(editing ? dropProps('step', step.id, 'x') : {})}
+                      className={`${i === 0 ? 'is-first' : ''}${editing ? ' np-pv-el np-pv-step' : ''}${selectedKey === key ? ' is-selected' : ''}${editing && stepHidden(key) ? ' is-ghost' : ''}${drop?.id === step.id ? ` is-drop-${drop.pos}` : ''}`}
+                      onClick={editing ? (e) => { e.stopPropagation(); onSelect(key); } : undefined}>
+                      {editing && (
+                        <div className="np-pv-chip np-pv-chip--step" onClick={(e) => e.stopPropagation()}>
+                          {grip('step', step.id)}
+                          <button type="button" onClick={() => toggleHidden(key)} title={stepHidden(key) ? t.unhide : t.hide} aria-label={stepHidden(key) ? t.unhide : t.hide}>
+                            {stepHidden(key) ? <Eye size={12} /> : <EyeOff size={12} />}
+                          </button>
+                          <button type="button" className="is-danger" disabled={(config.steps || []).length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps = c.steps.filter((s) => s.id !== step.id); })} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
+                        </div>
+                      )}
+                      <i>{String(i + 1).padStart(2, '0')}</i>
+                      <b style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</b>
+                      <small>{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</small>
+                    </li>
+                  );
+                })}
+                {editing && (config.steps || []).length < LIMITS.maxSteps && (
+                  <li className="np-pv-addstep">
+                    <button type="button" onClick={(e) => {
+                      e.stopPropagation();
+                      const id = `s${Math.random().toString(36).slice(2, 8)}`;
+                      update((c) => { c.steps = [...(c.steps || []), { id, label: { ...NEW_TEXTS.step }, desc: {} }]; });
+                      onSelect(`step:${id}`);
+                    }} title={t.addStep} aria-label={t.addStep}><Plus size={14} /></button>
+                    <small>{t.addStep}</small>
                   </li>
-                );
-              })}
-              {editing && steps.length < LIMITS.maxSteps && (
-                <li className="np-pv-addstep">
-                  <button type="button" onClick={(e) => {
-                    e.stopPropagation();
-                    const id = `s${Math.random().toString(36).slice(2, 8)}`;
-                    update((c) => { c.steps = [...(c.steps || []), { id, label: { de: t.newStep, ...(lang !== 'de' ? { [lang]: t.newStep } : {}) }, desc: {} }]; });
-                    onSelect(`step:${id}`);
-                  }} title={t.addStep} aria-label={t.addStep}><Plus size={14} /></button>
-                  <small>{t.addStep}</small>
-                </li>
-              )}
-            </ol>
+                )}
+              </ol>
+            ), 'np-pv-stepsbox')}
           </div>
-        ))}
+        )}
 
         {mode === 'form' ? (
           <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
-            {box('formtexts', (
-              <>
-                <h3>{text(config.texts.title, (v) => update((c) => { c.texts.title = v; }))}</h3>
-                <p className="sub">{text(config.texts.sub, (v) => update((c) => { c.texts.sub = v; }))}</p>
-              </>
-            ))}
+            {piece('form.title', config.texts.title, setText('title'), 'h3')}
+            {piece('form.sub', config.texts.sub, setText('sub'), 'p', 'sub')}
             <QuoteFormFields
-              config={previewConfig} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
+              config={config} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
               targetLang={target} onTargetLang={setTarget} onFilesChange={() => {}} idPrefix="pv-"
               editing={editing} renderText={editing ? renderText : undefined} wrapField={editing ? wrapField : undefined}
             />
-            {editing ? box('formtexts', (
-              <div className="btn btn-primary np-pv-submit">
-                {edit(config.texts.submit, (v) => update((c) => { c.texts.submit = v; }))} <span className="arrow">→</span>
+            {editing ? box('submit', (
+              <div className="btn btn-primary np-pv-submit" style={btnCss('submit')}>
+                <span style={css('submit')}>{edit(config.texts.submit, setText('submit'))}</span> <span className="arrow">→</span>
               </div>
             )) : (
-              <button type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }} onClick={() => setMode('done')}>
-                <span>{textIn(config.texts.submit, lang)}</span> <span className="arrow">→</span>
+              <button type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8, ...btnCss('submit') }} onClick={() => setMode('done')}>
+                <span style={css('submit')}>{textIn(config.texts.submit, lang)}</span> <span className="arrow">→</span>
               </button>
             )}
           </form>
-        ) : box('confirm', (
+        ) : (
           <div className="contact-card form-card form-done">
             <div className="form-done-check" aria-hidden="true">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
             </div>
-            <h3>{text(done.title, (v) => update((c) => { c.confirmation.title = v; }))}</h3>
-            <p>
-              {editing
-                ? edit(done.text, (v) => update((c) => { c.confirmation.text = v; }))
-                : withPhone(textIn(done.text, lang), (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)}
-            </p>
+            {piece('confirm.title', done.title, setDone('title'), 'h3')}
+            {visible('confirm.text') && box('confirm.text', (
+              <p style={css('confirm.text')}>
+                {editing
+                  ? edit(done.text, setDone('text'))
+                  : withPhone(textIn(done.text, lang), (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)}
+              </p>
+            ))}
             {editing && <small className="np-pv-token">{fill(t.phoneToken, { phone })}</small>}
             <div className="form-done-actions">
-              <span className="btn btn-primary">
-                {editing ? edit(done.call, (v) => update((c) => { c.confirmation.call = v; })) : withPhone(textIn(done.call, lang), (i) => <span key={i} dir="ltr">{phone}</span>)}
-              </span>
-              {editing
-                ? <span className="btn btn-secondary">{edit(done.again, (v) => update((c) => { c.confirmation.again = v; }))}</span>
-                : <button type="button" className="btn btn-secondary" onClick={() => setMode('form')}>{textIn(done.again, lang)}</button>}
+              {visible('confirm.call') && box('confirm.call', (
+                <span className="btn btn-primary" style={btnCss('confirm.call')}>
+                  <span style={css('confirm.call')}>
+                    {editing ? edit(done.call, setDone('call')) : withPhone(textIn(done.call, lang), (i) => <span key={i} dir="ltr">{phone}</span>)}
+                  </span>
+                </span>
+              ), 'np-pv-inlinebox')}
+              {visible('confirm.again') && box('confirm.again', editing ? (
+                <span className="btn btn-secondary" style={btnCss('confirm.again')}><span style={css('confirm.again')}>{edit(done.again, setDone('again'))}</span></span>
+              ) : (
+                <button type="button" className="btn btn-secondary" style={btnCss('confirm.again')} onClick={() => setMode('form')}><span style={css('confirm.again')}>{textIn(done.again, lang)}</span></button>
+              ), 'np-pv-inlinebox')}
             </div>
           </div>
-        ))}
+        )}
       </div>
     </aside>
   );

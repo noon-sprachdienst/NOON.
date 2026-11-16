@@ -10,6 +10,7 @@
 //   languages: [{ id, name, source, target }],           // "Other language" is fixed and not stored
 //   defaultSource, defaultTarget,                         // language ids preselected in the lists
 //   confirmation: { title, text, call, again, phone },    // texts per language, phone shared
+//   ui: { [elementKey]: { hidden, hiddenIn, style, styleIn } }, // see UI_KEYS below
 // }
 // The layout (fields, order, types, widths, settings) is shared by all languages;
 // only the texts are stored per language. An empty text falls back to German.
@@ -29,6 +30,98 @@ export const WIDTHS = ['half', 'full'];
 export const SHOW = ['both', 'translation', 'interpreting'];
 
 export const LIMITS = { fields: 40, options: 60, languages: 200, label: 120, placeholder: 160, help: 300, text: 600, versions: 10, minSteps: 2, maxSteps: 6 };
+
+// Start texts for things the admin adds, in every site language. Each language gets its own,
+// so a field added while the admin works in Arabic never shows Arabic on the German site.
+export const NEW_TEXTS = {
+  field: { de: 'Neues Feld', en: 'New field', ar: 'حقل جديد', tr: 'Yeni alan', ru: 'Новое поле', fr: 'Nouveau champ', uk: 'Нове поле' },
+  option: { de: 'Neue Auswahl', en: 'New option', ar: 'اختيار جديد', tr: 'Yeni seçenek', ru: 'Новый вариант', fr: 'Nouvelle option', uk: 'Новий варіант' },
+  step: { de: 'Neuer Schritt', en: 'New step', ar: 'خطوة جديدة', tr: 'Yeni adım', ru: 'Новый шаг', fr: 'Nouvelle étape', uk: 'Новий крок' },
+};
+const START_TEXTS = new Set(Object.values(NEW_TEXTS).flatMap((map) => Object.values(map)));
+// True while a text is still one of the start texts above (in any language), so the admin is told to write it.
+export const isStartText = (value) => START_TEXTS.has(String(value || '').trim());
+
+// Look of single elements, stored in config.ui by element key:
+//   { hidden, hiddenIn: [lang], style: { size, weight, italic, underline, color, bg }, styleIn: { [lang]: style } }
+// "hidden"/"style" apply to all languages, "hiddenIn"/"styleIn" to single languages.
+// Fields keep their all-languages "hidden" flag on the field itself.
+export const UI_KEYS = ['section.eyebrow', 'section.title', 'section.sub', 'steps', 'form.title', 'form.sub', 'submit', 'confirm.title', 'confirm.text', 'confirm.call', 'confirm.again'];
+export const BUTTON_KEYS = ['submit', 'confirm.call', 'confirm.again'];
+// The form cannot be sent without its button, so it can be styled but not hidden.
+export const UNHIDEABLE_KEYS = ['submit', ...LOCKED_FIELDS.map((id) => `field:${id}`)];
+export const FONT_SIZES = [75, 90, 100, 115, 130, 150, 175];
+const COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+
+const uiOf = (config, key) => config?.ui?.[key] || {};
+
+export function isHidden(config, key, lang) {
+  const ui = uiOf(config, key);
+  return Boolean(ui.hidden || ui.hiddenIn?.includes(lang));
+}
+
+export function isFieldHidden(config, field, lang) {
+  return Boolean(field.hidden) || isHidden(config, `field:${field.id}`, lang);
+}
+
+export function styleOf(config, key, lang) {
+  const ui = uiOf(config, key);
+  return { ...(ui.style || {}), ...(ui.styleIn?.[lang] || {}) };
+}
+
+// CSS for a text element (relative size, so it scales from the element's own size).
+export function textCss(style) {
+  const css = {};
+  if (style.size && style.size !== 100) css.fontSize = `${style.size / 100}em`;
+  if (style.weight) css.fontWeight = style.weight === 'bold' ? 700 : 400;
+  if (typeof style.italic === 'boolean') css.fontStyle = style.italic ? 'italic' : 'normal';
+  if (typeof style.underline === 'boolean') css.textDecoration = style.underline ? 'underline' : 'none';
+  if (style.color) css.color = style.color;
+  return css;
+}
+
+export function buttonCss(style) {
+  return style.bg ? { background: style.bg, borderColor: style.bg } : {};
+}
+
+// A language's own style may hold "off" values (size 100, italic false) that override the all-languages style.
+function cleanStyle(style, button) {
+  if (!style || typeof style !== 'object') return null;
+  const out = {};
+  if (FONT_SIZES.includes(Number(style.size))) out.size = Number(style.size);
+  if (style.weight === 'bold' || style.weight === 'normal') out.weight = style.weight;
+  if (typeof style.italic === 'boolean') out.italic = style.italic;
+  if (typeof style.underline === 'boolean') out.underline = style.underline;
+  if (COLOR_PATTERN.test(style.color || '')) out.color = style.color.toLowerCase();
+  if (button && COLOR_PATTERN.test(style.bg || '')) out.bg = style.bg.toLowerCase();
+  return Object.keys(out).length ? out : null;
+}
+
+function cleanUi(input, keys) {
+  const out = {};
+  if (!input || typeof input !== 'object') return out;
+  keys.forEach((key) => {
+    const raw = input[key];
+    if (!raw || typeof raw !== 'object') return;
+    const button = BUTTON_KEYS.includes(key);
+    const entry = {};
+    if (!UNHIDEABLE_KEYS.includes(key)) {
+      if (raw.hidden === true && !key.startsWith('field:')) entry.hidden = true;
+      const hiddenIn = Array.isArray(raw.hiddenIn) ? SITE_LANGS.filter((lang) => raw.hiddenIn.includes(lang)) : [];
+      if (hiddenIn.length && !entry.hidden) entry.hiddenIn = hiddenIn;
+    }
+    const style = cleanStyle(raw.style, button);
+    if (style) entry.style = style;
+    const styleIn = {};
+    SITE_LANGS.forEach((lang) => {
+      const one = cleanStyle(raw.styleIn?.[lang], button);
+      if (one) styleIn[lang] = one;
+    });
+    if (Object.keys(styleIn).length) entry.styleIn = styleIn;
+    if (Object.keys(entry).length) out[key] = entry;
+  });
+  return out;
+}
 
 // Text of a { de, en, … } map in one language, falling back to German.
 export function textIn(map, lang) {
@@ -161,6 +254,7 @@ export function sanitizeFormConfig(input) {
       again: cleanTexts(confirmation.again, 80),
       phone: cleanString(confirmation.phone, 40),
     },
+    ui: cleanUi(input.ui, [...UI_KEYS, ...steps.map((step) => `step:${step.id}`), ...cleanFields.map((field) => `field:${field.id}`)]),
   };
 }
 
@@ -174,10 +268,11 @@ export function languageList(config, kind) {
   return [...ordered, OTHER_LANGUAGE];
 }
 
-// Visible fields for a service ("translation" or "interpreting"), grouped into rows:
-// two half-width fields next to each other share a row.
-export function fieldRows(config, service) {
-  const visible = config.fields.filter((field) => !field.hidden && (field.show === 'both' || field.show === service || field.type === 'service'));
+// Visible fields for a service ("translation" or "interpreting") in one language, grouped into
+// rows: two half-width fields next to each other share a row. The admin preview passes
+// showHidden to keep hidden fields (shown faded there, so they can be shown again).
+export function fieldRows(config, service, lang, showHidden = false) {
+  const visible = config.fields.filter((field) => (showHidden || !isFieldHidden(config, field, lang)) && (field.show === 'both' || field.show === service || field.type === 'service'));
   const rows = [];
   visible.forEach((field) => {
     const last = rows[rows.length - 1];

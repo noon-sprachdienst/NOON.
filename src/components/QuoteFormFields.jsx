@@ -1,4 +1,4 @@
-import { fieldRows, languageList, OTHER_LANGUAGE, textIn } from '../data/formSchema.js';
+import { fieldRows, languageList, OTHER_LANGUAGE, styleOf, textCss, textIn } from '../data/formSchema.js';
 
 // Renders the quote-form fields from the CMS settings. Used by the site form (HowContact)
 // and by the live preview in the admin, so both always look the same.
@@ -43,6 +43,7 @@ export default function QuoteFormFields({
     const placeholder = textIn(field.placeholder, lang) || undefined;
     const help = textIn(field.help, lang);
     const show = (prop, text) => (editing && renderText ? renderText(field, prop, text) : text);
+    const labelCss = textCss(styleOf(config, `field:${field.id}`, lang));
     const helpNode = help ? <p className="form-hint">{show('help', help)}</p> : null;
     const labelFor = editing ? undefined : id;
 
@@ -64,7 +65,7 @@ export default function QuoteFormFields({
         <div key={field.id} className="form-field form-check">
           <label htmlFor={labelFor}>
             <input id={id} name={field.id} type="checkbox" value="yes" required={field.required} />
-            <span>{show('label', label)}</span>
+            <span style={labelCss}>{show('label', label)}</span>
           </label>
           {helpNode}
         </div>
@@ -108,7 +109,7 @@ export default function QuoteFormFields({
 
     return (
       <div key={field.id} className="form-field">
-        <label htmlFor={labelFor}>{show('label', label)}{field.required && !field.builtin ? ' *' : ''}</label>
+        <label htmlFor={labelFor}><span style={labelCss}>{show('label', label)}</span>{field.required && !field.builtin ? ' *' : ''}</label>
         {control}
         {helpNode}
       </div>
@@ -116,7 +117,7 @@ export default function QuoteFormFields({
   };
 
   const render = (field) => (wrapField ? wrapField(field, renderField(field)) : renderField(field));
-  return fieldRows(config, service).map((row) => {
+  return fieldRows(config, service, lang, editing).map((row) => {
     if (row.length === 1 && row[0].width !== 'half') return render(row[0]);
     return <div key={row.map((field) => field.id).join('+')} className="form-row">{row.map(render)}</div>;
   });

@@ -3,19 +3,22 @@ import {
   ArrowDown, ArrowUp, Check, ChevronDown, ChevronUp, Eye, EyeOff, History, Lock, Plus, Redo2, RotateCcw, Rocket, Save, Trash2, TriangleAlert, Undo2,
 } from 'lucide-react';
 import VisualPreview from './VisualPreview.jsx';
+import ElementBar from './ElementBar.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
-import { ALWAYS_REQUIRED, CUSTOM_TYPES, LIMITS, LOCKED_FIELDS, OTHER_LANGUAGE, SITE_LANGS, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
+import { ALWAYS_REQUIRED, CUSTOM_TYPES, isStartText, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE, SITE_LANGS, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
 
 const NO_PLACEHOLDER = ['service', 'file', 'checkbox', 'language', 'select'];
 const randomId = (prefix) => `${prefix}${Math.random().toString(36).slice(2, 8)}`;
-// A new field added by the admin (German label first, plus the language being edited).
-function newCustomField(id, type, lang, t) {
+const newOption = () => ({ id: randomId('o'), label: { ...NEW_TEXTS.option } });
+// A new field added by the admin. Every language gets the start text in its own language
+// (never the admin's language), and the language badges count it until it is rewritten.
+function newCustomField(id, type) {
   return {
     id, type, builtin: false, width: 'full', required: false, show: 'both', hidden: false,
-    label: { de: t.newField, ...(lang !== 'de' ? { [lang]: t.newField } : {}) }, placeholder: {}, help: {},
-    ...(type === 'select' ? { options: [{ id: randomId('o'), label: { de: t.newOption } }] } : {}),
+    label: { ...NEW_TEXTS.field }, placeholder: {}, help: {},
+    ...(type === 'select' ? { options: [newOption()] } : {}),
   };
 }
 const slug = (name) => String(name).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '').slice(0, 20);
@@ -29,11 +32,11 @@ async function api(body) {
   return data;
 }
 
-// Counts texts that exist in German but are empty in a language (shown as a badge per language).
+// Counts texts a language still needs (shown as a badge per language): empty while German has
+// one, or still a start text such as "New field".
 function missingTexts(config, lang) {
-  if (lang === 'de') return 0;
   let missing = 0;
-  const check = (map) => { if (map?.de && !map[lang]) missing += 1; };
+  const check = (map) => { if (map?.de && (!map[lang] || isStartText(map[lang]))) missing += 1; };
   Object.values(config.texts).forEach(check);
   Object.values(config.section || {}).forEach(check);
   (config.steps || []).forEach((step) => { check(step.label); check(step.desc); });
@@ -72,7 +75,7 @@ function Segmented({ value, options, onChange, small }) {
   );
 }
 
-function FieldRow({ field, index, count, lang, t, update, open, setOpen }) {
+function FieldRow({ field, hiddenIn, index, count, lang, t, update, open, setOpen }) {
   const locked = LOCKED_FIELDS.includes(field.id);
   const name = textIn(field.label, lang) || t.types[field.type];
   const set = (fn) => update((config) => fn(config.fields[index]));
@@ -101,6 +104,7 @@ function FieldRow({ field, index, count, lang, t, update, open, setOpen }) {
             {field.required && <em>{t.required}</em>}
             {field.show !== 'both' && <em>{field.show === 'translation' ? t.showTranslation : t.showInterpreting}</em>}
             {field.hidden && <em className="is-warn">{t.hidden}</em>}
+            {!field.hidden && hiddenIn?.length > 0 && <em className="is-warn">{fill(t.hiddenIn, { lang: hiddenIn.map((l) => l.toUpperCase()).join(', ') })}</em>}
           </span>
         </button>
         <div className="np-frow-tools">
@@ -127,7 +131,7 @@ function FieldRow({ field, index, count, lang, t, update, open, setOpen }) {
                 <span>{t.type}</span>
                 <select className="np-input" value={field.type} onChange={(e) => set((f) => {
                   f.type = e.target.value;
-                  if (f.type === 'select' && !f.options?.length) f.options = [{ id: randomId('o'), label: { de: t.newOption } }];
+                  if (f.type === 'select' && !f.options?.length) f.options = [newOption()];
                   if (f.type !== 'select') delete f.options;
                 })}>
                   {CUSTOM_TYPES.map((type) => <option key={type} value={type}>{t.types[type]}</option>)}
@@ -186,7 +190,7 @@ function FieldRow({ field, index, count, lang, t, update, open, setOpen }) {
                     <button type="button" className="np-mini is-danger" disabled={field.options.length === 1} onClick={() => set((f) => { f.options.splice(i, 1); })} aria-label={t.delete}><Trash2 size={14} /></button>
                   </div>
                 ))}
-                <button type="button" className="np-btn np-btn--ghost np-btn--sm" onClick={() => set((f) => { f.options.push({ id: randomId('o'), label: { de: t.newOption, ...(lang !== 'de' ? { [lang]: t.newOption } : {}) } }); })}>
+                <button type="button" className="np-btn np-btn--ghost np-btn--sm" onClick={() => set((f) => { f.options.push(newOption()); })}>
                   <Plus size={14} /> {t.addOption}
                 </button>
               </div>
@@ -229,7 +233,7 @@ function SectionCard({ config, lang, t, update }) {
           </div>
         ))}
         <button type="button" className="np-btn np-btn--ghost np-btn--sm" disabled={steps.length >= LIMITS.maxSteps}
-          onClick={() => update((c) => { c.steps = [...(c.steps || []), { id: randomId('s'), label: { de: t.newStep, ...(lang !== 'de' ? { [lang]: t.newStep } : {}) }, desc: {} }]; })}>
+          onClick={() => update((c) => { c.steps = [...(c.steps || []), { id: randomId('s'), label: { ...NEW_TEXTS.step }, desc: {} }]; })}>
           <Plus size={14} /> {t.addStep}
         </button>
       </div>
@@ -243,7 +247,7 @@ function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey })
   const [adding, setAdding] = useState(false);
   const add = (type) => {
     const id = randomId('c_');
-    update((next) => { next.fields.push(newCustomField(id, type, lang, t)); });
+    update((next) => { next.fields.push(newCustomField(id, type)); });
     setAdding(false);
     setOpen(id);
   };
@@ -272,7 +276,7 @@ function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey })
         </header>
         <ul className="np-frows">
           {config.fields.map((field, index) => (
-            <FieldRow key={field.id} field={field} index={index} count={config.fields.length} lang={lang} t={t} update={update}
+            <FieldRow key={field.id} field={field} hiddenIn={config.ui?.[`field:${field.id}`]?.hiddenIn} index={index} count={config.fields.length} lang={lang} t={t} update={update}
               open={open === field.id} setOpen={setOpen} />
           ))}
         </ul>
@@ -424,6 +428,9 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState(null);
   const [selectedKey, setSelectedKey] = useState(null);
+  // Hide and style changes go to all languages or only the one being edited.
+  const [scope, setScope] = useState('all');
+  const [tool, setTool] = useState('edit');
   const [flash, setFlash] = useState(null);
   const messageRef = useRef(null);
   // Undo / redo: earlier states of the form in this editing session. Quick edits in a row
@@ -493,11 +500,16 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   }, [dirty]);
   useEffect(() => { if (message) messageRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, [message]);
   // A click in the preview selects the element: open its settings and bring them into view.
+  // Preview keys are per element ("section.title", "confirm.call"); the panel has one card per group.
   const select = (key) => {
     setSelectedKey(key);
-    if (key === 'confirm') setSection('confirmation');
+    if (!key) return;
+    const panelKey = key.startsWith('section.') || key === 'steps' ? 'section'
+      : key.startsWith('form.') || key === 'submit' ? 'formtexts'
+        : key.startsWith('confirm') ? 'confirm' : key;
+    if (panelKey === 'confirm') setSection('confirmation');
     else if (section !== 'fields') setSection('fields');
-    setFlash({ key, at: Date.now() });
+    setFlash({ key: panelKey, at: Date.now() });
   };
   useEffect(() => {
     if (!flash) return undefined;
@@ -510,7 +522,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   }, [flash]);
   const insertField = (afterId, type) => {
     const id = randomId('c_');
-    update((next) => { next.fields.splice(next.fields.findIndex((f) => f.id === afterId) + 1, 0, newCustomField(id, type, lang, t)); });
+    update((next) => { next.fields.splice(next.fields.findIndex((f) => f.id === afterId) + 1, 0, newCustomField(id, type)); });
     select(`field:${id}`);
   };
   const deleteField = (id) => {
@@ -677,6 +689,11 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
 
       <div className={`np-cms-grid${section === 'history' ? ' is-single' : ''}`}>
         <div className="np-cms-col">
+          {/* Toolbar of the element selected in the preview; stays in view while the panel scrolls. */}
+          {section !== 'history' && tool === 'edit' && selectedKey && (
+            <ElementBar config={config} lang={lang} t={t} update={update} elementKey={selectedKey} scope={scope} setScope={setScope}
+              onDeleteField={deleteField} onClose={() => setSelectedKey(null)} />
+          )}
           {section === 'fields' && <FieldsSection {...props} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />}
           {section === 'languages' && <LanguagesSection {...props} />}
           {section === 'confirmation' && <ConfirmationSection {...props} />}
@@ -686,7 +703,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
         </div>
         {section !== 'history' && (
           <VisualPreview config={config} lang={lang} t={t} update={update} mode={previewMode} setMode={showPreview}
-            selectedKey={selectedKey} onSelect={select} onInsertField={insertField} onDeleteField={deleteField} />
+            selectedKey={selectedKey} onSelect={select} onInsertField={insertField} onDeleteField={deleteField} scope={scope} tool={tool} setTool={setTool} />
         )}
       </div>
     </div>

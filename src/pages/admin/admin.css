@@ -412,6 +412,8 @@ textarea.np-input { resize: vertical; line-height: 1.55; }
 .np-option { display: flex; gap: 6px; align-items: center; }
 .np-addwrap { position: relative; }
 .np-addmenu { position: absolute; top: calc(100% + 6px); inset-inline-end: 0; z-index: 10; min-width: 200px; display: grid; padding: 6px; background: #fff; border: 1px solid var(--np-line); border-radius: 12px; box-shadow: 0 16px 40px -16px rgba(17,26,46,.35); }
+/* Arabic: open the "add field" menu towards the panel, so it is not cut off at the edge. */
+[dir="rtl"] .np-addmenu:not(.np-pv-addmenu) { inset-inline-end: auto; inset-inline-start: 0; }
 .np-addmenu button { border: 0; background: transparent; text-align: start; padding: 9px 12px; border-radius: 8px; font-size: 13px; color: var(--np-ink); }
 .np-addmenu button:hover { background: var(--np-track); }
 
@@ -475,8 +477,8 @@ textarea.np-input { resize: vertical; line-height: 1.55; }
 .np-step-tools { display: flex; gap: 4px; }
 .np-pv-section { text-align: center; padding: 6px 4px 18px; }
 .np-pv-eyebrow { display: block; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #8a8a8a; margin-bottom: 6px; }
-.np-pv-section > strong { display: block; font-size: 17px; font-weight: 600; color: #0a0a0a; line-height: 1.3; }
-.np-pv-section > p { font-size: 12px; color: #777; margin: 6px 0 14px; line-height: 1.5; }
+.np-pv-section .np-pv-title { display: block; font-size: 17px; font-weight: 600; color: #0a0a0a; line-height: 1.3; }
+.np-pv-section .np-pv-sub { font-size: 12px; color: #777; margin: 6px 0 14px; line-height: 1.5; }
 .np-pv-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--steps, 5), minmax(0, 1fr)); gap: 4px; }
 .np-pv-steps li { display: grid; justify-items: center; gap: 3px; min-width: 0; }
 .np-pv-steps i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; border: 1px solid #d8d5cf; background: #faf9f7; display: grid; place-items: center; font-size: 9.5px; color: #999; }
@@ -538,3 +540,22 @@ textarea.np-input { resize: vertical; line-height: 1.55; }
 .np-step-edit { border-radius: 10px; }
 @keyframes npFlash { 0%, 30% { box-shadow: 0 0 0 3px rgba(59,111,224,.35); } 100% { box-shadow: 0 0 0 0 rgba(59,111,224,0); } }
 @media (max-width: 1180px) { .np-cms-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Toolbar of the element selected in the preview (hide, delete, style) */
+.np-elbar { display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--np-line, #e3e6ee); border-radius: 12px; background: #fff; box-shadow: 0 6px 18px -10px rgba(17,26,46,.35); position: sticky; top: 76px; z-index: 6; }
+.np-elbar-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.np-elbar-head strong { font-size: 13px; color: var(--np-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.np-elbar-head em { font-style: normal; font-size: 11px; font-weight: 600; color: #9a5b00; background: #fff4e0; border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+.np-elbar-head .np-mini { margin-inline-start: auto; }
+.np-elbar-scope { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--np-ink-2); }
+.np-elbar-tools { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.np-elbar-field { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--np-ink-2); }
+.np-elbar-field .np-input { width: auto; padding: 5px 8px; font-size: 12px; }
+.np-elbar-toggle.is-on { background: #1f2d4d; color: #fff; border-color: #1f2d4d; }
+.np-elbar-color { display: inline-flex; align-items: center; gap: 2px; }
+.np-elbar-color label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--np-ink-2); cursor: pointer; }
+.np-elbar-color input[type="color"] { width: 28px; height: 26px; padding: 0 2px; border: 1px solid #d5dae6; border-radius: 6px; background: #fff; cursor: pointer; }
+.np-elbar-note { font-size: 12px; }
+.np-btn.is-danger { color: #c0283a; }
+.np-pv-inlinebox { display: inline-block; }
+.np-edit .np-pv-stepsbox { padding: 4px 0; }
