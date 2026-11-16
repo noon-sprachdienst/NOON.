@@ -150,6 +150,8 @@ export const PHASE1 = {
 
   '/de/geburtsurkunde-uebersetzung': {
     sections: [
+      ['Geburtsurkunde übersetzen lassen – in Ihrer Nähe oder online', 'Sie müssen für die Übersetzung nirgendwo hinfahren: Senden Sie ein Foto oder einen Scan der Geburtsurkunde, und Sie erhalten die beglaubigte Übersetzung als PDF per E-Mail und das gestempelte Original per Post – egal, wo Sie in Deutschland wohnen. Persönlich sind wir nach Terminvereinbarung in Osnabrück, Stuttgart, Berlin, Bielefeld, Mainz und Kiel für Sie da.\n\nKosten: Die beglaubigte Übersetzung einer Geburtsurkunde kostet bei uns ab 39 €. Den Festpreis für Ihre Urkunde und Sprache nennen wir vorab und kostenlos – im Express ist sie am selben Tag fertig.',
+        [city('berlin', 'Berlin'), city('stuttgart', 'Stuttgart'), city('osnabrueck', 'Osnabrück'), link('/de/express-uebersetzung/', 'Express am selben Tag')]],
       ['Checkliste: Das brauchen wir von Ihnen', CHECKLIST_TEXT('der Geburtsurkunde oder des Registerauszugs'), [PRICE_LINK, QUOTE_LINK]],
       ['Geburtsurkunden aus vielen Ländern', 'Geburtsurkunden sehen je nach Land sehr unterschiedlich aus: als Urkunde, als Auszug aus dem Personen- oder Familienregister, als Formular in mehreren Sprachen oder als ausgedruckter Online-Auszug. Wir übersetzen alle Formen vollständig – mit Stempeln, Vermerken und gegebenenfalls der Apostille. Besonders häufig kommen bei uns Urkunden aus Syrien, dem Irak, Afghanistan, der Türkei, der Ukraine, dem Iran, Rumänien und Polen an.',
         [link('/de/ratgeber/arabische-geburtsurkunde-uebersetzen/', 'Arabische Geburtsurkunde übersetzen'), lang('tuerkisch', 'Türkisch'), lang('ukrainisch', 'Ukrainisch'), lang('persisch', 'Persisch und Dari')]],
@@ -204,8 +206,8 @@ export const PHASE1 = {
 
   '/de/beglaubigte-uebersetzung-standesamt': {
     sections: [
-      ['Typische Unterlagen für das Standesamt', '• Anmeldung der Eheschließung: Geburtsurkunden, Ledigkeitsbescheinigung oder Ehefähigkeitszeugnis, gegebenenfalls Scheidungsurteil oder Sterbeurkunde des früheren Ehepartners\n• Geburt eines Kindes: Heiratsurkunde und Geburtsurkunden der Eltern\n• Nachbeurkundung einer Auslandsehe oder Auslandsgeburt\n• Namenserklärungen und Namensänderungen\n\nWelche Dokumente Ihr Standesamt genau verlangt, teilt es Ihnen mit – senden Sie uns gern die Liste.',
-        [doc('geburtsurkunde-uebersetzung', 'Geburtsurkunde'), doc('ledigkeitsbescheinigung-uebersetzung', 'Ledigkeitsbescheinigung'), doc('ehefaehigkeitszeugnis-uebersetzung', 'Ehefähigkeitszeugnis'), doc('scheidungsurteil-uebersetzung', 'Scheidungsurteil'), doc('sterbeurkunde-uebersetzung', 'Sterbeurkunde')]],
+      ['Worauf das Standesamt bei der Übersetzung achtet', '• Übersetzt von einem in Deutschland ermächtigten oder beeidigten Übersetzer, mit Stempel, Unterschrift und Bestätigungsvermerk\n• Vollständig: auch Rückseiten, Randvermerke, Stempel und Apostille\n• Namen in derselben Schreibweise wie im Reisepass – sonst fragt das Standesamt nach\n• Zum Termin bringen Sie die Originalurkunde und die Übersetzung mit\n\nAchten Sie bei Ledigkeitsbescheinigung und Registerauszügen auf das Ausstellungsdatum: Viele Standesämter akzeptieren sie nur, wenn sie nicht älter als sechs Monate sind. Was genau gilt, sagt Ihnen Ihr Standesamt.',
+        [doc('ledigkeitsbescheinigung-uebersetzung', 'Ledigkeitsbescheinigung'), guide('heiraten-in-deutschland-als-auslaender', 'Heiraten in Deutschland als Ausländer')]],
       ['Dolmetscher für Anmeldung und Trauung', 'Spricht ein Partner nicht ausreichend Deutsch, verlangt das Standesamt für die Anmeldung der Eheschließung und die Trauung meist einen Dolmetscher. Wir stellen Dolmetscher für alle Sprachen – auf Wunsch beeidigt.',
         [interp('standesamt-dolmetscher', 'Dolmetscher fürs Standesamt'), interp('dolmetscher-hochzeit', 'Dolmetscher für die Trauung')]],
     ],
@@ -216,10 +218,10 @@ export const PHASE1 = {
 
   '/de/beglaubigte-uebersetzung-auslaenderbehoerde': {
     sections: [
-      ['Typische Unterlagen für die Ausländerbehörde', '• Aufenthaltstitel und Verlängerung: Reisepass, Heirats- und Geburtsurkunden, Arbeitsvertrag, Nachweise über Einkommen\n• Familiennachzug: Heiratsurkunde, Geburtsurkunden der Kinder, Sorgerechtsnachweise\n• Einbürgerung: Geburtsurkunde, Heiratsurkunde, Schul- und Berufsabschlüsse, gegebenenfalls Namensnachweise\n• Blaue Karte und Fachkräfte: Diplome, Arbeitszeugnisse, Arbeitsvertrag\n\nWelche Unterlagen übersetzt werden müssen, legt Ihre Ausländerbehörde fest.',
-        [guide('familiennachzug-dokumente', 'Familiennachzug: Dokumente'), guide('einbuergerung-dokumente', 'Einbürgerung: Dokumente'), doc('diplom-uebersetzung', 'Diplom'), doc('arbeitszeugnis-uebersetzung', 'Arbeitszeugnis')]],
+      ['Übersetzung aus dem Heimatland oder aus Deutschland?', 'Ausländerbehörden verlangen in der Regel die Übersetzung eines Übersetzers, der in Deutschland ermächtigt oder beeidigt ist. Übersetzungen, die im Herkunftsland angefertigt wurden, werden oft nicht anerkannt – auch wenn sie dort beglaubigt sind. Fragen Sie im Zweifel vorher bei Ihrer Behörde nach, bevor Sie doppelt bezahlen.\n\nFür den Termin bringen Sie meist die Originaldokumente und die beglaubigten Übersetzungen mit. Viele Behörden nehmen Unterlagen inzwischen auch digital entgegen; dafür eignet sich die PDF der Übersetzung, die Sie von uns sofort per E-Mail erhalten.',
+        [doc('express-uebersetzung', 'Express-Übersetzung am selben Tag'), doc('beglaubigte-uebersetzung-kosten', 'Was kostet eine beglaubigte Übersetzung?')]],
       ['Dolmetscher für den Termin', 'Für Gespräche bei der Ausländerbehörde oder dem Jobcenter stellen wir Dolmetscher – vor Ort, per Video oder Telefon.',
-        [interp('dolmetscher-behoerde', 'Dolmetscher für Behördengänge')]],
+        [interp('dolmetscher-behoerde', 'Dolmetscher für Behördengänge'), link('/de/dolmetschen/', 'Dolmetscher buchen')]],
     ],
     faqs: [
       ['Werden Ihre Übersetzungen von jeder Ausländerbehörde anerkannt?', 'Ja. Beglaubigte Übersetzungen ermächtigter Übersetzer werden von Ausländerbehörden bundesweit anerkannt.'],
@@ -242,6 +244,8 @@ export const PHASE1 = {
 
   '/de/beglaubigte-uebersetzung-kosten': {
     sections: [
+      ['Preis für eine beglaubigte Übersetzung sofort', 'Brauchen Sie die Übersetzung sofort, ist sie im Express am selben Tag fertig – meist innerhalb von 4–5 Stunden, wenn wir das Dokument früh am Tag erhalten. Der Express-Aufpreis hängt vom Umfang ab und steht vorab in Ihrem Festpreisangebot, zusammen mit dem Grundpreis ab 39 € pro Standarddokument. So wissen Sie schon vor dem Auftrag, was die schnelle Übersetzung kostet.',
+        [link('/de/express-uebersetzung/', 'Express-Übersetzung am selben Tag'), link('/de/beglaubigte-uebersetzung-dauer/', 'Wie lange dauert eine beglaubigte Übersetzung?')]],
       ['Weitere Preise im Überblick', '• Beglaubigte Übersetzung von Standarddokumenten: ab 39 € pro Dokument\n• Fachübersetzung: ab 0,12 € pro Wort\n• Dolmetscher: ab 85 € pro Stunde\n• Lieferung: Standard in 2–3 Werktagen, Express am selben Tag\n\nDen verbindlichen Festpreis nennen wir Ihnen immer vorab und kostenlos.',
         [link('/de/fachuebersetzungen/', 'Fachübersetzungen'), link('/de/dolmetschen/', 'Dolmetscher'), link('/de/express-uebersetzung/', 'Express-Übersetzung')]],
       ['Wer bezahlt die Übersetzung?', 'In der Regel trägt die Person die Kosten, die das Dokument einreichen muss. In manchen Fällen gibt es Unterstützung: Für die Anerkennung ausländischer Berufsabschlüsse kann zum Beispiel der Anerkennungszuschuss des Bundes Kosten für Übersetzungen übernehmen, und Jobcenter oder Arbeitsagentur übernehmen im Einzelfall Kosten, wenn die Übersetzung für eine Bewerbung oder Arbeitsaufnahme nötig ist. Klären Sie das bitte vor dem Auftrag mit der zuständigen Stelle – wir stellen Ihnen gern ein Angebot zur Vorlage aus.',
@@ -266,9 +270,9 @@ export const PHASE1 = {
 
   '/de/sprachen/arabisch': {
     sections: [
-      ['Arabisch-Deutsch beglaubigte Übersetzung: häufige Dokumente', 'Besonders oft übersetzen wir Geburts- und Heiratsurkunden, Familienregisterauszüge, Scheidungsurteile, Schul- und Hochschulzeugnisse, Führerscheine und Gerichtsurteile – aus Syrien, dem Irak, Ägypten, dem Libanon, Jordanien, Marokko, Algerien, Tunesien, Libyen, dem Sudan und den Golfstaaten. Namen übertragen wir so, wie sie im Reisepass stehen, damit alle Unterlagen einheitlich sind.',
+      ['Die häufigsten arabischen Urkunden', 'Besonders oft übersetzen wir Geburts- und Heiratsurkunden, Familienregisterauszüge, Scheidungsurteile, Schul- und Hochschulzeugnisse, Führerscheine und Gerichtsurteile – aus Syrien, dem Irak, Ägypten, dem Libanon, Jordanien, Marokko, Algerien, Tunesien, Libyen, dem Sudan und den Golfstaaten. Namen übertragen wir so, wie sie im Reisepass stehen, damit alle Unterlagen einheitlich sind.',
         [link('/de/ratgeber/arabische-geburtsurkunde-uebersetzen/', 'Arabische Geburtsurkunde übersetzen'), doc('geburtsurkunde-uebersetzung', 'Geburtsurkunde'), doc('heiratsurkunde-uebersetzung', 'Heiratsurkunde'), doc('zeugnis-uebersetzung', 'Zeugnis')]],
-      ['Arabisch-Dolmetscher – auch für Dialekte', 'Unsere Dolmetscher arbeiten auch mit syrischem, irakischem, ägyptischem, sudanesischem, libyschem, marokkanischem und algerischem Arabisch. Nennen Sie uns bei der Buchung die Herkunft der Gesprächspartner, damit wir den passenden Dolmetscher einsetzen.',
+      ['Arabische Dialekte: der passende Dolmetscher', 'Unsere Dolmetscher arbeiten auch mit syrischem, irakischem, ägyptischem, sudanesischem, libyschem, marokkanischem und algerischem Arabisch. Nennen Sie uns bei der Buchung die Herkunft der Gesprächspartner, damit wir den passenden Dolmetscher einsetzen.',
         [link('/de/standorte/berlin/arabisch/', 'Arabisch Übersetzer Berlin'), link('/de/standorte/stuttgart/arabisch/', 'Arabisch Übersetzer Stuttgart'), link('/de/dolmetschen/', 'Dolmetscher buchen')]],
     ],
     faqs: [
