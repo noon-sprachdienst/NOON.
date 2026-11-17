@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ArrowDown, ArrowUp, Eye, EyeOff, GripVertical, MousePointerClick, Plus, Trash2 } from 'lucide-react';
+import {
+  ArrowDown, ArrowUp, Eye, EyeOff, GripVertical, Maximize2, Minimize2, Monitor, MousePointerClick, Plus, Smartphone, Tablet, Trash2,
+} from 'lucide-react';
 import QuoteFormFields from '../../components/QuoteFormFields.jsx';
 import ContactCard from '../../components/ContactCard.jsx';
 import { CmsProvider, CmsText, EditBox, InlineText } from '../../components/cms/Editable.jsx';
@@ -7,6 +9,7 @@ import {
   CUSTOM_TYPES, isFieldHidden, isHidden, LIMITS, NEW_TEXTS, phoneHref, styleOf, textCss, textIn,
 } from '../../data/formSchema.js';
 import { setHidden, UNHIDEABLE } from './ElementBar.jsx';
+import PageCanvas from './PageCanvas.jsx';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
 
@@ -20,10 +23,10 @@ function Segmented({ value, options, onChange }) {
   );
 }
 
-// The quote form as the visitor sees it. In "Edit" mode every element can be clicked (opens its
+// The quote section as the visitor sees it, at the chosen device width (PageCanvas). In "Edit" mode every element can be clicked (opens its
 // settings in the panel), its texts can be typed in place, fields can be dragged by the handle,
 // moved, hidden or deleted from the small toolbar, and "+" inserts a new field right there.
-export default function VisualPreview({ config, lang, t, update, mode, setMode, selectedKey, onSelect, onInsertField, onDeleteField, scope, tool, setTool }) {
+export default function VisualPreview({ config, lang, t, update, mode, setMode, selectedKey, onSelect, onInsertField, onDeleteField, scope, tool, setTool, device, setDevice, wide, setWide }) {
   const [service, setService] = useState('translation');
   const [source, setSource] = useState(config.defaultSource);
   const [target, setTarget] = useState(config.defaultTarget);
@@ -145,11 +148,12 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
   const renderText = (field, prop) => edit(field[prop], (map) => update((c) => { c.fields.find((f) => f.id === field.id)[prop] = map; }));
   const steps = (config.steps || []).filter((step) => visible(`step:${step.id}`));
   const stepHidden = (key) => isHidden(config, key, lang);
+  const canAddStep = editing && (config.steps || []).length < LIMITS.maxSteps;
   // Shared with the website: <CmsText> and <ContactCard> read this to become editable.
   const cms = { config, lang, editing, update, selectedKey, onSelect, emptyText: t.emptyText };
 
   return (
-    <aside className="np-preview">
+    <aside className={`np-preview${wide ? ' is-wide' : ''}`}>
       <div className="np-preview-head">
         <strong>{t.preview}</strong>
         <div className="np-preview-controls">
@@ -158,88 +162,106 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
           {mode === 'form' && editing && (
             <Segmented value={service} onChange={setService} options={(config.fields.find((f) => f.type === 'service')?.options || []).map((o) => [o.id, textIn(o.label, lang)])} />
           )}
+          <div className="np-seg np-seg--sm" role="group" aria-label={t.pvDevice}>
+            {[['desktop', Monitor, t.pvDesktop], ['tablet', Tablet, t.pvTablet], ['phone', Smartphone, t.pvPhone]].map(([key, Icon, label]) => (
+              <button key={key} type="button" className={device === key ? 'is-active' : ''} aria-pressed={device === key} title={label} aria-label={label} onClick={() => setDevice(key)}><Icon size={14} /></button>
+            ))}
+          </div>
+          <button type="button" className="np-mini" onClick={() => setWide(!wide)} title={wide ? t.pvNormal : t.pvWide} aria-label={wide ? t.pvNormal : t.pvWide}>
+            {wide ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+          </button>
         </div>
       </div>
       {editing && <p className="np-pv-hint"><MousePointerClick size={14} /> {t.pvHint}</p>}
 
-      <CmsProvider value={cms}>
-        <div className={`np-preview-frame${editing ? ' np-edit' : ''}`} dir={dir} lang={lang} onClick={() => setAddAt(null)}>
-          {mode === 'form' && config.section && (
-            <div className="np-pv-section">
-              <CmsText k="section.eyebrow" className="np-pv-eyebrow" />
-              <CmsText k="section.title" as="strong" className="np-pv-title" />
-              <CmsText k="section.sub" as="p" className="np-pv-sub" />
-              {visible('steps') && (
-                <EditBox k="steps" className="np-pv-stepsbox">
-                  <ol className="np-pv-steps" style={{ '--steps': steps.length + (editing && steps.length < LIMITS.maxSteps ? 1 : 0) }}>
-                    {steps.map((step, i) => {
-                      const key = `step:${step.id}`;
-                      return (
-                        <li key={step.id} {...(editing ? dropProps('step', step.id, 'x') : {})}
-                          className={`${i === 0 ? 'is-first' : ''}${editing ? ' np-pv-el np-pv-step' : ''}${selectedKey === key ? ' is-selected' : ''}${editing && stepHidden(key) ? ' is-ghost' : ''}${drop?.id === step.id ? ` is-drop-${drop.pos}` : ''}`}
-                          onClick={editing ? (e) => { e.stopPropagation(); onSelect(key); } : undefined}>
-                          {editing && (
-                            <div className="np-pv-chip np-pv-chip--step" onClick={(e) => e.stopPropagation()}>
-                              {grip('step', step.id)}
-                              <button type="button" onClick={() => toggleHidden(key)} title={stepHidden(key) ? t.unhide : t.hide} aria-label={stepHidden(key) ? t.unhide : t.hide}>
-                                {stepHidden(key) ? <Eye size={12} /> : <EyeOff size={12} />}
-                              </button>
-                              <button type="button" className="is-danger" disabled={(config.steps || []).length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps = c.steps.filter((s) => s.id !== step.id); })} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
-                            </div>
-                          )}
-                          <i>{String(i + 1).padStart(2, '0')}</i>
-                          <b style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</b>
-                          <small>{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</small>
-                        </li>
-                      );
-                    })}
-                    {editing && (config.steps || []).length < LIMITS.maxSteps && (
-                      <li className="np-pv-addstep">
-                        <button type="button" onClick={(e) => {
-                          e.stopPropagation();
-                          const id = `s${Math.random().toString(36).slice(2, 8)}`;
-                          update((c) => { c.steps = [...(c.steps || []), { id, label: { ...NEW_TEXTS.step }, desc: {} }]; });
-                          onSelect(`step:${id}`);
-                        }} title={t.addStep} aria-label={t.addStep}><Plus size={14} /></button>
-                        <small>{t.addStep}</small>
-                      </li>
+      <div className="np-preview-frame">
+        <PageCanvas device={device} lang={lang} dir={dir}>
+          <CmsProvider value={cms}>
+            {/* The section exactly as on the website (HowContact), with edit tools while editing. */}
+            <div className={editing ? 'np-edit' : undefined} dir={dir} lang={lang} onClick={() => setAddAt(null)}>
+              <section className="how-contact">
+                <div className="wrap">
+                  {mode === 'form' && (
+                    <>
+                      <CmsText k="section.eyebrow" as="div" className="section-eyebrow" />
+                      <CmsText k="section.title" as="h2" />
+                      <CmsText k="section.sub" as="p" className="section-sub" />
+                      {visible('steps') && (
+                        <EditBox k="steps" className="np-pv-stepsbox">
+                          <div className="steps-bar" style={{ '--steps': steps.length + (canAddStep ? 1 : 0) }}>
+                            {steps.map((step, i) => {
+                              const key = `step:${step.id}`;
+                              return (
+                                <div key={step.id} {...(editing ? dropProps('step', step.id, 'x') : {})}
+                                  className={`step${i === 0 ? ' active' : ''}${editing ? ' np-pv-el np-pv-step' : ''}${selectedKey === key ? ' is-selected' : ''}${editing && stepHidden(key) ? ' is-ghost' : ''}${drop?.id === step.id ? ` is-drop-${drop.pos}` : ''}`}
+                                  onClick={editing ? (e) => { e.stopPropagation(); onSelect(key); } : undefined}>
+                                  {editing && (
+                                    <div className="np-pv-chip np-pv-chip--step" onClick={(e) => e.stopPropagation()}>
+                                      {grip('step', step.id)}
+                                      <button type="button" onClick={() => toggleHidden(key)} title={stepHidden(key) ? t.unhide : t.hide} aria-label={stepHidden(key) ? t.unhide : t.hide}>
+                                        {stepHidden(key) ? <Eye size={12} /> : <EyeOff size={12} />}
+                                      </button>
+                                      <button type="button" className="is-danger" disabled={(config.steps || []).length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps = c.steps.filter((s) => s.id !== step.id); })} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
+                                    </div>
+                                  )}
+                                  <div className="step-circle" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
+                                  <div className="step-label" style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</div>
+                                  <div className="step-desc">{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</div>
+                                </div>
+                              );
+                            })}
+                            {canAddStep && (
+                              <div className="step np-pv-addstep">
+                                <button type="button" onClick={(e) => {
+                                  e.stopPropagation();
+                                  const id = `s${Math.random().toString(36).slice(2, 8)}`;
+                                  update((c) => { c.steps = [...(c.steps || []), { id, label: { ...NEW_TEXTS.step }, desc: {} }]; });
+                                  onSelect(`step:${id}`);
+                                }} title={t.addStep} aria-label={t.addStep}><Plus size={16} /></button>
+                                <small>{t.addStep}</small>
+                              </div>
+                            )}
+                          </div>
+                        </EditBox>
+                      )}
+                    </>
+                  )}
+
+                  <div className="contact-grid">
+                    <ContactCard lang={lang} />
+                    {mode === 'form' ? (
+                      <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
+                        <CmsText k="form.title" as="h3" />
+                        <CmsText k="form.sub" as="p" className="sub" />
+                        <QuoteFormFields
+                          config={config} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
+                          targetLang={target} onTargetLang={setTarget} onFilesChange={() => {}} idPrefix="pv-"
+                          editing={editing} renderText={editing ? renderText : undefined} wrapField={editing ? wrapField : undefined}
+                        />
+                        <CmsText k="submit" as="button" type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
+                          editAs="div" editClass="np-pv-submit" onClick={() => setMode('done')} after={<> <span className="arrow">→</span></>} />
+                      </form>
+                    ) : (
+                      <div className="contact-card form-card form-done">
+                        <div className="form-done-check" aria-hidden="true">
+                          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                        </div>
+                        <CmsText k="confirm.title" as="h3" />
+                        <CmsText k="confirm.text" as="p" format={(value) => withPhone(value, (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)} />
+                        {editing && <small className="np-pv-token">{fill(t.phoneToken, { phone })}</small>}
+                        <div className="form-done-actions">
+                          <CmsText k="confirm.call" className="btn btn-primary" boxClass="np-pv-inlinebox" format={(value) => withPhone(value, (i) => <span key={i} dir="ltr">{phone}</span>)} />
+                          <CmsText k="confirm.again" as="button" type="button" className="btn btn-secondary" boxClass="np-pv-inlinebox" onClick={() => setMode('form')} />
+                        </div>
+                      </div>
                     )}
-                  </ol>
-                </EditBox>
-              )}
+                  </div>
+                </div>
+              </section>
             </div>
-          )}
-
-          {mode === 'form' && <div className="np-pv-contact"><ContactCard lang={lang} /></div>}
-
-          {mode === 'form' ? (
-            <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
-              <CmsText k="form.title" as="h3" />
-              <CmsText k="form.sub" as="p" className="sub" />
-              <QuoteFormFields
-                config={config} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
-                targetLang={target} onTargetLang={setTarget} onFilesChange={() => {}} idPrefix="pv-"
-                editing={editing} renderText={editing ? renderText : undefined} wrapField={editing ? wrapField : undefined}
-              />
-              <CmsText k="submit" as="button" type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
-                editAs="div" editClass="np-pv-submit" onClick={() => setMode('done')} after={<> <span className="arrow">→</span></>} />
-            </form>
-          ) : (
-            <div className="contact-card form-card form-done">
-              <div className="form-done-check" aria-hidden="true">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-              </div>
-              <CmsText k="confirm.title" as="h3" />
-              <CmsText k="confirm.text" as="p" format={(value) => withPhone(value, (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)} />
-              {editing && <small className="np-pv-token">{fill(t.phoneToken, { phone })}</small>}
-              <div className="form-done-actions">
-                <CmsText k="confirm.call" className="btn btn-primary" boxClass="np-pv-inlinebox" format={(value) => withPhone(value, (i) => <span key={i} dir="ltr">{phone}</span>)} />
-                <CmsText k="confirm.again" as="button" type="button" className="btn btn-secondary" boxClass="np-pv-inlinebox" onClick={() => setMode('form')} />
-              </div>
-            </div>
-          )}
-        </div>
-      </CmsProvider>
+          </CmsProvider>
+        </PageCanvas>
+      </div>
     </aside>
   );
 }

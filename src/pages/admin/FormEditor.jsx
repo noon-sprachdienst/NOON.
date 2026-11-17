@@ -465,6 +465,9 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   // Hide and style changes go to all languages or only the one being edited.
   const [scope, setScope] = useState('all');
   const [tool, setTool] = useState('edit');
+  // Preview width (desktop / tablet / phone) and full-screen editing (panel hidden, toolbar floats).
+  const [device, setDevice] = useState('desktop');
+  const [wide, setWide] = useState(false);
   const [flash, setFlash] = useState(null);
   const messageRef = useRef(null);
   // Undo / redo: earlier states of the form in this editing session. Quick edits in a row
@@ -677,6 +680,11 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       : state.published ? fill(t.statusPublished, { rev: state.published.rev, date: new Date(state.published.publishedAt).toLocaleString(locale) })
         : t.statusDefault;
   const props = { config, lang, t, update };
+  const isWide = wide && section !== 'history';
+  const elementBar = section !== 'history' && tool === 'edit' && selectedKey ? (
+    <ElementBar config={config} lang={lang} t={t} update={update} elementKey={selectedKey} scope={scope} setScope={setScope}
+      onDeleteField={deleteField} onClose={() => setSelectedKey(null)} />
+  ) : null;
 
   return (
     <div className="np-cms">
@@ -723,13 +731,10 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
         </div>
       )}
 
-      <div className={`np-cms-grid${section === 'history' ? ' is-single' : ''}`}>
+      <div className={`np-cms-grid${section === 'history' ? ' is-single' : ''}${isWide ? ' is-wide' : ''}`}>
         <div className="np-cms-col">
           {/* Toolbar of the element selected in the preview; stays in view while the panel scrolls. */}
-          {section !== 'history' && tool === 'edit' && selectedKey && (
-            <ElementBar config={config} lang={lang} t={t} update={update} elementKey={selectedKey} scope={scope} setScope={setScope}
-              onDeleteField={deleteField} onClose={() => setSelectedKey(null)} />
-          )}
+          {elementBar && !isWide && elementBar}
           {section === 'fields' && <FieldsSection {...props} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />}
           {section === 'languages' && <LanguagesSection {...props} />}
           {section === 'confirmation' && <ConfirmationSection {...props} />}
@@ -739,9 +744,12 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
         </div>
         {section !== 'history' && (
           <VisualPreview config={config} lang={lang} t={t} update={update} mode={previewMode} setMode={showPreview}
-            selectedKey={selectedKey} onSelect={select} onInsertField={insertField} onDeleteField={deleteField} scope={scope} tool={tool} setTool={setTool} />
+            selectedKey={selectedKey} onSelect={select} onInsertField={insertField} onDeleteField={deleteField} scope={scope} tool={tool} setTool={setTool}
+            device={device} setDevice={setDevice} wide={isWide} setWide={setWide} />
         )}
       </div>
+      {/* Full screen: the toolbar floats over the preview. */}
+      {elementBar && isWide && <div className="np-elbar-float">{elementBar}</div>}
     </div>
   );
 }

@@ -12,13 +12,15 @@ const CmsContext = createContext({ config: null, lang: 'de', editing: false });
 export const CmsProvider = CmsContext.Provider;
 export const useCms = () => useContext(CmsContext);
 
-// Puts the caret at the end of an inline text box.
+// Puts the caret at the end of an inline text box. Uses the element's own document, because
+// the admin preview renders the page inside an iframe.
 export function focusEnd(el) {
   el.focus();
-  const range = document.createRange();
+  const doc = el.ownerDocument;
+  const range = doc.createRange();
   range.selectNodeContents(el);
   range.collapse(false);
-  const selection = window.getSelection();
+  const selection = doc.defaultView.getSelection();
   selection.removeAllRanges();
   selection.addRange(range);
 }
@@ -29,7 +31,7 @@ export function InlineText({ value, fallback, onChange, dir, className = '' }) {
   const ref = useRef(null);
   useLayoutEffect(() => {
     const el = ref.current;
-    if (el && document.activeElement !== el && el.textContent !== (value || '')) el.textContent = value || '';
+    if (el && el.ownerDocument.activeElement !== el && el.textContent !== (value || '')) el.textContent = value || '';
   }, [value]);
   return (
     <span
@@ -48,7 +50,7 @@ export function InlineText({ value, fallback, onChange, dir, className = '' }) {
       }}
       onPaste={(e) => {
         e.preventDefault();
-        document.execCommand('insertText', false, e.clipboardData.getData('text/plain').replace(/\s*\n\s*/g, ' '));
+        e.currentTarget.ownerDocument.execCommand('insertText', false, e.clipboardData.getData('text/plain').replace(/\s*\n\s*/g, ' '));
       }}
     />
   );
