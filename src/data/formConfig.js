@@ -89,6 +89,17 @@ export const DEFAULT_FORM_CONFIG = {
     again: pick(FORM_CONFIRMATION, 'again'),
     phone: '+49 160 956 27 666',
   },
+  // Contact card next to the form. Phone, e-mail and address are not here: they are shared with
+  // the footer, the office pages and Google's business data (src/config/contact.js).
+  contact: {
+    title: fromKey('contact.h3'),
+    sub: fromKey('contact.sub'),
+    phoneLabel: fromKey('contact.phone'),
+    emailLabel: fromKey('contact.email'),
+    hqLabel: fromKey('contact.hq'),
+    hours: fromKey('foot.hours'),
+    whatsapp: fromKey('contact.wa'),
+  },
 };
 
 // Deep copy, so editors can change it freely.

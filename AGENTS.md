@@ -51,7 +51,8 @@ hides a failure.
 | UI texts (de, en, ar, tr, ru, fr, uk) | `src/data/translations.js`, `src/hooks/useI18n.jsx` | Arabic is RTL. |
 | Serverless API (forms, admin, analytics) | `api/` | Mind Vercel function limits. |
 | Styles | `src/styles/global.css` | |
-| Contact data | `src/config/contact.js` | |
+| Contact data | `src/config/contact.js` | Shared site-wide (footer, office pages, schema); address in `src/data/legalInfo.js`. Not editable in the CMS. |
+| CMS-editable elements (quote section) | `src/data/formSchema.js` (`CMS_ELEMENTS`), `src/components/cms/Editable.jsx` | To make an element editable/hideable/stylable: add its key to `CMS_ELEMENTS`, its default text to `formConfig.js`, its admin name to `cmsI18n.js` (`el`), and render it with `<CmsText k="…" />`. Do not copy markup into the admin preview; it renders the same components. |
 
 ## Reuse before you write
 

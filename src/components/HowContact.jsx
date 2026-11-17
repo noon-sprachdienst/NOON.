@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { trackEvent } from '../lib/analytics';
 import { CONTACT } from '../config/contact.js';
 import QuoteFormFields from './QuoteFormFields.jsx';
+import ContactCard from './ContactCard.jsx';
+import { CmsProvider, CmsText } from './cms/Editable.jsx';
 import { useFormConfig } from '../lib/formConfig.js';
 import { DEFAULT_FORM_CONFIG } from '../data/formConfig.js';
 import { buttonCss, isFieldHidden, isHidden, OTHER_LANGUAGE, phoneHref, styleOf, textCss, textIn } from '../data/formSchema.js';
@@ -150,7 +152,6 @@ function readFileAsBase64(file) {
   });
 }
 
-const BRANCH_LABEL = { de: 'Standort', en: 'Office', ar: 'الفرع', tr: 'Şube', ru: 'Филиал', fr: 'Agence', uk: 'Філія' };
 
 // `branch` (optional) is set on an office page: its own phone, address and WhatsApp
 // replace the head-office details so calls from e.g. the Kiel page reach Kiel.
@@ -170,10 +171,15 @@ export default function HowContact({ branch = null }) {
   const [sourceLang, setSourceLang] = useState(config.defaultSource);
   const [targetLang, setTargetLang] = useState(config.defaultTarget);
   const done = config.confirmation;
-  // Heading and steps above the form (settings saved before they were editable fall back to the built-in ones).
-  const section = config.section || DEFAULT_FORM_CONFIG.section;
+  // Settings saved before a part was editable (section heading, steps, contact card) use the built-in texts.
+  const cms = useMemo(() => ({
+    config: { ...config, section: config.section || DEFAULT_FORM_CONFIG.section, contact: config.contact || DEFAULT_FORM_CONFIG.contact },
+    lang,
+    editing: false,
+  }), [config, lang]);
+  const section = cms.config.section;
   const steps = (config.steps?.length ? config.steps : DEFAULT_FORM_CONFIG.steps).filter((step) => !isHidden(config, `step:${step.id}`, lang));
-  // Elements the admin hid (in all languages or only this one) and their text style.
+  // Steps and the send button have their own markup; the other elements use <CmsText>.
   const shown = (key) => !isHidden(config, key, lang);
   const css = (key) => textCss(styleOf(config, key, lang));
   const btnCss = (key) => buttonCss(styleOf(config, key, lang));
@@ -314,12 +320,13 @@ export default function HowContact({ branch = null }) {
   };
 
   return (
+    <CmsProvider value={cms}>
     <section className="how-contact" id="contact" aria-labelledby="how-heading">
       <div className="wrap">
-        {shown('section.eyebrow') && <div className="section-eyebrow" style={css('section.eyebrow')}>{textIn(section.eyebrow, lang)}</div>}
+        <CmsText k="section.eyebrow" as="div" className="section-eyebrow" />
         {/* The heading stays for screen readers when hidden, because the section is labelled by it. */}
-        <h2 id="how-heading" data-reveal="" className={shown('section.title') ? undefined : 'sr-only'} style={css('section.title')}>{textIn(section.title, lang)}</h2>
-        {shown('section.sub') && <p className="section-sub" data-reveal="" style={{ '--ri': 1, ...css('section.sub') }}>{textIn(section.sub, lang)}</p>}
+        <CmsText k="section.title" as="h2" id="how-heading" data-reveal="" keepForReaders />
+        <CmsText k="section.sub" as="p" className="section-sub" data-reveal="" style={{ '--ri': 1 }} />
 
         {/* Steps bar */}
         {shown('steps') && steps.length > 0 && (
@@ -336,68 +343,8 @@ export default function HowContact({ branch = null }) {
 
         {/* Contact + Form grid */}
         <div className="contact-grid">
-          {/* Left — contact card */}
-          <div className="contact-card" data-reveal="" style={{ '--ri': 0 }}>
-            <h3>{t('contact.h3')}</h3>
-            <p className="sub">{t('contact.sub')}</p>
-
-            <div className="info-list">
-              <div className="info-row">
-                <div className="info-ic" aria-hidden="true">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M22 16.92V21a2 2 0 01-2 2A19 19 0 011 4a2 2 0 012-2h4a2 2 0 012 2 12 12 0 00.7 4 2 2 0 01-.45 2L7 12a16 16 0 006 6l2-1.25a2 2 0 012-.45 12 12 0 004 .7 2 2 0 011 1.92z"/>
-                  </svg>
-                </div>
-                <div>
-                  <div className="info-lbl">{t('contact.phone')}</div>
-                  <div className="info-val info-val-stack">
-                    {phones.map((phone) => <a key={phone.href} href={phone.href}>{phone.label}</a>)}
-                  </div>
-                </div>
-              </div>
-
-              <div className="info-row">
-                <div className="info-ic" aria-hidden="true">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M3 7l9 6 9-6"/>
-                    <rect x="3" y="5" width="18" height="14" rx="2"/>
-                  </svg>
-                </div>
-                <div>
-                  <div className="info-lbl">{t('contact.email')}</div>
-                  <div className="info-val"><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></div>
-                </div>
-              </div>
-
-              <div className="info-row">
-                <div className="info-ic" aria-hidden="true">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M12 21s7-7 7-12a7 7 0 10-14 0c0 5 7 12 7 12z"/>
-                    <circle cx="12" cy="9" r="2.5"/>
-                  </svg>
-                </div>
-                <div>
-                  <div className="info-lbl">{branch ? `${BRANCH_LABEL[lang] || BRANCH_LABEL.de} ${branch.city}` : t('contact.hq')}</div>
-                  <div className="info-val">{branch ? `${branch.street} · ${branch.postalCode} ${branch.city}` : 'Rosenplatz 17 · Osnabrück'}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="contact-hours">{t('foot.hours')}</div>
-
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn wa-btn"
-              aria-label={t('contact.wa')}
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.824 11.824 0 013.48 8.413c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/>
-              </svg>
-              <span>{t('contact.wa')}</span>
-            </a>
-          </div>
+          {/* Left — contact card (shared with the admin preview) */}
+          <ContactCard branch={branch} lang={lang} />
 
           {/* Right — form card, replaced by the confirmation card once the request was sent */}
           {status === 'sent' ? (
@@ -405,20 +352,13 @@ export default function HowContact({ branch = null }) {
               <div className="form-done-check" aria-hidden="true">
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
               </div>
-              <h3 tabIndex="-1" className={shown('confirm.title') ? undefined : 'sr-only'} style={css('confirm.title')}>{textIn(done.title, lang)}</h3>
-              {shown('confirm.text') && <p style={css('confirm.text')}>{withPhone(textIn(done.text, lang), () => <a href={donePhone.href} dir="ltr">{donePhone.label}</a>)}</p>}
+              <CmsText k="confirm.title" as="h3" tabIndex="-1" keepForReaders />
+              <CmsText k="confirm.text" as="p" format={(text) => withPhone(text, () => <a href={donePhone.href} dir="ltr">{donePhone.label}</a>)} />
               <div className="form-done-actions">
                 {/* tel: links are counted automatically as "phone" by the site analytics */}
-                {shown('confirm.call') && (
-                  <a className="btn btn-primary" href={donePhone.href} style={btnCss('confirm.call')}>
-                    <span style={css('confirm.call')}>{withPhone(textIn(done.call, lang), () => <span dir="ltr">{donePhone.label}</span>)}</span>
-                  </a>
-                )}
-                {shown('confirm.again') && (
-                  <button type="button" className="btn btn-secondary form-done-again" onClick={startOver} style={btnCss('confirm.again')}>
-                    <span style={css('confirm.again')}>{textIn(done.again, lang)}</span>
-                  </button>
-                )}
+                <CmsText k="confirm.call" as="a" className="btn btn-primary" href={donePhone.href}
+                  format={(text) => withPhone(text, () => <span dir="ltr">{donePhone.label}</span>)} />
+                <CmsText k="confirm.again" as="button" type="button" className="btn btn-secondary form-done-again" onClick={startOver} />
               </div>
             </div>
           ) : (
@@ -429,8 +369,8 @@ export default function HowContact({ branch = null }) {
             style={{ '--ri': 1 }}
             aria-label={t('form.h3')}
           >
-            {shown('form.title') && <h3 style={css('form.title')}>{textIn(config.texts.title, lang) || t('form.h3')}</h3>}
-            {shown('form.sub') && <p className="sub" style={css('form.sub')}>{textIn(config.texts.sub, lang) || t('form.sub')}</p>}
+            <CmsText k="form.title" as="h3" fallback={t('form.h3')} />
+            <CmsText k="form.sub" as="p" className="sub" fallback={t('form.sub')} />
 
             <QuoteFormFields
               config={config}
@@ -485,5 +425,6 @@ export default function HowContact({ branch = null }) {
         </div>
       </div>
     </section>
+    </CmsProvider>
   );
 }

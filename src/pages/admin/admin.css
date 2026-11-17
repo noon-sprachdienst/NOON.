@@ -559,3 +559,9 @@ textarea.np-input { resize: vertical; line-height: 1.55; }
 .np-btn.is-danger { color: #c0283a; }
 .np-pv-inlinebox { display: inline-block; }
 .np-edit .np-pv-stepsbox { padding: 4px 0; }
+
+/* Contact card in the preview, and the note about shared contact data */
+.np-pv-contact { margin-bottom: 16px; }
+.np-pv-contact .contact-card { margin: 0; }
+.np-shared { align-items: flex-start; }
+.np-shared p { margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; }

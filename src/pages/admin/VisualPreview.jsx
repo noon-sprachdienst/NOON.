@@ -1,43 +1,14 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp, Eye, EyeOff, GripVertical, MousePointerClick, Plus, Trash2 } from 'lucide-react';
 import QuoteFormFields from '../../components/QuoteFormFields.jsx';
+import ContactCard from '../../components/ContactCard.jsx';
+import { CmsProvider, CmsText, EditBox, InlineText } from '../../components/cms/Editable.jsx';
 import {
-  buttonCss, CUSTOM_TYPES, isFieldHidden, isHidden, LIMITS, NEW_TEXTS, phoneHref, styleOf, textCss, textIn,
+  CUSTOM_TYPES, isFieldHidden, isHidden, LIMITS, NEW_TEXTS, phoneHref, styleOf, textCss, textIn,
 } from '../../data/formSchema.js';
-import { focusEnd, setHidden, UNHIDEABLE } from './ElementBar.jsx';
+import { setHidden, UNHIDEABLE } from './ElementBar.jsx';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
-
-// Text written straight into the preview. The DOM owns the text while it has focus, so the
-// caret never jumps; the value is pushed to the editor state on every keystroke.
-function InlineText({ value, fallback, onChange, dir, className = '', as: Tag = 'span' }) {
-  const ref = useRef(null);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (el && document.activeElement !== el && el.textContent !== (value || '')) el.textContent = value || '';
-  }, [value]);
-  return (
-    <Tag
-      ref={ref}
-      className={`np-inline ${className}`}
-      contentEditable
-      suppressContentEditableWarning
-      spellCheck={false}
-      dir={dir}
-      role="textbox"
-      data-placeholder={fallback || ''}
-      onInput={(e) => onChange(e.currentTarget.textContent)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); e.currentTarget.blur(); }
-        e.stopPropagation();
-      }}
-      onPaste={(e) => {
-        e.preventDefault();
-        document.execCommand('insertText', false, e.clipboardData.getData('text/plain').replace(/\s*\n\s*/g, ' '));
-      }}
-    />
-  );
-}
 
 function Segmented({ value, options, onChange }) {
   return (
@@ -103,20 +74,6 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
   // Hidden elements are left out of "Try out" and shown faded while editing, so they can be shown again.
   const visible = (key) => editing || !isHidden(config, key, lang);
   const css = (key) => textCss(styleOf(config, key, lang));
-  const btnCss = (key) => buttonCss(styleOf(config, key, lang));
-  // Selection outline + click target around any preview element. A click anywhere on the
-  // element (also next to its text, e.g. on the button padding) puts the caret into its text.
-  const box = (key, children, className = '') => (editing ? (
-    <div className={`np-pv-el ${className}${selectedKey === key ? ' is-selected' : ''}${isHidden(config, key, lang) ? ' is-ghost' : ''}`}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelect(key);
-        const inline = e.currentTarget.querySelector('.np-inline');
-        if (inline && !e.target.closest('.np-inline')) focusEnd(inline);
-      }}>
-      {children}
-    </div>
-  ) : children);
 
   const dropProps = (kind, id, axis) => ({
     onDragOver: (e) => {
@@ -187,14 +144,9 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
 
   const renderText = (field, prop) => edit(field[prop], (map) => update((c) => { c.fields.find((f) => f.id === field.id)[prop] = map; }));
   const steps = (config.steps || []).filter((step) => visible(`step:${step.id}`));
-  // One text element of the preview: selectable box, its style, and inline editing.
-  const piece = (key, map, onSet, Tag, className) => visible(key) && box(key, (
-    <Tag className={className} style={css(key)}>{text(map, onSet)}</Tag>
-  ));
-  const setSection = (prop) => (v) => update((c) => { c.section[prop] = v; });
-  const setText = (prop) => (v) => update((c) => { c.texts[prop] = v; });
-  const setDone = (prop) => (v) => update((c) => { c.confirmation[prop] = v; });
   const stepHidden = (key) => isHidden(config, key, lang);
+  // Shared with the website: <CmsText> and <ContactCard> read this to become editable.
+  const cms = { config, lang, editing, update, selectedKey, onSelect, emptyText: t.emptyText };
 
   return (
     <aside className="np-preview">
@@ -210,101 +162,84 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
       </div>
       {editing && <p className="np-pv-hint"><MousePointerClick size={14} /> {t.pvHint}</p>}
 
-      <div className={`np-preview-frame${editing ? ' np-edit' : ''}`} dir={dir} lang={lang} onClick={() => setAddAt(null)}>
-        {mode === 'form' && config.section && (
-          <div className="np-pv-section">
-            {piece('section.eyebrow', config.section.eyebrow, setSection('eyebrow'), 'span', 'np-pv-eyebrow')}
-            {piece('section.title', config.section.title, setSection('title'), 'strong', 'np-pv-title')}
-            {piece('section.sub', config.section.sub, setSection('sub'), 'p', 'np-pv-sub')}
-            {visible('steps') && box('steps', (
-              <ol className="np-pv-steps" style={{ '--steps': steps.length + (editing && steps.length < LIMITS.maxSteps ? 1 : 0) }}>
-                {steps.map((step, i) => {
-                  const key = `step:${step.id}`;
-                  return (
-                    <li key={step.id} {...(editing ? dropProps('step', step.id, 'x') : {})}
-                      className={`${i === 0 ? 'is-first' : ''}${editing ? ' np-pv-el np-pv-step' : ''}${selectedKey === key ? ' is-selected' : ''}${editing && stepHidden(key) ? ' is-ghost' : ''}${drop?.id === step.id ? ` is-drop-${drop.pos}` : ''}`}
-                      onClick={editing ? (e) => { e.stopPropagation(); onSelect(key); } : undefined}>
-                      {editing && (
-                        <div className="np-pv-chip np-pv-chip--step" onClick={(e) => e.stopPropagation()}>
-                          {grip('step', step.id)}
-                          <button type="button" onClick={() => toggleHidden(key)} title={stepHidden(key) ? t.unhide : t.hide} aria-label={stepHidden(key) ? t.unhide : t.hide}>
-                            {stepHidden(key) ? <Eye size={12} /> : <EyeOff size={12} />}
-                          </button>
-                          <button type="button" className="is-danger" disabled={(config.steps || []).length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps = c.steps.filter((s) => s.id !== step.id); })} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
-                        </div>
-                      )}
-                      <i>{String(i + 1).padStart(2, '0')}</i>
-                      <b style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</b>
-                      <small>{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</small>
-                    </li>
-                  );
-                })}
-                {editing && (config.steps || []).length < LIMITS.maxSteps && (
-                  <li className="np-pv-addstep">
-                    <button type="button" onClick={(e) => {
-                      e.stopPropagation();
-                      const id = `s${Math.random().toString(36).slice(2, 8)}`;
-                      update((c) => { c.steps = [...(c.steps || []), { id, label: { ...NEW_TEXTS.step }, desc: {} }]; });
-                      onSelect(`step:${id}`);
-                    }} title={t.addStep} aria-label={t.addStep}><Plus size={14} /></button>
-                    <small>{t.addStep}</small>
-                  </li>
-                )}
-              </ol>
-            ), 'np-pv-stepsbox')}
-          </div>
-        )}
+      <CmsProvider value={cms}>
+        <div className={`np-preview-frame${editing ? ' np-edit' : ''}`} dir={dir} lang={lang} onClick={() => setAddAt(null)}>
+          {mode === 'form' && config.section && (
+            <div className="np-pv-section">
+              <CmsText k="section.eyebrow" className="np-pv-eyebrow" />
+              <CmsText k="section.title" as="strong" className="np-pv-title" />
+              <CmsText k="section.sub" as="p" className="np-pv-sub" />
+              {visible('steps') && (
+                <EditBox k="steps" className="np-pv-stepsbox">
+                  <ol className="np-pv-steps" style={{ '--steps': steps.length + (editing && steps.length < LIMITS.maxSteps ? 1 : 0) }}>
+                    {steps.map((step, i) => {
+                      const key = `step:${step.id}`;
+                      return (
+                        <li key={step.id} {...(editing ? dropProps('step', step.id, 'x') : {})}
+                          className={`${i === 0 ? 'is-first' : ''}${editing ? ' np-pv-el np-pv-step' : ''}${selectedKey === key ? ' is-selected' : ''}${editing && stepHidden(key) ? ' is-ghost' : ''}${drop?.id === step.id ? ` is-drop-${drop.pos}` : ''}`}
+                          onClick={editing ? (e) => { e.stopPropagation(); onSelect(key); } : undefined}>
+                          {editing && (
+                            <div className="np-pv-chip np-pv-chip--step" onClick={(e) => e.stopPropagation()}>
+                              {grip('step', step.id)}
+                              <button type="button" onClick={() => toggleHidden(key)} title={stepHidden(key) ? t.unhide : t.hide} aria-label={stepHidden(key) ? t.unhide : t.hide}>
+                                {stepHidden(key) ? <Eye size={12} /> : <EyeOff size={12} />}
+                              </button>
+                              <button type="button" className="is-danger" disabled={(config.steps || []).length <= LIMITS.minSteps} onClick={() => update((c) => { c.steps = c.steps.filter((s) => s.id !== step.id); })} title={t.delete} aria-label={t.delete}><Trash2 size={12} /></button>
+                            </div>
+                          )}
+                          <i>{String(i + 1).padStart(2, '0')}</i>
+                          <b style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</b>
+                          <small>{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</small>
+                        </li>
+                      );
+                    })}
+                    {editing && (config.steps || []).length < LIMITS.maxSteps && (
+                      <li className="np-pv-addstep">
+                        <button type="button" onClick={(e) => {
+                          e.stopPropagation();
+                          const id = `s${Math.random().toString(36).slice(2, 8)}`;
+                          update((c) => { c.steps = [...(c.steps || []), { id, label: { ...NEW_TEXTS.step }, desc: {} }]; });
+                          onSelect(`step:${id}`);
+                        }} title={t.addStep} aria-label={t.addStep}><Plus size={14} /></button>
+                        <small>{t.addStep}</small>
+                      </li>
+                    )}
+                  </ol>
+                </EditBox>
+              )}
+            </div>
+          )}
 
-        {mode === 'form' ? (
-          <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
-            {piece('form.title', config.texts.title, setText('title'), 'h3')}
-            {piece('form.sub', config.texts.sub, setText('sub'), 'p', 'sub')}
-            <QuoteFormFields
-              config={config} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
-              targetLang={target} onTargetLang={setTarget} onFilesChange={() => {}} idPrefix="pv-"
-              editing={editing} renderText={editing ? renderText : undefined} wrapField={editing ? wrapField : undefined}
-            />
-            {editing ? box('submit', (
-              <div className="btn btn-primary np-pv-submit" style={btnCss('submit')}>
-                <span style={css('submit')}>{edit(config.texts.submit, setText('submit'))}</span> <span className="arrow">→</span>
+          {mode === 'form' && <div className="np-pv-contact"><ContactCard lang={lang} /></div>}
+
+          {mode === 'form' ? (
+            <form className="contact-card form-card" onSubmit={(e) => e.preventDefault()} noValidate>
+              <CmsText k="form.title" as="h3" />
+              <CmsText k="form.sub" as="p" className="sub" />
+              <QuoteFormFields
+                config={config} lang={lang} service={service} onService={setService} sourceLang={source} onSourceLang={setSource}
+                targetLang={target} onTargetLang={setTarget} onFilesChange={() => {}} idPrefix="pv-"
+                editing={editing} renderText={editing ? renderText : undefined} wrapField={editing ? wrapField : undefined}
+              />
+              <CmsText k="submit" as="button" type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
+                editAs="div" editClass="np-pv-submit" onClick={() => setMode('done')} after={<> <span className="arrow">→</span></>} />
+            </form>
+          ) : (
+            <div className="contact-card form-card form-done">
+              <div className="form-done-check" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
               </div>
-            )) : (
-              <button type="button" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8, ...btnCss('submit') }} onClick={() => setMode('done')}>
-                <span style={css('submit')}>{textIn(config.texts.submit, lang)}</span> <span className="arrow">→</span>
-              </button>
-            )}
-          </form>
-        ) : (
-          <div className="contact-card form-card form-done">
-            <div className="form-done-check" aria-hidden="true">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              <CmsText k="confirm.title" as="h3" />
+              <CmsText k="confirm.text" as="p" format={(value) => withPhone(value, (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)} />
+              {editing && <small className="np-pv-token">{fill(t.phoneToken, { phone })}</small>}
+              <div className="form-done-actions">
+                <CmsText k="confirm.call" className="btn btn-primary" boxClass="np-pv-inlinebox" format={(value) => withPhone(value, (i) => <span key={i} dir="ltr">{phone}</span>)} />
+                <CmsText k="confirm.again" as="button" type="button" className="btn btn-secondary" boxClass="np-pv-inlinebox" onClick={() => setMode('form')} />
+              </div>
             </div>
-            {piece('confirm.title', done.title, setDone('title'), 'h3')}
-            {visible('confirm.text') && box('confirm.text', (
-              <p style={css('confirm.text')}>
-                {editing
-                  ? edit(done.text, setDone('text'))
-                  : withPhone(textIn(done.text, lang), (i) => <a key={i} href={phoneHref(phone)} dir="ltr" onClick={(e) => e.preventDefault()}>{phone}</a>)}
-              </p>
-            ))}
-            {editing && <small className="np-pv-token">{fill(t.phoneToken, { phone })}</small>}
-            <div className="form-done-actions">
-              {visible('confirm.call') && box('confirm.call', (
-                <span className="btn btn-primary" style={btnCss('confirm.call')}>
-                  <span style={css('confirm.call')}>
-                    {editing ? edit(done.call, setDone('call')) : withPhone(textIn(done.call, lang), (i) => <span key={i} dir="ltr">{phone}</span>)}
-                  </span>
-                </span>
-              ), 'np-pv-inlinebox')}
-              {visible('confirm.again') && box('confirm.again', editing ? (
-                <span className="btn btn-secondary" style={btnCss('confirm.again')}><span style={css('confirm.again')}>{edit(done.again, setDone('again'))}</span></span>
-              ) : (
-                <button type="button" className="btn btn-secondary" style={btnCss('confirm.again')} onClick={() => setMode('form')}><span style={css('confirm.again')}>{textIn(done.again, lang)}</span></button>
-              ), 'np-pv-inlinebox')}
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </CmsProvider>
     </aside>
   );
 }

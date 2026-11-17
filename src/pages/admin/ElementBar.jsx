@@ -6,17 +6,6 @@ import { fill } from './i18n.js';
 
 export const UNHIDEABLE = UNHIDEABLE_KEYS;
 
-// Puts the caret at the end of an inline text box.
-export function focusEnd(el) {
-  el.focus();
-  const range = document.createRange();
-  range.selectNodeContents(el);
-  range.collapse(false);
-  const selection = window.getSelection();
-  selection.removeAllRanges();
-  selection.addRange(range);
-}
-
 const entry = (config, key) => {
   config.ui = config.ui || {};
   config.ui[key] = config.ui[key] || {};

@@ -10,7 +10,8 @@
 //   languages: [{ id, name, source, target }],           // "Other language" is fixed and not stored
 //   defaultSource, defaultTarget,                         // language ids preselected in the lists
 //   confirmation: { title, text, call, again, phone },    // texts per language, phone shared
-//   ui: { [elementKey]: { hidden, hiddenIn, style, styleIn } }, // see UI_KEYS below
+//   contact: { title, sub, phoneLabel, emailLabel, hqLabel, hours, whatsapp },  // contact card next to the form
+//   ui: { [elementKey]: { hidden, hiddenIn, style, styleIn } }, // see CMS_ELEMENTS below
 // }
 // The layout (fields, order, types, widths, settings) is shared by all languages;
 // only the texts are stored per language. An empty text falls back to German.
@@ -42,14 +43,51 @@ const START_TEXTS = new Set(Object.values(NEW_TEXTS).flatMap((map) => Object.val
 // True while a text is still one of the start texts above (in any language), so the admin is told to write it.
 export const isStartText = (value) => START_TEXTS.has(String(value || '').trim());
 
+// Every element the CMS can edit, hide and style. This list drives the sanitizer, the editor and
+// the website, so a new editable element (also in a future section or page) needs only:
+//   1. an entry here: `text` = where its text lives in the config, `max` = text length,
+//      `button` = gets a button colour, `keep` = cannot be hidden, `block` = no text of its own;
+//   2. its default text in DEFAULT_FORM_CONFIG (formConfig.js) and its name in cmsI18n `el`;
+//   3. <CmsText k="…" /> (components/cms/Editable.jsx) where it is shown.
+// Steps ("step:<id>") and fields ("field:<id>") are added per item.
+export const CMS_ELEMENTS = {
+  'section.eyebrow': { text: 'section.eyebrow', max: 80 },
+  'section.title': { text: 'section.title', max: LIMITS.label },
+  'section.sub': { text: 'section.sub', max: LIMITS.help },
+  steps: { block: true },
+  'form.title': { text: 'texts.title', max: LIMITS.label },
+  'form.sub': { text: 'texts.sub', max: LIMITS.help },
+  // The form cannot be sent without its button, so it can be styled but not hidden.
+  submit: { text: 'texts.submit', max: 60, button: true, keep: true },
+  'confirm.title': { text: 'confirmation.title', max: LIMITS.label },
+  'confirm.text': { text: 'confirmation.text', max: LIMITS.text },
+  'confirm.call': { text: 'confirmation.call', max: 80, button: true },
+  'confirm.again': { text: 'confirmation.again', max: 80, button: true },
+  'contact.title': { text: 'contact.title', max: LIMITS.label },
+  'contact.sub': { text: 'contact.sub', max: LIMITS.help },
+  'contact.phoneLabel': { text: 'contact.phoneLabel', max: 40 },
+  'contact.emailLabel': { text: 'contact.emailLabel', max: 40 },
+  'contact.hqLabel': { text: 'contact.hqLabel', max: 60 },
+  'contact.hours': { text: 'contact.hours', max: LIMITS.label },
+  'contact.whatsapp': { text: 'contact.whatsapp', max: 60, button: true },
+};
+// Texts that are edited in the panel only (no element of their own in the preview).
+const PANEL_TEXTS = { 'texts.otherName': 60, 'texts.otherLabel': LIMITS.label, 'texts.otherPlaceholder': LIMITS.placeholder };
+// Every per-language text of the config with its maximum length, by path ("contact.title").
+export const TEXT_PATHS = {
+  ...Object.fromEntries(Object.values(CMS_ELEMENTS).filter((el) => el.text).map((el) => [el.text, el.max])),
+  ...PANEL_TEXTS,
+};
+// The { de, en, … } text at a path such as "contact.title".
+export const textAt = (config, path) => { const [group, prop] = path.split('.'); return config?.[group]?.[prop]; };
+
 // Look of single elements, stored in config.ui by element key:
 //   { hidden, hiddenIn: [lang], style: { size, weight, italic, underline, color, bg }, styleIn: { [lang]: style } }
 // "hidden"/"style" apply to all languages, "hiddenIn"/"styleIn" to single languages.
 // Fields keep their all-languages "hidden" flag on the field itself.
-export const UI_KEYS = ['section.eyebrow', 'section.title', 'section.sub', 'steps', 'form.title', 'form.sub', 'submit', 'confirm.title', 'confirm.text', 'confirm.call', 'confirm.again'];
-export const BUTTON_KEYS = ['submit', 'confirm.call', 'confirm.again'];
-// The form cannot be sent without its button, so it can be styled but not hidden.
-export const UNHIDEABLE_KEYS = ['submit', ...LOCKED_FIELDS.map((id) => `field:${id}`)];
+export const UI_KEYS = Object.keys(CMS_ELEMENTS);
+export const BUTTON_KEYS = UI_KEYS.filter((key) => CMS_ELEMENTS[key].button);
+export const UNHIDEABLE_KEYS = [...UI_KEYS.filter((key) => CMS_ELEMENTS[key].keep), ...LOCKED_FIELDS.map((id) => `field:${id}`)];
 export const FONT_SIZES = [75, 90, 100, 115, 130, 150, 175];
 const COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 
@@ -226,34 +264,24 @@ export function sanitizeFormConfig(input) {
   });
   if (steps.length < LIMITS.minSteps) fail(`At least ${LIMITS.minSteps} steps are needed.`);
 
-  const confirmation = input.confirmation || {};
+  // All per-language texts (section, texts, confirmation, contact, …) come from TEXT_PATHS.
+  const groups = { section: {}, texts: {}, confirmation: {}, contact: {} };
+  Object.entries(TEXT_PATHS).forEach(([path, max]) => {
+    const [group, prop] = path.split('.');
+    groups[group] = groups[group] || {};
+    groups[group][prop] = cleanTexts(textAt(input, path), max);
+  });
   return {
     schema: 1,
-    section: {
-      eyebrow: cleanTexts(input.section?.eyebrow, 80),
-      title: cleanTexts(input.section?.title, LIMITS.label),
-      sub: cleanTexts(input.section?.sub, LIMITS.help),
-    },
+    section: groups.section,
     steps,
-    texts: {
-      title: cleanTexts(input.texts?.title, LIMITS.label),
-      sub: cleanTexts(input.texts?.sub, LIMITS.help),
-      submit: cleanTexts(input.texts?.submit, 60),
-      otherName: cleanTexts(input.texts?.otherName, 60),
-      otherLabel: cleanTexts(input.texts?.otherLabel, LIMITS.label),
-      otherPlaceholder: cleanTexts(input.texts?.otherPlaceholder, LIMITS.placeholder),
-    },
+    texts: groups.texts,
     fields: cleanFields,
     languages,
     defaultSource: pick(cleanString(input.defaultSource, 40), 'source'),
     defaultTarget: pick(cleanString(input.defaultTarget, 40), 'target'),
-    confirmation: {
-      title: cleanTexts(confirmation.title, LIMITS.label),
-      text: cleanTexts(confirmation.text, LIMITS.text),
-      call: cleanTexts(confirmation.call, 80),
-      again: cleanTexts(confirmation.again, 80),
-      phone: cleanString(confirmation.phone, 40),
-    },
+    confirmation: { ...groups.confirmation, phone: cleanString(input.confirmation?.phone, 40) },
+    contact: groups.contact,
     ui: cleanUi(input.ui, [...UI_KEYS, ...steps.map((step) => `step:${step.id}`), ...cleanFields.map((field) => `field:${field.id}`)]),
   };
 }

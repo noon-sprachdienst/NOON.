@@ -5,7 +5,11 @@ import {
 import VisualPreview from './VisualPreview.jsx';
 import ElementBar from './ElementBar.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
-import { ALWAYS_REQUIRED, CUSTOM_TYPES, isStartText, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE, SITE_LANGS, sanitizeFormConfig, textIn } from '../../data/formSchema.js';
+import {
+  ALWAYS_REQUIRED, CUSTOM_TYPES, isStartText, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE, SITE_LANGS, sanitizeFormConfig, TEXT_PATHS, textAt, textIn,
+} from '../../data/formSchema.js';
+import { CONTACT } from '../../config/contact.js';
+import { LEGAL_INFO } from '../../data/legalInfo.js';
 import { LANG_META } from '../../data/translations.js';
 import { fill } from './i18n.js';
 
@@ -37,15 +41,13 @@ async function api(body) {
 function missingTexts(config, lang) {
   let missing = 0;
   const check = (map) => { if (map?.de && (!map[lang] || isStartText(map[lang]))) missing += 1; };
-  Object.values(config.texts).forEach(check);
-  Object.values(config.section || {}).forEach(check);
+  Object.keys(TEXT_PATHS).forEach((path) => check(textAt(config, path)));
   (config.steps || []).forEach((step) => { check(step.label); check(step.desc); });
   config.fields.filter((field) => !field.hidden).forEach((field) => {
     check(field.label); check(field.placeholder); check(field.help);
     (field.options || []).forEach((option) => check(option.label));
   });
   config.languages.forEach((language) => check(language.name));
-  ['title', 'text', 'call', 'again'].forEach((key) => check(config.confirmation[key]));
   return missing;
 }
 
@@ -241,6 +243,37 @@ function SectionCard({ config, lang, t, update }) {
   );
 }
 
+// Texts of the contact card next to the form. Phone, e-mail and address are shared site data,
+// so they are shown here with a note instead of being editable.
+function ContactSection({ config, lang, t, update }) {
+  const contact = config.contact || {};
+  const set = (prop) => (value) => update((c) => { c.contact = { ...c.contact, [prop]: value }; });
+  return (
+    <section className="np-card" data-edit-key="contact">
+      <header className="np-card-head"><div><h2>{t.contactTitle}</h2><p>{t.contactSub}</p></div></header>
+      <div className="np-grid2">
+        <TextField label={t.ctTitle} map={contact.title} lang={lang} onChange={set('title')} />
+        <TextField label={t.ctWhatsapp} map={contact.whatsapp} lang={lang} onChange={set('whatsapp')} />
+      </div>
+      <TextField label={t.ctSub} map={contact.sub} lang={lang} onChange={set('sub')} multiline rows={2} />
+      <div className="np-grid2">
+        <TextField label={t.ctPhone} map={contact.phoneLabel} lang={lang} onChange={set('phoneLabel')} />
+        <TextField label={t.ctEmail} map={contact.emailLabel} lang={lang} onChange={set('emailLabel')} />
+        <TextField label={t.ctHq} map={contact.hqLabel} lang={lang} onChange={set('hqLabel')} />
+        <TextField label={t.ctHours} map={contact.hours} lang={lang} onChange={set('hours')} />
+      </div>
+      <div className="np-notice np-shared" role="note">
+        <TriangleAlert size={16} />
+        <div>
+          <strong>{t.sharedTitle}</strong>
+          <p dir="ltr">{CONTACT.phones.map((p) => p.label).join(' · ')} · {CONTACT.email} · {LEGAL_INFO.street}, {LEGAL_INFO.postalCity}</p>
+          <p>{t.sharedText}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey }) {
   const open = selectedKey?.startsWith('field:') ? selectedKey.slice(6) : null;
   const setOpen = (id) => setSelectedKey(id ? `field:${id}` : null);
@@ -254,6 +287,7 @@ function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey })
   return (
     <>
       <SectionCard config={config} lang={lang} t={t} update={update} />
+      <ContactSection config={config} lang={lang} t={t} update={update} />
       <section className="np-card" data-edit-key="formtexts">
         <header className="np-card-head"><div><h2>{t.formTexts}</h2></div></header>
         <div className="np-grid2">
@@ -480,6 +514,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       const builtIn = defaultFormConfig();
       if (!start.section) start.section = builtIn.section;
       if (!start.steps?.length) start.steps = builtIn.steps;
+      if (!start.contact) start.contact = builtIn.contact;
       setConfig(start);
       setBaseline(JSON.stringify(start));
       resetHistory();
@@ -506,7 +541,8 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
     if (!key) return;
     const panelKey = key.startsWith('section.') || key === 'steps' ? 'section'
       : key.startsWith('form.') || key === 'submit' ? 'formtexts'
-        : key.startsWith('confirm') ? 'confirm' : key;
+        : key.startsWith('contact.') ? 'contact'
+          : key.startsWith('confirm') ? 'confirm' : key;
     if (panelKey === 'confirm') setSection('confirmation');
     else if (section !== 'fields') setSection('fields');
     setFlash({ key: panelKey, at: Date.now() });
