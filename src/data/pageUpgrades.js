@@ -852,6 +852,8 @@ export const NEW_PAGES_DE = [
     intro: 'Noon Dolmetscher & Übersetzungsbüro übersetzt und dolmetscht seit 2019 für Privatpersonen, Unternehmen, Behörden und Gerichte in ganz Deutschland. Unser Hauptsitz ist Osnabrück; weitere Büros haben wir in Stuttgart, Berlin, Bielefeld, Mainz und Kiel.',
     highlights: ['Seit 2019', 'Sechs Standorte', 'Ermächtigte Übersetzer'],
     sections: [
+      ['Noon auf einen Blick', '• Name: Noon Dolmetscher & Übersetzungsbüro, gegründet 2019\n• Hauptsitz: Rosenplatz 17, 49074 Osnabrück – weitere Büros in Stuttgart, Berlin, Bielefeld, Mainz und Kiel\n• Leistungen: beglaubigte Übersetzungen, Fachübersetzungen und Dolmetschen\n• Sprachen: über 190, besonders oft Arabisch, Türkisch, Ukrainisch, Russisch, Persisch, Englisch und Französisch\n• Preise: beglaubigte Übersetzung ab 39 € pro Dokument, Fachübersetzung ab 0,12 € pro Wort, Dolmetscher ab 85 € pro Stunde – immer mit Festpreis vorab\n• Lieferzeit: 2–3 Werktage, im Express am selben Tag (meist in 4–5 Stunden)\n• Anfrage: per WhatsApp, E-Mail (info@noon-sprachdienst.de) oder Formular – digital für ganz Deutschland',
+        [{ href: '/angebot/', label: 'Kostenloses Angebot anfordern' }, { href: '/de/beglaubigte-uebersetzung-kosten/', label: 'Was kostet eine beglaubigte Übersetzung?' }]],
       ['Was wir machen', '• Beglaubigte Übersetzungen von Urkunden, Zeugnissen, Führerscheinen und Gerichtsdokumenten\n• Fachübersetzungen für Recht, Medizin, Technik und Wirtschaft\n• Dolmetscher für Behörden, Standesamt, Gericht, Notar, Arzt und Unternehmen – vor Ort, per Video oder Telefon',
         [CERTIFIED_LINK, { href: '/de/fachuebersetzungen/', label: 'Fachübersetzungen' }, { href: '/de/dolmetschen/', label: 'Dolmetschen' }]],
       ['Wer für Sie arbeitet', 'Beglaubigte Übersetzungen fertigen bei uns in Deutschland ermächtigte Übersetzer an, vor Gericht und beim Notar setzen wir beeidigte Dolmetscher ein – in allen Sprachen, die wir anbieten. Bei Arabisch decken unsere Dolmetscher die gängigen Dialekte ab, bei Persisch Farsi und Dari.',
@@ -862,6 +864,8 @@ export const NEW_PAGES_DE = [
     ],
     faqs: [
       ['Seit wann gibt es Noon?', 'Noon Dolmetscher & Übersetzungsbüro arbeitet seit 2019 für Kundinnen und Kunden in ganz Deutschland.'],
+      ['Was kostet eine beglaubigte Übersetzung bei Noon?', 'Ab 39 € pro Dokument. Den Festpreis für Ihr Dokument und Ihre Sprache nennen wir vorab und kostenlos.'],
+      ['In welchen Sprachen arbeitet Noon?', 'In über 190 Sprachen – besonders oft Arabisch, Türkisch, Ukrainisch, Russisch, Persisch, Englisch und Französisch.'],
       ['Wo sind Ihre Büros?', 'In Osnabrück (Hauptsitz), Stuttgart, Berlin, Bielefeld, Mainz und Kiel. Persönliche Termine nach Vereinbarung.'],
       FAQ_DIGITAL,
     ],

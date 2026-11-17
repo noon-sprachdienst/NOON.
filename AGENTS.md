@@ -27,6 +27,9 @@ what they cannot.
 - `npm run verify:deploy -- [url]`: after a deployment, checks every page, the redirects
   and the admin login guard of the live site (default: production) against the local
   build of the same commit. Read-only.
+- `npm run indexnow -- [path …]`: after a deployment is live, tells Bing/IndexNow
+  (ChatGPT search, Copilot) about new or changed pages; without paths it sends the whole
+  live sitemap. Key file: `public/2bc231b4844d33e97317240f951f2147.txt`.
 - Preview servers (`.claude/launch.json`): `noon-preview` (port 4173, serves `dist/`, so
   build first) and `noon-dev` (port 5173).
 

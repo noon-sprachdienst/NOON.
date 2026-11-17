@@ -19,6 +19,18 @@ export const COMPANY = {
   foundingDate: '2019',
 };
 
+// Confirmed starting prices, as structured data: AI assistants and search engines read them
+// to answer "what does a certified translation cost" with Noon's own numbers.
+const PRICE_OFFERS = [
+  ['Beglaubigte Übersetzung', '/de/beglaubigte-uebersetzungen/', 39, 'pro Dokument'],
+  ['Fachübersetzung', '/de/fachuebersetzungen/', 0.12, 'pro Wort'],
+  ['Dolmetschen', '/de/dolmetschen/', 85, 'pro Stunde'],
+].map(([name, path, minPrice, unitText]) => ({
+  '@type': 'Offer',
+  itemOffered: { '@type': 'Service', name, url: `https://www.noon-sprachdienst.de${path}` },
+  priceSpecification: { '@type': 'PriceSpecification', minPrice, priceCurrency: 'EUR', unitText },
+}));
+
 export const SEO_LANGUAGES = {
   de: { html: 'de-DE', label: 'Deutsch', prefix: '/de' },
   en: { html: 'en', label: 'English', prefix: '/en' },
@@ -1629,6 +1641,7 @@ export function getOrganizationSchema() {
       addressLocality: location.city,
       addressCountry: 'DE',
     })),
+    makesOffer: PRICE_OFFERS,
     sameAs: [],
   };
 }
