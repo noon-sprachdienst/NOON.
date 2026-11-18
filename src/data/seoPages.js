@@ -2,6 +2,7 @@ import { getServiceNavigation, serviceUi } from './serviceContent.js';
 
 import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
+import { GOOGLE_PROFILES, googleProfileUrl } from '../config/contact.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
 import { CITY_HUBS, LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
@@ -19,20 +20,6 @@ export const COMPANY = {
   foundingDate: '2019',
 };
 
-// Public Google Business Profiles (maps.google.com/?cid=…), read from the owner dashboards on
-// 18.11.2026. Search engines and AI assistants use sameAs to tie the profiles to this site.
-// Köln and Essen are service-area profiles without an office.
-const GOOGLE_PROFILES = {
-  osnabrueck: '13887095511845644260',
-  stuttgart: '11749183929183528728',
-  berlin: '15531121026152172476',
-  bielefeld: '2312780833579880556',
-  mainz: '11996835313261089182',
-  kiel: '18136115173052841764',
-  serviceArea1: '13612274780464947385',
-  serviceArea2: '5344216374986806367',
-};
-const profileUrl = (cid) => `https://maps.google.com/?cid=${cid}`;
 // Requests by message (WhatsApp, e-mail, form) are answered around the clock, as on the
 // Google profiles.
 const OPEN_24_7 = {
@@ -1665,7 +1652,7 @@ export function getOrganizationSchema() {
       addressCountry: 'DE',
     })),
     makesOffer: PRICE_OFFERS,
-    sameAs: Object.values(GOOGLE_PROFILES).map(profileUrl),
+    sameAs: Object.keys(GOOGLE_PROFILES).map(googleProfileUrl),
   };
 }
 
@@ -1756,7 +1743,7 @@ export function getPageSchema(page) {
         addressCountry: 'DE',
       },
       openingHoursSpecification: OPEN_24_7,
-      ...(GOOGLE_PROFILES[page.location.slug] ? { sameAs: [profileUrl(GOOGLE_PROFILES[page.location.slug])] } : {}),
+      ...(googleProfileUrl(page.location.slug) ? { sameAs: [googleProfileUrl(page.location.slug)] } : {}),
       parentOrganization: { '@id': `${SITE_URL}/#organization` },
     }].filter(Boolean);
   }

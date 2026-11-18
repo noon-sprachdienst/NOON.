@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import { useAutoCarousel } from '../hooks/useAutoCarousel';
 import 'leaflet/dist/leaflet.css';
+import { googleProfileUrl } from '../config/contact.js';
 
 export const BRANCHES = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', addr: 'Rosenplatz 17, 49074 Osnabrück', lat: 52.2656, lng: 8.0517, hoursKey: 'branches.hours.osnabrueck', maps: 'https://maps.google.com/?q=Rosenplatz+17,+49074+Osnabrück' },
@@ -173,7 +174,7 @@ export function BranchCard({ branch, t, index = 0, externalMapsAllowed, officeLa
         <div className="open">{t('foot.hours')}</div>
         <div style={{ marginTop: 14 }}>
           <a
-            href={branch.maps}
+            href={googleProfileUrl(branch.id) || branch.maps}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary btn-sm"

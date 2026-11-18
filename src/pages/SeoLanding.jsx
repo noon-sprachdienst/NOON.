@@ -1,7 +1,7 @@
 import HowContact from '../components/HowContact.jsx';
 import { BRANCHES, BranchCard, useExternalMapsConsent } from '../components/Branches.jsx';
 import { useI18n } from '../hooks/useI18n';
-import { CONTACT } from '../config/contact.js';
+import { CONTACT, googleProfileUrl } from '../config/contact.js';
 import { getSeoPage, LOCATIONS, SEO_PAGES } from '../data/seoPages.js';
 import { getServiceNavigation } from '../data/serviceContent.js';
 import { RichServicePanel, VISUAL_COPY } from '../components/Services.jsx';
@@ -14,6 +14,7 @@ const UI = {
     quote: 'Kostenloses Angebot anfordern',
     reachable: 'Persönlich erreichbar.',
     hours: 'Mo – Sa · 24/7 telefonisch erreichbar',
+    reviews: 'Bewertungen auf Google ansehen',
     faq: 'Häufige Fragen',
     mapAlt: 'Karte des Standorts',
     hubLink: 'Alle Fachübersetzungen im Überblick',
@@ -25,6 +26,7 @@ const UI = {
     quote: 'Request a free quote',
     reachable: 'Personally available.',
     hours: 'Mon – Sat · reachable by phone 24/7',
+    reviews: 'See our reviews on Google',
     faq: 'Frequently asked questions',
     mapAlt: 'Map of the branch',
     hubLink: 'See all specialist translation services',
@@ -36,6 +38,7 @@ const UI = {
     quote: 'اطلب عرضا مجانيا',
     reachable: 'تواصل شخصي وسريع.',
     hours: 'الإثنين – السبت · متاحون هاتفيا 24/7',
+    reviews: 'شاهد تقييماتنا على جوجل',
     faq: 'أسئلة شائعة',
     mapAlt: 'خريطة الفرع',
     hubLink: 'عرض جميع الترجمات المتخصصة',
@@ -47,6 +50,7 @@ const UI = {
     quote: 'Ücretsiz teklif iste',
     reachable: 'Kişisel destek.',
     hours: 'Pzt – Cmt · telefonla 24/7 ulaşılabilir',
+    reviews: 'Google yorumlarımızı görün',
     faq: 'Sık sorulan sorular',
     mapAlt: 'Şube haritası',
     hubLink: 'Tüm uzman çevirileri görüntüle',
@@ -58,6 +62,7 @@ const UI = {
     quote: 'Отправить запрос',
     reachable: 'Личная поддержка.',
     hours: 'Пн – Сб · по телефону 24/7',
+    reviews: 'Отзывы о нас в Google',
     faq: 'Частые вопросы',
     mapAlt: 'Карта филиала',
     hubLink: 'Все профильные переводы',
@@ -69,6 +74,7 @@ const UI = {
     quote: 'Demander un devis gratuit',
     reachable: 'Conseil personnalisé.',
     hours: 'Lun – Sam · joignables par téléphone 24/7',
+    reviews: 'Voir nos avis sur Google',
     faq: 'Questions fréquentes',
     mapAlt: 'Carte de l’agence',
     hubLink: 'Voir toutes les traductions spécialisées',
@@ -80,6 +86,7 @@ const UI = {
     quote: 'Надіслати запит',
     reachable: 'Особиста підтримка.',
     hours: 'Пн – Сб · телефоном 24/7',
+    reviews: 'Відгуки про нас у Google',
     faq: 'Поширені питання',
     mapAlt: 'Карта філії',
     hubLink: 'Переглянути всі фахові переклади',
@@ -213,6 +220,10 @@ export default function SeoLanding({ page: indexPage }) {
             <a href={(page.location?.phone || CONTACT.phones[0]).href}>{(page.location?.phone || CONTACT.phones[0]).label}</a>
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             <small>{copy.hours}</small>
+            {/* Office pages: the office's Google profile with its reviews. */}
+            {isLocation && googleProfileUrl(page.location?.slug) && (
+              <a href={googleProfileUrl(page.location.slug)} target="_blank" rel="noopener noreferrer" className="seo-reviews-link">★ {copy.reviews}</a>
+            )}
           </aside>
         </div>
       </section>
