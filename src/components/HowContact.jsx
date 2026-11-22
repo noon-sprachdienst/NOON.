@@ -7,7 +7,7 @@ import ContactCard from './ContactCard.jsx';
 import { CmsProvider, CmsText } from './cms/Editable.jsx';
 import { useFormConfig } from '../lib/formConfig.js';
 import { DEFAULT_FORM_CONFIG } from '../data/formConfig.js';
-import { buttonCss, isFieldHidden, isHidden, OTHER_LANGUAGE, phoneHref, styleOf, textCss, textIn } from '../data/formSchema.js';
+import { buttonCss, deliveryOf, isFieldHidden, isHidden, OTHER_LANGUAGE, phoneHref, styleOf, textCss, textIn } from '../data/formSchema.js';
 import { STORAGE_LIMITS, uploadToStorage } from '../lib/uploads.js';
 
 
@@ -25,7 +25,7 @@ const FORM_STATUS = {
 const FORM_UPLOAD_ERROR = {
   de: {
     size: 'Die ausgewählten Dateien sind größer als 3 MB.',
-    count: 'Bitte wählen Sie höchstens 10 Dateien aus.',
+    count: 'Bitte wählen Sie höchstens {n} Dateien aus.',
     mail: 'Für größere Anhänge senden Sie uns bitte direkt eine E-Mail.',
     action: 'Per E-Mail senden',
     driveTitle: 'Kein Problem – teilen Sie große Dateien einfach über Google Drive:',
@@ -35,7 +35,7 @@ const FORM_UPLOAD_ERROR = {
   },
   en: {
     size: 'The selected files exceed the 3 MB limit.',
-    count: 'Please select no more than 10 files.',
+    count: 'Please select no more than {n} files.',
     mail: 'For larger attachments, please send us an email directly.',
     action: 'Send by email',
     driveTitle: 'No problem — simply share large files via Google Drive:',
@@ -45,7 +45,7 @@ const FORM_UPLOAD_ERROR = {
   },
   ar: {
     size: '\u062d\u062c\u0645 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629 \u064a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0648\u0647\u0648 3 \u0645\u064a\u063a\u0627\u0628\u0627\u064a\u062a.',
-    count: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 10 \u0645\u0644\u0641\u0627\u062a \u0643\u062d\u062f \u0623\u0642\u0635\u0649.',
+    count: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 {n} \u0645\u0644\u0641\u0627\u062a \u0643\u062d\u062f \u0623\u0642\u0635\u0649.',
     mail: '\u0644\u0625\u0631\u0633\u0627\u0644 \u0645\u0644\u0641\u0627\u062a \u0623\u0643\u0628\u0631\u060c \u064a\u0631\u062c\u0649 \u0645\u0631\u0627\u0633\u0644\u062a\u0646\u0627 \u0645\u0628\u0627\u0634\u0631\u0629 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a.',
     action: '\u0625\u0631\u0633\u0627\u0644 \u0639\u0628\u0631 \u0627\u0644\u0628\u0631\u064a\u062f',
     driveTitle: '\u0644\u0627 \u0645\u0634\u0643\u0644\u0629 \u2014 \u0634\u0627\u0631\u0643 \u0627\u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0643\u0628\u064a\u0631\u0629 \u0628\u0633\u0647\u0648\u0644\u0629 \u0639\u0628\u0631 Google Drive:',
@@ -55,7 +55,7 @@ const FORM_UPLOAD_ERROR = {
   },
   tr: {
     size: 'Secilen dosyalar 3 MB sinirini asiyor.',
-    count: 'Lutfen en fazla 10 dosya secin.',
+    count: 'Lutfen en fazla {n} dosya secin.',
     mail: 'Daha buyuk ekler icin bize dogrudan e-posta gonderin.',
     action: 'E-posta ile gonder',
     driveTitle: 'Sorun degil — buyuk dosyalari Google Drive ile kolayca paylasin:',
@@ -65,7 +65,7 @@ const FORM_UPLOAD_ERROR = {
   },
   ru: {
     size: '\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0444\u0430\u0439\u043b\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u043b\u0438\u043c\u0438\u0442 3 \u041c\u0411.',
-    count: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 10 \u0444\u0430\u0439\u043b\u043e\u0432.',
+    count: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 {n} \u0444\u0430\u0439\u043b\u043e\u0432.',
     mail: '\u0414\u043b\u044f \u0431\u043e\u043b\u0435\u0435 \u043a\u0440\u0443\u043f\u043d\u044b\u0445 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u0439 \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043d\u0430\u043c \u043d\u0430\u043f\u0440\u044f\u043c\u0443\u044e.',
     action: '\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u043f\u043e e-mail',
     driveTitle: '\u041d\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430 \u2014 \u043f\u043e\u0434\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u0431\u043e\u043b\u044c\u0448\u0438\u043c\u0438 \u0444\u0430\u0439\u043b\u0430\u043c\u0438 \u0447\u0435\u0440\u0435\u0437 Google Drive:',
@@ -75,7 +75,7 @@ const FORM_UPLOAD_ERROR = {
   },
   fr: {
     size: 'Les fichiers sélectionnés dépassent la limite de 3 Mo.',
-    count: 'Veuillez sélectionner au maximum 10 fichiers.',
+    count: 'Veuillez sélectionner au maximum {n} fichiers.',
     mail: 'Pour les pièces jointes plus volumineuses, envoyez-nous directement un e-mail.',
     action: 'Envoyer par e-mail',
     driveTitle: 'Pas de problème — partagez vos fichiers volumineux via Google Drive :',
@@ -85,7 +85,7 @@ const FORM_UPLOAD_ERROR = {
   },
   uk: {
     size: '\u0412\u0438\u0431\u0440\u0430\u043d\u0456 \u0444\u0430\u0439\u043b\u0438 \u043f\u0435\u0440\u0435\u0432\u0438\u0449\u0443\u044e\u0442\u044c \u043b\u0456\u043c\u0456\u0442 3 \u041c\u0411.',
-    count: '\u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u043d\u0435 \u0431\u0456\u043b\u044c\u0448\u0435 10 \u0444\u0430\u0439\u043b\u0456\u0432.',
+    count: '\u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u043d\u0435 \u0431\u0456\u043b\u044c\u0448\u0435 {n} \u0444\u0430\u0439\u043b\u0456\u0432.',
     mail: '\u0414\u043b\u044f \u0431\u0456\u043b\u044c\u0448\u0438\u0445 \u0432\u043a\u043b\u0430\u0434\u0435\u043d\u044c \u043d\u0430\u0434\u0456\u0448\u043b\u0456\u0442\u044c \u043d\u0430\u043c e-mail.',
     action: '\u041d\u0430\u0434\u0456\u0441\u043b\u0430\u0442\u0438 e-mail',
     driveTitle: '\u041d\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430 \u2014 \u043f\u043e\u0434\u0456\u043b\u0456\u0442\u044c\u0441\u044f \u0432\u0435\u043b\u0438\u043a\u0438\u043c\u0438 \u0444\u0430\u0439\u043b\u0430\u043c\u0438 \u0447\u0435\u0440\u0435\u0437 Google Drive:',
@@ -168,6 +168,11 @@ export default function HowContact({ branch = null }) {
   const uploadErrorCopy = FORM_UPLOAD_ERROR[lang] || FORM_UPLOAD_ERROR.de;
   const tooBigCopy = FORM_UPLOAD_TOO_BIG[lang] || FORM_UPLOAD_TOO_BIG.de;
   const config = useFormConfig();
+  // Upload limits set in the admin, never above the technical maximum of the storage.
+  const delivery = deliveryOf(config);
+  const limits = { files: Math.min(delivery.maxFiles, STORAGE_LIMITS.files), perFile: Math.min(delivery.maxFileMb * 1024 * 1024, STORAGE_LIMITS.perFile) };
+  // The Google Drive tip only makes sense while the Drive link field is shown.
+  const driveShown = config.fields.some((field) => field.id === 'driveLink' && !isFieldHidden(config, field, lang));
   const [sourceLang, setSourceLang] = useState(config.defaultSource);
   const [targetLang, setTargetLang] = useState(config.defaultTarget);
   const done = config.confirmation;
@@ -225,10 +230,10 @@ export default function HowContact({ branch = null }) {
     // Checked against the Firebase upload limits; the 3 MB fallback is only checked on submit.
     const chosen = [...e.currentTarget.files];
     const biggest = chosen.reduce((max, file) => Math.max(max, file.size), 0);
-    if (chosen.length > STORAGE_LIMITS.files) return setStatus('upload-count');
-    if (biggest > STORAGE_LIMITS.perFile) {
+    if (chosen.length > limits.files) return setStatus('upload-count');
+    if (biggest > limits.perFile) {
       setUploadBytes(biggest);
-      setUploadMax(STORAGE_LIMITS.perFile);
+      setUploadMax(limits.perFile);
       return setStatus('upload-size');
     }
     return setStatus('idle');
@@ -240,16 +245,16 @@ export default function HowContact({ branch = null }) {
     const form = e.currentTarget;
     const data = new FormData(form);
     const picked = data.getAll('files').filter((file) => file?.size);
-    if (picked.length > STORAGE_LIMITS.files) {
+    if (picked.length > limits.files) {
       setStatus('upload-count');
       return;
     }
     setStatus('sending');
     const files = await Promise.all(picked.map(shrinkImage));
     const biggest = files.reduce((max, file) => Math.max(max, file.size), 0);
-    if (biggest > STORAGE_LIMITS.perFile) {
+    if (biggest > limits.perFile) {
       setUploadBytes(biggest);
-      setUploadMax(STORAGE_LIMITS.perFile);
+      setUploadMax(limits.perFile);
       setStatus('upload-size');
       return;
     }
@@ -263,7 +268,7 @@ export default function HowContact({ branch = null }) {
         } catch (error) {
           if (error.status === 413) {
             setUploadBytes(biggest);
-            setUploadMax(STORAGE_LIMITS.perFile);
+            setUploadMax(limits.perFile);
             setStatus('upload-size');
             return;
           }
@@ -307,7 +312,7 @@ export default function HowContact({ branch = null }) {
         body: JSON.stringify(payload),
       });
       if (response.status === 413) {
-        setUploadMax(uploads ? STORAGE_LIMITS.perFile : MAX_UPLOAD_BYTES);
+        setUploadMax(uploads ? limits.perFile : MAX_UPLOAD_BYTES);
         setStatus('upload-size');
         return;
       }
@@ -395,12 +400,16 @@ export default function HowContact({ branch = null }) {
                   {' '}
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">{tooBigCopy.whatsappAction}</a>
                 </p>
-                <p style={{ margin: '8px 0 4px', fontWeight: 600 }}>{uploadErrorCopy.driveTitle}</p>
-                <ol style={{ margin: 0, paddingInlineStart: 18, lineHeight: 1.55 }}>
-                  <li>{uploadErrorCopy.driveStep1}</li>
-                  <li>{uploadErrorCopy.driveStep2}</li>
-                  <li>{uploadErrorCopy.driveStep3}</li>
-                </ol>
+                {driveShown && (
+                  <>
+                    <p style={{ margin: '8px 0 4px', fontWeight: 600 }}>{uploadErrorCopy.driveTitle}</p>
+                    <ol style={{ margin: 0, paddingInlineStart: 18, lineHeight: 1.55 }}>
+                      <li>{uploadErrorCopy.driveStep1}</li>
+                      <li>{uploadErrorCopy.driveStep2}</li>
+                      <li>{uploadErrorCopy.driveStep3}</li>
+                    </ol>
+                  </>
+                )}
                 <p style={{ margin: '8px 0 0' }}>
                   {uploadErrorCopy.mail}
                   {' '}
@@ -410,7 +419,7 @@ export default function HowContact({ branch = null }) {
             )}
             {status === 'upload-count' && (
               <p className="form-feedback form-feedback--error" role="alert">
-                {uploadErrorCopy.count}
+                {uploadErrorCopy.count.replace('{n}', limits.files)}
                 {' '}
                 {uploadErrorCopy.mail}
                 {' '}

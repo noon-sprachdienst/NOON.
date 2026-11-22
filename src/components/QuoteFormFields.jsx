@@ -1,4 +1,4 @@
-import { fieldRows, languageList, OTHER_LANGUAGE, styleOf, textCss, textIn } from '../data/formSchema.js';
+import { fieldRows, fileAccept, languageList, OTHER_LANGUAGE, styleOf, textCss, textIn } from '../data/formSchema.js';
 
 // Renders the quote-form fields from the CMS settings. Used by the site form (HowContact)
 // and by the live preview in the admin, so both always look the same.
@@ -10,7 +10,6 @@ const HTML_IDS = {
   targetLanguage: 'form-to', files: 'form-file', driveLink: 'form-drive', message: 'form-doc',
 };
 const AUTOCOMPLETE = { firstName: 'given-name', lastName: 'family-name', email: 'email', phone: 'tel', driveLink: 'off' };
-export const FILE_ACCEPT = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.heic,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp,image/heic';
 
 function ServiceIcon({ id }) {
   return id === 'translation' ? (
@@ -89,7 +88,7 @@ export default function QuoteFormFields({
         </>
       );
     } else if (field.type === 'file') {
-      control = <input id={id} name="files" type="file" accept={FILE_ACCEPT} multiple onChange={onFilesChange} />;
+      control = <input id={id} name="files" type="file" accept={fileAccept(config)} multiple onChange={onFilesChange} />;
     } else if (field.type === 'textarea') {
       control = <textarea id={id} name={field.id} placeholder={placeholder} required={field.required} maxLength={3000} />;
     } else if (field.type === 'select') {

@@ -1,5 +1,6 @@
 import { cleanText, isAdminRequest, readJson, sendJson } from '../_lib/http.js';
-import { getStore, REQUEST_DAYS, REQUESTS } from '../_lib/cmsStore.js';
+import { getStore, publishedFormConfig, REQUESTS } from '../_lib/cmsStore.js';
+import { deliveryOf } from '../../src/data/formSchema.js';
 
 // Requests page of the admin. Each entry holds only the date, the customer's name, the service
 // and the file links; it is deleted after 30 days together with the files (Firestore TTL on
@@ -13,7 +14,9 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const cutoff = Date.now() - REQUEST_DAYS * 24 * 60 * 60 * 1000;
+      // Kept for the number of days set in the admin (Settings tab).
+      const days = deliveryOf(await publishedFormConfig()).keepDays;
+      const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
       const [entries, expired] = await Promise.all([
         store.list(REQUESTS, { orderBy: ['createdAt', 'desc'], limit: 500 }),
         store.list(REQUESTS, { where: ['createdAt', '<', cutoff], limit: 200 }),
@@ -24,7 +27,7 @@ export default async function handler(req, res) {
         .map(({ id, createdAt, name, service, files, attached, status }) => ({
           id, createdAt, name, service, files: files || [], attached: attached || 0, status: status === 'done' ? 'done' : 'new',
         }));
-      return sendJson(res, 200, { requests, days: REQUEST_DAYS });
+      return sendJson(res, 200, { requests, days });
     }
     if (req.method !== 'POST') return sendJson(res, 405, { error: 'Method not allowed.' });
 

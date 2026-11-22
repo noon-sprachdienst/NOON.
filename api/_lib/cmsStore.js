@@ -57,3 +57,16 @@ export function getStore() {
 export const CMS = 'cms';
 export const REQUESTS = 'requests';
 export const REQUEST_DAYS = 30;
+
+// Published quote-form settings, cached per instance for a minute (used by the send API and
+// the Requests page). null when nothing is published: callers then use the built-in defaults.
+let formCache = { at: 0, config: null };
+export async function publishedFormConfig() {
+  if (Date.now() - formCache.at < 60 * 1000) return formCache.config;
+  const published = await getStore().get(CMS, 'form').catch((error) => {
+    console.error('published form settings could not be read, using defaults:', error.message);
+    return null;
+  });
+  formCache = { at: Date.now(), config: published?.config || null };
+  return formCache.config;
+}

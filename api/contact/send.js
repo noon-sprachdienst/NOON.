@@ -1,8 +1,15 @@
 ﻿import nodemailer from 'nodemailer';
 import { cleanText, readJson, sendJson } from '../_lib/http.js';
+import { getClientIp, rateLimit } from '../_lib/rateLimit.js';
 import { getBucket, isUploadPath, MAX_TOTAL_BYTES, MAX_UPLOAD_FILES, signPath, storageConfigured } from '../_lib/storage.js';
-import { CMS, getStore, REQUEST_DAYS, REQUESTS } from '../_lib/cmsStore.js';
-import { textIn } from '../../src/data/formSchema.js';
+import { getStore, publishedFormConfig, REQUESTS } from '../_lib/cmsStore.js';
+import { deliveryOf, SITE_LANGS, textIn } from '../../src/data/formSchema.js';
+
+// German service names for the office e-mail when no settings are published.
+const SERVICE_NAMES = { translation: 'Übersetzung', interpreting: 'Dolmetschen', appointment: 'Termin' };
+const DEFAULT_SUBJECT = 'Neue Website-Anfrage: {service}';
+const DEFAULT_SENDER = 'NOON Website Anfrage';
+const DAY = 24 * 60 * 60 * 1000;
 
 const ALLOWED_FILE_TYPES = new Set([
   'application/pdf',
@@ -111,19 +118,9 @@ async function getStoredUploads(uploads, siteUrl) {
 }
 
 // Fields the admin added to the form. Only ids found in the published settings are accepted,
-// and the e-mail shows them with their German label. Settings are cached per instance for a minute.
-let formCache = { at: 0, config: null };
-async function publishedFormConfig() {
-  if (Date.now() - formCache.at < 60 * 1000) return formCache.config;
-  const published = await getStore().get(CMS, 'form').catch(() => null);
-  formCache = { at: Date.now(), config: published?.config || null };
-  return formCache.config;
-}
-
-async function customFields(values) {
-  if (!values || typeof values !== 'object') return [];
-  const config = await publishedFormConfig();
-  if (!config) return [];
+// and the e-mail shows them with their German label.
+function customFields(values, config) {
+  if (!values || typeof values !== 'object' || !config) return [];
   return config.fields
     .filter((field) => !field.builtin && !field.hidden && Object.prototype.hasOwnProperty.call(values, field.id))
     .map((field) => {
@@ -136,12 +133,13 @@ async function customFields(values) {
     .filter((field) => field.value);
 }
 
-// Requests page of the admin: only date, name, service and file links, deleted after 30 days.
-function saveRequest({ name, service, links, driveLink, attached }) {
+// Requests page of the admin: only date, name, service and file links, deleted after the
+// number of days set in the admin (7, 14 or 30).
+function saveRequest({ name, service, links, driveLink, attached, keepDays }) {
   const now = Date.now();
   return getStore().add(REQUESTS, {
     createdAt: now,
-    expireAt: new Date(now + REQUEST_DAYS * 24 * 60 * 60 * 1000),
+    expireAt: new Date(now + keepDays * DAY),
     name,
     service,
     files: [...links.map((link) => ({ name: link.name, size: link.size, url: link.url })), ...(driveLink ? [{ name: 'Google Drive', size: 0, url: driveLink }] : [])],
@@ -150,11 +148,11 @@ function saveRequest({ name, service, links, driveLink, attached }) {
   });
 }
 
-// Entries older than 30 days are removed on every new request as well as whenever the Requests
-// page is opened, so the 30-day promise holds even if nobody opens the admin for a while.
-async function removeExpiredRequests() {
+// Old entries are removed on every new request as well as whenever the Requests page is
+// opened, so the promised period holds even if nobody opens the admin for a while.
+async function removeExpiredRequests(keepDays) {
   const store = getStore();
-  const cutoff = Date.now() - REQUEST_DAYS * 24 * 60 * 60 * 1000;
+  const cutoff = Date.now() - keepDays * DAY;
   const expired = await store.list(REQUESTS, { where: ['createdAt', '<', cutoff], limit: 100 });
   if (expired.length) await store.deleteMany(REQUESTS, expired.map((entry) => entry.id));
 }
@@ -164,6 +162,11 @@ const formatMb = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1).replace('.', '
 export default async function handler(req, res) {
   if (req.method !== 'POST') return sendJson(res, 405, { error: 'Method not allowed.' });
   if (!validateOrigin(req)) return sendJson(res, 403, { error: 'Invalid request origin.' });
+
+  // Ten requests per address in ten minutes: real customers never get near it, but it stops
+  // the form (and its auto-reply) from being used to send mass mail.
+  const limited = rateLimit(`send:${getClientIp(req)}`, { limit: 10, windowMs: 10 * 60 * 1000 });
+  if (!limited.allowed) return sendJson(res, 429, { error: 'Too many requests. Please try again later.' });
 
   let fromHeader = '(not built yet)';
   try {
@@ -199,16 +202,21 @@ export default async function handler(req, res) {
       appointmentLocation: cleanText(body.appointmentLocation, 120) || '-',
       appointmentTime: cleanText(body.appointmentTime, 80) || '-',
     };
+    // What happens after sending is set by the client in the admin (Settings tab).
+    const config = await publishedFormConfig();
+    const delivery = deliveryOf(config);
+    const serviceOption = config?.fields?.find((field) => field.type === 'service')?.options?.find((option) => option.id === service);
+    const serviceName = textIn(serviceOption?.label, 'de') || SERVICE_NAMES[service] || service;
     const siteUrl = process.env.SITE_URL || `https://${req.headers.host}`;
     const stored = await getStoredUploads(body.uploads, siteUrl);
     const inlineFiles = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
     const attachments = [...inlineFiles, ...stored.attachments];
-    const extra = await customFields(body.custom).catch(() => []);
+    const extra = customFields(body.custom, config);
     // Saved in parallel with the e-mail and never blocks it; if the e-mail fails the request is still listed.
     const saving = Promise.all([
-      saveRequest({ name: fields.name, service, links: stored.links, driveLink: fields.driveLink, attached: inlineFiles.length })
+      saveRequest({ name: fields.name, service, links: stored.links, driveLink: fields.driveLink, attached: inlineFiles.length, keepDays: delivery.keepDays })
         .catch((error) => console.error('request save error', error.message)),
-      removeExpiredRequests().catch((error) => console.error('request cleanup error', error.message)),
+      removeExpiredRequests(delivery.keepDays).catch((error) => console.error('request cleanup error', error.message)),
     ]);
     const fileLinksText = stored.links.length
       ? ['', 'Dateien (Download-Link, 30 Tage verfügbar):', ...stored.links.map((l) => `- ${l.name} (${formatMb(l.size)}): ${l.url}`)]
@@ -216,9 +224,13 @@ export default async function handler(req, res) {
     const fileLinksHtml = stored.links.length
       ? `<p><strong>Dateien</strong> (Download-Link, 30 Tage verfügbar):<br>${stored.links.map((l) => `<a href="${escapeHtml(l.url)}">${escapeHtml(l.name)}</a> (${formatMb(l.size)})`).join('<br>')}</p>`
       : '';
-    const recipient = service === 'translation'
+    // Standard addresses come from the server; the admin can set other ones per service.
+    const standardRecipient = service === 'translation'
       ? (process.env.CONTACT_EMAIL_TRANSLATION || 'uebersetzung@noon-sprachdienst.de')
       : (process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de');
+    const recipients = delivery.to?.[service]?.length ? delivery.to[service] : [standardRecipient];
+    const recipient = recipients.join(', ');
+    const subject = (delivery.subject || DEFAULT_SUBJECT).replaceAll('{service}', serviceName).replaceAll('{name}', fields.name).replace(/\s+/g, ' ').trim();
     const smtpPort = Number(process.env.SMTP_PORT || 465);
 
     // SMTP_DEV_LOG=1 is set only by the local dev server (scripts/dev-api.mjs): print instead of sending.
@@ -236,17 +248,18 @@ export default async function handler(req, res) {
     });
 
     const fromAddress = (process.env.SMTP_FROM || process.env.SMTP_USER || '').trim();
-    fromHeader = `"NOON Website Anfrage" <${fromAddress}>`;
+    fromHeader = `"${delivery.senderName || DEFAULT_SENDER}" <${fromAddress}>`;
     const mail = {
       from: fromHeader,
       to: recipient,
+      cc: delivery.cc.length ? delivery.cc.join(', ') : undefined,
       replyTo: email || undefined,
-      subject: `Neue Website-Anfrage: ${fields.service}`,
+      subject,
       text: [
         `Name: ${fields.name}`,
         `E-Mail: ${fields.email}`,
         `Telefon / WhatsApp: ${fields.phone}`,
-        `Leistung: ${fields.service}`,
+        `Leistung: ${serviceName}`,
         ...(isAppointment ? [
           `Standort: ${fields.appointmentLocation}`,
           `Gewuenschte Uhrzeit: ${fields.appointmentTime}`,
@@ -268,7 +281,7 @@ export default async function handler(req, res) {
             <strong>Name:</strong> ${escapeHtml(fields.name)}<br>
             <strong>E-Mail:</strong> ${escapeHtml(fields.email)}<br>
             <strong>Telefon / WhatsApp:</strong> ${escapeHtml(fields.phone)}<br>
-            <strong>Leistung:</strong> ${escapeHtml(fields.service)}<br>
+            <strong>Leistung:</strong> ${escapeHtml(serviceName)}<br>
             ${isAppointment ? `<strong>Standort:</strong> ${escapeHtml(fields.appointmentLocation)}<br>
             <strong>Gewünschte Uhrzeit:</strong> ${escapeHtml(fields.appointmentTime)}<br>` : ''}
             <strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
@@ -283,8 +296,25 @@ export default async function handler(req, res) {
       `,
       attachments,
     };
-    if (devLog) console.log(`[dev] e-mail to ${recipient}\n${mail.text}`);
+    if (devLog) console.log(`[dev] e-mail to ${recipient}${mail.cc ? ` cc ${mail.cc}` : ''} from ${fromHeader}\nSubject: ${subject}\n${mail.text}`);
     else await transporter.sendMail(mail);
+
+    // Optional confirmation to the customer, in the language of the page. It contains only the
+    // texts set in the admin (nothing the visitor typed), so the form cannot carry spam to others.
+    if (delivery.autoReply.enabled && email && !isAppointment) {
+      const lang = SITE_LANGS.includes(fields.language) ? fields.language : 'de';
+      const phoneLabel = config?.confirmation?.phone || '+49 160 956 27 666';
+      const replySubject = textIn(delivery.autoReply.subject, lang) || textIn(config?.confirmation?.title, lang) || 'Noon';
+      const replyText = (textIn(delivery.autoReply.text, lang) || textIn(config?.confirmation?.text, lang)).replaceAll('{phone}', phoneLabel);
+      const reply = { from: fromHeader, to: email, replyTo: recipients[0], subject: replySubject, text: replyText };
+      try {
+        if (devLog) console.log(`[dev] auto-reply to ${email}\nSubject: ${replySubject}\n${replyText}`);
+        else await transporter.sendMail(reply);
+      } catch (error) {
+        // The office already has the request; a failed confirmation must not report an error to the visitor.
+        console.error('auto-reply error', error.message);
+      }
+    }
     await saving;
 
     return sendJson(res, 202, { ok: true });

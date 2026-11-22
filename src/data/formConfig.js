@@ -3,7 +3,7 @@
 // loaded, and it is what "Restore original form" goes back to.
 import { translations } from './translations.js';
 import { FORM_CONFIRMATION, FORM_LANGUAGE_LISTS, FORM_LANGUAGES, FORM_OTHER_LANGUAGE } from './formLanguages.js';
-import { SITE_LANGS, OTHER_LANGUAGE } from './formSchema.js';
+import { SITE_LANGS, OTHER_LANGUAGE, DEFAULT_DELIVERY } from './formSchema.js';
 
 const fromKey = (key) => Object.fromEntries(SITE_LANGS.map((lang) => [lang, translations[lang]?.[key] || translations.de[key]]));
 const same = (value) => Object.fromEntries(SITE_LANGS.map((lang) => [lang, value]));
@@ -74,7 +74,8 @@ export const DEFAULT_FORM_CONFIG = {
       ],
     }),
     field('files', 'file', 'full', { show: 'translation', label: fromKey('form.file'), help: UPLOAD_HINT }),
-    field('driveLink', 'url', 'full', { show: 'translation', label: pick(DRIVE, 'label'), placeholder: same('https://drive.google.com/...'), help: pick(DRIVE, 'hint') }),
+    // Hidden by default: uploads go to storage, so no Google Drive link is needed (can be shown again in the admin).
+    field('driveLink', 'url', 'full', { show: 'translation', hidden: true, label: pick(DRIVE, 'label'), placeholder: same('https://drive.google.com/...'), help: pick(DRIVE, 'hint') }),
     field('message', 'textarea', 'full', { label: fromKey('form.doc'), placeholder: DOC_PLACEHOLDER }),
   ],
   languages: FORM_LANGUAGE_LISTS.source
@@ -100,6 +101,7 @@ export const DEFAULT_FORM_CONFIG = {
     hours: fromKey('foot.hours'),
     whatsapp: fromKey('contact.wa'),
   },
+  delivery: JSON.parse(JSON.stringify(DEFAULT_DELIVERY)),
 };
 
 // Deep copy, so editors can change it freely.

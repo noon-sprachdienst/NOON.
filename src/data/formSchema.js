@@ -12,6 +12,8 @@
 //   confirmation: { title, text, call, again, phone },    // texts per language, phone shared
 //   contact: { title, sub, phoneLabel, emailLabel, hqLabel, hours, whatsapp },  // contact card next to the form
 //   ui: { [elementKey]: { hidden, hiddenIn, style, styleIn } }, // see CMS_ELEMENTS below
+//   delivery: { to: { translation, interpreting }, cc, subject, senderName, autoReply,   // what happens
+//               maxFiles, maxFileMb, fileTypes, keepDays },                            // after sending
 // }
 // The layout (fields, order, types, widths, settings) is shared by all languages;
 // only the texts are stored per language. An empty text falls back to German.
@@ -89,6 +91,33 @@ export const UI_KEYS = Object.keys(CMS_ELEMENTS);
 export const BUTTON_KEYS = UI_KEYS.filter((key) => CMS_ELEMENTS[key].button);
 export const UNHIDEABLE_KEYS = [...UI_KEYS.filter((key) => CMS_ELEMENTS[key].keep), ...LOCKED_FIELDS.map((id) => `field:${id}`)];
 export const FONT_SIZES = [75, 90, 100, 115, 130, 150, 175];
+
+// What happens after a request is sent, set by the client in the admin (Settings tab).
+// The technical maxima below come from Vercel/Firebase (api/_lib/storage.js) and cannot be raised here.
+export const DELIVERY_LIMITS = { emails: 5, maxFiles: 10, maxFileMb: 50, subject: 150, senderName: 60, replyText: 1500 };
+export const FILE_TYPES = {
+  pdf: '.pdf,application/pdf',
+  word: '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  images: '.jpg,.jpeg,.png,.webp,.heic,image/jpeg,image/png,image/webp,image/heic',
+};
+export const KEEP_DAYS = [7, 14, 30];
+// Empty recipient lists mean: the standard address set on the server.
+export const DEFAULT_DELIVERY = {
+  to: { translation: [], interpreting: [] },
+  cc: [],
+  subject: '',
+  senderName: '',
+  autoReply: { enabled: false, subject: {}, text: {} },
+  maxFiles: DELIVERY_LIMITS.maxFiles,
+  maxFileMb: DELIVERY_LIMITS.maxFileMb,
+  fileTypes: Object.keys(FILE_TYPES),
+  keepDays: 30,
+};
+export const deliveryOf = (config) => ({ ...DEFAULT_DELIVERY, ...(config?.delivery || {}) });
+// accept="…" for the upload field.
+export const fileAccept = (config) => deliveryOf(config).fileTypes.map((type) => FILE_TYPES[type]).filter(Boolean).join(',');
+const EMAIL_PATTERN = /^[^\s@<>,;"']+@[^\s@<>,;"']+\.[a-z]{2,}$/i;
+export const isEmail = (value) => EMAIL_PATTERN.test(String(value || '').trim());
 const COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 
 const uiOf = (config, key) => config?.ui?.[key] || {};
@@ -133,6 +162,42 @@ function cleanStyle(style, button) {
   if (COLOR_PATTERN.test(style.color || '')) out.color = style.color.toLowerCase();
   if (button && COLOR_PATTERN.test(style.bg || '')) out.bg = style.bg.toLowerCase();
   return Object.keys(out).length ? out : null;
+}
+
+function cleanEmails(list, label) {
+  const raw = Array.isArray(list) ? list : [];
+  const out = [...new Set(raw.map((value) => cleanString(value, 120).toLowerCase()).filter(Boolean))];
+  out.forEach((value) => { if (!isEmail(value)) fail(`Invalid e-mail address (${label}): ${value}`); });
+  if (out.length > DELIVERY_LIMITS.emails) fail(`At most ${DELIVERY_LIMITS.emails} addresses (${label}).`);
+  return out;
+}
+
+const clampInt = (value, min, max, fallback) => {
+  const n = Math.round(Number(value));
+  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
+};
+
+function cleanDelivery(input) {
+  const d = input && typeof input === 'object' ? input : {};
+  const types = Array.isArray(d.fileTypes) ? Object.keys(FILE_TYPES).filter((type) => d.fileTypes.includes(type)) : DEFAULT_DELIVERY.fileTypes;
+  if (!types.length) fail('Choose at least one file type.');
+  return {
+    to: { translation: cleanEmails(d.to?.translation, 'translation'), interpreting: cleanEmails(d.to?.interpreting, 'interpreting') },
+    cc: cleanEmails(d.cc, 'copy'),
+    // One line only: subject and sender name end up in e-mail headers.
+    subject: cleanString(d.subject, DELIVERY_LIMITS.subject).replace(/\s+/g, ' '),
+    // Quotes and angle brackets would break the From header.
+    senderName: cleanString(d.senderName, DELIVERY_LIMITS.senderName).replace(/["<>]/g, '').replace(/\s+/g, ' '),
+    autoReply: {
+      enabled: d.autoReply?.enabled === true,
+      subject: cleanTexts(d.autoReply?.subject, DELIVERY_LIMITS.subject),
+      text: cleanTexts(d.autoReply?.text, DELIVERY_LIMITS.replyText),
+    },
+    maxFiles: clampInt(d.maxFiles, 1, DELIVERY_LIMITS.maxFiles, DEFAULT_DELIVERY.maxFiles),
+    maxFileMb: clampInt(d.maxFileMb, 1, DELIVERY_LIMITS.maxFileMb, DEFAULT_DELIVERY.maxFileMb),
+    fileTypes: types,
+    keepDays: KEEP_DAYS.includes(Number(d.keepDays)) ? Number(d.keepDays) : DEFAULT_DELIVERY.keepDays,
+  };
 }
 
 function cleanUi(input, keys) {
@@ -283,6 +348,7 @@ export function sanitizeFormConfig(input) {
     confirmation: { ...groups.confirmation, phone: cleanString(input.confirmation?.phone, 40) },
     contact: groups.contact,
     ui: cleanUi(input.ui, [...UI_KEYS, ...steps.map((step) => `step:${step.id}`), ...cleanFields.map((field) => `field:${field.id}`)]),
+    delivery: cleanDelivery(input.delivery),
   };
 }
 

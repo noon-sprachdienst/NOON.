@@ -6,7 +6,8 @@ import VisualPreview from './VisualPreview.jsx';
 import ElementBar from './ElementBar.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
 import {
-  ALWAYS_REQUIRED, CUSTOM_TYPES, isStartText, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE, SITE_LANGS, sanitizeFormConfig, TEXT_PATHS, textAt, textIn,
+  ALWAYS_REQUIRED, CUSTOM_TYPES, DELIVERY_LIMITS, deliveryOf, FILE_TYPES, isEmail, isStartText, KEEP_DAYS, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE,
+  SITE_LANGS, sanitizeFormConfig, TEXT_PATHS, textAt, textIn,
 } from '../../data/formSchema.js';
 import { CONTACT } from '../../config/contact.js';
 import { LEGAL_INFO } from '../../data/legalInfo.js';
@@ -425,6 +426,118 @@ function ConfirmationSection({ config, lang, t, update }) {
   );
 }
 
+// Several e-mail addresses in one box (comma or new line). The typed text is kept while typing;
+// the cleaned list goes to the settings, wrong addresses are listed under the box.
+function EmailList({ label, hint, value, onChange }) {
+  const [raw, setRaw] = useState(value.join(', '));
+  const parse = (text) => text.split(/[\s,;]+/).map((item) => item.trim()).filter(Boolean);
+  useEffect(() => {
+    if (parse(raw).join(',') !== value.join(',')) setRaw(value.join(', '));
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps -- only outside changes (undo, load) reset the text
+  const invalid = parse(raw).filter((item) => !isEmail(item));
+  return (
+    <label className="np-field">
+      <span>{label}</span>
+      <input className="np-input" type="text" dir="ltr" value={raw} placeholder="name@noon-sprachdienst.de"
+        onChange={(e) => { setRaw(e.target.value); onChange(parse(e.target.value)); }} />
+      {invalid.length > 0 ? <small className="np-error">{invalid.join(', ')}</small> : hint && <small>{hint}</small>}
+    </label>
+  );
+}
+
+// What happens after a request is sent: who gets it, the e-mail, the confirmation to the customer,
+// upload limits and how long requests are listed. Secrets and technical limits stay on the server
+// (shown at the end so the client knows what needs a developer).
+function SettingsSection({ config, lang, t, update }) {
+  const d = deliveryOf(config);
+  const set = (fn) => update((c) => { c.delivery = deliveryOf(c); fn(c.delivery); });
+  const reply = d.autoReply;
+  return (
+    <>
+      <section className="np-card" data-edit-key="delivery">
+        <header className="np-card-head"><div><h2>{t.dTitle}</h2><p>{t.dSub}</p></div></header>
+        <div className="np-grid2">
+          <EmailList label={t.dToTranslation} hint={fill(t.dStandard, { email: 'uebersetzung@noon-sprachdienst.de' })} value={d.to.translation}
+            onChange={(list) => set((x) => { x.to = { ...x.to, translation: list }; })} />
+          <EmailList label={t.dToInterpreting} hint={fill(t.dStandard, { email: 'info@noon-sprachdienst.de' })} value={d.to.interpreting}
+            onChange={(list) => set((x) => { x.to = { ...x.to, interpreting: list }; })} />
+        </div>
+        <EmailList label={t.dCc} hint={t.dCcHint} value={d.cc} onChange={(list) => set((x) => { x.cc = list; })} />
+        <div className="np-grid2">
+          <label className="np-field">
+            <span>{t.dSubject}</span>
+            <input className="np-input" type="text" value={d.subject} maxLength={DELIVERY_LIMITS.subject} placeholder="Neue Website-Anfrage: {service}"
+              onChange={(e) => set((x) => { x.subject = e.target.value; })} />
+            <small>{t.dSubjectHint}</small>
+          </label>
+          <label className="np-field">
+            <span>{t.dSender}</span>
+            <input className="np-input" type="text" value={d.senderName} maxLength={DELIVERY_LIMITS.senderName} placeholder="NOON Website Anfrage"
+              onChange={(e) => set((x) => { x.senderName = e.target.value; })} />
+          </label>
+        </div>
+      </section>
+
+      <section className="np-card">
+        <header className="np-card-head">
+          <div><h2>{t.dReplyTitle}</h2><p>{t.dReplySub}</p></div>
+          <button type="button" role="switch" aria-checked={reply.enabled} className={`np-switch${reply.enabled ? ' is-on' : ''}`}
+            onClick={() => set((x) => { x.autoReply = { ...x.autoReply, enabled: !x.autoReply.enabled }; })}>
+            <i /> <span>{reply.enabled ? t.on : t.off}</span>
+          </button>
+        </header>
+        <TextField label={t.dReplySubject} map={reply.subject} lang={lang}
+          onChange={(map) => set((x) => { x.autoReply = { ...x.autoReply, subject: map }; })} />
+        <TextField label={t.dReplyText} map={reply.text} lang={lang} multiline rows={5}
+          onChange={(map) => set((x) => { x.autoReply = { ...x.autoReply, text: map }; })}
+          hint={fill(t.dReplyHint, { title: textIn(config.confirmation.title, lang) })} />
+      </section>
+
+      <section className="np-card">
+        <header className="np-card-head"><div><h2>{t.dFilesTitle}</h2><p>{t.dFilesSub}</p></div></header>
+        <div className="np-grid2">
+          <label className="np-field">
+            <span>{t.dMaxFiles}</span>
+            <input className="np-input" type="number" min={1} max={DELIVERY_LIMITS.maxFiles} value={d.maxFiles}
+              onChange={(e) => set((x) => { x.maxFiles = Math.min(DELIVERY_LIMITS.maxFiles, Math.max(1, Number(e.target.value) || 1)); })} />
+            <small>{fill(t.dMax, { n: DELIVERY_LIMITS.maxFiles })}</small>
+          </label>
+          <label className="np-field">
+            <span>{t.dMaxMb}</span>
+            <input className="np-input" type="number" min={1} max={DELIVERY_LIMITS.maxFileMb} value={d.maxFileMb}
+              onChange={(e) => set((x) => { x.maxFileMb = Math.min(DELIVERY_LIMITS.maxFileMb, Math.max(1, Number(e.target.value) || 1)); })} />
+            <small>{fill(t.dMax, { n: `${DELIVERY_LIMITS.maxFileMb} MB` })}</small>
+          </label>
+        </div>
+        <div className="np-field">
+          <span>{t.dTypes}</span>
+          <div className="np-checks">
+            {Object.keys(FILE_TYPES).map((type) => (
+              <label key={type} className="np-check">
+                <input type="checkbox" checked={d.fileTypes.includes(type)} disabled={d.fileTypes.length === 1 && d.fileTypes.includes(type)}
+                  onChange={() => set((x) => { x.fileTypes = x.fileTypes.includes(type) ? x.fileTypes.filter((v) => v !== type) : Object.keys(FILE_TYPES).filter((v) => v === type || x.fileTypes.includes(v)); })} />
+                {t.dType[type]}
+              </label>
+            ))}
+          </div>
+        </div>
+        <p className="np-muted np-note">{t.dFilesNote}</p>
+        <div className="np-field np-field--inline">
+          <span>{t.dKeep}</span>
+          <Segmented small value={String(d.keepDays)} options={KEEP_DAYS.map((n) => [String(n), fill(t.dDays, { n })])} onChange={(v) => set((x) => { x.keepDays = Number(v); })} />
+        </div>
+      </section>
+
+      <section className="np-card">
+        <header className="np-card-head"><div><h2>{t.dServerTitle}</h2><p>{t.dServerSub}</p></div></header>
+        <ul className="np-server-list">
+          {t.dServerItems.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      </section>
+    </>
+  );
+}
+
 function HistorySection({ history, published, t, locale, onLoadVersion, onLoadDefault }) {
   return (
     <>
@@ -518,6 +631,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       if (!start.section) start.section = builtIn.section;
       if (!start.steps?.length) start.steps = builtIn.steps;
       if (!start.contact) start.contact = builtIn.contact;
+      if (!start.delivery) start.delivery = builtIn.delivery;
       setConfig(start);
       setBaseline(JSON.stringify(start));
       resetHistory();
@@ -680,8 +794,10 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       : state.published ? fill(t.statusPublished, { rev: state.published.rev, date: new Date(state.published.publishedAt).toLocaleString(locale) })
         : t.statusDefault;
   const props = { config, lang, t, update };
-  const isWide = wide && section !== 'history';
-  const elementBar = section !== 'history' && tool === 'edit' && selectedKey ? (
+  // History and Settings have no preview of the section.
+  const noPreview = section === 'history' || section === 'settings';
+  const isWide = wide && !noPreview;
+  const elementBar = !noPreview && tool === 'edit' && selectedKey ? (
     <ElementBar config={config} lang={lang} t={t} update={update} elementKey={selectedKey} scope={scope} setScope={setScope}
       onDeleteField={deleteField} onClose={() => setSelectedKey(null)} />
   ) : null;
@@ -712,7 +828,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
       )}
 
       <div className="np-cms-tabs">
-        <Segmented value={section} onChange={setSection} options={[['fields', t.secFields], ['languages', t.secLanguages], ['confirmation', t.secConfirmation], ['history', t.secHistory]]} />
+        <Segmented value={section} onChange={setSection} options={[['fields', t.secFields], ['languages', t.secLanguages], ['confirmation', t.secConfirmation], ['settings', t.secSettings], ['history', t.secHistory]]} />
       </div>
 
       {section !== 'history' && (
@@ -731,18 +847,19 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
         </div>
       )}
 
-      <div className={`np-cms-grid${section === 'history' ? ' is-single' : ''}${isWide ? ' is-wide' : ''}`}>
+      <div className={`np-cms-grid${noPreview ? ' is-single' : ''}${isWide ? ' is-wide' : ''}`}>
         <div className="np-cms-col">
           {/* Toolbar of the element selected in the preview; stays in view while the panel scrolls. */}
           {elementBar && !isWide && elementBar}
           {section === 'fields' && <FieldsSection {...props} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />}
           {section === 'languages' && <LanguagesSection {...props} />}
           {section === 'confirmation' && <ConfirmationSection {...props} />}
+          {section === 'settings' && <SettingsSection {...props} />}
           {section === 'history' && (
             <HistorySection history={state.history} published={state.published} t={t} locale={locale} onLoadVersion={loadVersion} onLoadDefault={loadDefault} />
           )}
         </div>
-        {section !== 'history' && (
+        {!noPreview && (
           <VisualPreview config={config} lang={lang} t={t} update={update} mode={previewMode} setMode={showPreview}
             selectedKey={selectedKey} onSelect={select} onInsertField={insertField} onDeleteField={deleteField} scope={scope} tool={tool} setTool={setTool}
             device={device} setDevice={setDevice} wide={isWide} setWide={setWide} />
