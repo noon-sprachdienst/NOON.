@@ -64,8 +64,8 @@ export const GUIDE_PAGES = [
   {
     slug: 'notar-oder-beglaubigte-uebersetzung',
     eyebrow: 'Notar oder beglaubigte Übersetzung',
-    title: 'Notar oder beglaubigte Übersetzung – was brauchen Sie?',
-    metaTitle: 'Kann ein Notar eine Übersetzung beglaubigen? | Noon',
+    title: 'Notariell beglaubigte Übersetzung – wann brauchen Sie sie?',
+    metaTitle: 'Notariell beglaubigte Übersetzung – was ist das? | Noon',
     description: 'Kann ein Notar eine Übersetzung beglaubigen? Unterschied zwischen beglaubigter Übersetzung, notarieller Beglaubigung und Apostille – und was deutsche Behörden verlangen.',
     intro: '„Beglaubigt“ kann in Deutschland zwei verschiedene Dinge bedeuten: die beglaubigte Übersetzung durch einen gerichtlich ermächtigten Übersetzer – und die notarielle Beglaubigung einer Unterschrift oder Kopie. Wir erklären den Unterschied, damit Sie genau das bestellen, was Ihre Stelle verlangt.',
     highlights: ['Einfach erklärt', 'Für Behörden in Deutschland', 'Und für das Ausland'],

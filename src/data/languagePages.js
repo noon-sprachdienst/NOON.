@@ -55,7 +55,7 @@ function interpretingText(language, extra = '') {
   return `Unsere ${language}-Dolmetscher begleiten Sie zum Beispiel:\n• bei der Ausländerbehörde\n• beim Standesamt und bei Ihrer Trauung\n• beim Notar und vor Gericht\n• beim Arzt oder im Krankenhaus\n• bei Geschäftsterminen\n\n${extra}Wenn ein Termin vor Ort nicht möglich ist, dolmetschen wir auch per Video oder Telefon.`;
 }
 
-function languagePage({ slug, language, adjective, intro, description, documents, reverse, interpretingExtra = '', special, faqs, highlights, updated }) {
+function languagePage({ slug, language, adjective, intro, description, documents, reverse, interpretingExtra = '', special, faqs, highlights, updated, metaTitle }) {
   return {
     path: `${HUB_PATH}/${slug}`,
     kind: 'service',
@@ -65,7 +65,7 @@ function languagePage({ slug, language, adjective, intro, description, documents
     parent: PARENT,
     eyebrow: `${language} Übersetzer`,
     title: `${language} Übersetzer & Dolmetscher`,
-    metaTitle: `${language} Übersetzer & Dolmetscher – beglaubigt | Noon Übersetzungsbüro`,
+    metaTitle: metaTitle || `${language} Übersetzer & Dolmetscher – beglaubigt | Noon Übersetzungsbüro`,
     description,
     intro,
     highlights: highlights || ['Ermächtigte Übersetzer', 'Festpreis vorab', 'Express am selben Tag'],
@@ -87,6 +87,8 @@ function languagePage({ slug, language, adjective, intro, description, documents
 const LANGUAGE_PAGES_BASE = [
   languagePage({
     slug: 'arabisch',
+    // Searched as "übersetzer arabisch" and "dolmetscher arabisch deutsch" (Search Console, Nov 2026).
+    metaTitle: 'Übersetzer Arabisch–Deutsch & Dolmetscher – beglaubigt | Noon',
     language: 'Arabisch',
     adjective: 'Arabische',
     description: 'Beglaubigte Arabisch-Übersetzungen durch ermächtigte Übersetzer und Dolmetscher für viele arabische Dialekte. Festpreis vorab, Express am selben Tag.',

@@ -93,5 +93,5 @@ export const DESCRIPTIONS = {
   '/de/standorte/berlin/tuerkisch': 'Türkisch Übersetzer in Berlin: beglaubigte Übersetzungen Türkisch–Deutsch (Nüfus, e-Devlet, Urteile) und Dolmetscher für Notar und Gericht.',
   '/de/standorte/berlin/russisch': 'Russisch Übersetzer in Berlin: beglaubigte Übersetzungen Russisch–Deutsch für Anerkennung und Standesamt sowie Russisch-Dolmetscher.',
   '/de/standorte/stuttgart/arabisch': 'Arabisch Übersetzer in Stuttgart: beglaubigte Übersetzungen für Ausländerbehörde, Standesamt und Führerscheinstelle – Dolmetscher aller Dialekte.',
-  '/de/notar-oder-beglaubigte-uebersetzung': 'Kann ein Notar eine Übersetzung beglaubigen? Unterschied zwischen beglaubigter Übersetzung, Notar und Apostille – einfach erklärt.',
+  '/de/notar-oder-beglaubigte-uebersetzung': 'Notariell beglaubigte Übersetzung: was das ist, wann Sie sie brauchen und wann die beglaubigte Übersetzung reicht – einfach erklärt.',
 };

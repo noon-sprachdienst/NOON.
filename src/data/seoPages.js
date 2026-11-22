@@ -2,6 +2,7 @@ import { getServiceNavigation, serviceUi } from './serviceContent.js';
 
 import { LANGUAGE_PAGES } from './languagePages.js';
 import { applyPageSeo } from './pageTitles.js';
+import { GOOGLE_PROFILES, googleProfileUrl } from '../config/contact.js';
 import { DELIVERY_SECTION, DOCUMENT_LINKS, INTERPRETER_LINKS, LANGUAGE_LINKS, LANGUAGES_TEXT } from './contentLinks.js';
 import { NEW_PAGES_DE, PAGE_UPGRADES } from './pageUpgrades.js';
 import { CITY_HUBS, LANDING_PAGES, OFFICE_SECTIONS, REVIEW_QUOTES } from './landing/index.js';
@@ -18,6 +19,27 @@ export const COMPANY = {
   hours: 'Montag bis Samstag, telefonisch 24/7 erreichbar',
   foundingDate: '2019',
 };
+
+// Requests by message (WhatsApp, e-mail, form) are answered around the clock, as on the
+// Google profiles.
+const OPEN_24_7 = {
+  '@type': 'OpeningHoursSpecification',
+  dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+  opens: '00:00',
+  closes: '23:59',
+};
+
+// Confirmed starting prices, as structured data: AI assistants and search engines read them
+// to answer "what does a certified translation cost" with Noon's own numbers.
+const PRICE_OFFERS = [
+  ['Beglaubigte Übersetzung', '/de/beglaubigte-uebersetzungen/', 39, 'pro Dokument'],
+  ['Fachübersetzung', '/de/fachuebersetzungen/', 0.12, 'pro Wort'],
+  ['Dolmetschen', '/de/dolmetschen/', 85, 'pro Stunde'],
+].map(([name, path, minPrice, unitText]) => ({
+  '@type': 'Offer',
+  itemOffered: { '@type': 'Service', name, url: `https://www.noon-sprachdienst.de${path}` },
+  priceSpecification: { '@type': 'PriceSpecification', minPrice, priceCurrency: 'EUR', unitText },
+}));
 
 export const SEO_LANGUAGES = {
   de: { html: 'de-DE', label: 'Deutsch', prefix: '/de' },
@@ -1629,7 +1651,8 @@ export function getOrganizationSchema() {
       addressLocality: location.city,
       addressCountry: 'DE',
     })),
-    sameAs: [],
+    makesOffer: PRICE_OFFERS,
+    sameAs: Object.keys(GOOGLE_PROFILES).map(googleProfileUrl),
   };
 }
 
@@ -1719,12 +1742,8 @@ export function getPageSchema(page) {
         addressLocality: page.location.city,
         addressCountry: 'DE',
       },
-      openingHoursSpecification: {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        opens: '10:00',
-        closes: '19:00',
-      },
+      openingHoursSpecification: OPEN_24_7,
+      ...(googleProfileUrl(page.location.slug) ? { sameAs: [googleProfileUrl(page.location.slug)] } : {}),
       parentOrganization: { '@id': `${SITE_URL}/#organization` },
     }].filter(Boolean);
   }

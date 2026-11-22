@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Clock3, Lock, MapPin, Phone, Send, User } from 'lucide-react';
 import { useI18n } from '../hooks/useI18n';
+import { googleProfileUrl } from '../config/contact.js';
 
 const LOCATIONS = [
   { id: 'osnabrueck', tag: '01 · HQ', city: 'Osnabrück', zip: 'Rosenplatz 17 · 49074 Osnabrück', maps: 'https://maps.google.com/?q=Rosenplatz+17,+49074+Osnabrück' },
@@ -193,7 +194,7 @@ export default function Appointment() {
           ))}
         </div>
 
-        <a className="appointment-map-link" href={activeLocation.maps} target="_blank" rel="noopener noreferrer">
+        <a className="appointment-map-link" href={googleProfileUrl(activeLocation.id) || activeLocation.maps} target="_blank" rel="noopener noreferrer">
           <MapPin size={16} />
           <span>{copy.maps} — {activeLocation.city}</span>
         </a>

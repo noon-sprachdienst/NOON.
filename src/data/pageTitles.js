@@ -8,7 +8,7 @@ export const TITLE_SUFFIX = 'Noon Übersetzungsbüro';
 const OLD_NAME = /NOON\. Sprachdienst/g;
 
 const DE_TITLES = {
-  '/de/beglaubigte-uebersetzungen': 'Beglaubigte Übersetzungen – Express am selben Tag',
+  '/de/beglaubigte-uebersetzungen': 'Beglaubigte Übersetzung – ab 39 €, Express am selben Tag',
   '/de/dolmetschen': 'Dolmetscher buchen – vor Ort, per Video oder Telefon',
   '/de/dolmetschen/simultandolmetscher': 'Simultandolmetscher für Konferenzen und Events',
   '/de/dolmetschen/beeidigte-dolmetscher': 'Beeidigte Dolmetscher für Behörden und Gericht',
