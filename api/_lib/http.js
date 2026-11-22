@@ -19,6 +19,15 @@ export async function readJson(req) {
   return raw ? JSON.parse(raw) : {};
 }
 
+// Like cleanText, but keeps line breaks (messages, long text fields): removing them would
+// glue a customer's lines together in the office e-mail.
+export function cleanMultiline(value, max = 3000) {
+  return typeof value === 'string'
+    // eslint-disable-next-line no-control-regex -- strips control characters except tab and line breaks
+    ? value.replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, max)
+    : '';
+}
+
 export function cleanText(value, max = 120) {
   return typeof value === 'string'
     // eslint-disable-next-line no-control-regex -- strips control characters from user input on purpose

@@ -405,7 +405,10 @@ export default function Application() {
     setStatus({ type: 'sending', message: copy.sending });
 
     try {
-      const offeredLanguages = data.getAll('languages').join(', ') || '-';
+      // The office e-mail is read in German: send the German names of the chosen languages
+      // (all language lists have the same order) and a fixed service id.
+      const offeredLanguages = data.getAll('languages').filter(Boolean)
+        .map((label) => COPY.de.languageOptions[copy.languageOptions.indexOf(label)] || label).join(', ') || '-';
       const payload = {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
@@ -413,14 +416,14 @@ export default function Application() {
         phone: data.get('phone'),
         sourceLanguage: offeredLanguages,
         targetLanguage: '-',
-        service: copy.service,
+        service: 'application',
         language: lang,
         startedAt,
         website: data.get('website'),
         message: [
-          `${copy.offeredLanguages} ${offeredLanguages}`,
+          `${COPY.de.offeredLanguages} ${offeredLanguages}`,
           '',
-          copy.messagePrefix,
+          COPY.de.messagePrefix,
           data.get('message') || '-',
         ].join('\n'),
         ...(await prepareFiles(files)),

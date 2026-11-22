@@ -1,5 +1,7 @@
 import { readJson, sendJson } from '../_lib/http.js';
 import { getClientIp, rateLimit } from '../_lib/rateLimit.js';
+import { publishedFormConfig } from '../_lib/cmsStore.js';
+import { isFileAllowed } from '../../src/data/formSchema.js';
 import {
   getBucket, MAX_FILE_BYTES, MAX_TOTAL_BYTES, MAX_UPLOAD_FILES, newUploadPath, storageConfigured,
 } from '../_lib/storage.js';
@@ -42,13 +44,17 @@ export default async function handler(req, res) {
     const files = Array.isArray(body.files) ? body.files : [];
     if (!files.length || files.length > MAX_UPLOAD_FILES) return sendJson(res, 400, { error: 'Invalid number of files.' });
 
+    // The quote form only accepts the file types allowed in the CMS settings.
+    const quoteConfig = body.form === 'quote' ? await publishedFormConfig() : undefined;
     let total = 0;
     const checked = files.map((file) => {
       const name = String(file?.name || '');
       const extension = name.slice(name.lastIndexOf('.')).toLowerCase();
       const type = String(file?.type || '') || EXTENSION_TYPES[extension];
       const size = Number(file?.size);
-      if (!EXTENSION_TYPES[extension] || !ALLOWED_TYPES.has(type)) throw Object.assign(new Error('Unsupported file type.'), { statusCode: 400 });
+      if (!EXTENSION_TYPES[extension] || !ALLOWED_TYPES.has(type) || (quoteConfig !== undefined && !isFileAllowed(quoteConfig, name))) {
+        throw Object.assign(new Error('File type not allowed.'), { statusCode: 400, code: 'file-type' });
+      }
       if (!Number.isFinite(size) || size <= 0 || size > MAX_FILE_BYTES) throw Object.assign(new Error('File too large.'), { statusCode: 413 });
       total += size;
       if (total > MAX_TOTAL_BYTES) throw Object.assign(new Error('Files too large.'), { statusCode: 413 });
@@ -64,7 +70,7 @@ export default async function handler(req, res) {
     }));
     return sendJson(res, 200, { uploads });
   } catch (error) {
-    if (error.statusCode) return sendJson(res, error.statusCode, { error: error.message });
+    if (error.statusCode) return sendJson(res, error.statusCode, { error: error.message, ...(error.code ? { code: error.code } : {}) });
     console.error('upload-url error', error.message);
     return sendJson(res, 503, { error: 'Uploads unavailable.' });
   }

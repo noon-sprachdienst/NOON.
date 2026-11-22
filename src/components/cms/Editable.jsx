@@ -27,7 +27,8 @@ export function focusEnd(el) {
 
 // Text written straight into the preview. The DOM owns the text while it has focus, so the
 // caret never jumps; the value is pushed to the editor state on every keystroke.
-export function InlineText({ value, fallback, onChange, dir, className = '' }) {
+// `max` is the length the server accepts; longer input is cut while typing or pasting.
+export function InlineText({ value, fallback, onChange, dir, className = '', max }) {
   const ref = useRef(null);
   useLayoutEffect(() => {
     const el = ref.current;
@@ -43,7 +44,14 @@ export function InlineText({ value, fallback, onChange, dir, className = '' }) {
       dir={dir}
       role="textbox"
       data-placeholder={fallback || ''}
-      onInput={(e) => onChange(e.currentTarget.textContent)}
+      onInput={(e) => {
+        const el = e.currentTarget;
+        if (max && el.textContent.length > max) {
+          el.textContent = el.textContent.slice(0, max);
+          focusEnd(el);
+        }
+        onChange(el.textContent);
+      }}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); e.currentTarget.blur(); }
         e.stopPropagation();
@@ -116,7 +124,7 @@ export function CmsText({
     c[group] = { ...(c[group] || {}), [prop]: next };
   }) : null);
   const text = save
-    ? <InlineText value={value?.[lang] || ''} fallback={(lang !== 'de' && value?.de) || emptyText} dir={LANG_META[lang]?.dir} onChange={(v) => save({ ...(value || {}), [lang]: v })} />
+    ? <InlineText value={value?.[lang] || ''} fallback={(lang !== 'de' && value?.de) || emptyText} dir={LANG_META[lang]?.dir} max={spec.max} onChange={(v) => save({ ...(value || {}), [lang]: v })} />
     : plain;
   const EditTag = editAs || (Tag === 'a' || Tag === 'button' ? 'span' : Tag);
   const cls = [className, editClass].filter(Boolean).join(' ') || undefined;

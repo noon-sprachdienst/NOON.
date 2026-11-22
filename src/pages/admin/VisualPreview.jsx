@@ -6,7 +6,7 @@ import QuoteFormFields from '../../components/QuoteFormFields.jsx';
 import ContactCard from '../../components/ContactCard.jsx';
 import { CmsProvider, CmsText, EditBox, InlineText } from '../../components/cms/Editable.jsx';
 import {
-  CUSTOM_TYPES, isFieldHidden, isHidden, LIMITS, NEW_TEXTS, phoneHref, styleOf, textCss, textIn,
+  CUSTOM_TYPES, isFieldHidden, isHidden, LIMITS, NEW_TEXTS, phoneHref, STEP_LIMITS, styleOf, textCss, textIn,
 } from '../../data/formSchema.js';
 import { setHidden, UNHIDEABLE } from './ElementBar.jsx';
 import PageCanvas from './PageCanvas.jsx';
@@ -44,10 +44,10 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
   const editing = tool === 'edit';
   const dir = LANG_META[lang].dir;
   const fallback = (map) => (lang !== 'de' && map?.de) || t.emptyText;
-  const edit = (map, onSet, className) => (
-    <InlineText value={map?.[lang] || ''} fallback={fallback(map)} dir={dir} className={className} onChange={(value) => onSet({ ...(map || {}), [lang]: value })} />
+  const edit = (map, onSet, className, max) => (
+    <InlineText value={map?.[lang] || ''} fallback={fallback(map)} dir={dir} className={className} max={max} onChange={(value) => onSet({ ...(map || {}), [lang]: value })} />
   );
-  const text = (map, onSet, className) => (editing ? edit(map, onSet, className) : textIn(map, lang));
+  const text = (map, onSet, className, max) => (editing ? edit(map, onSet, className, max) : textIn(map, lang));
   const done = config.confirmation;
   const phone = done.phone || '+49 160 956 27 666';
   const withPhone = (value, wrap) => value.split('{phone}').flatMap((part, i) => (i ? [wrap(i), part] : [part]));
@@ -130,10 +130,10 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
           )}
         </div>
         {node}
-        <button type="button" className="np-pv-add" title={t.insertHere} aria-label={t.insertHere} onClick={(e) => { e.stopPropagation(); setAddAt(addAt === field.id ? null : field.id); }}>
+        {config.fields.length < LIMITS.fields && <button type="button" className="np-pv-add" title={t.insertHere} aria-label={t.insertHere} onClick={(e) => { e.stopPropagation(); setAddAt(addAt === field.id ? null : field.id); }}>
           <Plus size={13} />
-        </button>
-        {addAt === field.id && (
+        </button>}
+        {addAt === field.id && config.fields.length < LIMITS.fields && (
           <div className="np-addmenu np-pv-addmenu" role="menu" onClick={(e) => e.stopPropagation()}>
             <span>{t.insertHere}</span>
             {CUSTOM_TYPES.map((type) => (
@@ -145,7 +145,7 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
     );
   };
 
-  const renderText = (field, prop) => edit(field[prop], (map) => update((c) => { c.fields.find((f) => f.id === field.id)[prop] = map; }));
+  const renderText = (field, prop) => edit(field[prop], (map) => update((c) => { c.fields.find((f) => f.id === field.id)[prop] = map; }), undefined, LIMITS[prop]);
   const steps = (config.steps || []).filter((step) => visible(`step:${step.id}`));
   const stepHidden = (key) => isHidden(config, key, lang);
   const canAddStep = editing && (config.steps || []).length < LIMITS.maxSteps;
@@ -205,8 +205,8 @@ export default function VisualPreview({ config, lang, t, update, mode, setMode, 
                                     </div>
                                   )}
                                   <div className="step-circle" aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
-                                  <div className="step-label" style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }))}</div>
-                                  <div className="step-desc">{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }))}</div>
+                                  <div className="step-label" style={css(key)}>{text(step.label, (v) => update((c) => { c.steps.find((s) => s.id === step.id).label = v; }), undefined, STEP_LIMITS.label)}</div>
+                                  <div className="step-desc">{text(step.desc, (v) => update((c) => { c.steps.find((s) => s.id === step.id).desc = v; }), undefined, STEP_LIMITS.desc)}</div>
                                 </div>
                               );
                             })}

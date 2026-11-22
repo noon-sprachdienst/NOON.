@@ -1,12 +1,17 @@
 ﻿import nodemailer from 'nodemailer';
-import { cleanText, readJson, sendJson } from '../_lib/http.js';
+import { cleanMultiline, cleanText, readJson, sendJson } from '../_lib/http.js';
 import { getClientIp, rateLimit } from '../_lib/rateLimit.js';
 import { getBucket, isUploadPath, MAX_TOTAL_BYTES, MAX_UPLOAD_FILES, signPath, storageConfigured } from '../_lib/storage.js';
 import { getStore, publishedFormConfig, REQUESTS } from '../_lib/cmsStore.js';
-import { deliveryOf, SITE_LANGS, textIn } from '../../src/data/formSchema.js';
+import { deliveryOf, isFileAllowed, SITE_LANGS, textIn } from '../../src/data/formSchema.js';
 
 // German service names for the office e-mail when no settings are published.
-const SERVICE_NAMES = { translation: 'Übersetzung', interpreting: 'Dolmetschen', appointment: 'Termin' };
+const SERVICE_NAMES = { translation: 'Übersetzung', interpreting: 'Dolmetschen', appointment: 'Termin', application: 'Bewerbung' };
+// Services of the quote form. Only these use the after-sending settings of the CMS; the
+// application and appointment forms keep their standard recipient, subject and no auto-reply.
+const QUOTE_SERVICES = ['translation', 'interpreting'];
+// German date for custom date fields (the browser sends 2026-12-01).
+const germanDate = (value) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value.split('-').reverse().join('.') : value);
 const DEFAULT_SUBJECT = 'Neue Website-Anfrage: {service}';
 const DEFAULT_SENDER = 'NOON Website Anfrage';
 const DAY = 24 * 60 * 60 * 1000;
@@ -78,6 +83,7 @@ function getAttachments(files) {
     if (!name || !FILE_TYPES_BY_EXTENSION[extension] || !ALLOWED_FILE_TYPES.has(contentType) || !content) {
       const error = new Error('Unsupported attachment.');
       error.statusCode = 400;
+      error.code = 'file-type';
       throw error;
     }
     const buffer = Buffer.from(content, 'base64');
@@ -125,7 +131,9 @@ function customFields(values, config) {
     .filter((field) => !field.builtin && !field.hidden && Object.prototype.hasOwnProperty.call(values, field.id))
     .map((field) => {
       const raw = values[field.id];
-      let value = cleanText(typeof raw === 'string' ? raw : '', field.type === 'textarea' ? 2000 : 500);
+      const text = typeof raw === 'string' ? raw : '';
+      let value = field.type === 'textarea' ? cleanMultiline(text, 2000) : cleanText(text, 500);
+      if (field.type === 'date') value = germanDate(value);
       if (field.type === 'checkbox') value = value ? 'Ja' : 'Nein';
       if (field.type === 'select') value = textIn(field.options?.find((option) => option.id === value)?.label, 'de');
       return { label: textIn(field.label, 'de') || field.id, value };
@@ -178,6 +186,7 @@ export default async function handler(req, res) {
 
     const service = cleanText(body.service, 40) || '-';
     const isAppointment = service === 'appointment';
+    const isQuote = QUOTE_SERVICES.includes(service);
     const firstName = cleanText(body.firstName, 80);
     const lastName = cleanText(body.lastName, 80);
     const fullName = cleanText(body.name, 160) || `${firstName} ${lastName}`.trim();
@@ -194,9 +203,10 @@ export default async function handler(req, res) {
       email: email || '-',
       phone: phone || '-',
       service,
-      sourceLanguage: cleanText(body.sourceLanguage, 80) || '-',
+      // Applications send all offered languages here, so allow a longer list.
+      sourceLanguage: cleanText(body.sourceLanguage, 400) || '-',
       targetLanguage: cleanText(body.targetLanguage, 80) || '-',
-      message: cleanText(body.message, 3000) || '-',
+      message: cleanMultiline(body.message, 3000) || '-',
       driveLink: cleanUrl(body.driveLink),
       language: cleanText(body.language, 8) || '-',
       appointmentLocation: cleanText(body.appointmentLocation, 120) || '-',
@@ -210,6 +220,10 @@ export default async function handler(req, res) {
     const siteUrl = process.env.SITE_URL || `https://${req.headers.host}`;
     const stored = await getStoredUploads(body.uploads, siteUrl);
     const inlineFiles = getAttachments(Array.isArray(body.files) ? body.files : body.file ? [body.file] : []);
+    // Attached files (used when storage is unavailable) follow the CMS file types as well.
+    if (isQuote && inlineFiles.some((file) => !isFileAllowed(config, file.filename))) {
+      return sendJson(res, 400, { error: 'File type not allowed.', code: 'file-type' });
+    }
     const attachments = [...inlineFiles, ...stored.attachments];
     const extra = customFields(body.custom, config);
     // Saved in parallel with the e-mail and never blocks it; if the e-mail fails the request is still listed.
@@ -228,9 +242,9 @@ export default async function handler(req, res) {
     const standardRecipient = service === 'translation'
       ? (process.env.CONTACT_EMAIL_TRANSLATION || 'uebersetzung@noon-sprachdienst.de')
       : (process.env.CONTACT_EMAIL || 'info@noon-sprachdienst.de');
-    const recipients = delivery.to?.[service]?.length ? delivery.to[service] : [standardRecipient];
+    const recipients = isQuote && delivery.to?.[service]?.length ? delivery.to[service] : [standardRecipient];
     const recipient = recipients.join(', ');
-    const subject = (delivery.subject || DEFAULT_SUBJECT).replaceAll('{service}', serviceName).replaceAll('{name}', fields.name).replace(/\s+/g, ' ').trim();
+    const subject = ((isQuote && delivery.subject) || DEFAULT_SUBJECT).replaceAll('{service}', serviceName).replaceAll('{name}', fields.name).replace(/\s+/g, ' ').trim();
     const smtpPort = Number(process.env.SMTP_PORT || 465);
 
     // SMTP_DEV_LOG=1 is set only by the local dev server (scripts/dev-api.mjs): print instead of sending.
@@ -248,11 +262,11 @@ export default async function handler(req, res) {
     });
 
     const fromAddress = (process.env.SMTP_FROM || process.env.SMTP_USER || '').trim();
-    fromHeader = `"${delivery.senderName || DEFAULT_SENDER}" <${fromAddress}>`;
+    fromHeader = `"${(isQuote && delivery.senderName) || DEFAULT_SENDER}" <${fromAddress}>`;
     const mail = {
       from: fromHeader,
       to: recipient,
-      cc: delivery.cc.length ? delivery.cc.join(', ') : undefined,
+      cc: isQuote && delivery.cc.length ? delivery.cc.join(', ') : undefined,
       replyTo: email || undefined,
       subject,
       text: [
@@ -264,8 +278,9 @@ export default async function handler(req, res) {
           `Standort: ${fields.appointmentLocation}`,
           `Gewuenschte Uhrzeit: ${fields.appointmentTime}`,
         ] : []),
-        `Ausgangssprache: ${fields.sourceLanguage}`,
-        `Zielsprache: ${fields.targetLanguage}`,
+        ...(service === 'application'
+          ? [`Angebotene Sprachen: ${fields.sourceLanguage}`]
+          : [`Ausgangssprache: ${fields.sourceLanguage}`, `Zielsprache: ${fields.targetLanguage}`]),
         `Website-Sprache: ${fields.language}`,
         ...extra.map((field) => `${field.label}: ${field.value}`),
         ...(fields.driveLink ? [`Datei-Link (Google Drive): ${fields.driveLink}`] : []),
@@ -284,8 +299,10 @@ export default async function handler(req, res) {
             <strong>Leistung:</strong> ${escapeHtml(serviceName)}<br>
             ${isAppointment ? `<strong>Standort:</strong> ${escapeHtml(fields.appointmentLocation)}<br>
             <strong>Gewünschte Uhrzeit:</strong> ${escapeHtml(fields.appointmentTime)}<br>` : ''}
-            <strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
-            <strong>Zielsprache:</strong> ${escapeHtml(fields.targetLanguage)}<br>
+            ${service === 'application'
+              ? `<strong>Angebotene Sprachen:</strong> ${escapeHtml(fields.sourceLanguage)}<br>`
+              : `<strong>Ausgangssprache:</strong> ${escapeHtml(fields.sourceLanguage)}<br>
+            <strong>Zielsprache:</strong> ${escapeHtml(fields.targetLanguage)}<br>`}
             <strong>Website-Sprache:</strong> ${escapeHtml(fields.language)}${extra.map((field) => `<br>
             <strong>${escapeHtml(field.label)}:</strong> ${escapeHtml(field.value).replace(/\n/g, '<br>')}`).join('')}${fields.driveLink ? `<br>
             <strong>Datei-Link (Google Drive):</strong> <a href="${escapeHtml(fields.driveLink)}">${escapeHtml(fields.driveLink)}</a>` : ''}
@@ -301,7 +318,7 @@ export default async function handler(req, res) {
 
     // Optional confirmation to the customer, in the language of the page. It contains only the
     // texts set in the admin (nothing the visitor typed), so the form cannot carry spam to others.
-    if (delivery.autoReply.enabled && email && !isAppointment) {
+    if (isQuote && delivery.autoReply.enabled && email) {
       const lang = SITE_LANGS.includes(fields.language) ? fields.language : 'de';
       const phoneLabel = config?.confirmation?.phone || '+49 160 956 27 666';
       const replySubject = textIn(delivery.autoReply.subject, lang) || textIn(config?.confirmation?.title, lang) || 'Noon';
@@ -320,7 +337,7 @@ export default async function handler(req, res) {
     return sendJson(res, 202, { ok: true });
   } catch (error) {
     console.error('contact form error', error.message, 'fromHeader:', JSON.stringify(fromHeader));
-    if (error.statusCode === 400) return sendJson(res, 400, { error: error.message });
+    if (error.statusCode === 400) return sendJson(res, 400, { error: error.message, ...(error.code ? { code: error.code } : {}) });
     if (error.statusCode === 413) return sendJson(res, 413, { error: error.message });
     return sendJson(res, 503, { error: 'Message delivery unavailable.' });
   }

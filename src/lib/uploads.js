@@ -19,17 +19,22 @@ export const UPLOAD_HINT = {
 // Uploads the files with signed URLs from /api/contact/upload-url. Returns the stored
 // paths, null when storage is not available (the caller then attaches the files to the
 // request as before), or throws { status: 413 } when a file is too large.
-export async function uploadToStorage(files) {
+// `form: 'quote'` lets the server apply the file types allowed in the CMS settings.
+export async function uploadToStorage(files, { form } = {}) {
   const request = () => fetch('/api/contact/upload-url', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ files: files.map((file) => ({ name: file.name, type: file.type, size: file.size })) }),
+    body: JSON.stringify({ form, files: files.map((file) => ({ name: file.name, type: file.type, size: file.size })) }),
   }).catch(() => null);
   // A cold start or network hiccup can fail the first call: try once more before falling back.
   let response = await request();
   if (!response || response.status === 503) response = await request();
   if (!response || response.status === 404 || response.status === 503) return null;
   if (response.status === 413) throw Object.assign(new Error('Too large'), { status: 413 });
+  if (response.status === 400) {
+    const data = await response.json().catch(() => ({}));
+    if (data.code === 'file-type') throw Object.assign(new Error('File type not allowed'), { code: 'file-type' });
+  }
   if (!response.ok) throw new Error('Upload not possible.');
   const { uploads } = await response.json();
   await Promise.all(uploads.map(async (upload, index) => {

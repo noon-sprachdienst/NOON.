@@ -7,7 +7,7 @@ import ContactCard from './ContactCard.jsx';
 import { CmsProvider, CmsText } from './cms/Editable.jsx';
 import { useFormConfig } from '../lib/formConfig.js';
 import { DEFAULT_FORM_CONFIG } from '../data/formConfig.js';
-import { buttonCss, deliveryOf, isFieldHidden, isHidden, OTHER_LANGUAGE, phoneHref, styleOf, textCss, textIn } from '../data/formSchema.js';
+import { buttonCss, deliveryOf, isFieldHidden, isFileAllowed, isHidden, OTHER_LANGUAGE, phoneHref, styleOf, textCss, textIn } from '../data/formSchema.js';
 import { STORAGE_LIMITS, uploadToStorage } from '../lib/uploads.js';
 
 
@@ -107,6 +107,28 @@ const FORM_UPLOAD_TOO_BIG = {
 };
 
 
+// A file whose type is not allowed in the CMS settings: say which file and what is allowed.
+const FORM_UPLOAD_TYPE = {
+  de: { text: 'Diese Datei kann nicht hochgeladen werden: {name}. Erlaubt sind: {types}.', types: { pdf: 'PDF', word: 'Word', images: 'Bilder (JPG, PNG, HEIC)' } },
+  en: { text: 'This file cannot be uploaded: {name}. Allowed: {types}.', types: { pdf: 'PDF', word: 'Word', images: 'images (JPG, PNG, HEIC)' } },
+  ar: { text: 'لا يمكن رفع هذا الملف: {name}. المسموح: {types}.', types: { pdf: 'PDF', word: 'Word', images: 'صور (JPG وPNG وHEIC)' } },
+  tr: { text: 'Bu dosya yüklenemez: {name}. İzin verilenler: {types}.', types: { pdf: 'PDF', word: 'Word', images: 'görseller (JPG, PNG, HEIC)' } },
+  ru: { text: 'Этот файл нельзя загрузить: {name}. Разрешено: {types}.', types: { pdf: 'PDF', word: 'Word', images: 'изображения (JPG, PNG, HEIC)' } },
+  fr: { text: 'Ce fichier ne peut pas être envoyé : {name}. Autorisés : {types}.', types: { pdf: 'PDF', word: 'Word', images: 'images (JPG, PNG, HEIC)' } },
+  uk: { text: 'Цей файл не можна завантажити: {name}. Дозволено: {types}.', types: { pdf: 'PDF', word: 'Word', images: 'зображення (JPG, PNG, HEIC)' } },
+};
+
+// Shown when the server refuses because of too many requests in a short time (anti-spam limit).
+const FORM_BUSY = {
+  de: 'Zu viele Anfragen in kurzer Zeit. Bitte warten Sie etwa zehn Minuten oder schreiben Sie uns direkt per WhatsApp.',
+  en: 'Too many requests in a short time. Please wait about ten minutes or message us directly on WhatsApp.',
+  ar: 'طلبات كثيرة في وقت قصير. يرجى الانتظار نحو عشر دقائق أو مراسلتنا مباشرة عبر واتساب.',
+  tr: 'Kısa sürede çok fazla talep. Lütfen yaklaşık on dakika bekleyin veya bize doğrudan WhatsApp üzerinden yazın.',
+  ru: 'Слишком много запросов за короткое время. Подождите около десяти минут или напишите нам в WhatsApp.',
+  fr: 'Trop de demandes en peu de temps. Veuillez patienter une dizaine de minutes ou écrivez-nous directement sur WhatsApp.',
+  uk: 'Забагато запитів за короткий час. Зачекайте близько десяти хвилин або напишіть нам у WhatsApp.',
+};
+
 const formatMb = (bytes, lang) => (bytes / (1024 * 1024)).toFixed(1).replace('.', lang === 'en' || lang === 'ar' ? '.' : ',');
 
 
@@ -162,6 +184,7 @@ export default function HowContact({ branch = null }) {
   const [status, setStatus] = useState('idle');
   const [uploadBytes, setUploadBytes] = useState(0);
   const [uploadMax, setUploadMax] = useState(MAX_UPLOAD_BYTES);
+  const [badFile, setBadFile] = useState('');
   const [serviceType, setServiceType] = useState('translation');
   const [startedAt] = useState(() => Date.now());
   const statusCopy = FORM_STATUS[lang] || FORM_STATUS.de;
@@ -229,6 +252,11 @@ export default function HowContact({ branch = null }) {
   const onFilesChange = (e) => {
     // Checked against the Firebase upload limits; the 3 MB fallback is only checked on submit.
     const chosen = [...e.currentTarget.files];
+    const notAllowed = chosen.find((file) => !isFileAllowed(config, file.name));
+    if (notAllowed) {
+      setBadFile(notAllowed.name);
+      return setStatus('upload-type');
+    }
     const biggest = chosen.reduce((max, file) => Math.max(max, file.size), 0);
     if (chosen.length > limits.files) return setStatus('upload-count');
     if (biggest > limits.perFile) {
@@ -245,6 +273,12 @@ export default function HowContact({ branch = null }) {
     const form = e.currentTarget;
     const data = new FormData(form);
     const picked = data.getAll('files').filter((file) => file?.size);
+    const notAllowed = picked.find((file) => !isFileAllowed(config, file.name));
+    if (notAllowed) {
+      setBadFile(notAllowed.name);
+      setStatus('upload-type');
+      return;
+    }
     if (picked.length > limits.files) {
       setStatus('upload-count');
       return;
@@ -264,8 +298,13 @@ export default function HowContact({ branch = null }) {
       let uploads = null;
       if (files.length) {
         try {
-          uploads = await uploadToStorage(files);
+          uploads = await uploadToStorage(files, { form: 'quote' });
         } catch (error) {
+          if (error.code === 'file-type') {
+            setBadFile(files.map((file) => file.name).join(', '));
+            setStatus('upload-type');
+            return;
+          }
           if (error.status === 413) {
             setUploadBytes(biggest);
             setUploadMax(limits.perFile);
@@ -315,6 +354,18 @@ export default function HowContact({ branch = null }) {
         setUploadMax(uploads ? limits.perFile : MAX_UPLOAD_BYTES);
         setStatus('upload-size');
         return;
+      }
+      if (response.status === 429) {
+        setStatus('busy');
+        return;
+      }
+      if (response.status === 400) {
+        const result = await response.json().catch(() => ({}));
+        if (result.code === 'file-type') {
+          setBadFile(files.map((file) => file.name).join(', '));
+          setStatus('upload-type');
+          return;
+        }
       }
       if (!response.ok) throw new Error('Delivery failed.');
       form.reset();
@@ -416,6 +467,19 @@ export default function HowContact({ branch = null }) {
                   <a href={`mailto:${CONTACT.email}`}>{uploadErrorCopy.action}</a>
                 </p>
               </div>
+            )}
+            {status === 'upload-type' && (
+              <p className="form-feedback form-feedback--error" role="alert">
+                {(FORM_UPLOAD_TYPE[lang] || FORM_UPLOAD_TYPE.de).text
+                  .replace('{name}', badFile)
+                  .replace('{types}', delivery.fileTypes.map((type) => (FORM_UPLOAD_TYPE[lang] || FORM_UPLOAD_TYPE.de).types[type]).join(', '))}
+              </p>
+            )}
+            {status === 'busy' && (
+              <p className="form-feedback form-feedback--error" role="alert">
+                {FORM_BUSY[lang] || FORM_BUSY.de}{' '}
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+              </p>
             )}
             {status === 'upload-count' && (
               <p className="form-feedback form-feedback--error" role="alert">

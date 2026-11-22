@@ -32,6 +32,9 @@ export const ALL_TYPES = [...CUSTOM_TYPES, 'language', 'service', 'file'];
 export const WIDTHS = ['half', 'full'];
 export const SHOW = ['both', 'translation', 'interpreting'];
 
+// Lengths of step texts and language names (the admin limits typing to the same lengths).
+export const STEP_LIMITS = { label: 60, desc: 120 };
+export const LANGUAGE_NAME_MAX = 80;
 export const LIMITS = { fields: 40, options: 60, languages: 200, label: 120, placeholder: 160, help: 300, text: 600, versions: 10, minSteps: 2, maxSteps: 6 };
 
 // Start texts for things the admin adds, in every site language. Each language gets its own,
@@ -98,8 +101,16 @@ export const DELIVERY_LIMITS = { emails: 5, maxFiles: 10, maxFileMb: 50, subject
 export const FILE_TYPES = {
   pdf: '.pdf,application/pdf',
   word: '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  images: '.jpg,.jpeg,.png,.webp,.heic,image/jpeg,image/png,image/webp,image/heic',
+  images: '.jpg,.jpeg,.png,.webp,.heic,.heif,image/jpeg,image/png,image/webp,image/heic,image/heif',
 };
+// File type group of a file name (the browser's file filter can be bypassed by drag and drop,
+// so the form and the server check the name as well).
+const FILE_EXTENSIONS = { pdf: ['.pdf'], word: ['.doc', '.docx'], images: ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'] };
+export function fileTypeOf(name) {
+  const extension = String(name || '').toLowerCase().slice(String(name || '').lastIndexOf('.'));
+  return Object.keys(FILE_EXTENSIONS).find((type) => FILE_EXTENSIONS[type].includes(extension)) || null;
+}
+export const isFileAllowed = (config, name) => deliveryOf(config).fileTypes.includes(fileTypeOf(name));
 export const KEEP_DAYS = [7, 14, 30];
 // Empty recipient lists mean: the standard address set on the server.
 export const DEFAULT_DELIVERY = {
@@ -167,8 +178,8 @@ function cleanStyle(style, button) {
 function cleanEmails(list, label) {
   const raw = Array.isArray(list) ? list : [];
   const out = [...new Set(raw.map((value) => cleanString(value, 120).toLowerCase()).filter(Boolean))];
-  out.forEach((value) => { if (!isEmail(value)) fail(`Invalid e-mail address (${label}): ${value}`); });
-  if (out.length > DELIVERY_LIMITS.emails) fail(`At most ${DELIVERY_LIMITS.emails} addresses (${label}).`);
+  out.forEach((value) => { if (!isEmail(value)) fail('email', { list: label, value }); });
+  if (out.length > DELIVERY_LIMITS.emails) fail('emailsMax', { list: label, max: DELIVERY_LIMITS.emails });
   return out;
 }
 
@@ -180,7 +191,7 @@ const clampInt = (value, min, max, fallback) => {
 function cleanDelivery(input) {
   const d = input && typeof input === 'object' ? input : {};
   const types = Array.isArray(d.fileTypes) ? Object.keys(FILE_TYPES).filter((type) => d.fileTypes.includes(type)) : DEFAULT_DELIVERY.fileTypes;
-  if (!types.length) fail('Choose at least one file type.');
+  if (!types.length) fail('fileTypes');
   return {
     to: { translation: cleanEmails(d.to?.translation, 'translation'), interpreting: cleanEmails(d.to?.interpreting, 'interpreting') },
     cc: cleanEmails(d.cc, 'copy'),
@@ -190,8 +201,8 @@ function cleanDelivery(input) {
     senderName: cleanString(d.senderName, DELIVERY_LIMITS.senderName).replace(/["<>]/g, '').replace(/\s+/g, ' '),
     autoReply: {
       enabled: d.autoReply?.enabled === true,
-      subject: cleanTexts(d.autoReply?.subject, DELIVERY_LIMITS.subject),
-      text: cleanTexts(d.autoReply?.text, DELIVERY_LIMITS.replyText),
+      subject: cleanTexts(d.autoReply?.subject, DELIVERY_LIMITS.subject, 'reply:subject'),
+      text: cleanTexts(d.autoReply?.text, DELIVERY_LIMITS.replyText, 'reply:text'),
     },
     maxFiles: clampInt(d.maxFiles, 1, DELIVERY_LIMITS.maxFiles, DEFAULT_DELIVERY.maxFiles),
     maxFileMb: clampInt(d.maxFileMb, 1, DELIVERY_LIMITS.maxFileMb, DEFAULT_DELIVERY.maxFileMb),
@@ -244,32 +255,66 @@ function cleanString(value, max) {
   return typeof value === 'string' ? value.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').trim().slice(0, max) : '';
 }
 
-function cleanTexts(map, max) {
+// Texts that are too long are refused, never cut: the admin limits typing to the same lengths,
+// so a longer text means something went wrong and must not be saved half.
+// `where` names the place for the error message (e.g. "field:Vorname:label", "text:section.title").
+function cleanTexts(map, max, where = '') {
   const out = {};
   SITE_LANGS.forEach((lang) => {
-    const value = cleanString(map?.[lang], max);
+    const value = cleanString(map?.[lang], Number.MAX_SAFE_INTEGER);
+    if (value.length > max) fail('textTooLong', { where, max, lang: lang.toUpperCase(), length: value.length });
     if (value) out[lang] = value;
   });
   return out;
 }
 
-function fail(message) {
-  throw Object.assign(new Error(message), { statusCode: 400 });
+// Every refusal has a code and the names the admin sees, so the admin can show it in its own
+// language (cmsI18n `errors`). The English message is for the API response and logs.
+const ERROR_TEXT = {
+  missing: 'Missing form settings.',
+  fieldId: 'Invalid field: {field}.',
+  fieldType: 'Invalid type for field {field}.',
+  germanLabel: 'Field "{field}" needs a German label.',
+  serviceNames: 'Both services need a German name.',
+  optionId: 'Invalid option in "{field}".',
+  optionGerman: 'An option in "{field}" needs a German name.',
+  noOptions: 'Drop-down "{field}" needs at least one option.',
+  tooManyOptions: 'Drop-down "{field}" has more than {max} options.',
+  tooManyFields: 'More than {max} fields.',
+  lockedRemoved: 'The field {field} cannot be removed.',
+  langId: 'Invalid language: {lang}.',
+  langGerman: 'Language {lang} needs a German name.',
+  tooManyLanguages: 'More than {max} languages.',
+  stepId: 'Invalid step.',
+  stepGerman: 'Step {n} needs a German name.',
+  minSteps: 'At least {min} steps are needed.',
+  tooManySteps: 'More than {max} steps.',
+  textTooLong: 'Text too long ({where}, {lang}): {length} of at most {max} characters.',
+  email: 'Invalid e-mail address ({list}): {value}',
+  emailsMax: 'At most {max} addresses ({list}).',
+  fileTypes: 'Choose at least one file type.',
+};
+
+function fail(code, params = {}) {
+  const message = (ERROR_TEXT[code] || code).replace(/\{(\w+)\}/g, (_, key) => String(params[key] ?? ''));
+  throw Object.assign(new Error(message), { statusCode: 400, code, params });
 }
 
 // Checks and cleans a config sent by the admin. Throws { statusCode: 400 } when it cannot be used.
 export function sanitizeFormConfig(input) {
-  if (!input || typeof input !== 'object') fail('Missing form settings.');
-  const fields = Array.isArray(input.fields) ? input.fields.slice(0, LIMITS.fields) : [];
+  if (!input || typeof input !== 'object') fail('missing');
+  const fields = Array.isArray(input.fields) ? input.fields : [];
+  if (fields.length > LIMITS.fields) fail('tooManyFields', { max: LIMITS.fields });
   const seen = new Set();
   const cleanFields = fields.map((field) => {
     const id = cleanString(field?.id, 40);
-    if (!ID_PATTERN.test(id) || seen.has(id)) fail(`Invalid field id: ${id || '(empty)'}`);
+    // The name the admin sees (German label), used in error messages.
+    const fieldName = cleanString(field?.label?.de, 60) || id || '?';
+    if (!ID_PATTERN.test(id) || seen.has(id)) fail('fieldId', { field: fieldName });
     seen.add(id);
     const builtin = BUILTIN_FIELDS.includes(id);
     const type = cleanString(field.type, 20);
-    if (!ALL_TYPES.includes(type)) fail(`Invalid field type: ${type}`);
-    if (!builtin && !CUSTOM_TYPES.includes(type)) fail(`Type ${type} is only for built-in fields.`);
+    if (!ALL_TYPES.includes(type) || (!builtin && !CUSTOM_TYPES.includes(type))) fail('fieldType', { field: fieldName });
     const out = {
       id,
       type,
@@ -278,63 +323,69 @@ export function sanitizeFormConfig(input) {
       required: ALWAYS_REQUIRED.includes(id) ? true : Boolean(field.required),
       show: SHOW.includes(field.show) ? field.show : 'both',
       hidden: LOCKED_FIELDS.includes(id) ? false : Boolean(field.hidden),
-      label: cleanTexts(field.label, LIMITS.label),
-      placeholder: cleanTexts(field.placeholder, LIMITS.placeholder),
-      help: cleanTexts(field.help, LIMITS.help),
+      label: cleanTexts(field.label, LIMITS.label, `field:${fieldName}:label`),
+      placeholder: cleanTexts(field.placeholder, LIMITS.placeholder, `field:${fieldName}:placeholder`),
+      help: cleanTexts(field.help, LIMITS.help, `field:${fieldName}:help`),
     };
-    if (!out.label.de && type !== 'service') fail(`Field ${id} needs a German label.`);
+    if (!out.label.de && type !== 'service') fail('germanLabel', { field: id });
     if (type === 'service') {
       out.options = ['translation', 'interpreting'].map((optionId) => ({
         id: optionId,
-        label: cleanTexts((Array.isArray(field.options) ? field.options : []).find((option) => option?.id === optionId)?.label, LIMITS.label),
+        label: cleanTexts((Array.isArray(field.options) ? field.options : []).find((option) => option?.id === optionId)?.label, LIMITS.label, `option:${fieldName}`),
       }));
-      if (out.options.some((option) => !option.label.de)) fail('Both services need a German name.');
+      if (out.options.some((option) => !option.label.de)) fail('serviceNames');
     }
     if (type === 'select') {
       const optionIds = new Set();
-      out.options = (Array.isArray(field.options) ? field.options : []).slice(0, LIMITS.options).map((option) => {
+      const options = Array.isArray(field.options) ? field.options : [];
+      if (options.length > LIMITS.options) fail('tooManyOptions', { field: fieldName, max: LIMITS.options });
+      out.options = options.map((option) => {
         const optionId = cleanString(option?.id, 40);
-        if (!ID_PATTERN.test(optionId) || optionIds.has(optionId)) fail(`Invalid option in ${id}.`);
+        if (!ID_PATTERN.test(optionId) || optionIds.has(optionId)) fail('optionId', { field: fieldName });
         optionIds.add(optionId);
-        const label = cleanTexts(option.label, LIMITS.label);
-        if (!label.de) fail(`An option in ${id} needs a German name.`);
+        const label = cleanTexts(option.label, LIMITS.label, `option:${fieldName}`);
+        if (!label.de) fail('optionGerman', { field: fieldName });
         return { id: optionId, label };
       });
-      if (!out.options.length) fail(`Drop-down ${id} needs at least one option.`);
+      if (!out.options.length) fail('noOptions', { field: fieldName });
     }
     return out;
   });
-  LOCKED_FIELDS.forEach((id) => { if (!seen.has(id)) fail(`The field ${id} cannot be removed.`); });
+  LOCKED_FIELDS.forEach((id) => { if (!seen.has(id)) fail('lockedRemoved', { field: id }); });
 
   const languageIds = new Set();
-  const languages = (Array.isArray(input.languages) ? input.languages : []).slice(0, LIMITS.languages).map((language) => {
+  const languageList = Array.isArray(input.languages) ? input.languages : [];
+  if (languageList.length > LIMITS.languages) fail('tooManyLanguages', { max: LIMITS.languages });
+  const languages = languageList.map((language) => {
     const id = cleanString(language?.id, 40);
-    if (!ID_PATTERN.test(id) || id === OTHER_LANGUAGE || languageIds.has(id)) fail(`Invalid language id: ${id || '(empty)'}`);
+    if (!ID_PATTERN.test(id) || id === OTHER_LANGUAGE || languageIds.has(id)) fail('langId', { lang: cleanString(language?.name?.de, 60) || id || '?' });
     languageIds.add(id);
-    const name = cleanTexts(language.name, 80);
-    if (!name.de) fail(`Language ${id} needs a German name.`);
+    const name = cleanTexts(language.name, LANGUAGE_NAME_MAX, `language:${cleanString(language?.name?.de, 60) || id}`);
+    if (!name.de) fail('langGerman', { lang: id });
     return { id, name, source: language.source !== false, target: language.target !== false };
   });
   const firstWith = (flag) => languages.find((language) => language[flag])?.id || OTHER_LANGUAGE;
   const pick = (id, flag) => (languages.some((language) => language.id === id && language[flag]) ? id : firstWith(flag));
 
   const stepIds = new Set();
-  const steps = (Array.isArray(input.steps) ? input.steps : []).slice(0, LIMITS.maxSteps).map((step) => {
+  const stepList = Array.isArray(input.steps) ? input.steps : [];
+  if (stepList.length > LIMITS.maxSteps) fail('tooManySteps', { max: LIMITS.maxSteps });
+  const steps = stepList.map((step, index) => {
     const id = cleanString(step?.id, 40);
-    if (!ID_PATTERN.test(id) || stepIds.has(id)) fail('Invalid step.');
+    if (!ID_PATTERN.test(id) || stepIds.has(id)) fail('stepId');
     stepIds.add(id);
-    const out = { id, label: cleanTexts(step.label, 60), desc: cleanTexts(step.desc, 120) };
-    if (!out.label.de) fail('Every step needs a German name.');
+    const out = { id, label: cleanTexts(step.label, STEP_LIMITS.label, `step:${index + 1}:label`), desc: cleanTexts(step.desc, STEP_LIMITS.desc, `step:${index + 1}:desc`) };
+    if (!out.label.de) fail('stepGerman', { n: index + 1 });
     return out;
   });
-  if (steps.length < LIMITS.minSteps) fail(`At least ${LIMITS.minSteps} steps are needed.`);
+  if (steps.length < LIMITS.minSteps) fail('minSteps', { min: LIMITS.minSteps });
 
   // All per-language texts (section, texts, confirmation, contact, …) come from TEXT_PATHS.
   const groups = { section: {}, texts: {}, confirmation: {}, contact: {} };
   Object.entries(TEXT_PATHS).forEach(([path, max]) => {
     const [group, prop] = path.split('.');
     groups[group] = groups[group] || {};
-    groups[group][prop] = cleanTexts(textAt(input, path), max);
+    groups[group][prop] = cleanTexts(textAt(input, path), max, `text:${path}`);
   });
   return {
     schema: 1,

@@ -79,7 +79,9 @@ export default async function handler(req, res) {
 
     return sendJson(res, 400, { error: 'Unknown action.' });
   } catch (error) {
-    if (error.statusCode === 400 || error.statusCode === 409) return sendJson(res, error.statusCode, { error: error.message });
+    if (error.statusCode === 400 || error.statusCode === 409) {
+      return sendJson(res, error.statusCode, { error: error.message, ...(error.code ? { code: error.code, params: error.params } : {}) });
+    }
     console.error('cms form error', error);
     return sendJson(res, 503, { error: 'Form settings unavailable.' });
   }

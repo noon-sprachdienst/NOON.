@@ -56,7 +56,8 @@ hides a failure.
 | Styles | `src/styles/global.css` | |
 | Contact data | `src/config/contact.js` | Shared site-wide (footer, office pages, schema); address in `src/data/legalInfo.js`. Not editable in the CMS. |
 | CMS-editable elements (quote section) | `src/data/formSchema.js` (`CMS_ELEMENTS`), `src/components/cms/Editable.jsx` | To make an element editable/hideable/stylable: add its key to `CMS_ELEMENTS`, its default text to `formConfig.js`, its admin name to `cmsI18n.js` (`el`), and render it with `<CmsText k="…" />`. Do not copy markup into the admin preview; it renders the same components inside `src/pages/admin/PageCanvas.jsx` (a real page at desktop/tablet/phone width with the site CSS). |
-| CMS settings after sending (quote form) | `formSchema.js` (`DEFAULT_DELIVERY`, `cleanDelivery`), `api/contact/send.js`, admin tab Einstellungen | Recipients per service, CC, subject, sender name, auto-reply, upload limits within the technical maximum, request keep-days. Every new CMS part exposes its business settings the same way; secrets and infrastructure limits stay in code. |
+| CMS settings after sending (quote form) | `formSchema.js` (`DEFAULT_DELIVERY`, `cleanDelivery`), `api/contact/send.js`, admin tab Einstellungen | Recipients per service, CC, subject, sender name, auto-reply, upload limits within the technical maximum, request keep-days. Every new CMS part exposes its business settings the same way; secrets and infrastructure limits stay in code. Only the quote form (translation, interpreting) uses these settings. |
+| CMS limits and save errors | `formSchema.js` (`LIMITS`, `TEXT_PATHS`, `STEP_LIMITS`, `fail`), `cmsI18n.js` (`errors`) | `sanitizeFormConfig` refuses too-long texts and too many items (never cuts) with a code; the admin limits typing to the same values and shows the code in its language. A new limit needs both sides. |
 
 ## Reuse before you write
 

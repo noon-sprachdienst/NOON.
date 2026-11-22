@@ -6,8 +6,8 @@ import VisualPreview from './VisualPreview.jsx';
 import ElementBar from './ElementBar.jsx';
 import { defaultFormConfig } from '../../data/formConfig.js';
 import {
-  ALWAYS_REQUIRED, CUSTOM_TYPES, DELIVERY_LIMITS, deliveryOf, FILE_TYPES, isEmail, isStartText, KEEP_DAYS, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE,
-  SITE_LANGS, sanitizeFormConfig, TEXT_PATHS, textAt, textIn,
+  ALWAYS_REQUIRED, CUSTOM_TYPES, DELIVERY_LIMITS, deliveryOf, FILE_TYPES, isEmail, isStartText, KEEP_DAYS, LANGUAGE_NAME_MAX, LIMITS, LOCKED_FIELDS, NEW_TEXTS, OTHER_LANGUAGE,
+  SITE_LANGS, sanitizeFormConfig, STEP_LIMITS, TEXT_PATHS, textAt, textIn,
 } from '../../data/formSchema.js';
 import { CONTACT } from '../../config/contact.js';
 import { LEGAL_INFO } from '../../data/legalInfo.js';
@@ -33,8 +33,21 @@ async function api(body) {
     ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
     : undefined);
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw Object.assign(new Error(data.error || `HTTP ${response.status}`), { status: response.status });
+  if (!response.ok) throw Object.assign(new Error(data.error || `HTTP ${response.status}`), { status: response.status, code: data.code, params: data.params });
   return data;
+}
+
+// Where a too-long text is, from the sanitizer's place code ("field:Name:label", "step:2:desc", …).
+function whereText(where, t) {
+  const [kind, ...rest] = where.split(':');
+  const parts = { label: t.label, placeholder: t.placeholder, help: t.help };
+  if (kind === 'field') return `${t.el.field} "${rest.slice(0, -1).join(':')}" · ${parts[rest.at(-1)] || rest.at(-1)}`;
+  if (kind === 'option') return `${t.options} · "${rest.join(':')}"`;
+  if (kind === 'language') return `${t.langName} · "${rest.join(':')}"`;
+  if (kind === 'step') return `${t.el.step} ${rest[0]} · ${rest[1] === 'desc' ? t.stepDesc : t.stepLabel}`;
+  if (kind === 'reply') return `${t.dReplyTitle} · ${rest[0] === 'text' ? t.dReplyText : t.dReplySubject}`;
+  if (kind === 'text') return t.el[rest[0]] || t.textNames?.[rest[0]] || rest[0];
+  return where;
 }
 
 // Counts texts a language still needs (shown as a badge per language): empty while German has
@@ -52,17 +65,20 @@ function missingTexts(config, lang) {
   return missing;
 }
 
-function TextField({ label, map, lang, onChange, multiline, hint, rows = 3 }) {
+// `max` is the same length the server accepts (formSchema LIMITS / TEXT_PATHS), so a text can
+// never be refused on saving; a counter shows up close to the limit.
+function TextField({ label, map, lang, onChange, multiline, hint, rows = 3, max }) {
   const value = map?.[lang] || '';
   const fallback = lang !== 'de' ? map?.de || '' : '';
   const props = {
-    value, dir: LANG_META[lang].dir, placeholder: fallback, className: 'np-input',
+    value, dir: LANG_META[lang].dir, placeholder: fallback, className: 'np-input', maxLength: max,
     onChange: (e) => onChange({ ...(map || {}), [lang]: e.target.value }),
   };
   return (
     <label className="np-field">
       <span>{label}</span>
       {multiline ? <textarea rows={rows} {...props} /> : <input type="text" {...props} />}
+      {max && value.length >= max * 0.8 && <small className={value.length >= max ? 'np-error' : undefined} dir="ltr">{value.length} / {max}</small>}
       {hint && <small>{hint}</small>}
     </label>
   );
@@ -167,40 +183,41 @@ function FieldRow({ field, hiddenIn, index, count, lang, t, update, open, setOpe
             )}
           </div>
 
-          {field.type !== 'service' && <TextField label={t.label} map={field.label} lang={lang} onChange={(label) => set((f) => { f.label = label; })} />}
+          {field.type !== 'service' && <TextField label={t.label} map={field.label} max={LIMITS.label} lang={lang} onChange={(label) => set((f) => { f.label = label; })} />}
           {field.type === 'service' && (
             <div className="np-grid2">
-              <TextField label={t.label} map={field.label} lang={lang} onChange={(label) => set((f) => { f.label = label; })} />
+              <TextField label={t.label} map={field.label} max={LIMITS.label} lang={lang} onChange={(label) => set((f) => { f.label = label; })} />
               {field.options.map((option, i) => (
-                <TextField key={option.id} label={`${t.serviceNames} · ${i + 1}`} map={option.label} lang={lang} onChange={(label) => set((f) => { f.options[i].label = label; })} />
+                <TextField key={option.id} label={`${t.serviceNames} · ${i + 1}`} map={option.label} max={LIMITS.label} lang={lang} onChange={(label) => set((f) => { f.options[i].label = label; })} />
               ))}
             </div>
           )}
           {!NO_PLACEHOLDER.includes(field.type) && (
-            <TextField label={t.placeholder} map={field.placeholder} lang={lang} onChange={(placeholder) => set((f) => { f.placeholder = placeholder; })} />
+            <TextField label={t.placeholder} map={field.placeholder} max={LIMITS.placeholder} lang={lang} onChange={(placeholder) => set((f) => { f.placeholder = placeholder; })} />
           )}
           {field.type === 'select' && (
             <>
-              <TextField label={t.placeholder} map={field.placeholder} lang={lang} onChange={(placeholder) => set((f) => { f.placeholder = placeholder; })} />
+              <TextField label={t.placeholder} map={field.placeholder} max={LIMITS.placeholder} lang={lang} onChange={(placeholder) => set((f) => { f.placeholder = placeholder; })} />
               <div className="np-options">
                 <span className="np-options-title">{t.options}</span>
                 {field.options.map((option, i) => (
                   <div key={option.id} className="np-option">
-                    <input className="np-input" type="text" dir={LANG_META[lang].dir} value={option.label[lang] || ''} placeholder={lang !== 'de' ? option.label.de : ''}
+                    <input className="np-input" type="text" dir={LANG_META[lang].dir} value={option.label[lang] || ''} placeholder={lang !== 'de' ? option.label.de : ''} maxLength={LIMITS.label}
                       onChange={(e) => set((f) => { f.options[i].label = { ...f.options[i].label, [lang]: e.target.value }; })} aria-label={`${t.options} ${i + 1}`} />
                     <button type="button" className="np-mini" disabled={i === 0} onClick={() => set((f) => { const [o] = f.options.splice(i, 1); f.options.splice(i - 1, 0, o); })} aria-label={t.moveUp}><ArrowUp size={14} /></button>
                     <button type="button" className="np-mini" disabled={i === field.options.length - 1} onClick={() => set((f) => { const [o] = f.options.splice(i, 1); f.options.splice(i + 1, 0, o); })} aria-label={t.moveDown}><ArrowDown size={14} /></button>
                     <button type="button" className="np-mini is-danger" disabled={field.options.length === 1} onClick={() => set((f) => { f.options.splice(i, 1); })} aria-label={t.delete}><Trash2 size={14} /></button>
                   </div>
                 ))}
-                <button type="button" className="np-btn np-btn--ghost np-btn--sm" onClick={() => set((f) => { f.options.push(newOption()); })}>
+                <button type="button" className="np-btn np-btn--ghost np-btn--sm" disabled={field.options.length >= LIMITS.options}
+                  title={field.options.length >= LIMITS.options ? fill(t.limitReached, { max: LIMITS.options }) : undefined} onClick={() => set((f) => { f.options.push(newOption()); })}>
                   <Plus size={14} /> {t.addOption}
                 </button>
               </div>
             </>
           )}
           {field.type !== 'service' && (
-            <TextField label={t.help} map={field.help} lang={lang} onChange={(help) => set((f) => { f.help = help; })} multiline rows={2} />
+            <TextField label={t.help} map={field.help} max={LIMITS.help} lang={lang} onChange={(help) => set((f) => { f.help = help; })} multiline rows={2} />
           )}
           {locked && <p className="np-muted np-lockline"><Lock size={13} /> {t.locked}</p>}
         </div>
@@ -216,17 +233,17 @@ function SectionCard({ config, lang, t, update }) {
   return (
     <section className="np-card" data-edit-key="section">
       <header className="np-card-head"><div><h2>{t.sectionTitle}</h2><p>{t.sectionSub}</p></div></header>
-      <TextField label={t.sEyebrow} map={config.section?.eyebrow} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, eyebrow: v }; })} />
-      <TextField label={t.sTitle} map={config.section?.title} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, title: v }; })} />
-      <TextField label={t.sSub} map={config.section?.sub} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, sub: v }; })} multiline rows={2} />
+      <TextField label={t.sEyebrow} map={config.section?.eyebrow} max={TEXT_PATHS['section.eyebrow']} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, eyebrow: v }; })} />
+      <TextField label={t.sTitle} map={config.section?.title} max={TEXT_PATHS['section.title']} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, title: v }; })} />
+      <TextField label={t.sSub} map={config.section?.sub} max={TEXT_PATHS['section.sub']} lang={lang} onChange={(v) => update((c) => { c.section = { ...c.section, sub: v }; })} multiline rows={2} />
       <div className="np-options">
         <span className="np-options-title">{t.steps} · <span className="np-muted">{t.stepsHint}</span></span>
         {steps.map((step, i) => (
           <div key={step.id} className="np-step-edit" data-edit-key={`step:${step.id}`}>
             <span className="np-step-num">{String(i + 1).padStart(2, '0')}</span>
-            <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.label[lang] || ''} placeholder={lang !== 'de' ? step.label.de : ''} aria-label={`${t.stepLabel} ${i + 1}`}
+            <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.label[lang] || ''} placeholder={lang !== 'de' ? step.label.de : ''} maxLength={STEP_LIMITS.label} aria-label={`${t.stepLabel} ${i + 1}`}
               onChange={(e) => update((c) => { c.steps[i].label = { ...c.steps[i].label, [lang]: e.target.value }; })} />
-            <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.desc[lang] || ''} placeholder={lang !== 'de' ? step.desc.de : t.stepDesc} aria-label={`${t.stepDesc} ${i + 1}`}
+            <input className="np-input" type="text" dir={LANG_META[lang].dir} value={step.desc[lang] || ''} placeholder={lang !== 'de' ? step.desc.de : t.stepDesc} maxLength={STEP_LIMITS.desc} aria-label={`${t.stepDesc} ${i + 1}`}
               onChange={(e) => update((c) => { c.steps[i].desc = { ...c.steps[i].desc, [lang]: e.target.value }; })} />
             <div className="np-step-tools">
               <button type="button" className="np-mini" disabled={i === 0} onClick={() => moveStep(i, -1)} aria-label={t.moveUp} title={t.moveUp}><ArrowUp size={14} /></button>
@@ -253,15 +270,15 @@ function ContactSection({ config, lang, t, update }) {
     <section className="np-card" data-edit-key="contact">
       <header className="np-card-head"><div><h2>{t.contactTitle}</h2><p>{t.contactSub}</p></div></header>
       <div className="np-grid2">
-        <TextField label={t.ctTitle} map={contact.title} lang={lang} onChange={set('title')} />
-        <TextField label={t.ctWhatsapp} map={contact.whatsapp} lang={lang} onChange={set('whatsapp')} />
+        <TextField label={t.ctTitle} map={contact.title} max={TEXT_PATHS['contact.title']} lang={lang} onChange={set('title')} />
+        <TextField label={t.ctWhatsapp} map={contact.whatsapp} max={TEXT_PATHS['contact.whatsapp']} lang={lang} onChange={set('whatsapp')} />
       </div>
-      <TextField label={t.ctSub} map={contact.sub} lang={lang} onChange={set('sub')} multiline rows={2} />
+      <TextField label={t.ctSub} map={contact.sub} max={TEXT_PATHS['contact.sub']} lang={lang} onChange={set('sub')} multiline rows={2} />
       <div className="np-grid2">
-        <TextField label={t.ctPhone} map={contact.phoneLabel} lang={lang} onChange={set('phoneLabel')} />
-        <TextField label={t.ctEmail} map={contact.emailLabel} lang={lang} onChange={set('emailLabel')} />
-        <TextField label={t.ctHq} map={contact.hqLabel} lang={lang} onChange={set('hqLabel')} />
-        <TextField label={t.ctHours} map={contact.hours} lang={lang} onChange={set('hours')} />
+        <TextField label={t.ctPhone} map={contact.phoneLabel} max={TEXT_PATHS['contact.phoneLabel']} lang={lang} onChange={set('phoneLabel')} />
+        <TextField label={t.ctEmail} map={contact.emailLabel} max={TEXT_PATHS['contact.emailLabel']} lang={lang} onChange={set('emailLabel')} />
+        <TextField label={t.ctHq} map={contact.hqLabel} max={TEXT_PATHS['contact.hqLabel']} lang={lang} onChange={set('hqLabel')} />
+        <TextField label={t.ctHours} map={contact.hours} max={TEXT_PATHS['contact.hours']} lang={lang} onChange={set('hours')} />
       </div>
       <div className="np-notice np-shared" role="note">
         <TriangleAlert size={16} />
@@ -279,7 +296,9 @@ function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey })
   const open = selectedKey?.startsWith('field:') ? selectedKey.slice(6) : null;
   const setOpen = (id) => setSelectedKey(id ? `field:${id}` : null);
   const [adding, setAdding] = useState(false);
+  const full = config.fields.length >= LIMITS.fields;
   const add = (type) => {
+    if (full) return;
     const id = randomId('c_');
     update((next) => { next.fields.push(newCustomField(id, type)); });
     setAdding(false);
@@ -292,17 +311,18 @@ function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey })
       <section className="np-card" data-edit-key="formtexts">
         <header className="np-card-head"><div><h2>{t.formTexts}</h2></div></header>
         <div className="np-grid2">
-          <TextField label={t.fTitle} map={config.texts.title} lang={lang} onChange={(v) => update((c) => { c.texts.title = v; })} />
-          <TextField label={t.fSubmit} map={config.texts.submit} lang={lang} onChange={(v) => update((c) => { c.texts.submit = v; })} />
+          <TextField label={t.fTitle} map={config.texts.title} max={TEXT_PATHS['texts.title']} lang={lang} onChange={(v) => update((c) => { c.texts.title = v; })} />
+          <TextField label={t.fSubmit} map={config.texts.submit} max={TEXT_PATHS['texts.submit']} lang={lang} onChange={(v) => update((c) => { c.texts.submit = v; })} />
         </div>
-        <TextField label={t.fSub} map={config.texts.sub} lang={lang} onChange={(v) => update((c) => { c.texts.sub = v; })} />
+        <TextField label={t.fSub} map={config.texts.sub} max={TEXT_PATHS['texts.sub']} lang={lang} onChange={(v) => update((c) => { c.texts.sub = v; })} />
       </section>
       <section className="np-card">
         <header className="np-card-head">
           <div><h2>{t.fieldsTitle}</h2><p>{t.fieldsSub}</p></div>
           <div className="np-addwrap">
-            <button type="button" className="np-btn np-btn--sm" onClick={() => setAdding((a) => !a)} aria-expanded={adding}><Plus size={15} /> {t.addField}</button>
-            {adding && (
+            <button type="button" className="np-btn np-btn--sm" onClick={() => setAdding((a) => !a)} aria-expanded={adding} disabled={full}
+              title={full ? fill(t.limitReached, { max: LIMITS.fields }) : undefined}><Plus size={15} /> {t.addField}</button>
+            {adding && !full && (
               <div className="np-addmenu" role="menu">
                 {CUSTOM_TYPES.map((type) => <button key={type} type="button" role="menuitem" onClick={() => add(type)}>{t.types[type]}</button>)}
               </div>
@@ -324,11 +344,12 @@ function LanguagesSection({ config, lang, t, update }) {
   const [newName, setNewName] = useState('');
   // A name that is already in the list (in any language) would add the same language twice.
   const typed = newName.trim().toLowerCase();
+  const full = config.languages.length >= LIMITS.languages;
   const exists = Boolean(typed) && config.languages.some((language) => Object.values(language.name).some((value) => String(value).trim().toLowerCase() === typed));
   const add = (e) => {
     e.preventDefault();
     const name = newName.trim();
-    if (!name || exists) return;
+    if (!name || exists || full) return;
     const base = slug(name) || 'lang';
     let id = base;
     while (id === OTHER_LANGUAGE || config.languages.some((language) => language.id === id) || !/^[a-z]/.test(id)) id = `${/^[a-z]/.test(base) ? base : 'l'}${Math.random().toString(36).slice(2, 5)}`;
@@ -371,7 +392,7 @@ function LanguagesSection({ config, lang, t, update }) {
                 <button type="button" className="np-mini" disabled={i === 0} onClick={() => update((c) => { const [l] = c.languages.splice(i, 1); c.languages.splice(i - 1, 0, l); })} aria-label={t.moveUp}><ArrowUp size={14} /></button>
                 <button type="button" className="np-mini" disabled={i === config.languages.length - 1} onClick={() => update((c) => { const [l] = c.languages.splice(i, 1); c.languages.splice(i + 1, 0, l); })} aria-label={t.moveDown}><ArrowDown size={14} /></button>
               </div>
-              <input className="np-input" type="text" dir={LANG_META[lang].dir} value={language.name[lang] || ''} placeholder={lang !== 'de' ? language.name.de : ''}
+              <input className="np-input" type="text" dir={LANG_META[lang].dir} value={language.name[lang] || ''} placeholder={lang !== 'de' ? language.name.de : ''} maxLength={LANGUAGE_NAME_MAX}
                 aria-label={t.langName} onChange={(e) => update((c) => { c.languages[i].name = { ...c.languages[i].name, [lang]: e.target.value }; })} />
               <input type="checkbox" checked={language.source} aria-label={t.source} onChange={() => update((c) => {
                 c.languages[i].source = !c.languages[i].source;
@@ -393,18 +414,19 @@ function LanguagesSection({ config, lang, t, update }) {
           ))}
         </div>
         <form className="np-addlang" onSubmit={add}>
-          <input className="np-input" type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={t.addLanguagePh} maxLength={80} dir="auto" />
-          <button type="submit" className="np-btn np-btn--sm" disabled={!newName.trim() || exists}><Plus size={15} /> {t.addLanguage}</button>
+          <input className="np-input" type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={t.addLanguagePh} maxLength={LANGUAGE_NAME_MAX} dir="auto" />
+          <button type="submit" className="np-btn np-btn--sm" disabled={!newName.trim() || exists || full}
+            title={full ? fill(t.limitReached, { max: LIMITS.languages }) : undefined}><Plus size={15} /> {t.addLanguage}</button>
         </form>
         {exists && <p className="np-error np-note">{t.langExists}</p>}
       </section>
       <section className="np-card">
         <header className="np-card-head"><div><h2>{t.otherTitle}</h2></div></header>
         <div className="np-grid2">
-          <TextField label={t.otherName} map={config.texts.otherName} lang={lang} onChange={(v) => update((c) => { c.texts.otherName = v; })} />
-          <TextField label={t.otherLabel} map={config.texts.otherLabel} lang={lang} onChange={(v) => update((c) => { c.texts.otherLabel = v; })} />
+          <TextField label={t.otherName} map={config.texts.otherName} max={TEXT_PATHS['texts.otherName']} lang={lang} onChange={(v) => update((c) => { c.texts.otherName = v; })} />
+          <TextField label={t.otherLabel} map={config.texts.otherLabel} max={TEXT_PATHS['texts.otherLabel']} lang={lang} onChange={(v) => update((c) => { c.texts.otherLabel = v; })} />
         </div>
-        <TextField label={t.otherPh} map={config.texts.otherPlaceholder} lang={lang} onChange={(v) => update((c) => { c.texts.otherPlaceholder = v; })} />
+        <TextField label={t.otherPh} map={config.texts.otherPlaceholder} max={TEXT_PATHS['texts.otherPlaceholder']} lang={lang} onChange={(v) => update((c) => { c.texts.otherPlaceholder = v; })} />
       </section>
     </>
   );
@@ -416,11 +438,11 @@ function ConfirmationSection({ config, lang, t, update }) {
   return (
     <section className="np-card" data-edit-key="confirm">
       <header className="np-card-head"><div><h2>{t.confTitle}</h2><p>{t.confSub}</p></div></header>
-      <TextField label={t.cTitle} map={c.title} lang={lang} onChange={set('title')} />
-      <TextField label={t.cText} map={c.text} lang={lang} onChange={set('text')} multiline rows={4} hint={t.phoneHint} />
+      <TextField label={t.cTitle} map={c.title} max={TEXT_PATHS['confirmation.title']} lang={lang} onChange={set('title')} />
+      <TextField label={t.cText} map={c.text} max={TEXT_PATHS['confirmation.text']} lang={lang} onChange={set('text')} multiline rows={4} hint={t.phoneHint} />
       <div className="np-grid2">
-        <TextField label={t.cCall} map={c.call} lang={lang} onChange={set('call')} />
-        <TextField label={t.cAgain} map={c.again} lang={lang} onChange={set('again')} />
+        <TextField label={t.cCall} map={c.call} max={TEXT_PATHS['confirmation.call']} lang={lang} onChange={set('call')} />
+        <TextField label={t.cAgain} map={c.again} max={TEXT_PATHS['confirmation.again']} lang={lang} onChange={set('again')} />
       </div>
       <label className="np-field">
         <span>{t.cPhone}</span>
@@ -490,9 +512,9 @@ function SettingsSection({ config, lang, t, update }) {
             <i /> <span>{reply.enabled ? t.on : t.off}</span>
           </button>
         </header>
-        <TextField label={t.dReplySubject} map={reply.subject} lang={lang}
+        <TextField label={t.dReplySubject} map={reply.subject} max={DELIVERY_LIMITS.subject} lang={lang}
           onChange={(map) => set((x) => { x.autoReply = { ...x.autoReply, subject: map }; })} />
-        <TextField label={t.dReplyText} map={reply.text} lang={lang} multiline rows={5}
+        <TextField label={t.dReplyText} map={reply.text} max={DELIVERY_LIMITS.replyText} lang={lang} multiline rows={5}
           onChange={(map) => set((x) => { x.autoReply = { ...x.autoReply, text: map }; })}
           hint={fill(t.dReplyHint, { title: textIn(config.confirmation.title, lang) })} />
       </section>
@@ -720,18 +742,39 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   });
   const missing = useMemo(() => (config ? Object.fromEntries(SITE_LANGS.map((l) => [l, missingTexts(config, l)])) : {}), [config]);
 
+  // A refusal from sanitizeFormConfig (here or on the server) in the admin's language, with the
+  // names the client sees. Unknown errors (network, server) keep their own message.
+  const describe = (error) => {
+    const template = error.code && t.errors[error.code];
+    if (!template) return error.message;
+    const params = { ...error.params };
+    const field = config.fields.find((f) => f.id === params.field);
+    if (field) params.field = textIn(field.label, lang) || `${t.types[field.type]} ${config.fields.indexOf(field) + 1}`;
+    if (params.list) params.list = { translation: t.dToTranslation, interpreting: t.dToInterpreting, copy: t.dCc }[params.list] || params.list;
+    if (params.where) params.where = whereText(params.where, t);
+    return fill(template, params);
+  };
   const fail = (error) => {
-    if (error.status === 409) setMessage({ tone: 'warn', text: t.conflict, reload: true });
-    else setMessage({ tone: 'warn', text: fill(t.saveFailed, { error: error.message }) });
+    if (error.status === 409) setMessage({ tone: 'warn', text: t.conflict, conflict: true });
+    else setMessage({ tone: 'warn', text: fill(t.saveFailed, { error: describe(error) }) });
   };
   const validate = () => {
     try {
       sanitizeFormConfig(config);
       return true;
     } catch (error) {
-      setMessage({ tone: 'warn', text: fill(t.saveFailed, { error: error.message }) });
+      setMessage({ tone: 'warn', text: fill(t.saveFailed, { error: describe(error) }) });
       return false;
     }
+  };
+  // After a conflict: take the latest revisions from the server but keep the edits on screen,
+  // so the next save or publish replaces the other version on purpose.
+  const keepMine = async () => {
+    try {
+      const data = await api();
+      setState((s) => ({ ...s, published: data.published, draft: data.draft, history: data.history || [] }));
+      setMessage({ tone: 'info', text: t.keptMine });
+    } catch (error) { fail(error); }
   };
 
   const saveDraft = async () => {
@@ -827,7 +870,12 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
         <div ref={messageRef} className={`np-notice np-cms-msg${message.tone === 'warn' ? ' np-notice--warn' : message.tone === 'good' ? ' np-notice--good' : ''}`} role="status">
           {message.tone === 'warn' ? <TriangleAlert size={16} /> : <Check size={16} />}
           <span>{message.text}</span>
-          {message.reload && <button type="button" className="np-btn np-btn--sm" onClick={load}>{t.reload}</button>}
+          {message.conflict && (
+            <>
+              <button type="button" className="np-btn np-btn--sm" onClick={keepMine}>{t.keepMine}</button>
+              <button type="button" className="np-btn np-btn--ghost np-btn--sm" onClick={() => { if (!dirty || window.confirm(t.confirmReload)) load(); }}>{t.reloadTheirs}</button>
+            </>
+          )}
         </div>
       )}
 
