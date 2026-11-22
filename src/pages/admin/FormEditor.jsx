@@ -322,10 +322,13 @@ function FieldsSection({ config, lang, t, update, selectedKey, setSelectedKey })
 
 function LanguagesSection({ config, lang, t, update }) {
   const [newName, setNewName] = useState('');
+  // A name that is already in the list (in any language) would add the same language twice.
+  const typed = newName.trim().toLowerCase();
+  const exists = Boolean(typed) && config.languages.some((language) => Object.values(language.name).some((value) => String(value).trim().toLowerCase() === typed));
   const add = (e) => {
     e.preventDefault();
     const name = newName.trim();
-    if (!name) return;
+    if (!name || exists) return;
     const base = slug(name) || 'lang';
     let id = base;
     while (id === OTHER_LANGUAGE || config.languages.some((language) => language.id === id) || !/^[a-z]/.test(id)) id = `${/^[a-z]/.test(base) ? base : 'l'}${Math.random().toString(36).slice(2, 5)}`;
@@ -391,8 +394,9 @@ function LanguagesSection({ config, lang, t, update }) {
         </div>
         <form className="np-addlang" onSubmit={add}>
           <input className="np-input" type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={t.addLanguagePh} maxLength={80} dir="auto" />
-          <button type="submit" className="np-btn np-btn--sm" disabled={!newName.trim()}><Plus size={15} /> {t.addLanguage}</button>
+          <button type="submit" className="np-btn np-btn--sm" disabled={!newName.trim() || exists}><Plus size={15} /> {t.addLanguage}</button>
         </form>
+        {exists && <p className="np-error np-note">{t.langExists}</p>}
       </section>
       <section className="np-card">
         <header className="np-card-head"><div><h2>{t.otherTitle}</h2></div></header>
