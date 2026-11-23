@@ -11,7 +11,8 @@
     "test:seo": "npm run build && node scripts/audit-seo-build.mjs && node scripts/audit-landing-pages.mjs && node scripts/review-built-site.mjs",
     "lint": "eslint .",
     "check:dupes": "jscpd src/components src/pages src/hooks src/lib api scripts --min-lines 10 --min-tokens 70 --threshold 2 --reporters console --silent",
-    "check": "npm run lint && npm run check:dupes",
+    "check:admin-texts": "node scripts/check-admin-texts.mjs",
+    "check": "npm run lint && npm run check:dupes && npm run check:admin-texts",
     "verify:deploy": "node scripts/verify-deploy.mjs",
     "indexnow": "node scripts/indexnow.mjs"
   },

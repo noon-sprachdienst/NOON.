@@ -268,7 +268,7 @@ function ContactSection({ config, lang, t, update }) {
   const set = (prop) => (value) => update((c) => { c.contact = { ...c.contact, [prop]: value }; });
   return (
     <section className="np-card" data-edit-key="contact">
-      <header className="np-card-head"><div><h2>{t.contactTitle}</h2><p>{t.contactSub}</p></div></header>
+      <header className="np-card-head"><div><h2>{t.cardTitle}</h2><p>{t.cardSub}</p></div></header>
       <div className="np-grid2">
         <TextField label={t.ctTitle} map={contact.title} max={TEXT_PATHS['contact.title']} lang={lang} onChange={set('title')} />
         <TextField label={t.ctWhatsapp} map={contact.whatsapp} max={TEXT_PATHS['contact.whatsapp']} lang={lang} onChange={set('whatsapp')} />
@@ -745,7 +745,7 @@ export default function FormEditor({ t, locale, onDirtyChange }) {
   // A refusal from sanitizeFormConfig (here or on the server) in the admin's language, with the
   // names the client sees. Unknown errors (network, server) keep their own message.
   const describe = (error) => {
-    const template = error.code && t.errors[error.code];
+    const template = error.code && t.saveErrors[error.code];
     if (!template) return error.message;
     const params = { ...error.params };
     const field = config.fields.find((f) => f.id === params.field);

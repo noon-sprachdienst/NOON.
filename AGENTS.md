@@ -23,7 +23,9 @@ what they cannot.
 - `npm run smoke:services`: smoke test for the service pages.
 - `npm run lint`: ESLint (bugs, not style). Errors block commits; warnings don't.
 - `npm run check:dupes`: duplicate-code check. Fails if duplication rises above 2 %.
-- `npm run check`: lint plus duplicate check.
+- `npm run check:admin-texts`: admin texts (`admin/i18n.js` and `admin/cmsI18n.js`) share no
+  keys (the CMS texts are merged over the dashboard texts) and DE/EN/AR have the same keys.
+- `npm run check`: lint, duplicate check and admin-text check.
 - `npm run verify:deploy -- [url]`: after a deployment, checks every page, the redirects
   and the admin login guard of the live site (default: production) against the local
   build of the same commit. Read-only.
@@ -114,7 +116,7 @@ hides a failure.
     the landing-page audit must pass, or Claude is sent back to fix them.
 - Git pre-commit hook (`scripts/git-hooks/`). Enable it once per clone with
   `git config core.hooksPath scripts/git-hooks`. On commits that touch site files it runs
-  `lint`, `check:dupes` and `test:seo`. Commits that change checks or guards are blocked
+  `lint`, `check:dupes`, `check:admin-texts` and `test:seo`. Commits that change checks or guards are blocked
   unless `NOON_ALLOW_GUARD_CHANGE=1` is set after the user approved the change.
 
 ## Git

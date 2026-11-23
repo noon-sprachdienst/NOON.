@@ -1,4 +1,7 @@
 // Texts of the CMS parts of the admin (quote form editor and Requests page), in the three admin languages.
+// Admin.jsx merges these over the dashboard texts (i18n.js), so a key that exists there too
+// replaces it everywhere: give CMS keys their own names (an `errors` object here once crashed
+// the Google search tab).
 export const CMS_T = {
   en: {
     form: 'Quote form', formSub: 'Fields, languages and confirmation message of the quote form',
@@ -19,7 +22,7 @@ export const CMS_T = {
     keptMine: 'Your version is kept. Press "Save draft" or "Publish" again: it replaces the other version.',
     limitReached: 'Limit reached: at most {max}.',
     textNames: { 'texts.otherName': '"Other language" name', 'texts.otherLabel': '"Other language" input label', 'texts.otherPlaceholder': '"Other language" example text' },
-    errors: {
+    saveErrors: {
       missing: 'The form settings are missing. Reload the page.',
       fieldId: 'The field "{field}" is invalid or exists twice. Reload the page.',
       fieldType: 'The field "{field}" has an invalid type.',
@@ -93,7 +96,7 @@ export const CMS_T = {
     elShow: 'Show', hiddenIn: 'Hidden in {lang}', hiddenAll: 'Hidden', noHide: 'The send button cannot be hidden.', noHideField: 'This field is needed to answer a request, so it cannot be hidden.',
     size: 'Size', weight: 'Weight', wDefault: 'As designed', wNormal: 'Normal', wBold: 'Bold', italic: 'Italic', underline: 'Underline',
     color: 'Text colour', bg: 'Button colour', clearColor: 'Back to the design colour', resetStyle: 'Reset style',
-    contactTitle: 'Contact card', contactSub: 'The card next to the form. Click a text in the preview to type, hide or style it.',
+    cardTitle: 'Contact card', cardSub: 'The card next to the form. Click a text in the preview to type, hide or style it.',
     ctTitle: 'Heading', ctSub: 'Text under the heading', ctPhone: 'Label above the phone number', ctEmail: 'Label above the e-mail',
     ctHq: 'Label above the address', ctHours: 'Opening hours line', ctWhatsapp: 'WhatsApp button',
     sharedTitle: 'Phone, e-mail and address are shared with the whole website',
@@ -125,7 +128,7 @@ export const CMS_T = {
     keptMine: 'Ihre Version bleibt erhalten. Drücken Sie erneut „Entwurf speichern“ oder „Veröffentlichen“: Sie ersetzt die andere Version.',
     limitReached: 'Höchstzahl erreicht: höchstens {max}.',
     textNames: { 'texts.otherName': 'Name „Andere Sprache“', 'texts.otherLabel': 'Bezeichnung des Eingabefelds „Andere Sprache“', 'texts.otherPlaceholder': 'Beispieltext „Andere Sprache“' },
-    errors: {
+    saveErrors: {
       missing: 'Die Formular-Einstellungen fehlen. Bitte die Seite neu laden.',
       fieldId: 'Das Feld „{field}“ ist ungültig oder doppelt vorhanden. Bitte die Seite neu laden.',
       fieldType: 'Das Feld „{field}“ hat einen ungültigen Typ.',
@@ -199,7 +202,7 @@ export const CMS_T = {
     elShow: 'Anzeigen', hiddenIn: 'Ausgeblendet auf {lang}', hiddenAll: 'Ausgeblendet', noHide: 'Der Senden-Button kann nicht ausgeblendet werden.', noHideField: 'Dieses Feld wird für die Antwort gebraucht und kann nicht ausgeblendet werden.',
     size: 'Größe', weight: 'Stärke', wDefault: 'Wie im Design', wNormal: 'Normal', wBold: 'Fett', italic: 'Kursiv', underline: 'Unterstrichen',
     color: 'Textfarbe', bg: 'Button-Farbe', clearColor: 'Zurück zur Designfarbe', resetStyle: 'Stil zurücksetzen',
-    contactTitle: 'Kontaktkarte', contactSub: 'Die Karte neben dem Formular. Text in der Vorschau anklicken zum Schreiben, Ausblenden oder Gestalten.',
+    cardTitle: 'Kontaktkarte', cardSub: 'Die Karte neben dem Formular. Text in der Vorschau anklicken zum Schreiben, Ausblenden oder Gestalten.',
     ctTitle: 'Überschrift', ctSub: 'Text unter der Überschrift', ctPhone: 'Bezeichnung über der Telefonnummer', ctEmail: 'Bezeichnung über der E-Mail',
     ctHq: 'Bezeichnung über der Adresse', ctHours: 'Zeile mit den Zeiten', ctWhatsapp: 'WhatsApp-Button',
     sharedTitle: 'Telefon, E-Mail und Adresse gelten für die ganze Website',
@@ -231,7 +234,7 @@ export const CMS_T = {
     keptMine: 'تم الاحتفاظ بنسختك. اضغط «حفظ كمسودة» أو «نشر» مرة أخرى: ستستبدل النسخة الأخرى.',
     limitReached: 'تم بلوغ الحد الأقصى: {max}.',
     textNames: { 'texts.otherName': 'اسم «لغة أخرى»', 'texts.otherLabel': 'عنوان خانة «لغة أخرى»', 'texts.otherPlaceholder': 'النص التوضيحي لـ«لغة أخرى»' },
-    errors: {
+    saveErrors: {
       missing: 'إعدادات النموذج غير موجودة. يرجى إعادة تحميل الصفحة.',
       fieldId: 'الحقل «{field}» غير صالح أو مكرر. يرجى إعادة تحميل الصفحة.',
       fieldType: 'نوع الحقل «{field}» غير صالح.',
@@ -305,7 +308,7 @@ export const CMS_T = {
     elShow: 'إظهار', hiddenIn: 'مخفي في {lang}', hiddenAll: 'مخفي', noHide: 'لا يمكن إخفاء زر الإرسال.', noHideField: 'هذا الحقل ضروري للرد على الطلب، لذلك لا يمكن إخفاؤه.',
     size: 'الحجم', weight: 'السُمك', wDefault: 'كما في التصميم', wNormal: 'عادي', wBold: 'عريض', italic: 'مائل', underline: 'تحته خط',
     color: 'لون النص', bg: 'لون الزر', clearColor: 'الرجوع للون التصميم', resetStyle: 'إلغاء التنسيق',
-    contactTitle: 'بطاقة التواصل', contactSub: 'البطاقة بجانب النموذج. اضغط على أي نص في المعاينة لكتابته أو إخفائه أو تنسيقه.',
+    cardTitle: 'بطاقة التواصل', cardSub: 'البطاقة بجانب النموذج. اضغط على أي نص في المعاينة لكتابته أو إخفائه أو تنسيقه.',
     ctTitle: 'العنوان', ctSub: 'النص تحت العنوان', ctPhone: 'الاسم فوق رقم الهاتف', ctEmail: 'الاسم فوق البريد الإلكتروني',
     ctHq: 'الاسم فوق العنوان البريدي', ctHours: 'سطر المواعيد', ctWhatsapp: 'زر واتساب',
     sharedTitle: 'الهاتف والبريد الإلكتروني والعنوان مشتركة في الموقع كله',
