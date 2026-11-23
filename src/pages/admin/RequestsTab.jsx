@@ -93,7 +93,9 @@ export default function RequestsTab({ t, locale, reloadKey, onNewCount }) {
                       <td><strong dir="auto">{request.name || '—'}</strong></td>
                       <td>{new Date(request.createdAt).toLocaleString(locale, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
                       <td><span className="np-chip">{t.svc[request.service] || request.service || '—'}</span></td>
-                      <td className="np-req-files">
+                      {/* The grid sits inside the cell: a grid <td> stops being a table cell and does not
+                          fill the row height, which left a white strip under it. */}
+                      <td><div className="np-req-files">
                         {request.files.map((file) => (
                           <a key={file.url} href={file.url} target="_blank" rel="noopener noreferrer" dir="auto">
                             <Download size={13} /> <span>{file.name}</span>{file.size ? <em>{formatMb(file.size, locale)}</em> : null}
@@ -101,7 +103,7 @@ export default function RequestsTab({ t, locale, reloadKey, onNewCount }) {
                         ))}
                         {request.attached > 0 && <span className="np-muted"><Paperclip size={13} /> {fill(t.reqAttached, { n: request.attached })}</span>}
                         {!request.files.length && !request.attached && <span className="np-muted">{t.reqNoFiles}</span>}
-                      </td>
+                      </div></td>
                       <td><span className={`np-days${left <= 5 ? ' is-soon' : ''}`}>{left === 0 ? t.reqToday : fill(t.reqDays, { n: left })}</span></td>
                       <td>
                         <button type="button" className={`np-status${request.status === 'done' ? ' is-done' : ''}`} onClick={() => setStatus(request, request.status === 'done' ? 'new' : 'done')}
