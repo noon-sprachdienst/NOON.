@@ -12,7 +12,8 @@ const SERVICE_NAMES = { translation: 'Übersetzung', interpreting: 'Dolmetschen'
 const QUOTE_SERVICES = ['translation', 'interpreting'];
 // German date for custom date fields (the browser sends 2026-12-01).
 const germanDate = (value) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value.split('-').reverse().join('.') : value);
-const DEFAULT_SUBJECT = 'Neue Website-Anfrage: {service}';
+// The customer name makes every request its own conversation in Gmail (same subjects are grouped).
+const DEFAULT_SUBJECT = 'Neue Website-Anfrage: {service} – {name}';
 const DEFAULT_SENDER = 'NOON Website Anfrage';
 const DAY = 24 * 60 * 60 * 1000;
 

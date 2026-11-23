@@ -492,7 +492,7 @@ function SettingsSection({ config, lang, t, update }) {
         <div className="np-grid2">
           <label className="np-field">
             <span>{t.dSubject}</span>
-            <input className="np-input" type="text" value={d.subject} maxLength={DELIVERY_LIMITS.subject} placeholder="Neue Website-Anfrage: {service}"
+            <input className="np-input" type="text" value={d.subject} maxLength={DELIVERY_LIMITS.subject} placeholder="Neue Website-Anfrage: {service} – {name}"
               onChange={(e) => set((x) => { x.subject = e.target.value; })} />
             <small>{t.dSubjectHint}</small>
           </label>
